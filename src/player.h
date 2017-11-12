@@ -16,13 +16,6 @@ class Player : public Sprite {
 
 		virtual void update(unsigned int ticks);
 
-		void observe(const Observer & observer);
-		void ignore(const Observer & observer);
-
 	private:
-		std::list<const Observer &> observers;
-
-		unsigned int observer_interval;
-		unsigned int observer_timer;
 };
 #endif

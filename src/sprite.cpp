@@ -79,6 +79,19 @@ void Sprite::update(unsigned int ticks) {
 		script_timer = 0;
 	}
 
+	observer_timer += ticks;
+	if (observer_timer > observer_interval) {
+		for (const Observer & observer : observers)
+			observer.signal("observe", *this);
+
+		observer_timer = 0;
+	}
+
+	for (const Observer & observer : observers) {
+		if (collision_strategy.check(*this, observer))
+			observer.signal("collide", *this);
+	}
+
 	Vector2f delta = get_velocity()*static_cast<float>(ticks)*0.001;
 	set_position(get_position() + delta);
 
@@ -93,4 +106,12 @@ void Sprite::update(unsigned int ticks) {
 	else if (get_x() > world.get_width() - get_width()) {
 	  set_velocity_x(-std::abs(get_velocity_y()));
 	}
+}
+
+void Sprite::observe(const Observer & observer) {
+	observers.push_back(observer);
+}
+
+void Sprite::ignore(const Observer & observer) {
+	observers.remove(observer);
 }
