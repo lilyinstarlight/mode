@@ -1,0 +1,68 @@
+#include <SDL.h>
+
+#include "clock.h"
+
+Clock & Clock::get_instance() {
+	static Clock clock;
+	return clock;
+}
+
+Clock::Clock() : started(false), paused(false), start_time(0), cur_time(0), frames(0), frame_time(0), fps(-1), fps_gain(0.1) {}
+
+unsigned int Clock::get_ticks() const {
+	if (!paused)
+		cur_time = SDL_GetTicks() - start_time;
+
+	return cur_time;
+}
+
+int Clock::get_fps() const {
+	get_ticks();
+
+	if (cur_time - frame_time > 1000) {
+		int next = frames/(cur_time - frame_time);
+
+		if (fps < 0) {
+			fps = next;
+		}
+		else {
+			fps = fps_gain*next + (1 - fps_gain)*fps;
+			frame_time = cur_time;
+		}
+	}
+
+	return fps;
+}
+
+void Clock::incr_frame() {
+	if (!paused)
+		++frames;
+}
+
+void Clock::start() {
+	if (started && paused) {
+		paused = false;
+		start_time += SDL_GetTicks() - cur_time;
+	}
+	else {
+		started = true;
+		paused = false;
+		start_time = SDL_GetTicks();
+		cur_time = SDL_GetTicks();
+		frames = 0;
+		frame_time = SDL_GetTicks();
+		fps = -1;
+	}
+}
+
+void Clock::pause() {
+	paused = true;
+}
+
+void Clock::stop() {
+	started = false;
+}
+
+bool Clock::is_paused() const {
+	return paused;
+}
