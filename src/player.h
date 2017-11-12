@@ -1,8 +1,10 @@
 #ifndef PLAYER_H
 #define PLAYER_H
+#include <list>
 #include <string>
 
 #include "input.h"
+#include "observer.h"
 
 class Player : public Sprite {
 	public:
@@ -14,8 +16,13 @@ class Player : public Sprite {
 
 		virtual void update(unsigned int ticks);
 
+		void observe(const Observer & observer);
+		void ignore(const Observer & observer);
+
 	private:
-		bool open;
-		std::string command;
+		std::list<const Observer &> observers;
+
+		unsigned int observer_interval;
+		unsigned int observer_timer;
 };
 #endif
