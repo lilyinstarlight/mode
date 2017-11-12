@@ -6,7 +6,7 @@
 
 class Viewport {
 	public:
-		Viewport(const World & w) : world(w) {}
+		Viewport(const World & w);
 		~Viewport() {}
 
 		Viewport() = delete;
@@ -14,7 +14,7 @@ class Viewport {
 		const Viewport & operator=(const Viewport & v) = delete;
 
 		void draw() const;
-		void update();
+		void update(unsigned int ticks);
 
 		Vector2f get_position() const { return position; }
 
@@ -23,7 +23,7 @@ class Viewport {
 		float get_y() const  { return position[1]; }
 		void  set_y(float y) { position[1] = y; }
 
-		void track(conjt Drawable * obj)      { tracking = obj };
+		void track(const Drawable * obj)      { tracking = obj;  };
 		const Drawable * get_tracking() const { return tracking; }
 
 	private:

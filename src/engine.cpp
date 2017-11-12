@@ -1,10 +1,13 @@
+#include "console.h"
+#include "hud.h"
+#include "player.h"
 #include "spec.h"
 #include "sprite.h"
 #include "text.h"
 
 #include "engine.h"
 
-Engine::Engine() : target(&player), drawables{target}, viewport(world) {
+Engine::Engine() : world(), viewport(world), player(world), target(&player), drawables{target} {
 	viewport.track(target);
 }
 
@@ -12,7 +15,7 @@ void Engine::run() {
 	SDL_Event event;
 	const Uint8 * keystate;
 
-	Uint32 ticks = clock.get_ticks();
+	Uint32 ticks = Clock::get_instance().get_ticks();
 
 	bool running = false;
 	while (running) {
@@ -30,10 +33,10 @@ void Engine::run() {
 				}
 
 				if (keystate[SDL_SCANCODE_P]) {
-					if (clock.is_paused())
-						clock.start();
+					if (Clock::get_instance().is_paused())
+						Clock::get_instance().start();
 					else
-						clock.pause();
+						Clock::get_instance().pause();
 				}
 			}
 		}
@@ -41,9 +44,9 @@ void Engine::run() {
 		Input::get_instance().set_event(&event);
 		Input::get_instance().set_keystate(keystate);
 
-		ticks = clock.get_ticks();
+		ticks = Clock::get_instance().get_ticks();
 		if (ticks > 0) {
-			clock.incr_frame();
+			Clock::get_instance().incr_frame();
 
 			draw();
 			update(ticks);
@@ -74,5 +77,5 @@ void Engine::update(unsigned int ticks) {
 	Console::get_instance().update(ticks);
 	HUD::get_instance().update(ticks);
 
-	Viewport::get_instance().update(ticks);
+	viewport.update(ticks);
 }

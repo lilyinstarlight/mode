@@ -2,7 +2,7 @@
 #define CLOCK_H
 class Clock {
 	public:
-		Clock & get_instance();
+		static Clock & get_instance();
 
 		Clock(const Clock & clock) = delete;
 		const Clock & operator=(const Clock & clock) = delete;

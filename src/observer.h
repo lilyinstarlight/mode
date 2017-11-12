@@ -6,8 +6,11 @@
 
 class Observer : public Sprite {
 	public:
+		Observer(const std::string & name, const World & w, bool player = false) : Sprite(name, w, player) {}
+		virtual ~Observer() {}
+
 		virtual void signal(const std::string & sig, const Sprite & sprite) {
-			script.call(sig, sprite.name, sprite.position.x, sprite.position.y, sprite.rotation, sprite.velocity.x, sprite.velocity.y, sprite.scale);
+			script.call(sig, sprite);
 		}
 
 	private:

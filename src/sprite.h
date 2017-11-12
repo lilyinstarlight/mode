@@ -1,6 +1,7 @@
 #ifndef SPRITE_H
 #define SPRITE_H
 #include <string>
+#include <list>
 #include <vector>
 
 #include "collision.h"
@@ -8,11 +9,14 @@
 #include "script.h"
 #include "world.h"
 
+class Observer;
+
 class Sprite : public Drawable {
 	public:
 		Sprite(const std::string & name, const World & w, bool player = false);
 		Sprite(const Sprite & s);
 
+		Sprite() = delete;
 		Sprite & operator=(const Sprite & s) = delete;
 
 		virtual void draw() const;
@@ -22,7 +26,7 @@ class Sprite : public Drawable {
 		void ignore(const Observer & observer);
 
 		virtual const Image * get_image() const {
-			return sheet[currentFrame];
+			return sheet[frame];
 		}
 
 		int get_width() const {
@@ -37,18 +41,20 @@ class Sprite : public Drawable {
 			return sheet[frame]->get_surface();
 		}
 
-	private:
+	protected:
 		const World & world;
 
 		Script * script;
-		std::vector<Image *> sheet;
 
 		RectangularCollisionStrategy rectangular_strategy;
 		CircularCollisionStrategy circular_strategy;
 		PixelCollisionStrategy pixel_strategy;
 
 		CollisionStrategy * collision_strategy;
-		std::list<const Observer &> observers;
+		std::list<const Observer *> observers;
+
+	private:
+		std::vector<Image *> sheet;
 
 		unsigned int frame;
 		unsigned int frames;

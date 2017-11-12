@@ -1,10 +1,9 @@
 #ifndef PLAYER_H
 #define PLAYER_H
-#include <list>
 #include <string>
 
 #include "input.h"
-#include "observer.h"
+#include "sprite.h"
 
 class Player : public Sprite {
 	public:

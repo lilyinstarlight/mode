@@ -43,7 +43,7 @@ Script::Script(const Script & s) : script(s.script), lua(), sprite(s.sprite), pl
 	lua.script(script);
 }
 
-Script::load_sprite(Sprite & sprite) {
+void Script::load_sprite(Sprite & sprite) {
 	lua.new_usertype<Sprite>("Sprite",
 			sol::constructors<Sprite(), Sprite(std::string, float, float), Sprite(std::string, float, float, float, float)>(),
 			"x", sol::property(&player::get_x, &player::set_x),
@@ -55,7 +55,7 @@ Script::load_sprite(Sprite & sprite) {
 	lua["sprite"] = sprite;
 }
 
-Script::load_player(Player & player) {
+void Script::load_player(Player & player) {
 	lua.new_usertype<Player>("Player",
 			"inject", &player::inject,
 			"hp", sol::property(&player::get_hp, &player::set_hp),
@@ -64,7 +64,7 @@ Script::load_player(Player & player) {
 	lua["player"] = sprite;
 }
 
-Script::load_file(const std::string & filename) {
+void Script::load_file(const std::string & filename) {
 	std::ifstream file(filename);
 	script = std::string(std::istreambuf_iterator<char>(file), std::istreambuf_iterator<char>());
 }

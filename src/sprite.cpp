@@ -82,14 +82,14 @@ void Sprite::update(unsigned int ticks) {
 	observer_timer += ticks;
 	if (observer_timer > observer_interval) {
 		for (const Observer & observer : observers)
-			observer.signal("observe", *this);
+			observer->signal("observe", *this);
 
 		observer_timer = 0;
 	}
 
 	for (const Observer & observer : observers) {
 		if (collision_strategy.check(*this, observer))
-			observer.signal("collide", *this);
+			observer->signal("collide", *this);
 	}
 
 	Vector2f delta = get_velocity()*static_cast<float>(ticks)*0.001;
@@ -109,9 +109,9 @@ void Sprite::update(unsigned int ticks) {
 }
 
 void Sprite::observe(const Observer & observer) {
-	observers.push_back(observer);
+	observers.push_back(&observer);
 }
 
 void Sprite::ignore(const Observer & observer) {
-	observers.remove(observer);
+	observers.remove(&observer);
 }
