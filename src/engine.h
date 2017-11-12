@@ -3,7 +3,7 @@
 #include <vector>
 #include <SDL.h>
 
-#include "renderContext.h"
+#include "context.h"
 #include "clock.h"
 #include "world.h"
 #include "viewport.h"

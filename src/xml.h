@@ -19,7 +19,7 @@ class XML {
 		XML(const XML &) = delete;
 		const XML & operator=(const XML &) = delete;
 
-		const map<string, string> get_data() const { return data; }
+		const std::map<std::string, std::string> & get_data() const { return data; }
 
 		static void wrap_start(void * data, const char * el, const char ** attr);
 		static void wrap_end(void * data, const char * el);
@@ -30,8 +30,8 @@ class XML {
 
 		char buf[BUF_SIZE];
 
-		std::deque<string> tags;
-		std::map<string, string> data;
+		std::deque<std::string> tags;
+		std::map<std::string, std::string> data;
 
 		void display() const;
 

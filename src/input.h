@@ -1,6 +1,6 @@
 #ifndef INPUT_H
 #define INPUT_H
-#include <stack>
+#include <list>
 #include <string>
 
 class Input {
@@ -9,6 +9,9 @@ class Input {
 			static Input input;
 			return input;
 		}
+
+		Input(const Input & input) = delete;
+		const Input & operator=(const Input & input) = delete;
 
 		void grab(const std::string & name) {
 			list.push_front(name);
@@ -19,7 +22,7 @@ class Input {
 		}
 
 		bool check(const std::string & name) const {
-			return list.front == name;
+			return list.front() == name;
 		}
 
 		const SDL_Event * get_event() const  { return event; }
@@ -30,6 +33,8 @@ class Input {
 
 	private:
 		Input();
+
+		std::list<std::string> list;
 
 		const SDL_Event * event;
 		const Uint8 * keystate;

@@ -12,7 +12,7 @@ Context::Context() : window(nullptr), renderer(nullptr) {
 		throw (std::string("Failed to init SDL ") + SDL_GetError());
 	}
 
-	std::string title = Spec::get_instnace().get_str("title");
+	std::string title = Spec::get_instance().get_str("title");
 	window = SDL_CreateWindow(title.c_str(), SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, Spec::get_instance().get_int("width"), Spec::get_instance().get_int("height"), SDL_WINDOW_SHOWN);
 
 	if (window == NULL)

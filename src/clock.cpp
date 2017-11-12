@@ -9,14 +9,14 @@ Clock & Clock::get_instance() {
 
 Clock::Clock() : started(false), paused(false), start_time(0), cur_time(0), frames(0), frame_time(0), fps(-1), fps_gain(0.1) {}
 
-unsigned int Clock::get_ticks() const {
+unsigned int Clock::get_ticks() {
 	if (!paused)
 		cur_time = SDL_GetTicks() - start_time;
 
 	return cur_time;
 }
 
-int Clock::get_fps() const {
+int Clock::get_fps() {
 	get_ticks();
 
 	if (cur_time - frame_time > 1000) {

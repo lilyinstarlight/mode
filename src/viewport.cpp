@@ -2,11 +2,6 @@
 
 #include "viewport.h"
 
-Viewport& Viewport::getInstance() {
-	static Viewport viewport;
-	return viewport;
-}
-
 Viewport::Viewport(const World & w) :
 	world(w),
 	position(0, 0),

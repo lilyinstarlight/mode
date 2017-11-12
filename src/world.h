@@ -3,9 +3,8 @@ class World {
 		World();
 		virtual ~World() {}
 
-		World() = delete;
-		World(const World & v) = delete;
-		const World & operator=(const World & v) = delete;
+		World(const World & w) = delete;
+		const World & operator=(const World & w) = delete;
 
 		void update();
 		void draw() const;

@@ -5,7 +5,7 @@
 
 class Vector2f {
 	public:
-		static const EPSILON = 0.001;
+		static constexpr float EPSILON = 0.001;
 
 		explicit Vector2f(float x = 0, float y = 0);
 

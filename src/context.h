@@ -14,7 +14,7 @@ class Context {
 
 	private:
 		Context();
-		~Context() {}
+		~Context();
 
 		SDL_Window * window;
 		SDL_Renderer * renderer;

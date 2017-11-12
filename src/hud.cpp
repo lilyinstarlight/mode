@@ -5,7 +5,7 @@ HUD & HUD::get_instance() {
 	return hud;
 }
 
-HUD::HUD() : first(true), open(false) {
+HUD::HUD() : first(true), open(false), surface(nullptr), padding_top(20), padding_left(20), size{padding_top, padding_left, Spec::get_instance().get_int("hud/width"), Spec::get_instance().get_int("hud/height")} {
 }
 
 void Console::draw() const {

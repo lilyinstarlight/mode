@@ -2,9 +2,13 @@
 #define COLLISION_H
 #include <cmath>
 
+#include "drawable.h"
+#include "vector2f.h"
+
 class CollisionStrategy {
 	public:
 		CollisionStrategy() {}
+		virtual ~CollisionStrategy() {}
 
 		virtual bool check(const Drawable & obj1, const Drawable & obj2) const = 0;
 

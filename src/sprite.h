@@ -3,8 +3,9 @@
 #include <string>
 #include <vector>
 
-#include "drawable.h"
 #include "collision.h"
+#include "drawable.h"
+#include "script.h"
 #include "world.h"
 
 class Sprite : public Drawable {

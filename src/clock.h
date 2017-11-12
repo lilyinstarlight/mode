@@ -2,13 +2,13 @@
 #define CLOCK_H
 class Clock {
 	public:
-		Clock & Clock::get_instance();
+		Clock & get_instance();
 
 		Clock(const Clock & clock) = delete;
 		const Clock & operator=(const Clock & clock) = delete;
 
-		unsigned int get_ticks() const;
-		int get_fps() const;
+		unsigned int get_ticks();
+		int get_fps();
 
 		void incr_frame();
 

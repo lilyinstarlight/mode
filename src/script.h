@@ -2,10 +2,10 @@
 #define SCRIPT_H
 #include <string>
 
-#include <sol.hpp>
+#include <sol/sol.hpp>
 
-#include "sprite.h"
-#include "player.h"
+class Sprite;
+class Player;
 
 class Script {
 	public:
