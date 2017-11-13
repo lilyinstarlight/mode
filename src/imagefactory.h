@@ -21,9 +21,9 @@ class ImageFactory {
 		std::map<std::string, SDL_Texture *> textures;
 		std::map<std::string, Image *> images;
 
-		std::map<std::string, std::vector<SDL_Surface *>> multi_surfaces;
-		std::map<std::string, std::vector<SDL_Texture *>> multi_textures;
-		std::map<std::string, std::vector<Image *>> multi_images;
+		std::map<std::string, std::vector<SDL_Surface *>> multi_surface;
+		std::map<std::string, std::vector<SDL_Texture *>> multi_texture;
+		std::map<std::string, std::vector<Image *>> multi_image;
 
 		ImageFactory() : surfaces(), textures(), images(), multi_surface(), multi_texture(), multi_image() {}
 		ImageFactory(const ImageFactory &) = delete;

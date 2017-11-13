@@ -9,6 +9,6 @@ World::World() :
 void World::update(unsigned int ticks) {
 }
 
-void World::draw() const {
+void World::draw(const Viewport & viewport) const {
 }
 

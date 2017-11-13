@@ -3,6 +3,8 @@
 #include <list>
 #include <string>
 
+#include <SDL.h>
+
 class Input {
 	public:
 		static Input & get_instance() {

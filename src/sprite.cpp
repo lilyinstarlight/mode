@@ -17,12 +17,15 @@ Sprite::Sprite(const std::string & name, const World & w, bool player) : Drawabl
 		script(nullptr),
 		sheet(ImageFactory::get_instance().get_sheet(name)),
 		collision_strategy(&rectangular_strategy),
+		observers{},
 		frame(0),
 		frames(Spec::get_instance().get_int(name + "/frames")),
 		interval(Spec::get_instance().get_int(name + "/interval")),
 		script_interval(500),
+		observer_interval(500),
 		frame_timer(0),
-		script_timer(0) {
+		script_timer(0),
+		observer_timer(0) {
 	if (!player)
 		script = new Script(name, *this);
 
@@ -62,8 +65,8 @@ Sprite::Sprite(const Sprite & s) :
 		throw std::string("Invalid collision strategy while copying sprite: ") + get_name();
 }
 
-void Sprite::draw() const {
-	get_image()->draw(get_x(), get_y(), get_scale());
+void Sprite::draw(const Viewport & viewport) const {
+	get_image()->draw(viewport, get_x(), get_y(), get_scale());
 }
 
 void Sprite::update(unsigned int ticks) {

@@ -4,18 +4,17 @@
 #include <SDL2/SDL_surface.h>
 #include <SDL2/SDL_image.h>
 
-class SpriteSheet{
+class SpriteSheet {
 	public:
-		SpriteSheet(SDL_Surface * s int width, int height, const NonOwningT) : src(s), view{0, 0, width, height}, rows(s->h/height), columns(s->w/width), frames(rows*columns), owning(false) {}
-
-		SpriteSheet(SDL_Surface * s, int width, int height) : SpriteSheet(s, width, height, NonOwning) {
-			owning = true;
-		}
+		SpriteSheet(SDL_Surface * s, int width, int height, bool own = true) : src(s), view{0, 0, width, height}, rows(s->h/height), columns(s->w/width), frames(rows*columns), owning(own) {}
 
 		~SpriteSheet() {
 			if (owning)
 				SDL_FreeSurface(src);
 		}
+
+		SpriteSheet(const SpriteSheet & ss) : src(ss.src), view(ss.view), rows(ss.rows), columns(ss.columns), frames(ss.frames), owning(false) {}
+		const SpriteSheet & operator=(const SpriteSheet & ss) = delete;
 
 		unsigned int get_rows() const    { return rows; }
 		unsigned int get_columns() const { return columns; }
@@ -36,7 +35,7 @@ class SpriteSheet{
 	private:
 		SDL_Surface * src;
 		SDL_Rect view;
-		unsigned rows, columns, frames;
+		unsigned int rows, columns, frames;
 
 		bool owning;
 };

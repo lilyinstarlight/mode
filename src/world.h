@@ -1,5 +1,7 @@
 #ifndef WORLD_H
 #define WORLD_H
+class Viewport;
+
 class World {
 	public:
 		World();
@@ -9,7 +11,7 @@ class World {
 		const World & operator=(const World & w) = delete;
 
 		void update(unsigned int ticks);
-		void draw() const;
+		void draw(const Viewport & viewport) const;
 	private:
 };
 #endif

@@ -1,7 +1,10 @@
 #include <SDL_image.h>
 
 #include "context.h"
+#include "sheet.h"
 #include "spec.h"
+
+#include "imagefactory.h"
 
 ImageFactory & ImageFactory::get_instance() {
 	static ImageFactory image_factory;
@@ -9,28 +12,28 @@ ImageFactory & ImageFactory::get_instance() {
 }
 
 ImageFactory::~ImageFactory() {
-	for (std::pair<std::string, SDL_Surface *> & surface : surfaces)
+	for (std::pair<std::string, SDL_Surface *> surface : surfaces)
 		SDL_FreeSurface(surface.second);
 
-	for (std::pair<std::string, SDL_Texture *> & texture : textures)
+	for (std::pair<std::string, SDL_Texture *> texture : textures)
 		SDL_DestroyTexture(texture.second);
 
 	for (std::pair<std::string, Image *> image : images)
-		delete fi.second;
+		delete image.second;
 
-	for (std::pair<std::string, std::vector<SDL_Surface *>> & surfaces : multi_surface) {
-		for (SDL_Surface * surface : surfaces)
+	for (std::pair<std::string, std::vector<SDL_Surface *>> surfaces : multi_surface) {
+		for (SDL_Surface * surface : surfaces.second)
 			SDL_FreeSurface(surface);
 	}
 
-	for (std::pair<std::string, std::vector<SDL_Texture *>> & textures : multi_texture) {
-		for (SDL_Texture * texture : textures)
+	for (std::pair<std::string, std::vector<SDL_Texture *>> textures : multi_texture) {
+		for (SDL_Texture * texture : textures.second)
 			SDL_DestroyTexture(texture);
 	}
 
-	for ( std::pair<std::string, Image *> images : multi_image ) {
-		for (Image * image : images)
-			delete image
+	for (std::pair<std::string, std::vector<Image *>> images : multi_image) {
+		for (Image * image : images.second)
+			delete image;
 	}
 }
 
@@ -41,7 +44,7 @@ Image* ImageFactory::get_image(const std::string & name) {
 
 	SDL_Surface * surface = IMG_Load(Spec::get_instance().get_str(name + "/file").c_str());
 	if (!surface)
-		throw std::string("Failed to load ") + filename;
+		throw std::string("Failed to load ") + Spec::get_instance().get_str(name + "/file");
 	surfaces[name] = surface;
 
 	bool transparency = Spec::get_instance().check(name + "/transparency");
@@ -68,7 +71,7 @@ std::vector<Image *> ImageFactory::get_sheet(const std::string & name) {
 
 	SDL_Surface * sprite_surface = IMG_Load(Spec::get_instance().get_str(name + "/file").c_str());
 	if (!sprite_surface)
-		throw std::string("Failed to load ") + filename;
+		throw std::string("Failed to load ") + Spec::get_instance().get_str(name + "/file");
 
 	bool transparency = Spec::get_instance().get_bool(name + "/transparency");
 	int r = 0, g = 0, b = 0;
@@ -93,7 +96,9 @@ std::vector<Image *> ImageFactory::get_sheet(const std::string & name) {
 
 	SpriteSheet sheet(sprite_surface, width, height);
 
-	for (SDL_Surface * surface : sheet) {
+	for (unsigned int i = 0; i < sheet.get_frames(); ++i) {
+		SDL_Surface * surface = sheet[i];
+
 		if (transparency)
 			SDL_SetColorKey(surface, SDL_TRUE, SDL_MapRGBA(sprite_surface->format, r, g, b, 255));
 

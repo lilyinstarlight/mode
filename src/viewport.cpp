@@ -9,7 +9,7 @@ Viewport::Viewport(const World & w) :
 	height(Spec::get_instance().get_int("view/height")),
 	tracking(nullptr) {}
 
-void Viewport::draw() const {
+void Viewport::draw(const Viewport & viewport) const {
 }
 
 void Viewport::update(unsigned int ticks) {

@@ -1,4 +1,4 @@
-#include <ifstream>
+#include <fstream>
 
 #include "clock.h"
 #include "collision.h"
@@ -14,7 +14,7 @@
 
 // TODO: load other api stuff
 
-Script::Script(const std::string & name, Sprite & s) : script(), lua(), sprite(&s), player(nullptr) {
+Script::Script(const std::string & name, Sprite & s) : path("behaviours"), script(), lua(), sprite(&s), player(nullptr) {
 	load_sprite(*sprite);
 
 	load_file(path + "/" + name + ".lua");
@@ -22,8 +22,8 @@ Script::Script(const std::string & name, Sprite & s) : script(), lua(), sprite(&
 	lua.script(script);
 }
 
-Script::Script(const std::string & name, Player & p) : script(), lua(), sprite(nullptr), player(&p) {
-	load_sprite(player->get_sprite());
+Script::Script(const std::string & name, Player & p) : path("behaviours"), script(), lua(), sprite(nullptr), player(&p) {
+	load_sprite(*player);
 	load_player(*player);
 
 	load_file(path + "/" + name + ".lua");
@@ -31,12 +31,12 @@ Script::Script(const std::string & name, Player & p) : script(), lua(), sprite(n
 	lua.script(script);
 }
 
-Script::Script(const Script & s) : script(s.script), lua(), sprite(s.sprite), player(s.player) {
+Script::Script(const Script & s) : path(s.path), script(s.script), lua(), sprite(s.sprite), player(s.player) {
 	if (sprite) {
 		load_sprite(*sprite);
 	}
 	else {
-		load_sprite(player->get_sprite());
+		load_sprite(*player);
 		load_player(*player);
 	}
 
@@ -44,24 +44,22 @@ Script::Script(const Script & s) : script(s.script), lua(), sprite(s.sprite), pl
 }
 
 void Script::load_sprite(Sprite & sprite) {
-	lua.new_usertype<Sprite>("Sprite",
+	lua.new_userdata<Sprite>("Sprite",
 			sol::constructors<Sprite(), Sprite(std::string, float, float), Sprite(std::string, float, float, float, float)>(),
-			"x", sol::property(&player::get_x, &player::set_x),
-			"y", sol::property(&player::get_y, &player::set_y),
-			"vel_x", sol::property(&player::get_vel_x, &player::set_vel_x),
-			"vel_y", sol::property(&player::get_vel_y, &player::set_vel_y),
+			"pos", &Drawable::position,
+			"vel", &Drawable::velocity,
 	);
 
 	lua["sprite"] = sprite;
 }
 
 void Script::load_player(Player & player) {
-	lua.new_usertype<Player>("Player",
-			"inject", &player::inject,
-			"hp", sol::property(&player::get_hp, &player::set_hp),
+	lua.new_userdata<Player>("Player",
+			"inject", &Player::inject,
+			"hp", &Player::hp,
 	);
 
-	lua["player"] = sprite;
+	lua["player"] = player;
 }
 
 void Script::load_file(const std::string & filename) {

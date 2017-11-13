@@ -19,6 +19,7 @@ Text::Text() {
 		throw std::string("Failed to initialize TTF");
 
 	font = TTF_OpenFont(Spec::get_instance().get_str("font/file").c_str(), Spec::get_instance().get_int("font/size"));
+	size = Spec::get_instance().get_int("font/size");
 
 	if (!font)
 		throw std::string("Failed to find font");

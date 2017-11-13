@@ -13,7 +13,7 @@ class Drawable {
 
 		virtual ~Drawable() {}
 
-		virtual void draw() const = 0;
+		virtual void draw(const Viewport & viewport) const = 0;
 		virtual void update(unsigned int ticks) = 0;
 
 		virtual int get_width() const = 0;

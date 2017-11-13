@@ -13,10 +13,13 @@ class Text {
 		Text& operator=(const Text &) = delete;
 
 		void write(const std::string & text, int x, int y, SDL_Color color) const;
+
+		int get_size() { return size; }
 	private:
 		Text();
 		~Text();
 
-		TTF_Font* font;
+		TTF_Font * font;
+		int size;
 };
 #endif

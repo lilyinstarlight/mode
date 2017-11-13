@@ -5,8 +5,9 @@
 
 #include "context.h"
 #include "clock.h"
-#include "world.h"
+#include "player.h"
 #include "viewport.h"
+#include "world.h"
 
 class Engine {
 	public:

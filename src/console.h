@@ -14,11 +14,11 @@ class Console : public Drawable {
 		Console(const Console & console) = delete;
 		const Console & operator=(const Console & console) = delete;
 
-		virtual void draw() const;
+		virtual void draw(const Viewport & viewport) const;
 		virtual void update(unsigned int ticks);
 
-		virtual int get_width() const { return size.w; };
-		virtual int get_height() const { return size.h; };
+		virtual int get_width() const { return 0; };
+		virtual int get_height() const { return 0; };
 
 		virtual const SDL_Surface * get_surface() const { return surface; };
 		virtual const Image * get_image() const { return nullptr; };
@@ -35,7 +35,5 @@ class Console : public Drawable {
 		int padding_bottom;
 		int padding_left;
 		int padding_font;
-
-		SDL_Rect size;
 };
 #endif

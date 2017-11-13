@@ -25,14 +25,16 @@ class Script {
 		}
 	private:
 		void load_sprite(Sprite & sprite);
-		void load_player(Sprite & sprite);
+		void load_player(Player & player);
 		void load_file(const std::string & filename);
+
+		std::string path;
 
 		std::string script;
 
 		sol::state lua;
 
-		const Sprite * sprite;
-		const Player * player;
+		Sprite * sprite;
+		Player * player;
 };
 #endif

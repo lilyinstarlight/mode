@@ -1,6 +1,5 @@
 #include "console.h"
 #include "hud.h"
-#include "player.h"
 #include "spec.h"
 #include "sprite.h"
 #include "text.h"
@@ -55,15 +54,15 @@ void Engine::run() {
 }
 
 void Engine::draw() const {
-	world.draw();
+	world.draw(viewport);
 
-	Console::get_instance().draw();
-	HUD::get_instance().draw();
+	Console::get_instance().draw(viewport);
+	HUD::get_instance().draw(viewport);
 
 	viewport.draw();
 
 	for (Drawable * drawable : drawables)
-		drawable->draw();
+		drawable->draw(viewport);
 
 	SDL_RenderPresent(Context::get_instance().get_renderer());
 }

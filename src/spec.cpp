@@ -8,7 +8,7 @@ Spec & Spec::get_instance() {
 	return gamedata;
 }
 
-Spec::Spec() : parser("xml/spec.xml"), data(parser.get_data()) {}
+Spec::Spec() : path("xml"), parser(path + "/spec.xml"), data(parser.get_data()) {}
 
 bool Spec::check(const std::string & tag) const {
 	return data.count(tag) != 0;

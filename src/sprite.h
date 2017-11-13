@@ -19,7 +19,7 @@ class Sprite : public Drawable {
 		Sprite() = delete;
 		Sprite & operator=(const Sprite & s) = delete;
 
-		virtual void draw() const;
+		virtual void draw(const Viewport & viewport) const;
 		virtual void update(unsigned int ticks);
 
 		void observe(const Observer & observer);

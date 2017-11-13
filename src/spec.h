@@ -23,6 +23,8 @@ class Spec {
 		Spec();
 		~Spec();
 
+		std::string path;
+
 		XML parser;
 
 		const std::map<std::string, std::string> data;

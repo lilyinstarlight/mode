@@ -1,3 +1,5 @@
+#include "spec.h"
+
 #include "hud.h"
 
 HUD & HUD::get_instance() {
@@ -5,15 +7,15 @@ HUD & HUD::get_instance() {
 	return hud;
 }
 
-HUD::HUD() : first(true), open(false), surface(nullptr), padding_top(20), padding_left(20), size{padding_top, padding_left, Spec::get_instance().get_int("hud/width"), Spec::get_instance().get_int("hud/height")} {
+HUD::HUD() : Drawable("hud", Vector2f{0, 0}, 0, Vector2f{0, 0}, 1), first(true), open(false), surface(nullptr), padding_top(20), padding_left(20), size{padding_top, padding_left, Spec::get_instance().get_int("hud/width"), Spec::get_instance().get_int("hud/height")} {
 }
 
-void Console::draw() const {
+void HUD::draw(const Viewport &) const {
 	if (open) {
 		// TODO: draw a semi-transparent rectangle with dynamic text
 	}
 }
 
-void Console::update(unsigned int ticks) {
+void HUD::update(unsigned int) {
 	// TODO: toggle hud on keypress
 }

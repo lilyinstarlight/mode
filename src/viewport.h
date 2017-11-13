@@ -16,6 +16,9 @@ class Viewport {
 		void draw() const;
 		void update(unsigned int ticks);
 
+		int get_height() const { return height; }
+		int get_width() const  { return width; }
+
 		Vector2f get_position() const { return position; }
 
 		float get_x() const  { return position[0]; }
