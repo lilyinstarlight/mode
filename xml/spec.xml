@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<spec>
+	<title>.:Mode:.</title>
+
+	<view>
+		<width>800</width>
+		<height>600</height>
+	</view>
+
+	<world>
+		<width>1920</width>
+		<height>1080</height>
+	</world>
+
+	<font>
+		<file>monof55.ttf</file>
+		<size>16</size>
+	</font>
+
+	<hud>
+		<width>200</width>
+		<height>20</height>
+
+		<box>
+			<r>128</r>
+			<g>46</g>
+			<b>46</b>
+			<a>128</a>
+		</box>
+
+		<border>
+			<r>255</r>
+			<g>255</g>
+			<b>255</b>
+			<a>255</a>
+		</border>
+
+		<text>
+			<r>255</r>
+			<g>255</g>
+			<b>255</b>
+			<a>255</a>
+		</text>
+
+		<str>
+    .:Mode:.
+A game where you
+write the rules.
+		</str>
+	</hud>
+
+	<console>
+		<box>
+			<r>128</r>
+			<g>128</g>
+			<b>128</b>
+			<a>128</a>
+		</box>
+
+		<text>
+			<r>255</r>
+			<g>255</g>
+			<b>255</b>
+			<a>255</a>
+		</text>
+	</console>
+
+	<background>
+		<type>background</type>
+		<index>0</index>
+
+		<width>1920</width>
+		<height>1080</height>
+		<factor>0.1</factor>
+
+		<file></file>
+	</background>
+
+	<backforeground>
+		<type>background</type>
+		<index>10</index>
+
+		<width>1920</width>
+		<height>1080</height>
+		<factor>0.5</factor>
+
+		<file></file>
+	</backforeground>
+
+	<foreground>
+		<type>background</type>
+		<index>20</index>
+
+		<width>1920</width>
+		<height>1080</height>
+		<factor>1</factor>
+
+		<file></file>
+	</foreground>
+
+	<box>
+		<type>sprite</type>
+		<index>50</index>
+
+		<position>
+			<x>600</x>
+			<y>50</y>
+		</position>
+
+		<rotation>0</rotation>
+
+		<velocity>
+			<x>0</x>
+			<y>0</y>
+		</velocity>
+
+		<scale>1</scale>
+
+		<file>box.png</file>
+
+		<frames>1</frames>
+		<interval>-1</interval>
+
+		<collision>none</collision>
+	</box>
+
+	<player>
+		<type>player</type>
+		<index>100</index>
+
+		<position>
+			<x>100</x>
+			<y>50</y>
+		</position>
+
+		<rotation>0</rotation>
+
+		<velocity>
+			<x>0</x>
+			<y>0</y>
+		</velocity>
+
+		<scale>1</scale>
+
+		<file>hero.png</file>
+
+		<frames>1</frames>
+		<interval>-1</interval>
+
+		<collision>rectangular</collision>
+	</player>
+</spec>
