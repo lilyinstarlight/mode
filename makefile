@@ -1,5 +1,8 @@
+EXE=mode
+
 all:
-	make -C src ../mode
+	make -C src
+	cp src/main $(EXE)
 
 clean:
 	make -C src clean

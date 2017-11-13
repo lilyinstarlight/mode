@@ -26,13 +26,14 @@ class HUD : public Drawable {
 		HUD();
 		~HUD() {}
 
-		bool first;
+		unsigned int first;
 		bool open;
 
 		SDL_Surface * surface;
 
 		int padding_top;
 		int padding_left;
+		int padding_font;
 
 		SDL_Rect size;
 };
