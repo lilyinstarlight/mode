@@ -14,7 +14,7 @@ class Text {
 
 		void write(SDL_Renderer * renderer, const std::string & text, int x, int y, SDL_Color color) const;
 
-		int get_size() { return size; }
+		int get_size() const { return size; }
 	private:
 		Text();
 		~Text();
