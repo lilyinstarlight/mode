@@ -19,12 +19,13 @@ all: $(EXE)
 
 main: $(SRC:.cpp=.o) lib/lua/liblua.a
 
-lib/lua/liblua.a:
+lib/lua/liblua.a: lib/lua/makefile
 	make -C lib/lua a
 
 clean:
-	rm -rf lib/lua/{*.o,*.a}
+	rm -rf lib/lua/{*.o,*.a,lua}
 	rm -rf *.o
-	rm -f $(EXE)
+	rm -f main
+	rm -f ../$(EXE)
 
 .PHONY: all clean
