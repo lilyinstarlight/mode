@@ -1,6 +1,6 @@
 #ifndef SPEC_H
 #define SPEC_H
-#include <map>
+#include <unordered_map>
 #include <string>
 #include <vector>
 
@@ -16,6 +16,7 @@ class Spec {
 		bool check(const std::string & tag) const;
 
 		std::vector<std::string> get_tops() const;
+		std::vector<std::string> get_subs(const std::string & tag) const;
 
 		bool get_bool(const std::string & tag) const;
 		int get_int(const std::string & tag) const;
@@ -30,6 +31,6 @@ class Spec {
 
 		XML parser;
 
-		const std::map<std::string, std::string> data;
+		const std::unordered_map<std::string, std::string> data;
 };
 #endif

@@ -1,4 +1,4 @@
-#include "sheet.h"
+#include "spritesheet.h"
 
 SDL_Surface* SpriteSheet::crop(SDL_Surface * surf, const SDL_Rect * view) {
 	const SDL_PixelFormat * fmt = surf->format;

@@ -23,10 +23,9 @@ Sprite::Sprite(const std::string & name, const World & w, bool own_script) : Dra
 		pixel_strategy(),
 		collision_strategy(&rectangular_strategy),
 		observers{},
-		sheet(ImageFactory::get_instance().get_sheet(name)),
+		sheets{},
+		state("idle"),
 		frame(0),
-		frames(Spec::get_instance().get_int(name + "/frames")),
-		interval(Spec::get_instance().get_int(name + "/interval")),
 		script_interval(500),
 		observer_interval(500),
 		frame_timer(0),
@@ -34,6 +33,12 @@ Sprite::Sprite(const std::string & name, const World & w, bool own_script) : Dra
 		observer_timer(0) {
 	if (own_script)
 		script = new Script(name, *this);
+
+	for (const std::string & sheet : Spec::get_instance().get_subs(name + "/sheets"))
+		sheets[sheet] = ImageFactory::get_instance().get_sheet(sheet);
+
+	if (sheets.size() > 0)
+		state = sheets.begin()->first;
 
 	std::string collision = Spec::get_instance().get_str(name + "/collision");
 	if (collision == "none")
@@ -58,10 +63,9 @@ Sprite::Sprite(const Sprite & s) :
 		pixel_strategy(),
 		collision_strategy(&rectangular_strategy),
 		observers(s.observers),
-		sheet(s.sheet),
+		sheets(s.sheets),
+		state(s.state),
 		frame(s.frame),
-		frames(s.frames),
-		interval(s.interval),
 		script_interval(500),
 		observer_interval(500),
 		frame_timer(0),
@@ -85,13 +89,13 @@ void Sprite::draw(const Viewport & viewport) const {
 
 void Sprite::update(unsigned int ticks) {
 	frame_timer += ticks;
-	if (interval > 0 && frame_timer > interval) {
-		frame = (frame + 1) % frames;
+	if (sheets.at(state)->get_interval() > 0 && frame_timer > sheets.at(state)->get_interval()) {
+		frame = (frame + 1) % sheets.at(state)->get_frames();
 		frame_timer = 0;
 	}
 
 	script_timer += ticks;
-	if (script_timer > interval) {
+	if (script_timer > script_interval) {
 		script->call("update", ticks);
 		script_timer = 0;
 	}

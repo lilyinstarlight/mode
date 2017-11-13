@@ -37,7 +37,7 @@ XML::XML(const std::string& filename) : parser(NULL), tags(), data() {
 }
 
 void XML::display() const {
-	std::map<std::string, std::string>::const_iterator ptr = data.begin();
+	std::unordered_map<std::string, std::string>::const_iterator ptr = data.begin();
 	while (ptr != data.end()) {
 		std::cout << "(" << ptr->first << ", " << ptr->second << ")" << std::endl;
 		++ptr;

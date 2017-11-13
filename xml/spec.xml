@@ -116,10 +116,14 @@ write the rules.
 
 		<scale>1</scale>
 
-		<file>box.png</file>
+		<sheets>
+		    <idle>
+			<file>box.idle.png</file>
 
-		<frames>1</frames>
-		<interval>-1</interval>
+			<frames>1</frames>
+			<interval>-1</interval>
+		    </idle>
+		</sheets>
 
 		<collision>none</collision>
 	</box>
@@ -142,10 +146,15 @@ write the rules.
 
 		<scale>1</scale>
 
-		<file>hero.png</file>
 
-		<frames>1</frames>
-		<interval>-1</interval>
+		<sheets>
+		    <idle>
+			<file>hero.idle.png</file>
+
+			<frames>1</frames>
+			<interval>-1</interval>
+		    </idle>
+		</sheets>
 
 		<collision>rectangular</collision>
 	</player>

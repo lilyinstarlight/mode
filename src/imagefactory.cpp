@@ -1,7 +1,7 @@
 #include <SDL_image.h>
 
 #include "context.h"
-#include "sheet.h"
+#include "spritesheet.h"
 #include "spec.h"
 
 #include "imagefactory.h"
@@ -31,14 +31,13 @@ ImageFactory::~ImageFactory() {
 			SDL_DestroyTexture(texture);
 	}
 
-	for (std::pair<std::string, std::vector<Image *>> images : multi_image) {
-		for (Image * image : images.second)
-			delete image;
+	for (std::pair<std::string, Sheet *> sheet : sheets) {
+		delete sheet.second;
 	}
 }
 
 Image* ImageFactory::get_image(const std::string & name) {
-	std::map<std::string, Image *>::const_iterator pos = images.find(name);
+	std::unordered_map<std::string, Image *>::const_iterator pos = images.find(name);
 	if ( pos != images.end() )
 		return pos->second;
 
@@ -64,9 +63,9 @@ Image* ImageFactory::get_image(const std::string & name) {
 }
 
 
-std::vector<Image *> ImageFactory::get_sheet(const std::string & name) {
-	std::map<std::string, std::vector<Image*>>::const_iterator pos = multi_image.find(name);
-	if (pos != multi_image.end())
+Sheet * ImageFactory::get_sheet(const std::string & name) {
+	std::unordered_map<std::string, Sheet *>::const_iterator pos = sheets.find(name);
+	if (pos != sheets.end())
 		return pos->second;
 
 	SDL_Surface * sprite_surface = IMG_Load(Spec::get_instance().get_str(name + "/file").c_str());
@@ -94,10 +93,10 @@ std::vector<Image *> ImageFactory::get_sheet(const std::string & name) {
 	int width = sprite_surface->w/frames;
 	int height = sprite_surface->h;
 
-	SpriteSheet sheet(sprite_surface, width, height);
+	SpriteSheet spritesheet(sprite_surface, width, height);
 
-	for (unsigned int i = 0; i < sheet.get_frames(); ++i) {
-		SDL_Surface * surface = sheet[i];
+	for (unsigned int i = 0; i < spritesheet.get_frames(); ++i) {
+		SDL_Surface * surface = spritesheet[i];
 
 		if (transparency)
 			SDL_SetColorKey(surface, SDL_TRUE, SDL_MapRGBA(sprite_surface->format, r, g, b, 255));
@@ -109,9 +108,11 @@ std::vector<Image *> ImageFactory::get_sheet(const std::string & name) {
 		images.push_back(new Image(surface, texture));
 	}
 
+	Sheet * sheet = new Sheet(images, Spec::get_instance().get_int(name + "/frames"), Spec::get_instance().get_int(name + "/interval"));
+
 	multi_surface[name] = surfaces;
 	multi_texture[name] = textures;
-	multi_image[name] = images;
+	sheets[name] = sheet;
 
-	return images;
+	return sheet;
 }

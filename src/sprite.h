@@ -1,12 +1,14 @@
 #ifndef SPRITE_H
 #define SPRITE_H
-#include <string>
+#include <unordered_map>
 #include <list>
+#include <string>
 #include <vector>
 
 #include "collision.h"
 #include "drawable.h"
 #include "script.h"
+#include "sheet.h"
 #include "world.h"
 
 class Observer;
@@ -26,20 +28,23 @@ class Sprite : public Drawable {
 		void ignore(Observer & observer);
 
 		virtual const Image * get_image() const {
-			return sheet[frame];
+			return sheets.at(state)->get_image(frame);
 		}
 
 		int get_width() const {
-			return get_scale()*sheet[frame]->get_width();
+			return get_scale()*sheets.at(state)->get_image(frame)->get_width();
 		}
 
 		int get_height() const {
-			return get_scale()*sheet[frame]->get_height();
+			return get_scale()*sheets.at(state)->get_image(frame)->get_height();
 		}
 
 		virtual const SDL_Surface * get_surface() const {
-			return sheet[frame]->get_surface();
+			return sheets.at(state)->get_image(frame)->get_surface();
 		}
+
+		std::string get_state() const         { return state; }
+		void set_state(const std::string & s) { state = s;    }
 
 	protected:
 		const World & world;
@@ -55,11 +60,10 @@ class Sprite : public Drawable {
 		std::list<Observer *> observers;
 
 	private:
-		std::vector<Image *> sheet;
+		std::unordered_map<std::string, Sheet *> sheets;
+		std::string state;
 
 		unsigned int frame;
-		unsigned int frames;
-		unsigned int interval;
 
 		unsigned int script_interval;
 		unsigned int observer_interval;

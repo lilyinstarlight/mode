@@ -1,5 +1,6 @@
 #include <sstream>
 #include <string>
+#include <unordered_set>
 
 #include "spec.h"
 
@@ -15,18 +16,41 @@ bool Spec::check(const std::string & tag) const {
 }
 
 std::vector<std::string> Spec::get_tops() const {
-	std::vector<std::string> found;
+	std::unordered_set<std::string> found;
 
 	for (std::pair<std::string, std::string> element : data) {
-		if (element.first.find("/") == std::string::npos)
-			found.push_back(element.first);
+		std::string::size_type slash = element.first.find("/");
+		if (slash == std::string::npos)
+			continue;
+
+		found.insert(element.first.substr(0, slash));
 	}
 
-	return found;
+	return std::vector<std::string>(found.begin(), found.end());
+}
+
+std::vector<std::string> Spec::get_subs(const std::string & tag) const {
+	std::unordered_set<std::string> found;
+
+	for (std::pair<std::string, std::string> element : data) {
+		std::string needle = tag + "/";
+		std::string::size_type pos = element.first.find(needle);
+		if (pos == std::string::npos)
+			continue;
+
+		std::string::size_type begin = pos + needle.length();
+		std::string::size_type slash = element.first.find("/", begin);
+		if (slash == std::string::npos)
+			continue;
+
+		found.insert(element.first.substr(0, slash));
+	}
+
+	return std::vector<std::string>(found.begin(), found.end());
 }
 
 bool Spec::get_bool(const std::string & tag) const {
-	std::map<std::string, std::string>::const_iterator pos = data.find(tag);
+	std::unordered_map<std::string, std::string>::const_iterator pos = data.find(tag);
 
 	if (pos == data.end())
 		throw "Boolean tag `" + tag + "' not found";
@@ -35,7 +59,7 @@ bool Spec::get_bool(const std::string & tag) const {
 }
 
 int Spec::get_int(const std::string & tag) const {
-	std::map<std::string, std::string>::const_iterator pos = data.find(tag);
+	std::unordered_map<std::string, std::string>::const_iterator pos = data.find(tag);
 
 	if (pos == data.end())
 		throw "Integer tag `" + tag + "' not found";
@@ -50,7 +74,7 @@ int Spec::get_int(const std::string & tag) const {
 }
 
 float Spec::get_float(const std::string & tag) const {
-	std::map<std::string, std::string>::const_iterator pos = data.find(tag);
+	std::unordered_map<std::string, std::string>::const_iterator pos = data.find(tag);
 
 	if (pos == data.end())
 		throw "Float tag `" + tag + "' not found";
@@ -65,7 +89,7 @@ float Spec::get_float(const std::string & tag) const {
 }
 
 const std::string & Spec::get_str(const std::string & tag) const {
-	std::map<std::string, std::string>::const_iterator pos = data.find(tag);
+	std::unordered_map<std::string, std::string>::const_iterator pos = data.find(tag);
 
 	if (pos == data.end())
 		throw "String tag `" + tag + "' not found";

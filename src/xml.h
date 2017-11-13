@@ -1,7 +1,7 @@
 #ifndef XML_H
 #define XML_H
 #include <deque>
-#include <map>
+#include <unordered_map>
 #include <string>
 
 #include <expat.h>
@@ -19,7 +19,7 @@ class XML {
 		XML(const XML &) = delete;
 		const XML & operator=(const XML &) = delete;
 
-		const std::map<std::string, std::string> & get_data() const { return data; }
+		const std::unordered_map<std::string, std::string> & get_data() const { return data; }
 
 		static void wrap_start(void * data, const char * el, const char ** attr);
 		static void wrap_end(void * data, const char * el);
@@ -31,7 +31,7 @@ class XML {
 		char buf[BUF_SIZE];
 
 		std::deque<std::string> tags;
-		std::map<std::string, std::string> data;
+		std::unordered_map<std::string, std::string> data;
 
 		void display() const;
 
