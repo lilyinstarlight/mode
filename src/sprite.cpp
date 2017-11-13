@@ -6,7 +6,7 @@
 
 #include "sprite.h"
 
-Sprite::Sprite(const std::string & name, const World & w, bool player) : Drawable(name,
+Sprite::Sprite(const std::string & name, const World & w, bool own_script) : Drawable(name,
 			Vector2f(Spec::get_instance().get_int(name + "/position/x"),
 			         Spec::get_instance().get_int(name + "/position/y")),
 			         Spec::get_instance().get_int(name + "/rotation"),
@@ -30,7 +30,7 @@ Sprite::Sprite(const std::string & name, const World & w, bool player) : Drawabl
 		frame_timer(0),
 		script_timer(0),
 		observer_timer(0) {
-	if (!player)
+	if (own_script)
 		script = new Script(name, *this);
 
 	std::string collision = Spec::get_instance().get_str(name + "/collision");

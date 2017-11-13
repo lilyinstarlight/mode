@@ -13,7 +13,7 @@ class Observer;
 
 class Sprite : public Drawable {
 	public:
-		Sprite(const std::string & name, const World & w, bool player = false);
+		Sprite(const std::string & name, const World & w, bool own_script = true);
 		Sprite(const Sprite & s);
 
 		Sprite() = delete;

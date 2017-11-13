@@ -21,7 +21,7 @@ class Script {
 
 		template<typename... T>
 		void call(const std::string & method, T... args) {
-			lua[method](args...);
+			lua[method].call<T...>(args...);
 		}
 	private:
 		void load_sprite(Sprite & sprite);

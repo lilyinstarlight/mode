@@ -2,7 +2,7 @@
 
 #include "player.h"
 
-Player::Player(const World & w) : Sprite("player", w, true), hp(64) {
+Player::Player(const World & w) : Sprite("player", w, false), hp(64) {
 	script = new Script("player", *this);
 
 	Input::get_instance().grab("player");
