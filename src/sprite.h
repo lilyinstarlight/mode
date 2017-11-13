@@ -46,6 +46,7 @@ class Sprite : public Drawable {
 
 		Script * script;
 
+		NoneCollisionStrategy none_strategy;
 		RectangularCollisionStrategy rectangular_strategy;
 		CircularCollisionStrategy circular_strategy;
 		PixelCollisionStrategy pixel_strategy;

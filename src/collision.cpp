@@ -38,6 +38,10 @@ bool CollisionStrategy::visible(Uint32 pixel, const SDL_Surface * surface) const
 	return pix != 0;
 }
 
+bool NoneCollisionStrategy::check(const Drawable &, const Drawable &) const {
+	return false;
+}
+
 bool RectangularCollisionStrategy::check(const Drawable & obj1, const Drawable & obj2) const {
 	SDL_Rect area = intersection(obj1, obj2);
 

@@ -20,7 +20,7 @@ void Console::draw(const Viewport & viewport) const {
 		SDL_Rect rect = {padding_left, viewport.get_height() - Text::get_instance().get_size() - padding_bottom - padding_font, viewport.get_width() - padding_left*2, Text::get_instance().get_size() + padding_font*2};
 
 		// draw box
-		SDL_SetRenderDrawColor(Context::get_instance().get_renderer(), Spec::get_instance().get_int("console/r"), Spec::get_instance().get_int("console/g"), Spec::get_instance().get_int("console/b"), Spec::get_instance().get_int("console/a"));
+		SDL_SetRenderDrawColor(Context::get_instance().get_renderer(), Spec::get_instance().get_int("console/box/r"), Spec::get_instance().get_int("console/box/g"), Spec::get_instance().get_int("console/box/b"), Spec::get_instance().get_int("console/box/a"));
 		SDL_RenderFillRect(Context::get_instance().get_renderer(), &rect);
 
 		// draw text

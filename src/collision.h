@@ -20,6 +20,13 @@ class CollisionStrategy {
 		bool visible(Uint32 pixel, const SDL_Surface * surface) const;
 };
 
+class NoneCollisionStrategy : public CollisionStrategy {
+	public:
+		NoneCollisionStrategy() {}
+
+		virtual bool check(const Drawable & obj1, const Drawable & obj2) const;
+};
+
 class RectangularCollisionStrategy : public CollisionStrategy {
 	public:
 		RectangularCollisionStrategy() {}

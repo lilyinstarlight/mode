@@ -34,7 +34,9 @@ class HUD : public Drawable {
 		int padding_top;
 		int padding_left;
 		int padding_font;
+		int border_thickness;
 
 		SDL_Rect size;
+		SDL_Rect border;
 };
 #endif

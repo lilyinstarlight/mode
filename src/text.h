@@ -19,6 +19,7 @@ class Text {
 		Text();
 		~Text();
 
+		std::string path;
 		TTF_Font * font;
 		int size;
 };

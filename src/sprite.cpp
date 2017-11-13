@@ -17,6 +17,7 @@ Sprite::Sprite(const std::string & name, const World & w, bool own_script) : Dra
 		),
 		world(w),
 		script(nullptr),
+		none_strategy(),
 		rectangular_strategy(),
 		circular_strategy(),
 		pixel_strategy(),
@@ -35,7 +36,9 @@ Sprite::Sprite(const std::string & name, const World & w, bool own_script) : Dra
 		script = new Script(name, *this);
 
 	std::string collision = Spec::get_instance().get_str(name + "/collision");
-	if (collision == "rectangular")
+	if (collision == "none")
+		collision_strategy = &none_strategy;
+	else if (collision == "rectangular")
 		collision_strategy = &rectangular_strategy;
 	else if (collision == "circular")
 		collision_strategy = &circular_strategy;
@@ -49,6 +52,7 @@ Sprite::Sprite(const Sprite & s) :
 		Drawable(s),
 		world(s.world),
 		script(new Script(*s.script)),
+		none_strategy(),
 		rectangular_strategy(),
 		circular_strategy(),
 		pixel_strategy(),
@@ -63,7 +67,9 @@ Sprite::Sprite(const Sprite & s) :
 		frame_timer(0),
 		script_timer(0),
 		observer_timer(0) {
-	if (s.collision_strategy == &s.rectangular_strategy)
+	if (s.collision_strategy == &s.none_strategy)
+		collision_strategy = &none_strategy;
+	else if (s.collision_strategy == &s.rectangular_strategy)
 		collision_strategy = &rectangular_strategy;
 	else if (s.collision_strategy == &s.circular_strategy)
 		collision_strategy = &circular_strategy;
@@ -79,7 +85,7 @@ void Sprite::draw(const Viewport & viewport) const {
 
 void Sprite::update(unsigned int ticks) {
 	frame_timer += ticks;
-	if (frame_timer > interval) {
+	if (interval > 0 && frame_timer > interval) {
 		frame = (frame + 1) % frames;
 		frame_timer = 0;
 	}

@@ -14,11 +14,11 @@ Text::~Text() {
 	TTF_Quit();
 }
 
-Text::Text() : font(nullptr), size(-1) {
+Text::Text() : path("fonts"), font(nullptr), size(-1) {
 	if (TTF_Init() < 0)
 		throw std::string("Failed to initialize TTF");
 
-	font = TTF_OpenFont(Spec::get_instance().get_str("font/file").c_str(), Spec::get_instance().get_int("font/size"));
+	font = TTF_OpenFont((path + "/" + Spec::get_instance().get_str("font/file")).c_str(), Spec::get_instance().get_int("font/size"));
 	size = Spec::get_instance().get_int("font/size");
 
 	if (!font)
