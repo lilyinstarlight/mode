@@ -8,7 +8,7 @@
 class Player : public Sprite {
 	public:
 		Player(const World & w);
-		virtual ~Player() {}
+		virtual ~Player();
 
 		Player(const Player & console) = delete;
 		const Player & operator=(const Player & console) = delete;

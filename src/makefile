@@ -12,7 +12,7 @@ LDLIBS=-lm -lexpat `sdl2-config --libs` -lSDL2_image -lSDL2_ttf -lSDL2_mixer
 
 SRC!=ls *.cpp
 
-all: $(EXE)
+all: main
 
 ../$(EXE): main
 	cp main ../$(EXE)

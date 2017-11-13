@@ -8,6 +8,10 @@ Player::Player(const World & w) : Sprite("player", w, false), hp(64) {
 	Input::get_instance().grab("player");
 }
 
+Player::~Player() {
+	Input::get_instance().release("player");
+}
+
 void Player::update(unsigned int) {
 	if (Input::get_instance().check("player")) {
 		// TODO: get keypresses and move sprite
