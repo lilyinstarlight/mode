@@ -10,7 +10,7 @@ const int BUF_SIZE = 1024;
 
 class XML {
 	public:
-		XML();
+		XML(const std::string& filename);
 
 		virtual ~XML() {
 			XML_ParserFree(parser);

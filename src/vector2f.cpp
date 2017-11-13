@@ -19,11 +19,11 @@ Vector2f & Vector2f::operator=(const Vector2f & rhs) {
 	return *this;
 }
 
-bool operator==(const Vector2f & other) const {
+bool Vector2f::operator==(const Vector2f & other) const {
 	return v[0] == other.v[0] && v[1] == other.v[1];
 }
 
-bool operator!=(const Vector2f & other) const {
+bool Vector2f::operator!=(const Vector2f & other) const {
 	return v[0] != other.v[0] || v[1] != other.v[1];
 }
 

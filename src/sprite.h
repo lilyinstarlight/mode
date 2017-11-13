@@ -22,8 +22,8 @@ class Sprite : public Drawable {
 		virtual void draw(const Viewport & viewport) const;
 		virtual void update(unsigned int ticks);
 
-		void observe(const Observer & observer);
-		void ignore(const Observer & observer);
+		void observe(Observer & observer);
+		void ignore(Observer & observer);
 
 		virtual const Image * get_image() const {
 			return sheet[frame];
@@ -51,7 +51,7 @@ class Sprite : public Drawable {
 		PixelCollisionStrategy pixel_strategy;
 
 		CollisionStrategy * collision_strategy;
-		std::list<const Observer *> observers;
+		std::list<Observer *> observers;
 
 	private:
 		std::vector<Image *> sheet;
@@ -66,5 +66,7 @@ class Sprite : public Drawable {
 		float frame_timer;
 		float script_timer;
 		float observer_timer;
+
+	friend Script;
 };
 #endif

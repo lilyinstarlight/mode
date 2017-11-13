@@ -45,9 +45,8 @@ Script::Script(const Script & s) : path(s.path), script(s.script), lua(), sprite
 
 void Script::load_sprite(Sprite & sprite) {
 	lua.new_userdata<Sprite>("Sprite",
-			sol::constructors<Sprite(), Sprite(std::string, float, float), Sprite(std::string, float, float, float, float)>(),
 			"pos", &Drawable::position,
-			"vel", &Drawable::velocity,
+			"vel", &Drawable::velocity
 	);
 
 	lua["sprite"] = sprite;
@@ -56,7 +55,7 @@ void Script::load_sprite(Sprite & sprite) {
 void Script::load_player(Player & player) {
 	lua.new_userdata<Player>("Player",
 			"inject", &Player::inject,
-			"hp", &Player::hp,
+			"hp", &Player::hp
 	);
 
 	lua["player"] = player;

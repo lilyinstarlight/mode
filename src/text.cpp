@@ -14,7 +14,7 @@ Text::~Text() {
 	TTF_Quit();
 }
 
-Text::Text() {
+Text::Text() : font(nullptr), size(-1) {
 	if (TTF_Init() < 0)
 		throw std::string("Failed to initialize TTF");
 
@@ -26,7 +26,7 @@ Text::Text() {
 }
 
 
-void Text::write(const std::string & text, int x, int y, SDL_Color color) const {
+void Text::write(SDL_Renderer * renderer, const std::string & text, int x, int y, SDL_Color color) const {
 	SDL_Surface * surface = TTF_RenderText_Solid(font, text.c_str(), color);
 
 	SDL_Texture * texture = SDL_CreateTextureFromSurface(renderer, surface);

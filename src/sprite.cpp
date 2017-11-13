@@ -1,6 +1,7 @@
 #include <cmath>
 
 #include "imagefactory.h"
+#include "observer.h"
 #include "spec.h"
 
 #include "sprite.h"
@@ -8,16 +9,19 @@
 Sprite::Sprite(const std::string & name, const World & w, bool player) : Drawable(name,
 			Vector2f(Spec::get_instance().get_int(name + "/position/x"),
 			         Spec::get_instance().get_int(name + "/position/y")),
-			rotation(Spec::get_instance().get_int(name + "/rotation")),
+			         Spec::get_instance().get_int(name + "/rotation"),
 			Vector2f(Spec::get_instance().get_int(name + "/velocity/x"),
 			         Spec::get_instance().get_int(name + "/velocity/y")),
-			scale   (Spec::get_instance().get_int(name + "/scale"))
+			         Spec::get_instance().get_int(name + "/scale")
 			),
 		world(w),
 		script(nullptr),
-		sheet(ImageFactory::get_instance().get_sheet(name)),
+		rectangular_strategy(),
+		circular_strategy(),
+		pixel_strategy(),
 		collision_strategy(&rectangular_strategy),
 		observers{},
+		sheet(ImageFactory::get_instance().get_sheet(name)),
 		frame(0),
 		frames(Spec::get_instance().get_int(name + "/frames")),
 		interval(Spec::get_instance().get_int(name + "/interval")),
@@ -29,32 +33,35 @@ Sprite::Sprite(const std::string & name, const World & w, bool player) : Drawabl
 	if (!player)
 		script = new Script(name, *this);
 
-	switch (Spec::get_instance().get_str(name + "/collision")) {
-		case "rectangular":
-			collision_strategy = &rectangular_strategy;
-			break;
-
-		case "circular":
-			collision_strategy = &circular_strategy;
-			break;
-
-		case "pixel":
-			collision_strategy = &pixel_strategy;
-			break;
-
-		default:
-			throw std::string("Invalid collision strategy: ") + Spec::get_instance().get_str(name + "/collision");
-	}
+	std::string collision = Spec::get_instance().get_str(name + "/collision");
+	if (collision == "rectangular")
+		collision_strategy = &rectangular_strategy;
+	else if (collision == "circular")
+		collision_strategy = &circular_strategy;
+	else if (collision == "pixel")
+		collision_strategy = &pixel_strategy;
+	else
+		throw std::string("Invalid collision strategy: ") + Spec::get_instance().get_str(name + "/collision");
 }
 
 Sprite::Sprite(const Sprite & s) :
 		Drawable(s),
-		script(new Script(s.script)),
+		world(s.world),
+		script(new Script(*s.script)),
+		rectangular_strategy(),
+		circular_strategy(),
+		pixel_strategy(),
+		collision_strategy(&rectangular_strategy),
+		observers(s.observers),
 		sheet(s.sheet),
 		frame(s.frame),
 		frames(s.frames),
 		interval(s.interval),
-		timer(s.timer) {
+		script_interval(500),
+		observer_interval(500),
+		frame_timer(0),
+		script_timer(0),
+		observer_timer(0) {
 	if (s.collision_strategy == &s.rectangular_strategy)
 		collision_strategy = &rectangular_strategy;
 	else if (s.collision_strategy == &s.circular_strategy)
@@ -84,14 +91,14 @@ void Sprite::update(unsigned int ticks) {
 
 	observer_timer += ticks;
 	if (observer_timer > observer_interval) {
-		for (const Observer & observer : observers)
+		for (Observer * observer : observers)
 			observer->signal("observe", *this);
 
 		observer_timer = 0;
 	}
 
-	for (const Observer & observer : observers) {
-		if (collision_strategy.check(*this, observer))
+	for (Observer * observer : observers) {
+		if (collision_strategy->check(*this, *observer))
 			observer->signal("collide", *this);
 	}
 
@@ -111,10 +118,10 @@ void Sprite::update(unsigned int ticks) {
 	}
 }
 
-void Sprite::observe(const Observer & observer) {
+void Sprite::observe(Observer & observer) {
 	observers.push_back(&observer);
 }
 
-void Sprite::ignore(const Observer & observer) {
+void Sprite::ignore(Observer & observer) {
 	observers.remove(&observer);
 }

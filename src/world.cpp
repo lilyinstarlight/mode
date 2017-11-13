@@ -6,9 +6,9 @@ World::World() :
     width(Spec::get_instance().get_int("world/width")),
     height(Spec::get_instance().get_int("world/height")) {}
 
-void World::update(unsigned int ticks) {
+void World::update(unsigned int) {
 }
 
-void World::draw(const Viewport & viewport) const {
+void World::draw(const Viewport &) const {
 }
 

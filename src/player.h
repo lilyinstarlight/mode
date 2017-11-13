@@ -19,5 +19,7 @@ class Player : public Sprite {
 
 	private:
 		int hp;
+
+	friend Script;
 };
 #endif

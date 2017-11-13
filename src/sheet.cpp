@@ -1,9 +1,9 @@
-#include "spritesheet.h"
+#include "sheet.h"
 
-SDL_Surface* SpriteSheet::crop(SDL_Surface * surf, const SDL_Rect & view) {
+SDL_Surface* SpriteSheet::crop(SDL_Surface * surf, const SDL_Rect * view) {
 	const SDL_PixelFormat * fmt = surf->format;
 
-	SDL_Surface * sub = SDL_CreateRGBSurface(0, view.w, view.h, fmt->BitsPerPixel, fmt->Rmask, fmt->Gmask, fmt->Bmask, fmt->Amask);
+	SDL_Surface * sub = SDL_CreateRGBSurface(0, view->w, view->h, fmt->BitsPerPixel, fmt->Rmask, fmt->Gmask, fmt->Bmask, fmt->Amask);
 
 	SDL_BlitSurface(surf, view, sub, nullptr);
 
@@ -11,7 +11,7 @@ SDL_Surface* SpriteSheet::crop(SDL_Surface * surf, const SDL_Rect & view) {
 }
 
 SDL_Surface * SpriteSheet::get(unsigned int i, unsigned int j){
-	if (i >= cols || j >= rows)
+	if (i >= columns || j >= rows)
 		return nullptr;
 
 	view.x = i*view.w;
@@ -21,5 +21,5 @@ SDL_Surface * SpriteSheet::get(unsigned int i, unsigned int j){
 }
 
 SDL_Surface * SpriteSheet::get(unsigned int s){
-	return get(s % cols, s/cols);
+	return get(s % columns, s/columns);
 }

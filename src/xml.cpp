@@ -1,5 +1,8 @@
+#include <cstring>
 #include <iostream>
+#include <fstream>
 #include <sstream>
+#include <string>
 
 #include "xml.h"
 
@@ -16,25 +19,25 @@ XML::XML(const std::string& filename) : parser(NULL), tags(), data() {
 
 	std::ifstream file(filename);
 	if (!file) {
-		throw string("Could not open xml file: ") + filename;
+		throw std::string("Could not open xml file: ") + filename;
 	}
 
-	in.getline(buff, BUF_SIZE);
-	while ( true ) {
-		if (!XML_Parse(parser, buf, strlen(buf), 0)) {
+	file.getline(buf, BUF_SIZE);
+	while (true) {
+		if (!XML_Parse(parser, buf, std::strlen(buf), 0)) {
 			std::cerr << "Parse error at line " << XML_GetCurrentLineNumber(parser) << ": " << XML_ErrorString(XML_GetErrorCode(parser)) << std::endl;
-			throw string("Could not parse file: ") + filename;
+			throw std::string("Could not parse file: ") + filename;
 		}
 
-		if (in.eof())
+		if (file.eof())
 			break;
 		else
-			in.getline(buf, BUF_SIZE);
+			file.getline(buf, BUF_SIZE);
 	}
 }
 
 void XML::display() const {
-	std::map<string, string>::const_iterator ptr = data.begin();
+	std::map<std::string, std::string>::const_iterator ptr = data.begin();
 	while (ptr != data.end()) {
 		std::cout << "(" << ptr->first << ", " << ptr->second << ")" << std::endl;
 		++ptr;
@@ -42,28 +45,28 @@ void XML::display() const {
 }
 
 std::string XML::make_tag(const std::string & name) const {
-	std::string name;
+	std::string tag_name;
 
 	for (unsigned int i = 1; i < tags.size() - 1; ++i) {
-		name += tags[i] + "/";
+		tag_name += tags[i] + "/";
 	}
 
-	name += tags[tags.size() - 1];
-	name += std::string("/") + name;
+	tag_name += tags[tags.size() - 1];
+	tag_name += std::string("/") + name;
 
-	return name;
+	return tag_name;
 }
 
 std::string XML::make_tag() const {
-	std::string name;
+	std::string tag_name;
 
 	for (unsigned int i = 1; i < tags.size() - 1; ++i) {
-		name += tags[i] + "/";
+		tag_name += tags[i] + "/";
 	}
 
-	name += tags[tags.size() - 1];
+	tag_name += tags[tags.size() - 1];
 
-	return name;
+	return tag_name;
 }
 
 void XML::start(const char * el, const char * attr[]) {
@@ -118,5 +121,5 @@ void XML::wrap_end(void * data, const char * el) {
 
 void XML::wrap_chars(void * data, const char * text, int len) {
 	XML * parser = static_cast<XML *>(data);
-	parser->chars(text, textlen);
+	parser->chars(text, len);
 }

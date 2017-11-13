@@ -10,7 +10,7 @@ class Observer : public Sprite {
 		virtual ~Observer() {}
 
 		virtual void signal(const std::string & sig, const Sprite & sprite) {
-			script.call(sig, sprite);
+			script->call(sig, sprite);
 		}
 
 	private:

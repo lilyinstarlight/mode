@@ -9,15 +9,15 @@ Viewport::Viewport(const World & w) :
 	height(Spec::get_instance().get_int("view/height")),
 	tracking(nullptr) {}
 
-void Viewport::draw(const Viewport & viewport) const {
+void Viewport::draw() const {
 }
 
-void Viewport::update(unsigned int ticks) {
+void Viewport::update(unsigned int) {
 	const float x = tracking->get_x();
 	const float y = tracking->get_y();
 
-	position[0] = (x + obj->get_width()/2) - width/2;
-	position[1] = (y + obj->get_height/2) - height/2;
+	position[0] = (x + tracking->get_width()/2) - width/2;
+	position[1] = (y + tracking->get_height()/2) - height/2;
 
 	if (position[0] < 0)
 		position[0] = 0;

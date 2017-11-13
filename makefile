@@ -1,7 +1,7 @@
 all: mode
 
 mode:
-	make -C src
+	make -C src ../mode
 
 clean:
 	make -C src clean

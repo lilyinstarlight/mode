@@ -12,6 +12,12 @@ class World {
 
 		void update(unsigned int ticks);
 		void draw(const Viewport & viewport) const;
+
+		int get_width() const  { return width;  }
+		void set_width(int w)  { width = w;     }
+		int get_height() const { return height; }
+		void set_height(int h) { height = h;    }
 	private:
+		int width, height;
 };
 #endif
