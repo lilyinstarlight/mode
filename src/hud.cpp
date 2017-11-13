@@ -9,7 +9,7 @@ HUD & HUD::get_instance() {
 	return hud;
 }
 
-HUD::HUD() : Drawable("hud", Vector2f{0, 0}, 0, Vector2f{0, 0}, 1), first(1500), open(false), surface(nullptr), padding_top(20), padding_left(20), padding_font(4), size{padding_top, padding_left, Spec::get_instance().get_int("hud/width"), Spec::get_instance().get_int("hud/height")} {
+HUD::HUD() : Drawable("hud", Vector2f{0, 0}, 0, Vector2f{0, 0}, 1, 9001), first(1500), open(false), surface(nullptr), padding_top(20), padding_left(20), padding_font(4), size{padding_top, padding_left, Spec::get_instance().get_int("hud/width"), Spec::get_instance().get_int("hud/height")} {
 }
 
 void HUD::draw(const Viewport &) const {

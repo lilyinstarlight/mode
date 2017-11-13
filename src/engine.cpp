@@ -1,3 +1,4 @@
+#include "background.h"
 #include "console.h"
 #include "hud.h"
 #include "spec.h"
@@ -6,8 +7,27 @@
 
 #include "engine.h"
 
-Engine::Engine() : world(), viewport(world), player(world), target(&player), drawables{target} {
+Engine::Engine() : world(), viewport(world), player(world), target(&player), drawables{&player} {
 	viewport.track(target);
+
+	for (const std::string & str : Spec::get_instance().get_tops()) {
+		if (Spec::get_instance().check(str + "/type")) {
+			if (Spec::get_instance().get_str(str + "/type") == "background") {
+				drawables.insert(new Background(str, world));
+			}
+			else if (Spec::get_instance().get_str(str + "/type") == "sprite") {
+				drawables.insert(new Sprite(str, world));
+			}
+		}
+	}
+
+}
+
+Engine::~Engine() {
+	for (Drawable * drawable : drawables) {
+		if (drawable != &player)
+			free(drawable);
+	}
 }
 
 void Engine::run() {

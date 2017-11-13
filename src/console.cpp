@@ -12,7 +12,7 @@ Console & Console::get_instance() {
 	return console;
 }
 
-Console::Console() : Drawable("name", Vector2f{0, 0}, 0, Vector2f{0, 0}, 1), open(false), command(""), surface(nullptr), padding_bottom(4), padding_left(5), padding_font(2) {
+Console::Console() : Drawable("name", Vector2f{0, 0}, 0, Vector2f{0, 0}, 1, 9002), open(false), command(""), surface(nullptr), padding_bottom(4), padding_left(5), padding_font(2) {
 }
 
 void Console::draw(const Viewport & viewport) const {

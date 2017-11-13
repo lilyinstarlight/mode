@@ -1,22 +1,22 @@
 #ifndef WORLD_H
 #define WORLD_H
+#include "spec.h"
+
 class Viewport;
 
 class World {
 	public:
-		World();
+		World() : width(Spec::get_instance().get_int("world/width")), height(Spec::get_instance().get_int("world/height")) {}
 		virtual ~World() {}
 
 		World(const World & w) = delete;
 		const World & operator=(const World & w) = delete;
 
-		void update(unsigned int ticks);
-		void draw(const Viewport & viewport) const;
+		void update(unsigned int) {}
+		void draw(const Viewport &) const {}
 
 		int get_width() const  { return width;  }
-		void set_width(int w)  { width = w;     }
 		int get_height() const { return height; }
-		void set_height(int h) { height = h;    }
 	private:
 		int width, height;
 };

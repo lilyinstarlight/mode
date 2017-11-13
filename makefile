@@ -6,5 +6,6 @@ all:
 
 clean:
 	make -C src clean
+	rm $(EXE)
 
 .PHONY: all clean

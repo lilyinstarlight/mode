@@ -2,6 +2,7 @@
 #define SPEC_H
 #include <map>
 #include <string>
+#include <vector>
 
 #include "xml.h"
 
@@ -13,6 +14,8 @@ class Spec {
 		Spec & operator=(const Spec &) = delete;
 
 		bool check(const std::string & tag) const;
+
+		std::vector<std::string> get_tops() const;
 
 		bool get_bool(const std::string & tag) const;
 		int get_int(const std::string & tag) const;

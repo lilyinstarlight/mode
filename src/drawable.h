@@ -10,7 +10,7 @@
 
 class Drawable {
 	public:
-		Drawable(const std::string & name, const Vector2f & position, float rotation, const Vector2f & velocity, float scale) : name(name), position(position), rotation(rotation), velocity(velocity), scale(scale) {};
+		Drawable(const std::string & name, const Vector2f & position, float rotation, const Vector2f & velocity, float scale, int index) : name(name), position(position), rotation(rotation), velocity(velocity), scale(scale), index(index) {};
 
 		virtual ~Drawable() {}
 
@@ -50,13 +50,24 @@ class Drawable {
 		float get_scale() const  { return scale; }
 		void  set_scale(float s) { scale = s;    }
 
+		int   get_index() const  { return index; }
+		void  set_index(float i) { index = i;    }
+
 	private:
 		std::string name;
 		Vector2f position;
 		float rotation;
 		Vector2f velocity;
 		float scale;
+		int index;
 
 	friend Script;
+};
+
+class DrawablePointerCompare {
+	public:
+		bool operator() (const Drawable * left, const Drawable * right) const {
+			return left->get_index() < right->get_index();
+		}
 };
 #endif

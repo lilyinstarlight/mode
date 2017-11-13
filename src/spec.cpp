@@ -14,6 +14,17 @@ bool Spec::check(const std::string & tag) const {
 	return data.count(tag) != 0;
 }
 
+std::vector<std::string> Spec::get_tops() const {
+	std::vector<std::string> found;
+
+	for (std::pair<std::string, std::string> element : data) {
+		if (element.first.find("/") == std::string::npos)
+			found.push_back(element.first);
+	}
+
+	return found;
+}
+
 bool Spec::get_bool(const std::string & tag) const {
 	std::map<std::string, std::string>::const_iterator pos = data.find(tag);
 

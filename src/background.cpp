@@ -1,0 +1,15 @@
+#include "imagefactory.h"
+
+#include "background.h"
+
+Background::Background(const std::string & name, const World & w) : Drawable(name, Vector2f(0, 0), 0, Vector2f(0, 0), 1, Spec::get_instance().get_int(name + "/index")), world(w), width(Spec::get_instance().get_int(name + "/width")), height(Spec::get_instance().get_int(name + "/height")), factor(Spec::get_instance().get_float(name + "/factor")), image(ImageFactory::get_instance().get_image(name)) {}
+
+void Background::update(unsigned int) {
+	set_x((int)(get_x() / factor) % image->get_width());
+}
+
+void Background::draw(const Viewport & viewport) const {
+	image->draw(viewport, 0, 0, -get_x(), -get_y());
+	image->draw(viewport, 0, 0, image->get_width() - get_x(), -get_y());
+}
+

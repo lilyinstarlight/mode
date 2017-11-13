@@ -13,8 +13,8 @@ class ImageFactory {
 
 		~ImageFactory();
 
-		Image * get_image(const std::string &);
-		std::vector<Image *> get_sheet(const std::string &);
+		Image * get_image(const std::string & name);
+		std::vector<Image *> get_sheet(const std::string & name);
 
 	private:
 		std::map<std::string, SDL_Surface *> surfaces;

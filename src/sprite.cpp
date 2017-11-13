@@ -8,12 +8,13 @@
 
 Sprite::Sprite(const std::string & name, const World & w, bool own_script) : Drawable(name,
 			Vector2f(Spec::get_instance().get_int(name + "/position/x"),
-			         Spec::get_instance().get_int(name + "/position/y")),
-			         Spec::get_instance().get_int(name + "/rotation"),
+					 Spec::get_instance().get_int(name + "/position/y")),
+					 Spec::get_instance().get_int(name + "/rotation"),
 			Vector2f(Spec::get_instance().get_int(name + "/velocity/x"),
-			         Spec::get_instance().get_int(name + "/velocity/y")),
-			         Spec::get_instance().get_int(name + "/scale")
-			),
+					 Spec::get_instance().get_int(name + "/velocity/y")),
+					 Spec::get_instance().get_int(name + "/scale"),
+					 Spec::get_instance().get_int(name + "/index")
+		),
 		world(w),
 		script(nullptr),
 		rectangular_strategy(),
