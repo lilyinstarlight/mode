@@ -1,4 +1,6 @@
+#include "context.h"
 #include "spec.h"
+#include "text.h"
 
 #include "hud.h"
 
@@ -13,20 +15,23 @@ HUD::HUD() : Drawable("hud", Vector2f{0, 0}, 0, Vector2f{0, 0}, 1), first(1500),
 void HUD::draw(const Viewport &) const {
 	if (first || open) {
 		// draw box
-		SDL_SetRenderDrawColor(Context::get_instance().get_renderer(), Spec::get_instance().get_int("hud/r"), Spec::get_instance().get_int("hud/g"), Spec::get_instance().get_int("hud/b"), Spec::get_instance().get_int("hud/a"))
-		SDL_RenderFillRect(Context::get_instance().get_renderer(), &rect);
+		SDL_SetRenderDrawColor(Context::get_instance().get_renderer(), Spec::get_instance().get_int("hud/r"), Spec::get_instance().get_int("hud/g"), Spec::get_instance().get_int("hud/b"), Spec::get_instance().get_int("hud/a"));
+		SDL_RenderFillRect(Context::get_instance().get_renderer(), &size);
 
 		// draw text
-		Text::get_instance().write(Context::get_instance().get_renderer(), Spec::get_instance().get_str("hud/str"), size.x + padding_font, size.y + padding_font);
+		SDL_Color color = {(Uint8)Spec::get_instance().get_int("text/text/r"), (Uint8)Spec::get_instance().get_int("text/text/g"), (Uint8)Spec::get_instance().get_int("text/text/b"), 255};
+		Text::get_instance().write(Context::get_instance().get_renderer(), Spec::get_instance().get_str("hud/str"), size.x + padding_font, size.y + padding_font, color);
 	}
 }
 
 void HUD::update(unsigned int ticks) {
-	if (first > 0)
-		--first;
+	const SDL_Event * event = Input::get_instance().get_event();
 
-	if (event.type == SDL_KEYDOWN) {
-		if (event.key.keysym.sym == SDLK_H) {
+	if (first > 0)
+		first -= ticks;
+
+	if (event->type == SDL_KEYDOWN) {
+		if (event->key.keysym.sym == SDLK_h)
 			open = !open;
 	}
 }
