@@ -21,7 +21,7 @@ class Spec {
 
 	private:
 		Spec();
-		~Spec();
+		~Spec() {}
 
 		std::string path;
 

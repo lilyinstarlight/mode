@@ -4,8 +4,8 @@
 #include "spec.h"
 
 Spec & Spec::get_instance() {
-	static Spec gamedata;
-	return gamedata;
+	static Spec spec;
+	return spec;
 }
 
 Spec::Spec() : path("xml"), parser(path + "/spec.xml"), data(parser.get_data()) {}

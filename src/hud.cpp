@@ -11,7 +11,7 @@ HUD::HUD() : Drawable("hud", Vector2f{0, 0}, 0, Vector2f{0, 0}, 1), first(true),
 }
 
 void HUD::draw(const Viewport &) const {
-	if (open) {
+	if (first || open) {
 		// TODO: draw a semi-transparent rectangle with dynamic text
 	}
 }

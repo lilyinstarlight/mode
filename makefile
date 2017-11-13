@@ -1,6 +1,5 @@
 all:
-	make -C src mode
-	cp src/mode .
+	make -C src ../mode
 
 clean:
 	make -C src clean

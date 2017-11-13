@@ -1,15 +1,23 @@
 EXE=mode
 
-CXX=g++
+#CC=gcc
+#CXX=g++
+
+CC=clang++
+CXX=clang++
 
 CXXFLAGS=-std=c++11 -ggdb -fsanitize=address -Wall -Wpedantic -Wextra -Weffc++ -Werror `sdl2-config --cflags` -isystem lib -I `sdl2-config --prefix`/include/
-LDLIBS=-lm -lexpat `sdl2-config --libs` -lSDL2_image -lSDL2_ttf -lSDL2_mixer lib/lua/liblua.a
+LDFLAGS=-fsanitize=address
+LDLIBS=-lm -lexpat `sdl2-config --libs` -lSDL2_image -lSDL2_ttf -lSDL2_mixer
 
 SRC!=ls *.cpp
 
 all: $(EXE)
 
-$(EXE): lib/lua/liblua.a $(SRC:.cpp=.o)
+../$(EXE): main
+	cp main ../$(EXE)
+
+main: $(SRC:.cpp=.o) lib/lua/liblua.a
 
 lib/lua/liblua.a:
 	make -C lib/lua a

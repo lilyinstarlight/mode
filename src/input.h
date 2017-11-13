@@ -34,7 +34,7 @@ class Input {
 		void set_keystate(const Uint8 * ks) { keystate = ks;   }
 
 	private:
-		Input();
+		Input() : list{}, event(nullptr), keystate(nullptr) {}
 
 		std::list<std::string> list;
 

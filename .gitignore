@@ -1,4 +1,5 @@
 *.o
 *.a
 
-/mode
+src/main
+mode
