@@ -114,6 +114,6 @@ Vector2f operator*(float scale, const Vector2f & v) {
 	return v*scale;
 }
 
-std::ostream &operator<<(std::ostream & out, const Vector2f & v) {
+std::ostream & operator<<(std::ostream & out, const Vector2f & v) {
 	return out << "(" << v[0] << ", " << v[1]  << ")";
 }

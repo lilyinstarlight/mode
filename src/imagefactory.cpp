@@ -11,6 +11,8 @@ ImageFactory & ImageFactory::get_instance() {
 	return image_factory;
 }
 
+ImageFactory::ImageFactory() : path("textures"), surfaces(), textures(), images(), multi_surface(), multi_texture(), sheets() {}
+
 ImageFactory::~ImageFactory() {
 	// clean up after ourselves
 	for (std::pair<std::string, SDL_Surface *> surface : surfaces)
@@ -44,7 +46,7 @@ Image * ImageFactory::get_image(const std::string & name) {
 		return pos->second;
 
 	// load image from file
-	SDL_Surface * surface = IMG_Load(Spec::get_instance().get_str(name + "/file").c_str());
+	SDL_Surface * surface = IMG_Load((path + "/" + Spec::get_instance().get_str(name + "/file")).c_str());
 	if (!surface)
 		throw std::string("Failed to load ") + Spec::get_instance().get_str(name + "/file");
 	surfaces[name] = surface;
@@ -76,8 +78,8 @@ Sheet * ImageFactory::get_sheet(const std::string & name) {
 		return pos->second;
 
 	// load sheet from file
-	SDL_Surface * sprite_surface = IMG_Load(Spec::get_instance().get_str(name + "/file").c_str());
-	if (!sprite_surface)
+	SDL_Surface * sheet_surface = IMG_Load((path + "/" + Spec::get_instance().get_str(name + "/file")).c_str());
+	if (!sheet_surface)
 		throw std::string("Failed to load ") + Spec::get_instance().get_str(name + "/file");
 
 	// load transparency color
@@ -102,11 +104,11 @@ Sheet * ImageFactory::get_sheet(const std::string & name) {
 	textures.reserve(frames);
 
 	// get frame width and height
-	int width = sprite_surface->w/frames;
-	int height = sprite_surface->h;
+	int width = sheet_surface->w/frames;
+	int height = sheet_surface->h;
 
 	// load spritesheet
-	SpriteSheet spritesheet(sprite_surface, width, height);
+	SpriteSheet spritesheet(sheet_surface, width, height);
 
 	for (unsigned int i = 0; i < spritesheet.get_frames(); ++i) {
 		// create surface for each frame
@@ -114,7 +116,7 @@ Sheet * ImageFactory::get_sheet(const std::string & name) {
 
 		// add transparency if necessary
 		if (transparency)
-			SDL_SetColorKey(surface, SDL_TRUE, SDL_MapRGBA(sprite_surface->format, r, g, b, 255));
+			SDL_SetColorKey(surface, SDL_TRUE, SDL_MapRGBA(sheet_surface->format, r, g, b, 255));
 
 		// create texture
 		SDL_Texture * texture = SDL_CreateTextureFromSurface(Context::get_instance().get_renderer(), surface);

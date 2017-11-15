@@ -15,7 +15,7 @@ Context::Context() : window(nullptr), renderer(nullptr) {
 
 	// create window
 	std::string title = Spec::get_instance().get_str("title");
-	window = SDL_CreateWindow(title.c_str(), SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, Spec::get_instance().get_int("width"), Spec::get_instance().get_int("height"), SDL_WINDOW_SHOWN);
+	window = SDL_CreateWindow(title.c_str(), SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, Spec::get_instance().get_int("view/width"), Spec::get_instance().get_int("view/height"), SDL_WINDOW_SHOWN);
 
 	if (window == NULL)
 		throw (std::string("Failed to make window: ") + SDL_GetError());

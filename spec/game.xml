@@ -75,10 +75,10 @@
 		<height>1080</height>
 		<factor>1</factor>
 
-		<file></file>
+		<file>background.png</file>
 	</background>
 
-	<backforeground>
+	<midground>
 		<type>background</type>
 		<index>10</index>
 
@@ -86,8 +86,8 @@
 		<height>1080</height>
 		<factor>2</factor>
 
-		<file></file>
-	</backforeground>
+		<file>midground.png</file>
+	</midground>
 
 	<foreground>
 		<type>background</type>
@@ -97,7 +97,7 @@
 		<height>1080</height>
 		<factor>10</factor>
 
-		<file></file>
+		<file>foreground.png</file>
 	</foreground>
 
 	<feature>
@@ -122,8 +122,8 @@
 		    <idle>
 			<file>feature.idle.png</file>
 
-			<frames>1</frames>
-			<interval>-1</interval>
+			<frames>4</frames>
+			<interval>100</interval>
 		    </idle>
 		</sheets>
 
@@ -153,8 +153,8 @@
 		    <idle>
 			<file>hero.idle.png</file>
 
-			<frames>1</frames>
-			<interval>-1</interval>
+			<frames>52</frames>
+			<interval>100</interval>
 		    </idle>
 		</sheets>
 

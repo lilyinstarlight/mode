@@ -1,7 +1,5 @@
-#ifndef _VECTOR2F_H
-#define _VECTOR2F_H
-
-#include <iostream>
+#ifndef VECTOR2F_H
+#define VECTOR2F_H
 
 class Vector2f {
 	public:

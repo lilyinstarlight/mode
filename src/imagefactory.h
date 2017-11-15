@@ -12,12 +12,15 @@ class ImageFactory {
 	public:
 		static ImageFactory & get_instance();
 
-		~ImageFactory();
+		ImageFactory(const ImageFactory &) = delete;
+		const ImageFactory & operator=(const ImageFactory &) = delete;
 
 		Image * get_image(const std::string & name);
 		Sheet * get_sheet(const std::string & name);
 
 	private:
+		std::string path;
+
 		std::unordered_map<std::string, SDL_Surface *> surfaces;
 		std::unordered_map<std::string, SDL_Texture *> textures;
 		std::unordered_map<std::string, Image *> images;
@@ -26,8 +29,7 @@ class ImageFactory {
 		std::unordered_map<std::string, std::vector<SDL_Texture *>> multi_texture;
 		std::unordered_map<std::string, Sheet *> sheets;
 
-		ImageFactory() : surfaces(), textures(), images(), multi_surface(), multi_texture(), sheets() {}
-		ImageFactory(const ImageFactory &) = delete;
-		ImageFactory& operator=(const ImageFactory &) = delete;
+		ImageFactory();
+		~ImageFactory();
 };
 #endif
