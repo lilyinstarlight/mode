@@ -19,7 +19,7 @@ Sound::Sound() : path("audio"), active{}, chunks{} {
 	if (Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 1024) < 0)
 		throw std::string("Failed to initialize mixer");
 
-	play("default");
+	play("theme");
 }
 
 void Sound::play(const std::string & name, int loops) {
