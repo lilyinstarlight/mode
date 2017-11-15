@@ -19,7 +19,7 @@ void HUD::draw(const Viewport &) const {
 		SDL_RenderFillRect(Context::get_instance().get_renderer(), &size);
 
 		// draw text
-		SDL_Color color = {(Uint8)Spec::get_instance().get_int("hud/text/r"), (Uint8)Spec::get_instance().get_int("hud/text/g"), (Uint8)Spec::get_instance().get_int("hud/text/b"), 255};
+		SDL_Color color = {static_cast<Uint8>(Spec::get_instance().get_int("hud/text/r")), static_cast<Uint8>(Spec::get_instance().get_int("hud/text/g")), static_cast<Uint8>(Spec::get_instance().get_int("hud/text/b")), 255};
 		Text::get_instance().write(Context::get_instance().get_renderer(), Spec::get_instance().get_str("hud/str"), size.x + padding_font, size.y + padding_font, color);
 	}
 }

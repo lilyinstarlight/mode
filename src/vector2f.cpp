@@ -1,5 +1,5 @@
 #include <cmath>
-#include <iostream>
+#include <ostream>
 #include <string>
 
 #include "vector2f.h"

@@ -1,7 +1,5 @@
 #ifndef ENGINE_H
 #define ENGINE_H
-#include <set>
-
 #include <SDL.h>
 
 #include "context.h"
@@ -12,22 +10,24 @@
 
 class Engine {
 	public:
-		Engine();
-		~Engine();
+		static Engine & get_instance();
 
 		Engine(const Engine &) = delete;
 		Engine& operator=(const Engine &) = delete;
 
 		void run();
 
+		World & get_world()       { return world;    } // caller can modify world
+		Viewport & get_viewport() { return viewport; } // caller can modify viewport
+
 	private:
+		Engine();
+		~Engine() {}
+
 		World world;
 		Viewport viewport;
 
-		Player player;
-
 		Drawable * target;
-		std::set<Drawable *, DrawablePointerCompare> drawables; // compare points to keep drawables unique and ordered
 
 		void draw() const;
 		void update(unsigned int ticks);

@@ -4,7 +4,7 @@
 
 #include "player.h"
 
-Player::Player(const World & w) : Sprite("player", w, false), hp(64) {
+Player::Player() : Sprite("player"), hp(64) {
 	script = new Script("player", *this);
 
 	Input::get_instance().grab("player");
@@ -14,7 +14,7 @@ Player::~Player() {
 	Input::get_instance().release("player");
 }
 
-void Player::update(unsigned int) {
+void Player::update(unsigned int ticks) {
 	// check for input focus
 	if (Input::get_instance().check("player")) {
 		const Uint8 * keystate = Input::get_instance().get_keystate();
@@ -29,4 +29,6 @@ void Player::update(unsigned int) {
 		if (keystate[SDL_SCANCODE_S])
 			set_velocity_y(get_velocity_y() + 1.0f);
 	}
+
+	Sprite::update(ticks);
 }

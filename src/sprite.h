@@ -9,13 +9,12 @@
 #include "drawable.h"
 #include "script.h"
 #include "sheet.h"
-#include "world.h"
 
 class Observer;
 
 class Sprite : public Drawable {
 	public:
-		Sprite(const std::string & name, const World & w, bool own_script = true);
+		Sprite(const std::string & name);
 		Sprite(const Sprite & s);
 
 		Sprite() = delete;
@@ -49,8 +48,6 @@ class Sprite : public Drawable {
 		void inject(const Player & player);
 
 	protected:
-		const World & world;
-
 		Script * script;
 
 		NoneCollisionStrategy none_strategy;

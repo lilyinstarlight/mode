@@ -1,23 +1,37 @@
 #ifndef WORLD_H
 #define WORLD_H
-#include "spec.h"
+#include <set>
+
+#include "drawable.h"
+#include "player.h"
+#include "script.h"
 
 class Viewport;
 
 class World {
 	public:
-		World() : width(Spec::get_instance().get_int("world/width")), height(Spec::get_instance().get_int("world/height")) {}
-		virtual ~World() {}
+		World();
+		~World();
 
 		World(const World & w) = delete;
 		const World & operator=(const World & w) = delete;
 
-		void update(unsigned int) {}
-		void draw(const Viewport &) const {}
+		void add(Drawable * drawable);
+		void remove(Drawable * drawable);
+
+		void update(unsigned int);
+		void draw(const Viewport &) const;
+
+		Player & get_player()  { return player; } // caller can modify player
 
 		int get_width() const  { return width;  }
 		int get_height() const { return height; }
 	private:
 		int width, height;
+
+		Player player;
+		std::set<Drawable *, DrawablePointerCompare> drawables; // compare points to keep drawables unique and ordered
+
+	friend Script;
 };
 #endif

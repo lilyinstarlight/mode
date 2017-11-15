@@ -1,35 +1,17 @@
-#include "background.h"
 #include "console.h"
 #include "hud.h"
 #include "spec.h"
-#include "sprite.h"
 #include "text.h"
 
 #include "engine.h"
 
-Engine::Engine() : world(), viewport(world), player(world), target(&player), drawables{&player} {
-	viewport.track(target);
-
-	// get top level elements and add applicable ones to drawables
-	for (const std::string & str : Spec::get_instance().get_tops()) {
-		if (Spec::get_instance().check(str + "/type")) {
-			if (Spec::get_instance().get_str(str + "/type") == "background") {
-				drawables.insert(new Background(str, world));
-			}
-			else if (Spec::get_instance().get_str(str + "/type") == "sprite") {
-				drawables.insert(new Sprite(str, world));
-			}
-		}
-	}
-
+Engine & Engine::get_instance() {
+	static Engine engine;
+	return engine;
 }
 
-Engine::~Engine() {
-	// free added drawables
-	for (Drawable * drawable : drawables) {
-		if (drawable != &player)
-			free(drawable);
-	}
+Engine::Engine() : world(), viewport(world), target(&world.get_player()) {
+	viewport.track(target);
 }
 
 void Engine::run() {
@@ -84,10 +66,6 @@ void Engine::draw() const {
 	// draw world
 	world.draw(viewport);
 
-	// draw ordered drawables
-	for (Drawable * drawable : drawables)
-		drawable->draw(viewport);
-
 	// draw console and hud on top of world
 	Console::get_instance().draw(viewport);
 	HUD::get_instance().draw(viewport);
@@ -102,10 +80,6 @@ void Engine::draw() const {
 void Engine::update(unsigned int ticks) {
 	// update world
 	world.update(ticks);
-
-	// update drawables
-	for (Drawable * drawable : drawables)
-		drawable->update(ticks);
 
 	// update console and hud
 	Console::get_instance().update(ticks);

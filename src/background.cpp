@@ -2,11 +2,11 @@
 
 #include "background.h"
 
-Background::Background(const std::string & name, const World & w) : Drawable(name, Vector2f(0, 0), 0, Vector2f(0, 0), 1, Spec::get_instance().get_int(name + "/index")), world(w), width(Spec::get_instance().get_int(name + "/width")), height(Spec::get_instance().get_int(name + "/height")), factor(Spec::get_instance().get_float(name + "/factor")), image(ImageFactory::get_instance().get_image(name)) {}
+Background::Background(const std::string & name) : Drawable(name, Vector2f(0, 0), 0, Vector2f(0, 0), 1, Spec::get_instance().get_int(name + "/index")), width(Spec::get_instance().get_int(name + "/width")), height(Spec::get_instance().get_int(name + "/height")), factor(Spec::get_instance().get_float(name + "/factor")), image(ImageFactory::get_instance().get_image(name)) {}
 
 void Background::update(unsigned int) {
 	// move background according to factor
-	set_x((int)(get_x() / factor) % image->get_width());
+	set_x(static_cast<int>(get_x() / factor) % image->get_width());
 }
 
 void Background::draw(const Viewport & viewport) const {

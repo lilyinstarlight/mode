@@ -25,7 +25,7 @@ void Image::draw(const Viewport & viewport, int x, int y, float scale) const {
 	x -= viewport.get_x();
 	y -= viewport.get_y();
 
-	SDL_Rect dest = {x, y, (int)scale*view.h, (int)scale*view.w};
+	SDL_Rect dest = {x, y, static_cast<int>(scale*view.h), static_cast<int>(scale*view.w)};
 
 	// copy image into renderer
 	SDL_RenderCopy(renderer, texture, &view, &dest);

@@ -7,11 +7,8 @@
 
 int main(int, char * []) {
 	try {
-		// create engine
-		Engine engine;
-
 		// run engine
-		engine.run();
+		Engine::get_instance().run();
 	}
 	catch (std::runtime_error & err) {
 		std::cerr << err.what() << std::endl;

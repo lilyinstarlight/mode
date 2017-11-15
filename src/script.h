@@ -10,7 +10,7 @@ class Player;
 class Script {
 	public:
 		Script(const std::string & name, Sprite & s);
-		Script(const std::string & name, Player & p);
+		Script(const std::string & command);
 		Script(const Script & s);
 
 		Script() = delete;
@@ -24,17 +24,17 @@ class Script {
 			lua[method].call<T...>(args...);
 		}
 	private:
-		void load_sprite(Sprite & sprite);
-		void load_player(Player & player);
+		void load_api();
+		void load_sprite();
+		void load_world();
+		void load_player();
+		void load_background();
 		void load_file(const std::string & filename);
 
 		std::string path;
 
 		std::string script;
-
 		sol::state lua;
-
 		Sprite * sprite;
-		Player * player;
 };
 #endif

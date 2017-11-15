@@ -1,6 +1,7 @@
 #include <SDL.h>
 
 #include "context.h"
+#include "script.h"
 #include "spec.h"
 #include "text.h"
 #include "viewport.h"
@@ -25,7 +26,7 @@ void Console::draw(const Viewport & viewport) const {
 		SDL_RenderFillRect(Context::get_instance().get_renderer(), &rect);
 
 		// draw text
-		SDL_Color color = {(Uint8)Spec::get_instance().get_int("console/text/r"), (Uint8)Spec::get_instance().get_int("console/text/g"), (Uint8)Spec::get_instance().get_int("console/text/b"), 255};
+		SDL_Color color = {static_cast<Uint8>(Spec::get_instance().get_int("console/text/r")), static_cast<Uint8>(Spec::get_instance().get_int("console/text/g")), static_cast<Uint8>(Spec::get_instance().get_int("console/text/b")), 255};
 		Text::get_instance().write(Context::get_instance().get_renderer(), command + "█", rect.x + padding_font, rect.y + padding_font, color);
 	}
 }
@@ -47,6 +48,10 @@ void Console::update(unsigned int) {
 			else if (event->key.keysym.sym == SDLK_BACKSPACE) {
 				// backspace
 				command.pop_back();
+			}
+			else if (event->key.keysym.sym == SDLK_RETURN) {
+				Script script(command);
+				command.clear();
 			}
 		}
 		else if (event->type == SDL_TEXTINPUT) {

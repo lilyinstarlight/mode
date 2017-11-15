@@ -1,3 +1,3 @@
 function update (ticks)
-	player.vel.y = player.vel.y + 0.5
+	player.vel.y = player.vel.y + ticks*2/1000
 end

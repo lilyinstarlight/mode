@@ -7,7 +7,7 @@
 
 class Player : public Sprite {
 	public:
-		Player(const World & w);
+		Player();
 		virtual ~Player();
 
 		Player(const Player & console) = delete;

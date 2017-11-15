@@ -3,16 +3,16 @@
 #include <string>
 
 #include "drawable.h"
+#include "script.h"
 #include "viewport.h"
-#include "world.h"
 
 class Background : public Drawable {
 	public:
-		Background(const std::string & name, const World & w);
+		Background(const std::string & name);
 		virtual ~Background() {}
 
-		Background(const Background & w) = delete;
-		const Background & operator=(const Background & w) = delete;
+		Background(const Background & b) = delete;
+		const Background & operator=(const Background & b) = delete;
 
 		void update(unsigned int ticks);
 		void draw(const Viewport & viewport) const;
@@ -23,11 +23,12 @@ class Background : public Drawable {
 		virtual const SDL_Surface * get_surface() const { return image->get_surface(); };
 		virtual const Image * get_image() const { return image; };
 	private:
-		const World & world;
 
 		int width, height;
 		float factor;
 
 		const Image * image;
+
+	friend Script;
 };
 #endif

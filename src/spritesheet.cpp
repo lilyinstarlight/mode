@@ -12,7 +12,7 @@ SDL_Surface* SpriteSheet::crop(SDL_Surface * surf, const SDL_Rect * view) {
 	return sub;
 }
 
-SDL_Surface * SpriteSheet::get(unsigned int i, unsigned int j){
+SDL_Surface * SpriteSheet::get(unsigned int i, unsigned int j) {
 	if (i >= columns || j >= rows)
 		return nullptr;
 
@@ -24,7 +24,7 @@ SDL_Surface * SpriteSheet::get(unsigned int i, unsigned int j){
 	return crop(src, &view);
 }
 
-SDL_Surface * SpriteSheet::get(unsigned int s){
+SDL_Surface * SpriteSheet::get(unsigned int s) {
 	// get index with row/column
 	return get(s % columns, s/columns);
 }

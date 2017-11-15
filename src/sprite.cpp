@@ -6,7 +6,7 @@
 
 #include "sprite.h"
 
-Sprite::Sprite(const std::string & name, const World & w, bool own_script) : Drawable(name,
+Sprite::Sprite(const std::string & name) : Drawable(name,
 			Vector2f(Spec::get_instance().get_int(name + "/position/x"),
 					 Spec::get_instance().get_int(name + "/position/y")),
 					 Spec::get_instance().get_int(name + "/rotation"),
@@ -15,7 +15,6 @@ Sprite::Sprite(const std::string & name, const World & w, bool own_script) : Dra
 					 Spec::get_instance().get_int(name + "/scale"),
 					 Spec::get_instance().get_int(name + "/index")
 		),
-		world(w),
 		script(nullptr),
 		none_strategy(),
 		rectangular_strategy(),
@@ -31,8 +30,7 @@ Sprite::Sprite(const std::string & name, const World & w, bool own_script) : Dra
 		frame_timer(0),
 		script_timer(0),
 		observer_timer(0) {
-	if (own_script)
-		script = new Script(name, *this);
+	script = new Script(name, *this);
 
 	// load sheets for different states
 	for (const std::string & sheet : Spec::get_instance().get_subs(name + "/sheets"))
@@ -53,12 +51,11 @@ Sprite::Sprite(const std::string & name, const World & w, bool own_script) : Dra
 	else if (collision == "pixel")
 		collision_strategy = &pixel_strategy;
 	else
-		throw std::runtime_error("Invalid collision strategy: ") + Spec::get_instance().get_str(name + "/collision");
+		throw std::runtime_error("Invalid collision strategy: " + Spec::get_instance().get_str(name + "/collision"));
 }
 
 Sprite::Sprite(const Sprite & s) :
 		Drawable(s),
-		world(s.world),
 		script(new Script(*s.script)),
 		none_strategy(),
 		rectangular_strategy(),
@@ -84,7 +81,7 @@ Sprite::Sprite(const Sprite & s) :
 	else if (s.collision_strategy == &s.pixel_strategy)
 		collision_strategy = &pixel_strategy;
 	else
-		throw std::runtime_error("Invalid collision strategy while copying sprite: ") + get_name();
+		throw std::runtime_error("Invalid collision strategy while copying sprite: " + get_name());
 }
 
 void Sprite::draw(const Viewport & viewport) const {
@@ -125,18 +122,6 @@ void Sprite::update(unsigned int ticks) {
 	// set position based on velocity delta
 	Vector2f delta = get_velocity()*static_cast<float>(ticks)*0.001;
 	set_position(get_position() + delta);
-
-
-	// push away from edges of world
-	if (get_y() < 0)
-	  set_velocity_y(std::abs(get_velocity_y()));
-	else if (get_y() > world.get_height() - get_height())
-	  set_velocity_y(-std::abs(get_velocity_y()));
-
-	if (get_x() < 0)
-	  set_velocity_x(std::abs(get_velocity_y()));
-	else if (get_x() > world.get_width() - get_width())
-	  set_velocity_x(-std::abs(get_velocity_y()));
 }
 
 void Sprite::observe(Observer & observer) {

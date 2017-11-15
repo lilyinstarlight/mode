@@ -6,7 +6,7 @@
 
 class Observer : public Sprite {
 	public:
-		Observer(const std::string & name, const World & w, bool player = false) : Sprite(name, w, player) {}
+		Observer(const std::string & name) : Sprite(name) {}
 		virtual ~Observer() {}
 
 		virtual void signal(const std::string & sig, const Sprite & sprite) {
