@@ -38,7 +38,7 @@ void Engine::run() {
 
 	Uint32 ticks = Clock::get_instance().get_ticks();
 
-	bool running = false;
+	bool running = true;
 	while (running) {
 		while (SDL_PollEvent(&event)) {
 			keystate = SDL_GetKeyboardState(NULL);

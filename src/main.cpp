@@ -11,8 +11,8 @@ int main(int, char * []) {
 		// run engine
 		engine.run();
 	}
-	catch (const std::string & msg) {
-		std::cerr << msg << std::endl;
+	catch (const std::runtime_error & err) {
+		std::cerr << err.what() << std::endl;
 
 		return 1;
 	}
