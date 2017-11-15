@@ -41,7 +41,7 @@ Vector2f Vector2f::operator*(float scale) const {
 
 Vector2f Vector2f::operator/(float scale) const {
 	if (scale < EPSILON && scale > -EPSILON)
-		throw std::string("Division by near zero");
+		throw std::runtime_error("Division by near zero");
 
 	return Vector2f(v[0]/scale, v[1]/scale);
 }
@@ -67,7 +67,7 @@ const Vector2f & Vector2f::operator*=(float scale) {
 
 const Vector2f & Vector2f::operator/=(float scale) {
 	if (scale < EPSILON && scale > -EPSILON)
-		throw std::string("Division by near zero");
+		throw std::runtime_error("Division by near zero");
 
 	v[0] /= scale;
 	v[1] /= scale;
@@ -101,7 +101,7 @@ Vector2f Vector2f::normalize() const {
 	float m = std::sqrt(v[0]*v[0] + v[1]*v[1]);
 
 	if (m < Vector2f::EPSILON && m > -Vector2f::EPSILON)
-		throw std::string("Point too close in Vector2f::normalize");
+		throw std::runtime_error("Point too close in Vector2f::normalize");
 
 	return Vector2f(v[0]/m, v[1]/m);
 }

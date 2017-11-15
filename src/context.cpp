@@ -10,7 +10,7 @@ Context & Context::get_instance() {
 Context::Context() : window(nullptr), renderer(nullptr) {
 	// init SDL
 	if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_AUDIO) < 0) {
-		throw (std::string("Failed to init SDL ") + SDL_GetError());
+		throw std::runtime_error("Failed to init SDL " + std::string(SDL_GetError()));
 	}
 
 	// create window
@@ -18,13 +18,13 @@ Context::Context() : window(nullptr), renderer(nullptr) {
 	window = SDL_CreateWindow(title.c_str(), SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, Spec::get_instance().get_int("view/width"), Spec::get_instance().get_int("view/height"), SDL_WINDOW_SHOWN);
 
 	if (window == NULL)
-		throw (std::string("Failed to make window: ") + SDL_GetError());
+		throw std::runtime_error("Failed to make window: " + std::string(SDL_GetError()));
 
 	// create renderer
 	SDL_Renderer * renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_PRESENTVSYNC);
 
 	if (renderer == NULL)
-		throw std::string("Failed to make renderer");
+		throw std::runtime_error("Failed to make renderer");
 }
 
 Context::~Context() {

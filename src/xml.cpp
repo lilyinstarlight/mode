@@ -11,7 +11,7 @@ XML::XML(const std::string& filename) : parser(NULL), tags(), data() {
 	parser = XML_ParserCreate(NULL);
 
 	if (!parser) {
-		throw std::string("Could not create parser");
+		throw std::runtime_error("Could not create parser");
 	}
 
 	// set handlers
@@ -22,7 +22,7 @@ XML::XML(const std::string& filename) : parser(NULL), tags(), data() {
 	// load file
 	std::ifstream file(filename);
 	if (!file) {
-		throw std::string("Could not open xml file: ") + filename;
+		throw std::runtime_error("Could not open xml file: " + filename);
 	}
 
 	// send file line by line into parser
@@ -30,7 +30,7 @@ XML::XML(const std::string& filename) : parser(NULL), tags(), data() {
 	while (true) {
 		if (!XML_Parse(parser, buf, std::strlen(buf), 0)) {
 			std::cerr << "Parse error at line " << XML_GetCurrentLineNumber(parser) << ": " << XML_ErrorString(XML_GetErrorCode(parser)) << std::endl;
-			throw std::string("Could not parse file: ") + filename;
+			throw std::runtime_error("Could not parse file: " + filename);
 		}
 
 		if (file.eof())
@@ -87,7 +87,7 @@ void XML::start(const char * el, const char * attr[]) {
 void XML::end(const char * end_tag) {
 	// make sure tag end matches
 	if (end_tag != tags.back())
-		throw std::string("Tags ") + end_tag + " and " + tags.back() + std::string(" do not match");
+		throw std::runtime_error("Tags " + std::string(end_tag) + " and " + tags.back() + std::string(" do not match"));
 
 	// remove tag from stack
 	tags.pop_back();

@@ -53,7 +53,7 @@ Sprite::Sprite(const std::string & name, const World & w, bool own_script) : Dra
 	else if (collision == "pixel")
 		collision_strategy = &pixel_strategy;
 	else
-		throw std::string("Invalid collision strategy: ") + Spec::get_instance().get_str(name + "/collision");
+		throw std::runtime_error("Invalid collision strategy: ") + Spec::get_instance().get_str(name + "/collision");
 }
 
 Sprite::Sprite(const Sprite & s) :
@@ -84,7 +84,7 @@ Sprite::Sprite(const Sprite & s) :
 	else if (s.collision_strategy == &s.pixel_strategy)
 		collision_strategy = &pixel_strategy;
 	else
-		throw std::string("Invalid collision strategy while copying sprite: ") + get_name();
+		throw std::runtime_error("Invalid collision strategy while copying sprite: ") + get_name();
 }
 
 void Sprite::draw(const Viewport & viewport) const {

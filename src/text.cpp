@@ -15,14 +15,14 @@ Text::~Text() {
 Text::Text() : path("fonts"), font(nullptr), size(-1) {
 	// init TTF
 	if (TTF_Init() < 0)
-		throw std::string("Failed to initialize TTF");
+		throw std::runtime_error("Failed to initialize TTF");
 
 	// open font
 	font = TTF_OpenFont((path + "/" + Spec::get_instance().get_str("font/file")).c_str(), Spec::get_instance().get_int("font/size"));
 	size = Spec::get_instance().get_int("font/size");
 
 	if (!font)
-		throw std::string("Failed to load font");
+		throw std::runtime_error("Failed to load font");
 }
 
 void Text::write(SDL_Renderer * renderer, const std::string & text, int x, int y, SDL_Color color) const {

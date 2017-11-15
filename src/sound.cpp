@@ -17,7 +17,7 @@ Sound::~Sound() {
 Sound::Sound() : path("audio"), active{}, chunks{} {
 	// open font
 	if (Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 1024) < 0)
-		throw std::string("Failed to initialize mixer");
+		throw std::runtime_error("Failed to initialize mixer");
 
 	play("theme");
 }
@@ -28,7 +28,7 @@ void Sound::play(const std::string & name, int loops) {
 		Mix_Chunk * chunk = Mix_LoadWAV((path + "/" + name + ".wav").c_str());
 
 		if (!chunk)
-			throw std::string("Failed to load audio file");
+			throw std::runtime_error("Failed to load audio file");
 
 		chunks[name] = chunk;
 	}
@@ -37,5 +37,5 @@ void Sound::play(const std::string & name, int loops) {
 		active = name;
 
 	if (Mix_PlayChannel(-1, chunks[name], loops) < 0)
-		throw std::string("Failed to play audio file: " + std::string(Mix_GetError()));
+		throw std::runtime_error("Failed to play audio file: " + std::string(Mix_GetError()));
 }

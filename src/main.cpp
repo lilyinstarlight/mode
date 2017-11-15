@@ -1,6 +1,8 @@
 #include <iostream>
 #include <string>
 
+#include <sol/sol.hpp>
+
 #include "engine.h"
 
 int main(int, char * []) {
@@ -11,7 +13,7 @@ int main(int, char * []) {
 		// run engine
 		engine.run();
 	}
-	catch (const std::runtime_error & err) {
+	catch (std::runtime_error & err) {
 		std::cerr << err.what() << std::endl;
 
 		return 1;

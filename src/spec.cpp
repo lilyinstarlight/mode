@@ -55,7 +55,7 @@ bool Spec::get_bool(const std::string & tag) const {
 	std::unordered_map<std::string, std::string>::const_iterator pos = data.find(tag);
 
 	if (pos == data.end())
-		throw "Boolean tag `" + tag + "' not found";
+		throw std::runtime_error("Boolean tag `" + tag + "' not found");
 
 	return pos->second == "true";
 }
@@ -64,7 +64,7 @@ int Spec::get_int(const std::string & tag) const {
 	std::unordered_map<std::string, std::string>::const_iterator pos = data.find(tag);
 
 	if (pos == data.end())
-		throw "Integer tag `" + tag + "' not found";
+		throw std::runtime_error("Integer tag `" + tag + "' not found");
 
 	int data;
 
@@ -79,7 +79,7 @@ float Spec::get_float(const std::string & tag) const {
 	std::unordered_map<std::string, std::string>::const_iterator pos = data.find(tag);
 
 	if (pos == data.end())
-		throw "Float tag `" + tag + "' not found";
+		throw std::runtime_error("Float tag `" + tag + "' not found");
 
 	float data;
 
@@ -94,7 +94,7 @@ const std::string & Spec::get_str(const std::string & tag) const {
 	std::unordered_map<std::string, std::string>::const_iterator pos = data.find(tag);
 
 	if (pos == data.end())
-		throw "String tag `" + tag + "' not found";
+		throw std::runtime_error("String tag `" + tag + "' not found");
 
 	return pos->second;
 }
