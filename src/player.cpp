@@ -15,9 +15,11 @@ Player::~Player() {
 }
 
 void Player::update(unsigned int) {
+	// check for input focus
 	if (Input::get_instance().check("player")) {
 		const Uint8 * keystate = Input::get_instance().get_keystate();
 
+		// add wasd controls
 		if (keystate[SDL_SCANCODE_A])
 			set_velocity_x(get_velocity_x() - 1.0f);
 		if (keystate[SDL_SCANCODE_D])
@@ -27,7 +29,4 @@ void Player::update(unsigned int) {
 		if (keystate[SDL_SCANCODE_S])
 			set_velocity_y(get_velocity_y() + 1.0f);
 	}
-}
-
-void Player::inject(const Sprite &) {
 }

@@ -43,9 +43,11 @@
 		</text>
 
 		<str>
-    .:Mode:.
-A game where you
-write the rules.
++------------------------+
+|        .:Mode:.        |
+|    A game where you    |
+|    write the rules.    |
++------------------------+
 		</str>
 	</hud>
 
@@ -71,7 +73,7 @@ write the rules.
 
 		<width>1920</width>
 		<height>1080</height>
-		<factor>0.1</factor>
+		<factor>1</factor>
 
 		<file></file>
 	</background>
@@ -82,7 +84,7 @@ write the rules.
 
 		<width>1920</width>
 		<height>1080</height>
-		<factor>0.5</factor>
+		<factor>2</factor>
 
 		<file></file>
 	</backforeground>
@@ -93,12 +95,12 @@ write the rules.
 
 		<width>1920</width>
 		<height>1080</height>
-		<factor>1</factor>
+		<factor>10</factor>
 
 		<file></file>
 	</foreground>
 
-	<box>
+	<feature>
 		<type>sprite</type>
 		<index>50</index>
 
@@ -118,7 +120,7 @@ write the rules.
 
 		<sheets>
 		    <idle>
-			<file>box.idle.png</file>
+			<file>feature.idle.png</file>
 
 			<frames>1</frames>
 			<interval>-1</interval>
@@ -126,7 +128,7 @@ write the rules.
 		</sheets>
 
 		<collision>none</collision>
-	</box>
+	</feature>
 
 	<player>
 		<type>player</type>

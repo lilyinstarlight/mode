@@ -1,5 +1,5 @@
-#ifndef _TEXT_H
-#define _TEXT_H
+#ifndef TEXT_H
+#define TEXT_H
 #include <string>
 
 #include <SDL.h>
@@ -10,7 +10,7 @@ class Text {
 		static Text & get_instance();
 
 		Text(const Text &) = delete;
-		Text& operator=(const Text &) = delete;
+		const Text & operator=(const Text &) = delete;
 
 		void write(SDL_Renderer * renderer, const std::string & text, int x, int y, SDL_Color color) const;
 

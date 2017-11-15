@@ -9,13 +9,14 @@ Spec & Spec::get_instance() {
 	return spec;
 }
 
-Spec::Spec() : path("xml"), parser(path + "/spec.xml"), data(parser.get_data()) {}
+Spec::Spec() : path("spec"), parser(path + "/game.xml"), data(parser.get_data()) {}
 
 bool Spec::check(const std::string & tag) const {
 	return data.count(tag) != 0;
 }
 
 std::vector<std::string> Spec::get_tops() const {
+	// find top level elements
 	std::unordered_set<std::string> found;
 
 	for (std::pair<std::string, std::string> element : data) {
@@ -30,6 +31,7 @@ std::vector<std::string> Spec::get_tops() const {
 }
 
 std::vector<std::string> Spec::get_subs(const std::string & tag) const {
+	// find top level subelements of given tag
 	std::unordered_set<std::string> found;
 
 	for (std::pair<std::string, std::string> element : data) {

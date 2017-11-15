@@ -15,8 +15,6 @@ class Player : public Sprite {
 
 		virtual void update(unsigned int ticks);
 
-		void inject(const Sprite & sprite);
-
 	private:
 		int hp;
 

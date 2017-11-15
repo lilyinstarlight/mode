@@ -27,7 +27,7 @@ class Engine {
 		Player player;
 
 		Drawable * target;
-		std::set<Drawable *, DrawablePointerCompare> drawables;
+		std::set<Drawable *, DrawablePointerCompare> drawables; // compare points to keep drawables unique and ordered
 
 		void draw() const;
 		void update(unsigned int ticks);

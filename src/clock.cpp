@@ -23,9 +23,11 @@ int Clock::get_fps() {
 		int next = frames/(cur_time - frame_time);
 
 		if (fps < 0) {
+			// initialize with straight reading
 			fps = next;
 		}
 		else {
+			// apply low pass filter to subsequent readings
 			fps = fps_gain*next + (1 - fps_gain)*fps;
 			frame_time = cur_time;
 		}
@@ -41,10 +43,12 @@ void Clock::incr_frame() {
 
 void Clock::start() {
 	if (started && paused) {
+		// unpause
 		paused = false;
 		start_time += SDL_GetTicks() - cur_time;
 	}
 	else {
+		// initialize clock
 		started = true;
 		paused = false;
 		start_time = SDL_GetTicks();

@@ -12,6 +12,7 @@ ImageFactory & ImageFactory::get_instance() {
 }
 
 ImageFactory::~ImageFactory() {
+	// clean up after ourselves
 	for (std::pair<std::string, SDL_Surface *> surface : surfaces)
 		SDL_FreeSurface(surface.second);
 
@@ -36,17 +37,20 @@ ImageFactory::~ImageFactory() {
 	}
 }
 
-Image* ImageFactory::get_image(const std::string & name) {
+Image * ImageFactory::get_image(const std::string & name) {
+	// get image if already made
 	std::unordered_map<std::string, Image *>::const_iterator pos = images.find(name);
-	if ( pos != images.end() )
+	if (pos != images.end())
 		return pos->second;
 
+	// load image from file
 	SDL_Surface * surface = IMG_Load(Spec::get_instance().get_str(name + "/file").c_str());
 	if (!surface)
 		throw std::string("Failed to load ") + Spec::get_instance().get_str(name + "/file");
 	surfaces[name] = surface;
 
-	bool transparency = Spec::get_instance().check(name + "/transparency");
+	// load transparency color
+	bool transparency = Spec::get_instance().check(name + "/transparency/r");
 	if (transparency) {
 		int r = Spec::get_instance().get_int(name + "/transparency/r");
 		int g = Spec::get_instance().get_int(name + "/transparency/g");
@@ -54,8 +58,10 @@ Image* ImageFactory::get_image(const std::string & name) {
 		SDL_SetColorKey(surface, SDL_TRUE, SDL_MapRGBA(surface->format, r, g, b, 255));
 	}
 
+	// create texture
 	SDL_Texture * texture = SDL_CreateTextureFromSurface(Context::get_instance().get_renderer(), surface);
 
+	// create and store image
 	Image * image = new Image(surface, texture);
 	images[name] = image;
 
@@ -64,15 +70,18 @@ Image* ImageFactory::get_image(const std::string & name) {
 
 
 Sheet * ImageFactory::get_sheet(const std::string & name) {
+	// get sheet if already made
 	std::unordered_map<std::string, Sheet *>::const_iterator pos = sheets.find(name);
 	if (pos != sheets.end())
 		return pos->second;
 
+	// load sheet from file
 	SDL_Surface * sprite_surface = IMG_Load(Spec::get_instance().get_str(name + "/file").c_str());
 	if (!sprite_surface)
 		throw std::string("Failed to load ") + Spec::get_instance().get_str(name + "/file");
 
-	bool transparency = Spec::get_instance().get_bool(name + "/transparency");
+	// load transparency color
+	bool transparency = Spec::get_instance().check(name + "/transparency/r");
 	int r = 0, g = 0, b = 0;
 	if (transparency) {
 		r = Spec::get_instance().get_int(name + "/transparency/r");
@@ -80,8 +89,10 @@ Sheet * ImageFactory::get_sheet(const std::string & name) {
 		b = Spec::get_instance().get_int(name + "/transparency/b");
 	}
 
+	// get number of frames
 	unsigned frames = Spec::get_instance().get_int(name + "/frames");
 
+	// create vector for images, surfaces, and textures
 	std::vector<Image *> images;
 	std::vector<SDL_Surface *> surfaces;
 	std::vector<SDL_Texture *> textures;
@@ -90,26 +101,34 @@ Sheet * ImageFactory::get_sheet(const std::string & name) {
 	surfaces.reserve(frames);
 	textures.reserve(frames);
 
+	// get frame width and height
 	int width = sprite_surface->w/frames;
 	int height = sprite_surface->h;
 
+	// load spritesheet
 	SpriteSheet spritesheet(sprite_surface, width, height);
 
 	for (unsigned int i = 0; i < spritesheet.get_frames(); ++i) {
+		// create surface for each frame
 		SDL_Surface * surface = spritesheet[i];
 
+		// add transparency if necessary
 		if (transparency)
 			SDL_SetColorKey(surface, SDL_TRUE, SDL_MapRGBA(sprite_surface->format, r, g, b, 255));
 
-		SDL_Texture* texture = SDL_CreateTextureFromSurface(Context::get_instance().get_renderer(), surface);
+		// create texture
+		SDL_Texture * texture = SDL_CreateTextureFromSurface(Context::get_instance().get_renderer(), surface);
 
+		// store details
 		surfaces.push_back(surface);
 		textures.push_back(texture);
 		images.push_back(new Image(surface, texture));
 	}
 
+	// create new sheet with frames
 	Sheet * sheet = new Sheet(images, Spec::get_instance().get_int(name + "/frames"), Spec::get_instance().get_int(name + "/interval"));
 
+	// store surfaces, textures, and sheet
 	multi_surface[name] = surfaces;
 	multi_texture[name] = textures;
 	sheets[name] = sheet;

@@ -34,12 +34,15 @@ Sprite::Sprite(const std::string & name, const World & w, bool own_script) : Dra
 	if (own_script)
 		script = new Script(name, *this);
 
+	// load sheets for different states
 	for (const std::string & sheet : Spec::get_instance().get_subs(name + "/sheets"))
 		sheets[sheet] = ImageFactory::get_instance().get_sheet(sheet);
 
+	// set default as first sheet
 	if (sheets.size() > 0)
 		state = sheets.begin()->first;
 
+	// set collision strategy
 	std::string collision = Spec::get_instance().get_str(name + "/collision");
 	if (collision == "none")
 		collision_strategy = &none_strategy;
@@ -71,6 +74,7 @@ Sprite::Sprite(const Sprite & s) :
 		frame_timer(0),
 		script_timer(0),
 		observer_timer(0) {
+	// copy collision strategy
 	if (s.collision_strategy == &s.none_strategy)
 		collision_strategy = &none_strategy;
 	else if (s.collision_strategy == &s.rectangular_strategy)
@@ -84,22 +88,26 @@ Sprite::Sprite(const Sprite & s) :
 }
 
 void Sprite::draw(const Viewport & viewport) const {
+	// draw current image in viewport
 	get_image()->draw(viewport, get_x(), get_y(), get_scale());
 }
 
 void Sprite::update(unsigned int ticks) {
+	// increment frame as necessary
 	frame_timer += ticks;
 	if (sheets.at(state)->get_interval() > 0 && frame_timer > sheets.at(state)->get_interval()) {
 		frame = (frame + 1) % sheets.at(state)->get_frames();
 		frame_timer = 0;
 	}
 
+	// run script update as necessary
 	script_timer += ticks;
 	if (script_timer > script_interval) {
 		script->call("update", ticks);
 		script_timer = 0;
 	}
 
+	// run script obverse for observers as necessary
 	observer_timer += ticks;
 	if (observer_timer > observer_interval) {
 		for (Observer * observer : observers)
@@ -108,31 +116,39 @@ void Sprite::update(unsigned int ticks) {
 		observer_timer = 0;
 	}
 
+	// check collision with observers
 	for (Observer * observer : observers) {
 		if (collision_strategy->check(*this, *observer))
 			observer->signal("collide", *this);
 	}
 
+	// set position based on velocity delta
 	Vector2f delta = get_velocity()*static_cast<float>(ticks)*0.001;
 	set_position(get_position() + delta);
 
+
+	// push away from edges of world
 	if (get_y() < 0)
 	  set_velocity_y(std::abs(get_velocity_y()));
-	else if (get_y() > world.get_height() - get_height()) {
+	else if (get_y() > world.get_height() - get_height())
 	  set_velocity_y(-std::abs(get_velocity_y()));
-	}
 
 	if (get_x() < 0)
 	  set_velocity_x(std::abs(get_velocity_y()));
-	else if (get_x() > world.get_width() - get_width()) {
+	else if (get_x() > world.get_width() - get_width())
 	  set_velocity_x(-std::abs(get_velocity_y()));
-	}
 }
 
 void Sprite::observe(Observer & observer) {
+	// add observer
 	observers.push_back(&observer);
 }
 
 void Sprite::ignore(Observer & observer) {
+	// remove observer
 	observers.remove(&observer);
+}
+
+void Sprite::inject(const Player &) {
+	// TODO: pull up script of object script in HUD
 }

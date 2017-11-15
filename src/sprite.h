@@ -1,6 +1,6 @@
 #ifndef SPRITE_H
 #define SPRITE_H
-#include <unordered_map>
+#include <map>
 #include <list>
 #include <string>
 #include <vector>
@@ -46,6 +46,8 @@ class Sprite : public Drawable {
 		std::string get_state() const         { return state; }
 		void set_state(const std::string & s) { state = s;    }
 
+		void inject(const Player & player);
+
 	protected:
 		const World & world;
 
@@ -60,7 +62,7 @@ class Sprite : public Drawable {
 		std::list<Observer *> observers;
 
 	private:
-		std::unordered_map<std::string, Sheet *> sheets;
+		std::map<std::string, Sheet *> sheets;
 		std::string state;
 
 		unsigned int frame;

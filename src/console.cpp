@@ -17,6 +17,7 @@ Console::Console() : Drawable("name", Vector2f{0, 0}, 0, Vector2f{0, 0}, 1, 9002
 
 void Console::draw(const Viewport & viewport) const {
 	if (open) {
+		// drawing rectable
 		SDL_Rect rect = {padding_left, viewport.get_height() - Text::get_instance().get_size() - padding_bottom - padding_font, viewport.get_width() - padding_left*2, Text::get_instance().get_size() + padding_font*2};
 
 		// draw box
@@ -33,27 +34,35 @@ void Console::update(unsigned int) {
 	const SDL_Event * event = Input::get_instance().get_event();
 
 	if (open) {
+		// grab keyboard focus
 		if (!Input::get_instance().check("console"))
 			Input::get_instance().grab("console");
 
 		if (event->type == SDL_KEYDOWN) {
 			if (event->key.keysym.sym == SDLK_BACKQUOTE) {
+				// stop text input
 				open = false;
 				SDL_StopTextInput();
 			}
 			else if (event->key.keysym.sym == SDLK_BACKSPACE) {
+				// backspace
 				command.pop_back();
 			}
 		}
 		else if (event->type == SDL_TEXTINPUT) {
+			// record text
 			command += event->text.text;
 		}
 	}
 	else {
 		if (event->type == SDL_KEYDOWN) {
 			if (event->key.keysym.sym == SDLK_BACKQUOTE) {
+				// open console and start text input so we get TextInput events
 				open = true;
 				SDL_StartTextInput();
+
+				// grab input
+				Input::get_instance().grab("console");
 			}
 		}
 	}

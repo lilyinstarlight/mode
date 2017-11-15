@@ -7,21 +7,25 @@
 #include "xml.h"
 
 XML::XML(const std::string& filename) : parser(NULL), tags(), data() {
+	// create parser
 	parser = XML_ParserCreate(NULL);
 
 	if (!parser) {
 		throw std::string("Could not create parser");
 	}
 
+	// set handlers
 	XML_SetUserData(parser, this);
 	XML_SetElementHandler(parser, wrap_start, wrap_end);
 	XML_SetCharacterDataHandler(parser, wrap_chars);
 
+	// load file
 	std::ifstream file(filename);
 	if (!file) {
 		throw std::string("Could not open xml file: ") + filename;
 	}
 
+	// send file line by line into parser
 	file.getline(buf, BUF_SIZE);
 	while (true) {
 		if (!XML_Parse(parser, buf, std::strlen(buf), 0)) {
@@ -37,6 +41,7 @@ XML::XML(const std::string& filename) : parser(NULL), tags(), data() {
 }
 
 void XML::display() const {
+	// show key, value pairs
 	std::unordered_map<std::string, std::string>::const_iterator ptr = data.begin();
 	while (ptr != data.end()) {
 		std::cout << "(" << ptr->first << ", " << ptr->second << ")" << std::endl;
@@ -45,6 +50,7 @@ void XML::display() const {
 }
 
 std::string XML::make_tag(const std::string & name) const {
+	// make tag adding in /'s to separate hierarchy
 	std::string tag_name;
 
 	for (unsigned int i = 1; i < tags.size() - 1; ++i) {
@@ -58,6 +64,7 @@ std::string XML::make_tag(const std::string & name) const {
 }
 
 std::string XML::make_tag() const {
+	// make tag adding in /'s to separate hierarchy
 	std::string tag_name;
 
 	for (unsigned int i = 1; i < tags.size() - 1; ++i) {
@@ -70,6 +77,7 @@ std::string XML::make_tag() const {
 }
 
 void XML::start(const char * el, const char * attr[]) {
+	// add tag start
 	tags.push_back(el);
 	for (int i = 0; attr[i]; i += 2) {
 		data[make_tag(attr[i])] = attr[i + 1];
@@ -77,17 +85,17 @@ void XML::start(const char * el, const char * attr[]) {
 }
 
 void XML::end(const char * end_tag) {
-	if ( end_tag != tags.back() ) {
+	// make sure tag end matches
+	if (end_tag != tags.back())
 		throw std::string("Tags ") + end_tag + " and " + tags.back() + std::string(" do not match");
-	}
 
+	// remove tag from stack
 	tags.pop_back();
 }
 
 void XML::strip_whitespace(std::string & str) const {
-	int length = str.size();
-
-	int i = length - 1;
+	// remove unnecessary whitespace from string
+	int i = str.size() - 1;
 	while (i >= 0) {
 		if (str[i] == ' ' || str[i] == '\n' || str[i] == '\t') {
 			str.erase(i, 1);
@@ -100,6 +108,7 @@ void XML::strip_whitespace(std::string & str) const {
 }
 
 void XML::chars(const char * text, int len) {
+	// make tag contents
 	std::string str(text, len);
 
 	strip_whitespace(str);
@@ -110,16 +119,19 @@ void XML::chars(const char * text, int len) {
 }
 
 void XML::wrap_start(void * data, const char * el, const char ** attr) {
+	// perform static cast of data back to XML
 	XML * parser = static_cast<XML *>(data);
 	parser->start(el, attr);
 }
 
 void XML::wrap_end(void * data, const char * el) {
+	// perform static cast of data back to XML
 	XML * parser = static_cast<XML *>(data);
 	parser->end(el);
 }
 
 void XML::wrap_chars(void * data, const char * text, int len) {
+	// perform static cast of data back to XML
 	XML * parser = static_cast<XML *>(data);
 	parser->chars(text, len);
 }

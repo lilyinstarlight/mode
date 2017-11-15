@@ -7,8 +7,8 @@ class Clock {
 		Clock(const Clock & clock) = delete;
 		const Clock & operator=(const Clock & clock) = delete;
 
-		unsigned int get_ticks();
-		int get_fps();
+		unsigned int get_ticks(); // not const since it updates cur_time
+		int get_fps(); // not const since it updates fps
 
 		void incr_frame();
 

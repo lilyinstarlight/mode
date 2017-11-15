@@ -16,14 +16,17 @@ class Input {
 		const Input & operator=(const Input & input) = delete;
 
 		void grab(const std::string & name) {
+			// add to front of list
 			list.push_front(name);
 		}
 
 		void release(const std::string & name) {
+			// remove all entries from list
 			list.remove(name);
 		}
 
 		bool check(const std::string & name) const {
+			// check if at front of list
 			return list.front() == name;
 		}
 
