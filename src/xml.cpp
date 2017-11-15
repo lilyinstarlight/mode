@@ -87,7 +87,7 @@ void XML::start(const char * el, const char * attr[]) {
 void XML::end(const char * end_tag) {
 	// make sure tag end matches
 	if (end_tag != tags.back())
-		throw std::runtime_error("Tags " + std::string(end_tag) + " and " + tags.back() + std::string(" do not match"));
+		throw std::runtime_error(std::string("Tags ") + end_tag + " and " + tags.back() + " do not match");
 
 	// remove tag from stack
 	tags.pop_back();
