@@ -28,7 +28,7 @@ void Sound::play(const std::string & name, int loops) {
 		Mix_Chunk * chunk = Mix_LoadWAV((path + "/" + name + ".wav").c_str());
 
 		if (!chunk)
-			throw std::runtime_error("Failed to load audio file");
+			throw std::runtime_error("Failed to load audio file " + path + "/" + name + ".wav");
 
 		chunks[name] = chunk;
 	}
@@ -37,5 +37,5 @@ void Sound::play(const std::string & name, int loops) {
 		active = name;
 
 	if (Mix_PlayChannel(-1, chunks[name], loops) < 0)
-		throw std::runtime_error("Failed to play audio file: " + std::string(Mix_GetError()));
+		throw std::runtime_error("Failed to play audio file " + path + "/" + name + ".wav: " + std::string(Mix_GetError()));
 }
