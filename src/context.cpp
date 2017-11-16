@@ -21,7 +21,7 @@ Context::Context() : window(nullptr), renderer(nullptr) {
 		throw std::runtime_error("Failed to make window: " + std::string(SDL_GetError()));
 
 	// create renderer
-	SDL_Renderer * renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_PRESENTVSYNC);
+	renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_PRESENTVSYNC);
 
 	if (renderer == NULL)
 		throw std::runtime_error("Failed to make renderer");

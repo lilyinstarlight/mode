@@ -14,12 +14,10 @@ Sound::~Sound() {
 	Mix_CloseAudio();
 }
 
-Sound::Sound() : path("audio"), active{}, chunks{} {
+Sound::Sound() : path("sounds"), active{}, chunks{} {
 	// open font
 	if (Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 1024) < 0)
 		throw std::runtime_error("Failed to initialize mixer");
-
-	play("theme");
 }
 
 void Sound::play(const std::string & name, int loops) {

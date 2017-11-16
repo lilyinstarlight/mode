@@ -1,6 +1,7 @@
 #include <string>
 
 #include "background.h"
+#include "sound.h"
 #include "sprite.h"
 #include "spec.h"
 
@@ -18,6 +19,8 @@ World::World() : width(Spec::get_instance().get_int("world/width")), height(Spec
 			}
 		}
 	}
+
+	Sound::get_instance().play("theme");
 }
 
 World::~World() {
