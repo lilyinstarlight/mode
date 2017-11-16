@@ -25,10 +25,6 @@ class Script {
 		}
 	private:
 		void load_api();
-		void load_sprite();
-		void load_world();
-		void load_player();
-		void load_background();
 		void load_file(const std::string & filename);
 
 		std::string path;

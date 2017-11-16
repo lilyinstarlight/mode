@@ -28,8 +28,8 @@ Sprite::Sprite(const std::string & name) : Drawable(name,
 		script_interval(500),
 		observer_interval(500),
 		frame_timer(0),
-		script_timer(0),
-		observer_timer(0) {
+		script_timer(script_interval),
+		observer_timer(observer_interval) {
 	script = new Script(name, *this);
 
 	// load sheets for different states

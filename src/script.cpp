@@ -17,18 +17,18 @@
 // TODO: load other api stuff
 
 Script::Script(const std::string & name, Sprite & s) : path("behaviours"), script(""), lua(), sprite(&s) {
-	// load API
-	load_api();
-
 	// load file
 	load_file(path + "/" + name + ".lua");
 
-	// run file
+	// prepare environment
+	load_api();
+
+	// run script
 	lua.script(script);
 }
 
 Script::Script(const std::string & command) : path("behaviours"), script(command), lua(), sprite(nullptr) {
-	// load API
+	// prepare environment
 	load_api();
 
 	// run command
@@ -36,7 +36,7 @@ Script::Script(const std::string & command) : path("behaviours"), script(command
 }
 
 Script::Script(const Script & s) : path(s.path), script(s.script), lua(), sprite(s.sprite) {
-	// load API
+	// prepare environment
 	load_api();
 
 	// run file
@@ -44,12 +44,6 @@ Script::Script(const Script & s) : path(s.path), script(s.script), lua(), sprite
 }
 
 void Script::load_api() {
-	// load necessary API stuff
-	load_sprite();
-	load_world();
-}
-
-void Script::load_sprite() {
 	// create Sprite data type
 	lua.new_userdata<Sprite>("Sprite",
 			sol::constructors<sol::types<std::string>>(),
@@ -64,9 +58,7 @@ void Script::load_sprite() {
 
 	// set sprite as current sprite
 	lua["sprite"] = sprite;
-}
 
-void Script::load_world() {
 	// create World data type
 	lua.new_userdata<World>("World",
 			"add", &World::add,
@@ -80,9 +72,7 @@ void Script::load_world() {
 
 	// set sprite as current sprite
 	lua["world"] = Engine::get_instance().get_world();
-}
 
-void Script::load_player() {
 	// create World data type
 	lua.new_userdata<Player>("Player",
 			"hp", &Player::hp,
@@ -94,9 +84,7 @@ void Script::load_player() {
 
 	// set sprite as current sprite
 	lua["player"] = Engine::get_instance().get_world().get_player();
-}
 
-void Script::load_background() {
 	// create World data type
 	lua.new_userdata<Background>("Background",
 			sol::constructors<sol::types<std::string>>(),
