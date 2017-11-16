@@ -50,8 +50,8 @@ void Script::load_api() {
 
 			"inject", &Sprite::inject,
 
-			"pos", &Drawable::position,
-			"vel", &Drawable::velocity,
+			"pos", &Sprite::position,
+			"vel", &Sprite::velocity,
 
 			"state", &Sprite::state
 	);
@@ -77,9 +77,9 @@ void Script::load_api() {
 	lua.new_userdata<Player>("Player",
 			"hp", &Player::hp,
 
-			"pos", &Drawable::position,
-			"vel", &Drawable::velocity,
-			"state", &Sprite::state
+			"pos", &Player::position,
+			"vel", &Player::velocity,
+			"state", &Player::state
 	);
 
 	// set sprite as current sprite
@@ -93,8 +93,8 @@ void Script::load_api() {
 			"height", &Background::height,
 			"factor", &Background::factor,
 
-			"pos", &Drawable::position,
-			"vel", &Drawable::velocity
+			"pos", &Background::position,
+			"vel", &Background::velocity
 	);
 }
 
