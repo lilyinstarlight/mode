@@ -33,8 +33,6 @@ class XML {
 		std::deque<std::string> tags;
 		std::unordered_map<std::string, std::string> data;
 
-		void display() const;
-
 		void start(const char * el, const char * attr[]);
 		void end(const char * end_tag);
 		void chars(const char * text, int len);
@@ -42,6 +40,6 @@ class XML {
 		std::string make_tag() const;
 		std::string make_tag(const std::string & name) const;
 
-		void strip_whitespace(std::string & str) const;
+		std::string strip_whitespace(const std::string & str) const;
 };
 #endif

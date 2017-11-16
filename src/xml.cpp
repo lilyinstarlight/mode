@@ -1,6 +1,7 @@
 #include <cstring>
-#include <iostream>
 #include <fstream>
+#include <iostream>
+#include <regex>
 #include <sstream>
 #include <string>
 
@@ -37,15 +38,6 @@ XML::XML(const std::string& filename) : parser(NULL), tags(), data() {
 			break;
 		else
 			file.getline(buf, BUF_SIZE);
-	}
-}
-
-void XML::display() const {
-	// show key, value pairs
-	std::unordered_map<std::string, std::string>::const_iterator ptr = data.begin();
-	while (ptr != data.end()) {
-		std::cout << "(" << ptr->first << ", " << ptr->second << ")" << std::endl;
-		++ptr;
 	}
 }
 
@@ -93,28 +85,24 @@ void XML::end(const char * end_tag) {
 	tags.pop_back();
 }
 
-void XML::strip_whitespace(std::string & str) const {
+std::string XML::strip_whitespace(const std::string & str) const {
 	// remove unnecessary whitespace from string
-	int i = str.size() - 1;
-	while (i >= 0) {
-		if (str[i] == ' ' || str[i] == '\n' || str[i] == '\t') {
-			str.erase(i, 1);
-			i--;
-		}
-		else {
-			break;
-		}
-	}
+	return std::regex_replace(str, std::regex("^\\s+|\\s+$"), "");
 }
 
 void XML::chars(const char * text, int len) {
 	// make tag contents
 	std::string str(text, len);
 
-	strip_whitespace(str);
+	str = strip_whitespace(str);
 
 	if (str.size()) {
-		data[make_tag()] = str;
+		std::string tag = make_tag();
+
+		if (data.find(tag) != data.end())
+			data[tag] += "\n" + str;
+		else
+			data[tag] = str;
 	}
 }
 

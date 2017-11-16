@@ -13,13 +13,13 @@
 	</world>
 
 	<font>
-		<file>monof55.ttf</file>
+		<file>PressStart2P.ttf</file>
 		<size>16</size>
 	</font>
 
 	<hud>
-		<width>200</width>
-		<height>20</height>
+		<width>424</width>
+		<height>108</height>
 
 		<box>
 			<r>128</r>
