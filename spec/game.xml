@@ -120,10 +120,10 @@
 
 		<sheets>
 		    <idle>
-			<file>feature.idle.png</file>
+				<file>feature.idle.png</file>
 
-			<frames>4</frames>
-			<interval>100</interval>
+				<frames>4</frames>
+				<interval>100</interval>
 		    </idle>
 		</sheets>
 
@@ -148,13 +148,12 @@
 
 		<scale>1</scale>
 
-
 		<sheets>
 		    <idle>
-			<file>hero.idle.png</file>
+				<file>hero.idle.png</file>
 
-			<frames>52</frames>
-			<interval>100</interval>
+				<frames>52</frames>
+				<interval>100</interval>
 		    </idle>
 		</sheets>
 

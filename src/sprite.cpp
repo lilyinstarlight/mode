@@ -34,7 +34,7 @@ Sprite::Sprite(const std::string & name) : Drawable(name,
 
 	// load sheets for different states
 	for (const std::string & sheet : Spec::get_instance().get_subs(name + "/sheets"))
-		sheets[sheet] = ImageFactory::get_instance().get_sheet(sheet);
+		sheets[sheet] = ImageFactory::get_instance().get_sheet(name + "/sheets/" + sheet);
 
 	// set default as first sheet
 	if (sheets.size() > 0)

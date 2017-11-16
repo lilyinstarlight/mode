@@ -45,7 +45,7 @@ std::vector<std::string> Spec::get_subs(const std::string & tag) const {
 		if (slash == std::string::npos)
 			continue;
 
-		found.insert(element.first.substr(0, slash));
+		found.insert(element.first.substr(begin, slash - begin));
 	}
 
 	return std::vector<std::string>(found.begin(), found.end());
