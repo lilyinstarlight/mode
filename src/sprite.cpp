@@ -134,6 +134,6 @@ void Sprite::ignore(Observer & observer) {
 	observers.remove(&observer);
 }
 
-void Sprite::inject(const Player &) {
+void Sprite::inject() {
 	// TODO: pull up script of object script in HUD
 }

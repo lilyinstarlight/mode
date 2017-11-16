@@ -26,6 +26,9 @@ class Sprite : public Drawable {
 		void observe(Observer & observer);
 		void ignore(Observer & observer);
 
+		const Script & get_script() const { return *script; }
+		Script & get_script()             { return *script; } // caller can modify script
+
 		virtual const Image * get_image() const {
 			return sheets.at(state)->get_image(frame);
 		}
@@ -45,7 +48,7 @@ class Sprite : public Drawable {
 		std::string get_state() const         { return state; }
 		void set_state(const std::string & s) { state = s;    }
 
-		void inject(const Player & player);
+		void inject();
 
 	protected:
 		Script * script;

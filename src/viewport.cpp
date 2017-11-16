@@ -7,7 +7,7 @@ Viewport::Viewport(const World & w) :
 	position(0, 0),
 	width(Spec::get_instance().get_int("view/width")),
 	height(Spec::get_instance().get_int("view/height")),
-	tracking(nullptr) {}
+	tracking(&world.get_player()) {}
 
 void Viewport::draw() const {
 	// nothing to draw right now

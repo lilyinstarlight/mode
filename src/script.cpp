@@ -28,8 +28,11 @@ Script::Script(const std::string & name, Sprite & s) : path("behaviours"), scrip
 }
 
 Script::Script(const std::string & command) : path("behaviours"), script(command), lua(), sprite(nullptr) {
+	// load API
+	load_api();
+
 	// run command
-	lua.script(script);
+	lua.script(command);
 }
 
 Script::Script(const Script & s) : path(s.path), script(s.script), lua(), sprite(s.sprite) {

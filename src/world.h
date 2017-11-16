@@ -22,7 +22,8 @@ class World {
 		void update(unsigned int);
 		void draw(const Viewport &) const;
 
-		Player & get_player()  { return player; } // caller can modify player
+		const Player & get_player() const { return player; }
+		Player & get_player()             { return player; } // caller can modify player
 
 		int get_width() const  { return width;  }
 		int get_height() const { return height; }

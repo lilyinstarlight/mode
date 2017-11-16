@@ -17,17 +17,17 @@ class Engine {
 
 		void run();
 
-		World & get_world()       { return world;    } // caller can modify world
-		Viewport & get_viewport() { return viewport; } // caller can modify viewport
+		const World & get_world()       const { return *world;    }
+		World & get_world()                   { return *world;    } // caller can modify world
+		const Viewport & get_viewport() const { return *viewport; }
+		Viewport & get_viewport()             { return *viewport; } // caller can modify viewport
 
 	private:
 		Engine();
 		~Engine() {}
 
-		World world;
-		Viewport viewport;
-
-		Drawable * target;
+		World * world;
+		Viewport * viewport;
 
 		void draw() const;
 		void update(unsigned int ticks);

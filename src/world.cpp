@@ -36,6 +36,12 @@ void World::remove(Drawable * drawable) {
 	drawables.erase(drawable);
 }
 
+void World::draw(const Viewport & viewport) const {
+	// draw ordered drawables
+	for (Drawable * drawable : drawables)
+		drawable->draw(viewport);
+}
+
 void World::update(unsigned int ticks) {
 	// update drawables
 	for (Drawable * drawable : drawables) {
@@ -52,10 +58,4 @@ void World::update(unsigned int ticks) {
 		else if (drawable->get_x() > width - drawable->get_width())
 		  drawable->set_velocity_x(-std::abs(drawable->get_velocity_y()));
 	}
-}
-
-void World::draw(const Viewport & viewport) const {
-	// draw ordered drawables
-	for (Drawable * drawable : drawables)
-		drawable->draw(viewport);
 }

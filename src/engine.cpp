@@ -10,11 +10,12 @@ Engine & Engine::get_instance() {
 	return engine;
 }
 
-Engine::Engine() : world(), viewport(world), target(&world.get_player()) {
-	viewport.track(target);
-}
+Engine::Engine() : world(nullptr), viewport(nullptr) {}
 
 void Engine::run() {
+	world = new World();
+	viewport = new Viewport(*world);
+
 	SDL_Event event;
 	const Uint8 * keystate;
 
@@ -60,18 +61,21 @@ void Engine::run() {
 			update(ticks);
 		}
 	}
+
+	delete viewport;
+	delete world;
 }
 
 void Engine::draw() const {
 	// draw world
-	world.draw(viewport);
+	world->draw(*viewport);
 
 	// draw console and hud on top of world
-	Console::get_instance().draw(viewport);
-	HUD::get_instance().draw(viewport);
+	Console::get_instance().draw(*viewport);
+	HUD::get_instance().draw(*viewport);
 
 	// draw viewport
-	viewport.draw();
+	viewport->draw();
 
 	// swap renderer buffers
 	SDL_RenderPresent(Context::get_instance().get_renderer());
@@ -79,12 +83,12 @@ void Engine::draw() const {
 
 void Engine::update(unsigned int ticks) {
 	// update world
-	world.update(ticks);
+	world->update(ticks);
 
 	// update console and hud
 	Console::get_instance().update(ticks);
 	HUD::get_instance().update(ticks);
 
 	// update viewport
-	viewport.update(ticks);
+	viewport->update(ticks);
 }
