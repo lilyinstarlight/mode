@@ -5,8 +5,6 @@
 #include "player.h"
 
 Player::Player() : Sprite("player"), hp(64) {
-	script = new Script("player", *this);
-
 	Input::get_instance().grab("player");
 }
 

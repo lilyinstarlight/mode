@@ -84,6 +84,10 @@ Sprite::Sprite(const Sprite & s) :
 		throw std::runtime_error("Invalid collision strategy while copying sprite: " + get_name());
 }
 
+Sprite::~Sprite() {
+	delete script;
+}
+
 void Sprite::draw(const Viewport & viewport) const {
 	// draw current image in viewport
 	get_image()->draw(viewport, get_x(), get_y(), get_scale());

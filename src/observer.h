@@ -11,7 +11,7 @@ class Observer : public Sprite {
 
 		virtual void signal(const std::string & sig, const Sprite & sprite) {
 			// call script with signal
-			script->call(sig, sprite);
+			get_script().call(sig, sprite);
 		}
 
 	private:

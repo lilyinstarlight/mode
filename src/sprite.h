@@ -17,6 +17,8 @@ class Sprite : public Drawable {
 		Sprite(const std::string & name);
 		Sprite(const Sprite & s);
 
+		virtual ~Sprite();
+
 		Sprite() = delete;
 		Sprite & operator=(const Sprite & s) = delete;
 
@@ -50,7 +52,7 @@ class Sprite : public Drawable {
 
 		void inject();
 
-	protected:
+	private:
 		Script * script;
 
 		NoneCollisionStrategy none_strategy;
@@ -61,7 +63,6 @@ class Sprite : public Drawable {
 		CollisionStrategy * collision_strategy;
 		std::list<Observer *> observers;
 
-	private:
 		std::map<std::string, Sheet *> sheets;
 		std::string state;
 
