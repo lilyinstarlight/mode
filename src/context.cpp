@@ -25,6 +25,11 @@ Context::Context() : window(nullptr), renderer(nullptr) {
 
 	if (!renderer)
 		throw std::runtime_error("Failed to make renderer");
+
+	// add alpha blending
+	if(SDL_SetRenderDrawBlendMode(renderer, SDL_BLENDMODE_BLEND) < 0)
+		throw std::runtime_error("Failed to enable alpha blending: " + std::string(SDL_GetError()));
+
 }
 
 Context::~Context() {
