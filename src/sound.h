@@ -22,6 +22,9 @@ class Sound {
 		std::string path;
 
 		std::string active;
+		int active_channel;
 		std::unordered_map<std::string, Mix_Chunk *> chunks;
+
+		int fade;
 };
 #endif
