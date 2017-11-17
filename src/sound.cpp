@@ -31,8 +31,10 @@ void Sound::play(const std::string & name, int loops) {
 		chunks[name] = chunk;
 	}
 
-	if (loops < 0)
+	if (loops < 0) {
+		Mix_HaltChannel(chunks[active]);
 		active = name;
+	}
 
 	if (Mix_PlayChannel(-1, chunks[name], loops) < 0)
 		throw std::runtime_error("Failed to play audio file " + path + "/" + name + ".wav: " + std::string(Mix_GetError()));
