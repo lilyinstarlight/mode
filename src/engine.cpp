@@ -24,7 +24,7 @@ void Engine::run() {
 	bool running = true;
 	while (running) {
 		while (SDL_PollEvent(&event)) {
-			keystate = SDL_GetKeyboardState(NULL);
+			keystate = SDL_GetKeyboardState(nullptr);
 
 			if (event.type == SDL_QUIT) {
 				// handle closing window

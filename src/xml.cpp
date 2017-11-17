@@ -7,9 +7,9 @@
 
 #include "xml.h"
 
-XML::XML(const std::string& filename) : parser(NULL), tags(), data() {
+XML::XML(const std::string& filename) : parser(nullptr), tags(), data() {
 	// create parser
-	parser = XML_ParserCreate(NULL);
+	parser = XML_ParserCreate(nullptr);
 
 	if (!parser) {
 		throw std::runtime_error("Could not create parser");

@@ -49,7 +49,7 @@ int Text::write_line(SDL_Renderer * renderer, const std::string & text, int x, i
     SDL_Rect dst = {x, y, width, height};
 
     // render texture
-    SDL_RenderCopy(renderer, texture, NULL, &dst);
+    SDL_RenderCopy(renderer, texture, nullptr, &dst);
     SDL_DestroyTexture(texture);
 
     // return next line position

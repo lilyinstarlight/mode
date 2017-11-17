@@ -17,13 +17,13 @@ Context::Context() : window(nullptr), renderer(nullptr) {
 	std::string title = Spec::get_instance().get_str("title");
 	window = SDL_CreateWindow(title.c_str(), SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, Spec::get_instance().get_int("view/width"), Spec::get_instance().get_int("view/height"), SDL_WINDOW_SHOWN);
 
-	if (window == NULL)
+	if (!window)
 		throw std::runtime_error("Failed to make window: " + std::string(SDL_GetError()));
 
 	// create renderer
 	renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_PRESENTVSYNC);
 
-	if (renderer == NULL)
+	if (!renderer)
 		throw std::runtime_error("Failed to make renderer");
 }
 

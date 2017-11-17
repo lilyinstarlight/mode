@@ -22,10 +22,7 @@ void Image::draw(const Viewport & viewport, int x, int y) const {
 
 void Image::draw(const Viewport & viewport, int x, int y, float scale) const {
 	// draw within viewport
-	x -= viewport.get_x();
-	y -= viewport.get_y();
-
-	SDL_Rect dest = {x, y, static_cast<int>(scale*view.h), static_cast<int>(scale*view.w)};
+	SDL_Rect dest = {static_cast<int>(x - viewport.get_x()), static_cast<int>(y - viewport.get_y()), static_cast<int>(scale*view.h), static_cast<int>(scale*view.w)};
 
 	// copy image into renderer
 	SDL_RenderCopy(renderer, texture, &view, &dest);
@@ -34,7 +31,7 @@ void Image::draw(const Viewport & viewport, int x, int y, float scale) const {
 void Image::draw(const Viewport &, int sx, int sy, int dx, int dy) const {
 	// draw at given location
 	SDL_Rect src = {sx, sy, view.w, view.h};
-	SDL_Rect dst = {dx, dy, surface->w, surface->h};
+	SDL_Rect dst = {dx, dy, view.w, view.h};
 
 	// copy image into renderer
 	SDL_RenderCopy(renderer, texture, &src, &dst);
