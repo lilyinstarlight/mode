@@ -100,7 +100,7 @@ void Sprite::update(unsigned int ticks) {
 	// run script update as necessary
 	script_timer += ticks;
 	if (script_timer > script_interval) {
-		script->call("update", ticks);
+		script->call("update", script_timer);
 		script_timer = 0;
 	}
 
