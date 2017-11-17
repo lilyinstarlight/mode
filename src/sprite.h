@@ -25,30 +25,21 @@ class Sprite : public Drawable {
 		virtual void draw(const Viewport & viewport) const;
 		virtual void update(unsigned int ticks);
 
-		void observe(Observer & observer);
-		void ignore(Observer & observer);
+		virtual const Image * get_image() const;
+
+		virtual int get_width() const;
+		virtual int get_height() const;
+
+		virtual const SDL_Surface * get_surface() const;
 
 		const Script & get_script() const { return *script; }
 		Script & get_script()             { return *script; } // caller can modify script
 
-		virtual const Image * get_image() const {
-			return sheets.at(state)->get_image(frame);
-		}
-
-		int get_width() const {
-			return get_scale()*sheets.at(state)->get_image(frame)->get_width();
-		}
-
-		int get_height() const {
-			return get_scale()*sheets.at(state)->get_image(frame)->get_height();
-		}
-
-		virtual const SDL_Surface * get_surface() const {
-			return sheets.at(state)->get_image(frame)->get_surface();
-		}
-
 		std::string get_state() const         { return state; }
 		void set_state(const std::string & s) { state = s;    }
+
+		void observe(Observer & observer);
+		void ignore(Observer & observer);
 
 		void inject();
 

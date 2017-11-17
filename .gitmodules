@@ -1,6 +1,6 @@
-[submodule "src/lib/lua"]
-	path = src/lib/lua
-	url = https://github.com/lua/lua.git
-[submodule "src/lib/sol"]
-	path = src/lib/sol
+[submodule "lib/sol"]
+	path = lib/sol
 	url = https://github.com/Rapptz/sol.git
+[submodule "lib/lua"]
+	path = lib/lua
+	url = https://github.com/lua/lua.git

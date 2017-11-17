@@ -128,6 +128,22 @@ void Sprite::update(unsigned int ticks) {
 	set_position(get_position() + delta);
 }
 
+const Image * Sprite::get_image() const {
+	return sheets.at(state)->get_image(frame);
+}
+
+int Sprite::get_width() const {
+	return get_scale()*sheets.at(state)->get_image(frame)->get_width();
+}
+
+int Sprite::get_height() const {
+	return get_scale()*sheets.at(state)->get_image(frame)->get_height();
+}
+
+const SDL_Surface * Sprite::get_surface() const {
+	return sheets.at(state)->get_image(frame)->get_surface();
+}
+
 void Sprite::observe(Observer & observer) {
 	// add observer
 	observers.push_back(&observer);

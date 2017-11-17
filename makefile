@@ -1,11 +1,11 @@
 EXE=mode
 
 all:
-	make -C src
-	cp src/main $(EXE)
+	make -C build
+	cp build/main $(EXE)
 
 clean:
-	make -C src clean
+	make -C build clean
 	rm $(EXE)
 
 .PHONY: all clean
