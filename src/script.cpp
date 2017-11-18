@@ -14,138 +14,9 @@
 
 #include "script.h"
 
-class VectorAPI : public Script::API {
-	public:
-		VectorAPI() : x(0), y(0), def(nullptr), vector(nullptr) {}
-		VectorAPI(float vx, float vy) : x(vx), y(vy), def(new Vector2f(x, y)), vector(def) {}
-		VectorAPI(const VectorAPI & vapi) : x(vapi.x), y(vapi.y), def(nullptr), vector(vapi.vector) {};
-
-		virtual ~VectorAPI() {
-			if (def)
-				delete def;
-		}
-
-		const VectorAPI & operator=(const VectorAPI & vapi) {
-			x = vapi.x;
-			y = vapi.y;
-
-			vector = vapi.vector;
-
-			return *this;
-		}
-
-		void bind(Vector2f & vec) {
-			vector = &vec;
-		}
-
-		Vector2f & get() {
-			return *vector;
-		}
-
-		void load() {
-			if (!vector)
-				throw std::runtime_error("Uninitialized VectorAPI");
-
-			x = (*vector)[0];
-			y = (*vector)[1];
-		}
-
-		void write() {
-			(*vector)[0] = x;
-			(*vector)[1] = y;
-		}
-
-		float x, y;
-
-	private:
-		Vector2f * def;
-		Vector2f * vector;
-};
-
-class SpriteAPI : public Script::API {
-	public:
-		SpriteAPI() : state(""), pos_x(0), pos_y(0), rot(0), vel_x(0), vel_y(0), scale(0), idx(0), def(nullptr), sprite(nullptr) {}
-		SpriteAPI(const std::string & name) : state(""), pos_x(0), pos_y(0), rot(0), vel_x(0), vel_y(0), scale(0), idx(0), def(new Sprite(name)), sprite(def) {}
-		SpriteAPI(const SpriteAPI & sapi) : state(sapi.state), pos_x(sapi.pos_x), pos_y(sapi.pos_y), rot(sapi.rot), vel_x(sapi.vel_x), vel_y(sapi.vel_y), scale(sapi.scale), idx(sapi.idx), def(nullptr), sprite(sapi.sprite) {};
-
-		virtual ~SpriteAPI() {
-			if (def)
-				delete def;
-		}
-
-		const SpriteAPI & operator=(const SpriteAPI & sapi) {
-			state = sapi.state;
-
-			pos_x = sapi.pos_x;
-			pos_y = sapi.pos_y;
-			rot = sapi.rot;
-			vel_x = sapi.vel_x;
-			vel_y = sapi.vel_y;
-			scale = sapi.scale;
-			idx = sapi.idx;
-
-			sprite = sapi.sprite;
-
-			return *this;
-		}
-
-		void bind(Sprite & s) {
-			sprite = &s;
-		}
-
-		Sprite & get() {
-			return *sprite;
-		}
-
-		void load() {
-			if (!sprite)
-				throw std::runtime_error("Uninitialized SpriteAPI");
-
-			state = sprite->get_state();
-
-			pos_x = sprite->get_x();
-			pos_y = sprite->get_y();
-			rot = sprite->get_rotation();
-			vel_x = sprite->get_velocity_x();
-			vel_y = sprite->get_velocity_y();
-			scale = sprite->get_scale();
-			idx = sprite->get_index();
-		}
-
-		void write() {
-			sprite->set_state(state);
-
-			sprite->set_x(pos_x);
-			sprite->set_y(pos_y);
-			sprite->set_rotation(rot);
-			sprite->set_velocity_x(vel_x);
-			sprite->set_velocity_y(vel_y);
-			sprite->set_scale(scale);
-			sprite->set_index(idx);
-		}
-
-		void inject() {
-			sprite->inject();
-		}
-
-		std::string state;
-
-		float pos_x;
-		float pos_y;
-		float rot;
-		float vel_x;
-		float vel_y;
-		float scale;
-		int idx;
-
-	private:
-		Sprite * def;
-		Sprite * sprite;
-};
-
 // TODO: load other api stuff
 
-Script::Script(const std::string & name, Sprite & s) : path("behaviours"), script(""), lua(), apis{}, sprite(&s) {
+Script::Script(const std::string & name, Sprite & s) : path("behaviours"), script(""), lua(), sprite(&s) {
 	// load file
 	load_file(path + "/" + name + ".lua");
 
@@ -153,70 +24,122 @@ Script::Script(const std::string & name, Sprite & s) : path("behaviours"), scrip
 	load_api();
 
 	// run script
-	load();
 	lua.script(script);
-	write();
 }
 
-Script::Script(const std::string & command) : path("behaviours"), script(command), lua(), apis{}, sprite(nullptr) {
+Script::Script(const std::string & command) : path("behaviours"), script(command), lua(), sprite(nullptr) {
 	// prepare environment
 	load_api();
 
 	// run command
-	load();
 	lua.script(command);
-	write();
 }
 
-Script::Script(const Script & s) : path(s.path), script(s.script), lua(), apis{}, sprite(s.sprite) {
+Script::Script(const Script & s) : path(s.path), script(s.script), lua(), sprite(s.sprite) {
 	// prepare environment
 	load_api();
 
 	// run file
-	load();
 	lua.script(script);
-	write();
-}
-
-Script::~Script() {
-	for (API * api : apis)
-		delete api;
 }
 
 void Script::load_api() {
 	lua.open_libraries(sol::lib::base);
 
 	// create Vector data type
-	lua.new_userdata<VectorAPI>("Vector",
-			sol::constructors<sol::types<float, float>>(),
+	lua.new_usertype<Vector2f>("Vector",
+			"new", sol::constructors<Vector2f(float, float)>(),
 
-			"x", &VectorAPI::x,
-			"y", &VectorAPI::y
+			"x", sol::property(&Vector2f::get_x, &Vector2f::set_x),
+			"y", sol::property(&Vector2f::get_y, &Vector2f::set_y)
 	);
 
 	// create Sprite data type
-	lua.new_userdata<SpriteAPI>("Sprite",
-			sol::constructors<sol::types<std::string>>(),
+	lua.new_usertype<Sprite>("Sprite",
+			"new", sol::constructors<Sprite(std::string)>(),
 
-			"inject", &SpriteAPI::inject,
+			"observe", [this](Sprite & s) { s.observe(*sprite); },
+			"ignore", [this](Sprite & s) { s.ignore(*sprite); },
 
-			"state", &SpriteAPI::state,
+			"inject", &Sprite::inject,
 
-			"pos_x", &SpriteAPI::pos_x,
-			"pos_y", &SpriteAPI::pos_y,
-			"rot", &SpriteAPI::rot,
-			"vel_x", &SpriteAPI::vel_x,
-			"vel_y", &SpriteAPI::vel_y,
-			"scale", &SpriteAPI::scale,
-			"idx", &SpriteAPI::idx
+			"state", sol::property(&Sprite::get_state, &Sprite::set_state),
+
+			"width", sol::property(&Sprite::get_width),
+			"height", sol::property(&Sprite::get_height),
+
+			"pos", sol::property(&Sprite::get_position, &Sprite::set_position),
+			"rot", sol::property(&Sprite::get_rotation, &Sprite::set_rotation),
+			"vel", sol::property(&Sprite::get_velocity, &Sprite::set_velocity),
+			"scale", sol::property(&Sprite::get_scale, &Sprite::set_scale),
+			"idx", sol::property(&Sprite::get_index, &Sprite::set_index)
 	);
 
 	// set sprite as current sprite
-	SpriteAPI * sapi = new SpriteAPI();
-	sapi->bind(*sprite);
+	lua["sprite"] = sprite;
 
-	lua["sprite"] = sapi;
-	apis.push_back(sapi);
+	// create Sprite data type
+	lua.new_usertype<Player>("Player",
+			"new", sol::no_constructor,
+
+			"observe", [this](Player & p) { p.observe(*sprite); },
+			"ignore", [this](Player & p) { p.ignore(*sprite); }
+	);
+
+	// set sprite as current sprite
+	lua["player"] = Engine::get_instance().get_world().get_player();
+
+	// create Sprite data type
+	lua.new_usertype<Background>("Background",
+			"new", sol::constructors<Background(std::string)>(),
+
+			"factor", sol::property(&Background::get_factor, &Background::set_factor),
+
+			"width", sol::property(&Background::get_width),
+			"height", sol::property(&Background::get_height),
+
+			"pos", sol::property(&Background::get_position, &Background::set_position),
+			"rot", sol::property(&Background::get_rotation, &Background::set_rotation),
+			"vel", sol::property(&Background::get_velocity, &Background::set_velocity),
+			"scale", sol::property(&Background::get_scale, &Background::set_scale),
+			"idx", sol::property(&Background::get_index, &Background::set_index)
+	);
+
+	// create Sprite data type
+	lua.new_usertype<World>("World",
+			"new", sol::no_constructor,
+
+			"add_sprite", [](World & w, Sprite & s) { w.add(s); },
+			"remove_sprite", [](World & w, Sprite & s) { w.remove(s); },
+
+			"add_background", [](World & w, Background & b) { w.add(b); },
+			"remove_background", [](World & w, Background & b) { w.remove(b); },
+
+			"width", sol::property(&World::get_width),
+			"height", sol::property(&World::get_height)
+	);
+
+	// set sprite as current sprite
+	lua["world"] = Engine::get_instance().get_world();
+
+	// create Sprite data type
+	lua.new_usertype<Input>("Input",
+			"new", sol::no_constructor,
+
+			"grab", &Input::grab,
+			"relesse", &Input::release,
+			"check", &Input::check,
+
+			"event", sol::property([this](Input &) { return lua.create_table_with(
+					// TODO: add keyboard, mousemotion and mousebutton events
+			); }),
+			"keystate", sol::property([this](Input &) { return lua.create_table_with(
+					// TODO: add keys
+			); })
+	);
+
+	// set sprite as current sprite
+	lua["world"] = Engine::get_instance().get_world();
 }
 
 void Script::load_file(const std::string & filename) {
@@ -225,14 +148,4 @@ void Script::load_file(const std::string & filename) {
 	if (!file)
 		throw std::runtime_error("Failed to load script " + filename);
 	script = std::string(std::istreambuf_iterator<char>(file), std::istreambuf_iterator<char>());
-}
-
-void Script::load() {
-	for (API * api : apis)
-		api->load();
-}
-
-void Script::write() {
-	for (API * api : apis)
-		api->write();
 }

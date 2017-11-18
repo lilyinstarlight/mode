@@ -1,8 +1,6 @@
 #include <iostream>
 #include <string>
 
-#include <sol/sol.hpp>
-
 #include "engine.h"
 
 int main(int, char * []) {

@@ -8,10 +8,11 @@
 class Player : public Sprite {
 	public:
 		Player();
+		Player(const Player & player);
+
 		virtual ~Player();
 
-		Player(const Player & console) = delete;
-		const Player & operator=(const Player & console) = delete;
+		const Player & operator=(const Player & player) = delete;
 
 		void set_hp(int val) { hp = val;  }
 		int get_hp()   const { return hp; }
@@ -20,7 +21,5 @@ class Player : public Sprite {
 
 	private:
 		int hp;
-
-		Vector2f movement;
 };
 #endif

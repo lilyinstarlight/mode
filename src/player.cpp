@@ -5,9 +5,11 @@
 
 #include "player.h"
 
-Player::Player() : Sprite("player"), hp(64), movement(0, 0) {
+Player::Player() : Sprite("player"), hp(64) {
 	Input::get_instance().grab("player");
 }
+
+Player::Player(const Player & player) : Sprite("player"), hp(player.hp) {}
 
 Player::~Player() {
 	Input::get_instance().release("player");
@@ -19,8 +21,7 @@ void Player::update(unsigned int ticks) {
 		const Uint8 * keystate = Input::get_instance().get_keystate();
 
 		// stop movement
-		movement[0] = 0.0f;
-		movement[1] = 0.0f;
+		Vector2f movement(0.0f, 0.0f);
 
 		// add wasd controls
 		if (keystate[SDL_SCANCODE_A])

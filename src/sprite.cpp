@@ -1,7 +1,6 @@
 #include <cmath>
 
 #include "imagefactory.h"
-#include "observer.h"
 #include "spec.h"
 
 #include "sprite.h"
@@ -111,14 +110,14 @@ void Sprite::update(unsigned int ticks) {
 	// run script obverse for observers as necessary
 	observer_timer += ticks;
 	if (observer_timer > observer_interval) {
-		for (Observer * observer : observers)
+		for (Sprite * observer : observers)
 			observer->signal("observe", *this);
 
 		observer_timer = 0;
 	}
 
 	// check collision with observers
-	for (Observer * observer : observers) {
+	for (Sprite * observer : observers) {
 		if (collision_strategy->check(*this, *observer))
 			observer->signal("collide", *this);
 	}
@@ -140,14 +139,19 @@ const SDL_Surface * Sprite::get_surface() const {
 	return sheets.at(state)->get_image(frame)->get_surface();
 }
 
-void Sprite::observe(Observer & observer) {
+void Sprite::observe(Sprite & observer) {
 	// add observer
 	observers.push_back(&observer);
 }
 
-void Sprite::ignore(Observer & observer) {
+void Sprite::ignore(Sprite & observer) {
 	// remove observer
 	observers.remove(&observer);
+}
+
+void Sprite::signal(const std::string & sig, const Sprite & sprite) {
+	// call script with signal
+	get_script().call(sig, sprite);
 }
 
 void Sprite::inject() {

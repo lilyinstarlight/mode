@@ -1,7 +1,8 @@
+CC=gcc
 CXX=g++
 
-CXXFLAGS=-std=c++11 -fsanitize=address -ggdb -Wall -Wpedantic -Wextra -Weffc++ -Werror `sdl2-config --cflags` -isystem $(LIBDIR) -I `sdl2-config --prefix`/include/
-LDFLAGS=-fsanitize=address
+CXXFLAGS=-std=c++14 -fsanitize=address -ggdb -Wall -Wpedantic -Wextra -Weffc++ -Werror `sdl2-config --cflags` -isystem $(LIBDIR) -I `sdl2-config --prefix`/include/
+LDFLAGS=-std=c++14 -fsanitize=address
 LDLIBS=-lm -ldl -lexpat `sdl2-config --libs` -lSDL2_image -lSDL2_ttf -lSDL2_mixer
 
 ROOT=..
@@ -32,7 +33,7 @@ all: $(DEP) main
 main: $(OBJ) $(LIBDIR)/lua/liblua.a
 
 $(LIBDIR)/lua/liblua.a: $(LIBDIR)/lua/makefile
-	make -C $(LIBDIR)/lua a
+	make -C $(LIBDIR)/lua CC=$(CC) a
 
 clean:
 	$(RM) $(LIBDIR)/lua/{*.d,*.o,*.a,lua}

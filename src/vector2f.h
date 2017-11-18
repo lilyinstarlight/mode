@@ -28,6 +28,11 @@ class Vector2f {
 		const Vector2f & operator+=(const Vector2f & other);
 		const Vector2f & operator-=(const Vector2f & other);
 
+		float get_x() const  { return x; }
+		void set_x(float vx) { x = vx;   }
+		float get_y() const  { return y; }
+		void set_y(float vy) { y = vy;   }
+
 		float magnitude() const;
 		float square_magnitude() const;
 		Vector2f normalize() const;

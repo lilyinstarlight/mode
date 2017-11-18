@@ -10,8 +10,6 @@
 #include "script.h"
 #include "sheet.h"
 
-class Observer;
-
 class Sprite : public Drawable {
 	public:
 		Sprite(const std::string & name);
@@ -38,8 +36,10 @@ class Sprite : public Drawable {
 		std::string get_state() const         { return state; }
 		void set_state(const std::string & s) { state = s;    }
 
-		void observe(Observer & observer);
-		void ignore(Observer & observer);
+		void observe(Sprite & observer);
+		void ignore(Sprite & observer);
+
+		void signal(const std::string & sig, const Sprite & sprite);
 
 		void inject();
 
@@ -52,7 +52,7 @@ class Sprite : public Drawable {
 		PixelCollisionStrategy pixel_strategy;
 
 		CollisionStrategy * collision_strategy;
-		std::list<Observer *> observers;
+		std::list<Sprite *> observers;
 
 		std::map<std::string, Sheet *> sheets;
 		std::string state;
