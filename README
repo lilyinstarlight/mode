@@ -1,7 +1,3 @@
-=== NOTE ===
-While I finished the framework, I did not finish putting in game elements for this submission. I'm submitting the framework only for now since it represents a rather large amount of work in writing my own framework with the required features from the spec. I'll submit a playable version sometime over the next three days. Thank you for understanding!
-=== ENDNOTE ===
-
 Name: Foster McLane
 Course: CPSC 4160
 Clemson Email Address: fmclane@g.clemson.edu
@@ -11,8 +7,24 @@ Project due date: 2017-11-13
 Project description: Create an early playable game with a controllable player, HUD, collision detection, and AI.
 
 The easiest part of this project: I found coming up with ideas for the framework was easy. It's the making it happen that was hard.
-Problems that I had in completing this project: I sorta started adding so much functionality that I got very bogged down. After writing 1612 source lines of code, I had a new framework I called the "hacker" framework, but very little time to actually test and compose game elements using the framework. Testing and feature completeness will come with project 5.
+Problems that I had in completing this project: I sorta started adding so much functionality that I got very bogged down. After writing 1700+ source lines of code, I had a new framework I called the "hacker" framework, but very little time to actually test and compose game elements using the framework. Testing and feature completeness will come with project 5.
 
-Hope you enjoy an early preview of Mode, a side-scrolling puzzle platformer where you make the rules!
+Issues:
+* the sprites aren't showing up right for some reason - their sizes are also wrong
+* the music is just a placeholder - I've composed a little bit but nothing of note
+* the backgrounds are just placeholers - I still need to adapt a background mockup I have
+* the backgrounds do not properly track against the viewport - I copied this code from tracker so I don't know what's going on here
+* scripting does not handle collision detection - collision detection code is there but no actions are taken at the moment since the observer pattern is not yet in the script API
+* scripting does not handle AI - right now it just demonstrates enforcing gravity with it but can observe the player and take actions
+
+I've got some resources at https://github.com/ProjectPyLink/PyLink/tree/master/pylink/game/res I plan on recreating and merging.
+
+Extras:
+* sound
+* scripting
+* console
+* animation states
+
+I hope you enjoy an early preview of Mode, a side-scrolling puzzle platformer where you make the rules!
 
 Fund our Kickstarter today and we will totally ship the game and not just take your money!
