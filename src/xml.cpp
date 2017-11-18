@@ -1,6 +1,5 @@
 #include <cstring>
 #include <fstream>
-#include <iostream>
 #include <regex>
 #include <sstream>
 #include <string>
@@ -30,8 +29,7 @@ XML::XML(const std::string& filename) : parser(nullptr), tags(), data() {
 	file.getline(buf, BUF_SIZE);
 	while (true) {
 		if (!XML_Parse(parser, buf, std::strlen(buf), 0)) {
-			std::cerr << "Parse error at line " << XML_GetCurrentLineNumber(parser) << ": " << XML_ErrorString(XML_GetErrorCode(parser)) << std::endl;
-			throw std::runtime_error("Could not parse file: " + filename);
+			throw std::runtime_error("Could not parse file: " + filename + ": line " + std::to_string(XML_GetCurrentLineNumber(parser)) + ": " + XML_ErrorString(XML_GetErrorCode(parser)));
 		}
 
 		if (file.eof())

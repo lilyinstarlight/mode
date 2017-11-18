@@ -1,10 +1,11 @@
 #include <SDL.h>
 
 #include "input.h"
+#include "spec.h"
 
 #include "player.h"
 
-Player::Player() : Sprite("player"), hp(64) {
+Player::Player() : Sprite("player"), hp(64), movement(0, 0) {
 	Input::get_instance().grab("player");
 }
 
@@ -17,19 +18,23 @@ void Player::update(unsigned int ticks) {
 	if (Input::get_instance().check("player")) {
 		const Uint8 * keystate = Input::get_instance().get_keystate();
 
-		// stop velocity
-		set_velocity_x(0.0f);
-		set_velocity_y(0.0f);
+		// stop movement
+		movement[0] = 0.0f;
+		movement[1] = 0.0f;
 
 		// add wasd controls
 		if (keystate[SDL_SCANCODE_A])
-			set_velocity_x(get_velocity_x() - 1.0f);
+			movement[0] -= Spec::get_instance().get_float("player/speed/left");
 		if (keystate[SDL_SCANCODE_D])
-			set_velocity_x(get_velocity_x() + 1.0f);
+			movement[0] += Spec::get_instance().get_float("player/speed/right");
 		if (keystate[SDL_SCANCODE_W])
-			set_velocity_y(get_velocity_y() - 1.0f);
+			movement[1] -= Spec::get_instance().get_float("player/speed/up");
 		if (keystate[SDL_SCANCODE_S])
-			set_velocity_y(get_velocity_y() + 1.0f);
+			movement[1] += Spec::get_instance().get_float("player/speed/down");
+
+		// add movement to velocity
+		set_velocity_x(movement[0]);
+		set_velocity_y(movement[1]);
 	}
 
 	Sprite::update(ticks);

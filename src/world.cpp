@@ -57,6 +57,25 @@ void World::update(unsigned int ticks) {
 
 		// set position based on velocity delta
 		Vector2f pos = drawable->get_position() + drawable->get_velocity()*ticks/1000;
-		drawable->set_position(pos.clamp(Vector2f(0, 0), Vector2f(width - drawable->get_width(), height - drawable->get_height())));
+		drawable->set_position(pos);
+
+		// push away from edges
+		if (drawable->get_x() < 0 && drawable->get_velocity_x() < 0) {
+			drawable->set_x(0);
+			drawable->set_velocity_x(0);
+		}
+		else if (drawable->get_x() > width - drawable->get_width() && drawable->get_velocity_x() > 0) {
+			drawable->set_x(width - drawable->get_width());
+			drawable->set_velocity_x(0);
+		}
+
+		if (drawable->get_y() < 0 && drawable->get_velocity_y() < 0) {
+			drawable->set_y(0);
+			drawable->set_velocity_y(0);
+		}
+		else if (drawable->get_y() > height - drawable->get_height() && drawable->get_velocity_y() > 0) {
+			drawable->set_y(height - drawable->get_height());
+			drawable->set_velocity_y(0);
+		}
 	}
 }

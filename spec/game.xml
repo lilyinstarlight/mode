@@ -8,8 +8,8 @@
 	</view>
 
 	<world>
-		<width>1920</width>
-		<height>1080</height>
+		<width>1600</width>
+		<height>600</height>
 	</world>
 
 	<font>
@@ -71,8 +71,8 @@
 		<type>background</type>
 		<index>0</index>
 
-		<width>1920</width>
-		<height>1080</height>
+		<width>800</width>
+		<height>600</height>
 		<factor>1</factor>
 
 		<file>background.png</file>
@@ -82,8 +82,8 @@
 		<type>background</type>
 		<index>10</index>
 
-		<width>1920</width>
-		<height>1080</height>
+		<width>800</width>
+		<height>600</height>
 		<factor>2</factor>
 
 		<file>midground.png</file>
@@ -93,8 +93,8 @@
 		<type>background</type>
 		<index>20</index>
 
-		<width>1920</width>
-		<height>1080</height>
+		<width>800</width>
+		<height>600</height>
 		<factor>10</factor>
 
 		<file>foreground.png</file>
@@ -133,6 +133,13 @@
 	<player>
 		<type>player</type>
 		<index>100</index>
+
+		<speed>
+			<left>80</left>
+			<right>80</right>
+			<up>80</up>
+			<down>80</down>
+		</speed>
 
 		<position>
 			<x>100</x>

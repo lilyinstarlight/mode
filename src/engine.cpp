@@ -22,7 +22,8 @@ void Engine::run() {
 	SDL_Event event;
 	const Uint8 * keystate;
 
-	Uint32 ticks = Clock::get_instance().get_ticks();
+	Uint32 last = Clock::get_instance().get_ticks();
+	Uint32 ticks = 0;
 
 	bool running = true;
 	while (running) {
@@ -57,11 +58,13 @@ void Engine::run() {
 
 		// increment and draw frames if time passed
 		ticks = Clock::get_instance().get_ticks();
-		if (ticks > 0) {
+		if (ticks - last > 0) {
 			Clock::get_instance().incr_frame();
 
 			draw();
-			update(ticks);
+			update(ticks - last);
+
+			last = ticks;
 		}
 	}
 
