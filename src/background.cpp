@@ -11,6 +11,8 @@ void Background::update(unsigned int) {
 
 void Background::draw(const Viewport & viewport) const {
 	// draw background across viewport
-	image->draw(viewport, 0, 0, get_x(), get_y());
+	image->draw(viewport, 0, 0, -get_x(), -get_y());
+	image->draw(viewport, 0, 0, image->get_width() - get_x(), -get_y());
+	image->draw(viewport, 0, 0, -get_x(), image->get_height() - get_y());
 }
 

@@ -44,6 +44,8 @@ Script::Script(const Script & s) : path(s.path), script(s.script), lua(), sprite
 }
 
 void Script::load_api() {
+	lua.open_libraries(sol::lib::base);
+
 	// create Sprite data type
 	lua.new_userdata<Vector2f>("Vector",
 			sol::constructors<sol::types<float, float>>(),
@@ -58,10 +60,13 @@ void Script::load_api() {
 
 			"inject", &Sprite::inject,
 
-			"pos", &Sprite::position,
-			"vel", &Sprite::velocity,
+			"state", &Sprite::state,
 
-			"state", &Sprite::state
+			"pos", &Drawable::position,
+			"rot", &Drawable::rotation,
+			"vel", &Drawable::velocity,
+			"scale", &Drawable::scale,
+			"idx", &Drawable::index
 	);
 
 	// set sprite as current sprite
@@ -85,9 +90,13 @@ void Script::load_api() {
 	lua.new_userdata<Player>("Player",
 			"hp", &Player::hp,
 
-			"pos", &Player::position,
-			"vel", &Player::velocity,
-			"state", &Player::state
+			"state", &Sprite::state,
+
+			"pos", &Drawable::position,
+			"rot", &Drawable::rotation,
+			"vel", &Drawable::velocity,
+			"scale", &Drawable::scale,
+			"idx", &Drawable::index
 	);
 
 	// set player
@@ -101,8 +110,11 @@ void Script::load_api() {
 			"height", &Background::height,
 			"factor", &Background::factor,
 
-			"pos", &Background::position,
-			"vel", &Background::velocity
+			"pos", &Drawable::position,
+			"rot", &Drawable::rotation,
+			"vel", &Drawable::velocity,
+			"scale", &Drawable::scale,
+			"idx", &Drawable::index
 	);
 }
 
