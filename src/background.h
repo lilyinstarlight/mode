@@ -3,7 +3,6 @@
 #include <string>
 
 #include "drawable.h"
-#include "script.h"
 #include "viewport.h"
 
 class Background : public Drawable {
@@ -28,7 +27,5 @@ class Background : public Drawable {
 		float factor;
 
 		const Image * image;
-
-	friend Script;
 };
 #endif

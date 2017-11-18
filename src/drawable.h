@@ -5,7 +5,6 @@
 #include <SDL.h>
 
 #include "image.h"
-#include "script.h"
 #include "vector2f.h"
 
 class Drawable {
@@ -60,8 +59,6 @@ class Drawable {
 		Vector2f velocity;
 		float scale;
 		int index;
-
-	friend Script;
 };
 
 class DrawablePointerCompare {

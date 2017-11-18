@@ -1,8 +1,6 @@
 #ifndef VECTOR2F_H
 #define VECTOR2F_H
 
-#include "script.h"
-
 class Vector2f {
 	public:
 		static constexpr float EPSILON = 0.001;
@@ -39,8 +37,6 @@ class Vector2f {
 
 	private:
 		float x, y;
-
-	friend Script;
 };
 
 Vector2f operator*(float scale, const Vector2f & v);

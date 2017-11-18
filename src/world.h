@@ -4,7 +4,6 @@
 
 #include "drawable.h"
 #include "player.h"
-#include "script.h"
 
 class Viewport;
 
@@ -34,7 +33,5 @@ class World {
 
 		Player * player;
 		std::set<Drawable *, DrawablePointerCompare> drawables; // compare points to keep drawables unique and ordered
-
-	friend Script;
 };
 #endif

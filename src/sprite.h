@@ -65,7 +65,5 @@ class Sprite : public Drawable {
 		float frame_timer;
 		float script_timer;
 		float observer_timer;
-
-	friend Script;
 };
 #endif
