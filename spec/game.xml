@@ -106,7 +106,7 @@
 
 		<position>
 			<x>600</x>
-			<y>50</y>
+			<y>250</y>
 		</position>
 
 		<rotation>0</rotation>
@@ -136,7 +136,7 @@
 
 		<position>
 			<x>100</x>
-			<y>50</y>
+			<y>250</y>
 		</position>
 
 		<rotation>0</rotation>

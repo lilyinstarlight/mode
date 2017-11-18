@@ -122,10 +122,6 @@ void Sprite::update(unsigned int ticks) {
 		if (collision_strategy->check(*this, *observer))
 			observer->signal("collide", *this);
 	}
-
-	// set position based on velocity delta
-	Vector2f delta = get_velocity()*static_cast<float>(ticks)*0.001;
-	set_position(get_position() + delta);
 }
 
 const Image * Sprite::get_image() const {

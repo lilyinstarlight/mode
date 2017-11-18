@@ -14,6 +14,9 @@ Engine::Engine() : world(nullptr), viewport(nullptr) {}
 
 void Engine::run() {
 	world = new World();
+
+	world->init();
+
 	viewport = new Viewport(*world);
 
 	SDL_Event event;

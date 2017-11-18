@@ -45,6 +45,14 @@ Script::Script(const Script & s) : path(s.path), script(s.script), lua(), sprite
 
 void Script::load_api() {
 	// create Sprite data type
+	lua.new_userdata<Vector2f>("Vector",
+			sol::constructors<sol::types<float, float>>(),
+
+			"x", &Vector2f::x,
+			"y", &Vector2f::y
+	);
+
+	// create Sprite data type
 	lua.new_userdata<Sprite>("Sprite",
 			sol::constructors<sol::types<std::string>>(),
 
@@ -70,7 +78,7 @@ void Script::load_api() {
 			"height", &World::height
 	);
 
-	// set sprite as current sprite
+	// set world
 	lua["world"] = Engine::get_instance().get_world();
 
 	// create World data type
@@ -82,7 +90,7 @@ void Script::load_api() {
 			"state", &Player::state
 	);
 
-	// set sprite as current sprite
+	// set player
 	lua["player"] = Engine::get_instance().get_world().get_player();
 
 	// create World data type

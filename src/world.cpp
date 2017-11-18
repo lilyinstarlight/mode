@@ -1,3 +1,4 @@
+#include <cmath>
 #include <string>
 
 #include "background.h"
@@ -7,7 +8,12 @@
 
 #include "world.h"
 
-World::World() : width(Spec::get_instance().get_int("world/width")), height(Spec::get_instance().get_int("world/height")), player(), drawables{&player} {
+World::World() : width(Spec::get_instance().get_int("world/width")), height(Spec::get_instance().get_int("world/height")), player(nullptr), drawables{} {}
+
+void World::init() {
+	player = new Player();
+	drawables.insert(player);
+
 	// get top level elements and add applicable ones to drawables
 	for (const std::string & str : Spec::get_instance().get_tops()) {
 		if (Spec::get_instance().check(str + "/type")) {
@@ -26,8 +32,7 @@ World::World() : width(Spec::get_instance().get_int("world/width")), height(Spec
 World::~World() {
 	// free added drawables
 	for (Drawable * drawable : drawables) {
-		if (drawable != &player)
-			delete drawable;
+		delete drawable;
 	}
 }
 
@@ -50,15 +55,8 @@ void World::update(unsigned int ticks) {
 	for (Drawable * drawable : drawables) {
 		drawable->update(ticks);
 
-		// push away from edges
-		if (drawable->get_y() < 0)
-		  drawable->set_velocity_y(std::abs(drawable->get_velocity_y()));
-		else if (drawable->get_y() > height - drawable->get_height())
-		  drawable->set_velocity_y(-std::abs(drawable->get_velocity_y()));
-
-		if (drawable->get_x() < 0)
-		  drawable->set_velocity_x(std::abs(drawable->get_velocity_y()));
-		else if (drawable->get_x() > width - drawable->get_width())
-		  drawable->set_velocity_x(-std::abs(drawable->get_velocity_y()));
+		// set position based on velocity delta
+		Vector2f pos = drawable->get_position() + drawable->get_velocity()*ticks/1000;
+		drawable->set_position(pos.clamp(Vector2f(0, 0), Vector2f(width - drawable->get_width(), height - drawable->get_height())));
 	}
 }

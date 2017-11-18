@@ -17,6 +17,10 @@ void Player::update(unsigned int ticks) {
 	if (Input::get_instance().check("player")) {
 		const Uint8 * keystate = Input::get_instance().get_keystate();
 
+		// stop velocity
+		set_velocity_x(0.0f);
+		set_velocity_y(0.0f);
+
 		// add wasd controls
 		if (keystate[SDL_SCANCODE_A])
 			set_velocity_x(get_velocity_x() - 1.0f);
