@@ -10,6 +10,8 @@ class Spec {
 	public:
 		static Spec & get_instance();
 
+		~Spec() {}
+
 		Spec(const Spec &) = delete;
 		Spec & operator=(const Spec &) = delete;
 
@@ -25,7 +27,6 @@ class Spec {
 
 	private:
 		Spec();
-		~Spec() {}
 
 		std::string path;
 

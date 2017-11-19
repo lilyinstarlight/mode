@@ -12,6 +12,8 @@ class Input {
 			return input;
 		}
 
+		~Input() {}
+
 		Input(const Input & input) = delete;
 		const Input & operator=(const Input & input) = delete;
 
@@ -33,8 +35,8 @@ class Input {
 		const SDL_Event & get_event() const  { return *event; }
 		void set_event(const SDL_Event & ev) { event = &ev;   }
 
-		const Uint8 * get_keystate() const  { return keystate; }
-		void set_keystate(const Uint8 * ks) { keystate = ks;   }
+		bool get_key(const SDL_Scancode & key) const { return static_cast<bool>(keystate[key]); }
+		void set_keystate(const Uint8 * ks) { keystate = ks; }
 
 	private:
 		Input() : list{}, event(nullptr), keystate(nullptr) {}

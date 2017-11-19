@@ -113,10 +113,10 @@ class Script {
 						{SDLK_y, "y"},
 						{SDLK_z, "z"},
 
-						{SDLK_UP, "up"},
 						{SDLK_LEFT, "left"},
-						{SDLK_DOWN, "down"},
 						{SDLK_RIGHT, "right"},
+						{SDLK_UP, "up"},
+						{SDLK_DOWN, "down"},
 
 						{SDLK_F1, "f1"},
 						{SDLK_F2, "f2"},
@@ -209,7 +209,15 @@ class Script {
 						{SDL_BUTTON_RIGHT, "right"},
 					};
 
-					static sol::table event;
+					static sol::table event = lua.create_table_with(
+							"type", "none",
+							"key", "",
+							"rx", 0,
+							"ry", 0,
+							"mx", 0,
+							"my", 0,
+							"btn", "none"
+					);
 
 					const SDL_Event & ev = input.get_event();
 
@@ -265,128 +273,123 @@ class Script {
 		};
 
 		template <typename T>
-		class WrapKeystate {
+		class WrapGetKey {
 			public:
-				WrapKeystate(sol::state & l) : lua(l) {}
+				WrapGetKey(sol::state & l) : lua(l) {}
 
-				sol::table * operator()(T & input) {
-					static std::unordered_map<SDL_Scancode, std::string> codes = {
-						{SDL_SCANCODE_0, "0"},
-						{SDL_SCANCODE_1, "1"},
-						{SDL_SCANCODE_2, "2"},
-						{SDL_SCANCODE_3, "3"},
-						{SDL_SCANCODE_4, "4"},
-						{SDL_SCANCODE_5, "5"},
-						{SDL_SCANCODE_6, "6"},
-						{SDL_SCANCODE_7, "7"},
-						{SDL_SCANCODE_8, "8"},
-						{SDL_SCANCODE_9, "9"},
+				bool operator()(T & input, std::string key) {
+					static std::unordered_map<std::string, SDL_Scancode> codes = {
+						{"0", SDL_SCANCODE_0},
+						{"1", SDL_SCANCODE_1},
+						{"2", SDL_SCANCODE_2},
+						{"3", SDL_SCANCODE_3},
+						{"4", SDL_SCANCODE_4},
+						{"5", SDL_SCANCODE_5},
+						{"6", SDL_SCANCODE_6},
+						{"7", SDL_SCANCODE_7},
+						{"8", SDL_SCANCODE_8},
+						{"9", SDL_SCANCODE_9},
 
-						{SDL_SCANCODE_A, "a"},
-						{SDL_SCANCODE_B, "b"},
-						{SDL_SCANCODE_C, "c"},
-						{SDL_SCANCODE_D, "d"},
-						{SDL_SCANCODE_E, "e"},
-						{SDL_SCANCODE_F, "f"},
-						{SDL_SCANCODE_G, "g"},
-						{SDL_SCANCODE_H, "h"},
-						{SDL_SCANCODE_I, "i"},
-						{SDL_SCANCODE_J, "j"},
-						{SDL_SCANCODE_K, "k"},
-						{SDL_SCANCODE_L, "l"},
-						{SDL_SCANCODE_M, "m"},
-						{SDL_SCANCODE_N, "n"},
-						{SDL_SCANCODE_O, "o"},
-						{SDL_SCANCODE_P, "p"},
-						{SDL_SCANCODE_Q, "q"},
-						{SDL_SCANCODE_R, "r"},
-						{SDL_SCANCODE_S, "s"},
-						{SDL_SCANCODE_T, "t"},
-						{SDL_SCANCODE_U, "u"},
-						{SDL_SCANCODE_V, "v"},
-						{SDL_SCANCODE_W, "w"},
-						{SDL_SCANCODE_X, "x"},
-						{SDL_SCANCODE_Y, "y"},
-						{SDL_SCANCODE_Z, "z"},
+						{"a", SDL_SCANCODE_A},
+						{"b", SDL_SCANCODE_B},
+						{"c", SDL_SCANCODE_C},
+						{"d", SDL_SCANCODE_D},
+						{"e", SDL_SCANCODE_E},
+						{"f", SDL_SCANCODE_F},
+						{"g", SDL_SCANCODE_G},
+						{"h", SDL_SCANCODE_H},
+						{"i", SDL_SCANCODE_I},
+						{"j", SDL_SCANCODE_J},
+						{"k", SDL_SCANCODE_K},
+						{"l", SDL_SCANCODE_L},
+						{"m", SDL_SCANCODE_M},
+						{"n", SDL_SCANCODE_N},
+						{"o", SDL_SCANCODE_O},
+						{"p", SDL_SCANCODE_P},
+						{"q", SDL_SCANCODE_Q},
+						{"r", SDL_SCANCODE_R},
+						{"s", SDL_SCANCODE_S},
+						{"t", SDL_SCANCODE_T},
+						{"u", SDL_SCANCODE_U},
+						{"v", SDL_SCANCODE_V},
+						{"w", SDL_SCANCODE_W},
+						{"x", SDL_SCANCODE_X},
+						{"y", SDL_SCANCODE_Y},
+						{"z", SDL_SCANCODE_Z},
 
-						{SDL_SCANCODE_UP, "up"},
-						{SDL_SCANCODE_LEFT, "left"},
-						{SDL_SCANCODE_DOWN, "down"},
-						{SDL_SCANCODE_RIGHT, "right"},
+						{"left", SDL_SCANCODE_LEFT},
+						{"right", SDL_SCANCODE_RIGHT},
+						{"up", SDL_SCANCODE_UP},
+						{"down", SDL_SCANCODE_DOWN},
 
-						{SDL_SCANCODE_F1, "f1"},
-						{SDL_SCANCODE_F2, "f2"},
-						{SDL_SCANCODE_F3, "f3"},
-						{SDL_SCANCODE_F4, "f4"},
-						{SDL_SCANCODE_F5, "f5"},
-						{SDL_SCANCODE_F6, "f6"},
-						{SDL_SCANCODE_F7, "f7"},
-						{SDL_SCANCODE_F8, "f8"},
-						{SDL_SCANCODE_F9, "f9"},
-						{SDL_SCANCODE_F10, "f10"},
-						{SDL_SCANCODE_F11, "f11"},
-						{SDL_SCANCODE_F12, "f12"},
-						{SDL_SCANCODE_F13, "f13"},
-						{SDL_SCANCODE_F14, "f14"},
-						{SDL_SCANCODE_F15, "f15"},
-						{SDL_SCANCODE_F16, "f16"},
-						{SDL_SCANCODE_F17, "f17"},
-						{SDL_SCANCODE_F18, "f18"},
-						{SDL_SCANCODE_F19, "f19"},
-						{SDL_SCANCODE_F20, "f20"},
-						{SDL_SCANCODE_F21, "f21"},
-						{SDL_SCANCODE_F22, "f22"},
-						{SDL_SCANCODE_F23, "f23"},
-						{SDL_SCANCODE_F24, "f24"},
+						{"f1", SDL_SCANCODE_F1},
+						{"f2", SDL_SCANCODE_F2},
+						{"f3", SDL_SCANCODE_F3},
+						{"f4", SDL_SCANCODE_F4},
+						{"f5", SDL_SCANCODE_F5},
+						{"f6", SDL_SCANCODE_F6},
+						{"f7", SDL_SCANCODE_F7},
+						{"f8", SDL_SCANCODE_F8},
+						{"f9", SDL_SCANCODE_F9},
+						{"f10", SDL_SCANCODE_F10},
+						{"f11", SDL_SCANCODE_F11},
+						{"f12", SDL_SCANCODE_F12},
+						{"f13", SDL_SCANCODE_F13},
+						{"f14", SDL_SCANCODE_F14},
+						{"f15", SDL_SCANCODE_F15},
+						{"f16", SDL_SCANCODE_F16},
+						{"f17", SDL_SCANCODE_F17},
+						{"f18", SDL_SCANCODE_F18},
+						{"f19", SDL_SCANCODE_F19},
+						{"f20", SDL_SCANCODE_F20},
+						{"f21", SDL_SCANCODE_F21},
+						{"f22", SDL_SCANCODE_F22},
+						{"f23", SDL_SCANCODE_F23},
+						{"f24", SDL_SCANCODE_F24},
 
-						{SDL_SCANCODE_APOSTROPHE, "'"},
-						{SDL_SCANCODE_BACKSLASH, "\\"},
-						{SDL_SCANCODE_COMMA, ","},
-						{SDL_SCANCODE_EQUALS, "="},
-						{SDL_SCANCODE_GRAVE, "`"},
-						{SDL_SCANCODE_LEFTBRACKET, "["},
-						{SDL_SCANCODE_MINUS, "-"},
-						{SDL_SCANCODE_PERIOD, "."},
-						{SDL_SCANCODE_RIGHTBRACKET, "]"},
-						{SDL_SCANCODE_SEMICOLON, ";"},
-						{SDL_SCANCODE_SLASH, "/"},
-						{SDL_SCANCODE_SPACE, " "},
+						{"'", SDL_SCANCODE_APOSTROPHE},
+						{"\\", SDL_SCANCODE_BACKSLASH},
+						{",", SDL_SCANCODE_COMMA},
+						{"=", SDL_SCANCODE_EQUALS},
+						{"`", SDL_SCANCODE_GRAVE},
+						{"[", SDL_SCANCODE_LEFTBRACKET},
+						{"-", SDL_SCANCODE_MINUS},
+						{".", SDL_SCANCODE_PERIOD},
+						{"]", SDL_SCANCODE_RIGHTBRACKET},
+						{";", SDL_SCANCODE_SEMICOLON},
+						{"/", SDL_SCANCODE_SLASH},
+						{" ", SDL_SCANCODE_SPACE},
 
-						{SDL_SCANCODE_BACKSPACE, "back"},
-						{SDL_SCANCODE_DELETE, "delete"},
-						{SDL_SCANCODE_END, "end"},
-						{SDL_SCANCODE_HOME, "home"},
-						{SDL_SCANCODE_INSERT, "insert"},
+						{"back", SDL_SCANCODE_BACKSPACE},
+						{"delete", SDL_SCANCODE_DELETE},
+						{"end", SDL_SCANCODE_END},
+						{"home", SDL_SCANCODE_HOME},
+						{"insert", SDL_SCANCODE_INSERT},
 
-						{SDL_SCANCODE_PAGEDOWN, "pgdown"},
-						{SDL_SCANCODE_PAGEUP, "pgup"},
+						{"pgdown", SDL_SCANCODE_PAGEDOWN},
+						{"pgup", SDL_SCANCODE_PAGEUP},
 
-						{SDL_SCANCODE_RETURN, "return"},
-						{SDL_SCANCODE_TAB, "tab"},
+						{"return", SDL_SCANCODE_RETURN},
+						{"tab", SDL_SCANCODE_TAB},
 
-						{SDL_SCANCODE_PRINTSCREEN, "prntscrn"},
+						{"prntscrn", SDL_SCANCODE_PRINTSCREEN},
 
-						{SDL_SCANCODE_CAPSLOCK, "caps"},
-						{SDL_SCANCODE_ESCAPE, "esc"},
-						{SDL_SCANCODE_NUMLOCKCLEAR, "num"},
-						{SDL_SCANCODE_SCROLLLOCK, "scroll"},
+						{"caps", SDL_SCANCODE_CAPSLOCK},
+						{"esc", SDL_SCANCODE_ESCAPE},
+						{"num", SDL_SCANCODE_NUMLOCKCLEAR},
+						{"scroll", SDL_SCANCODE_SCROLLLOCK},
 
-						{SDL_SCANCODE_LALT, "lalt"},
-						{SDL_SCANCODE_LCTRL, "lctrl"},
-						{SDL_SCANCODE_LSHIFT, "lshift"},
-						{SDL_SCANCODE_RALT, "ralt"},
-						{SDL_SCANCODE_RCTRL, "rctrl"},
-						{SDL_SCANCODE_RSHIFT, "rshift"},
+						{"lalt", SDL_SCANCODE_LALT},
+						{"lctrl", SDL_SCANCODE_LCTRL},
+						{"lshift", SDL_SCANCODE_LSHIFT},
+						{"ralt", SDL_SCANCODE_RALT},
+						{"rctrl", SDL_SCANCODE_RCTRL},
+						{"rshift", SDL_SCANCODE_RSHIFT},
 
-						{SDL_SCANCODE_MENU, "menu"}
+						{"menu", SDL_SCANCODE_MENU}
 					};
 
-					static sol::table keystate;
-
-					for (const std::pair<SDL_Scancode, std::string> & code : codes)
-						keystate[code.second] = input.get_keystate()[code.first];
-
-					return &keystate;
+					return input.get_key(codes[key]);
 				}
 
 			private:

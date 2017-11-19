@@ -1,11 +1,14 @@
 EXE=mode
 
+CP=cp
+RM=rm -f
+
 all:
 	+make -C build
-	cp build/main $(EXE)
+	$(CP) build/main $(EXE)
 
 clean:
 	+make -C build clean
-	rm $(EXE)
+	$(RM) $(EXE)
 
 .PHONY: all clean

@@ -16,8 +16,6 @@ class Player : public Sprite {
 		void set_hp(int val) { hp = val;  }
 		int get_hp()   const { return hp; }
 
-		virtual void update(unsigned int ticks);
-
 	private:
 		int hp;
 };

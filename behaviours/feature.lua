@@ -1,5 +1,5 @@
 function update (ticks)
-	sprite.vel.y = sprite.vel.y + ticks*80/1000
+	sprite.vel.y = sprite.vel.y + ticks
 end
 
 function observe (sprite)
