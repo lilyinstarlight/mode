@@ -1,3 +1,5 @@
+#include <iostream>
+
 #include "console.h"
 #include "hud.h"
 #include "spec.h"
@@ -53,13 +55,15 @@ void Engine::run() {
 		}
 
 		// record input event
-		Input::get_instance().set_event(&event);
+		Input::get_instance().set_event(event);
 		Input::get_instance().set_keystate(keystate);
 
 		// increment and draw frames if time passed
 		ticks = Clock::get_instance().get_ticks();
 		if (ticks - last > 0) {
 			Clock::get_instance().incr_frame();
+
+			std::cerr << Clock::get_instance().get_fps() << " FPS        \r";
 
 			draw();
 			update(ticks - last);

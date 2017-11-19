@@ -30,8 +30,8 @@ class Input {
 			return list.front() == name;
 		}
 
-		const SDL_Event * get_event() const  { return event; }
-		void set_event(const SDL_Event * ev) { event = ev;   }
+		const SDL_Event & get_event() const  { return *event; }
+		void set_event(const SDL_Event & ev) { event = &ev;   }
 
 		const Uint8 * get_keystate() const  { return keystate; }
 		void set_keystate(const Uint8 * ks) { keystate = ks;   }

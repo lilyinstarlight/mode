@@ -14,9 +14,7 @@
 
 #include "script.h"
 
-// TODO: load other api stuff
-
-Script::Script(const std::string & name, Sprite & s) : path("behaviours"), script(""), lua(), sprite(&s) {
+Script::Script(const std::string & name, Sprite & s) : path("behaviours"), script(""), lua(), sprite(s) {
 	// load file
 	load_file(path + "/" + name + ".lua");
 
@@ -27,7 +25,7 @@ Script::Script(const std::string & name, Sprite & s) : path("behaviours"), scrip
 	lua.script(script);
 }
 
-Script::Script(const std::string & command) : path("behaviours"), script(command), lua(), sprite(nullptr) {
+Script::Script(const std::string & command) : path("behaviours"), script(command), lua(), sprite(Engine::get_instance().get_world().get_player()) {
 	// prepare environment
 	load_api();
 
@@ -58,8 +56,8 @@ void Script::load_api() {
 	lua.new_usertype<Sprite>("Sprite",
 			"new", sol::constructors<Sprite(std::string)>(),
 
-			"observe", [this](Sprite & s) { s.observe(*sprite); },
-			"ignore", [this](Sprite & s) { s.ignore(*sprite); },
+			"observe", WrapObserve<Sprite, Sprite>(sprite),
+			"ignore", WrapIgnore<Sprite, Sprite>(sprite),
 
 			"inject", &Sprite::inject,
 
@@ -76,20 +74,20 @@ void Script::load_api() {
 	);
 
 	// set sprite as current sprite
-	lua["sprite"] = sprite;
+	lua["sprite"] = &sprite;
 
-	// create Sprite data type
+	// create Player data type
 	lua.new_usertype<Player>("Player",
 			"new", sol::no_constructor,
 
-			"observe", [this](Player & p) { p.observe(*sprite); },
-			"ignore", [this](Player & p) { p.ignore(*sprite); }
+			"observe", WrapObserve<Player, Sprite>(sprite),
+			"ignore", WrapIgnore<Player, Sprite>(sprite)
 	);
 
-	// set sprite as current sprite
+	// set player as current player (nil for player behaviour)
 	lua["player"] = &Engine::get_instance().get_world().get_player();
 
-	// create Sprite data type
+	// create Background data type
 	lua.new_usertype<Background>("Background",
 			"new", sol::constructors<Background(std::string)>(),
 
@@ -105,41 +103,37 @@ void Script::load_api() {
 			"idx", sol::property(&Background::get_index, &Background::set_index)
 	);
 
-	// create Sprite data type
+	// create World data type
 	lua.new_usertype<World>("World",
 			"new", sol::no_constructor,
 
-			"add_sprite", [](World & w, Sprite & s) { w.add(s); },
-			"remove_sprite", [](World & w, Sprite & s) { w.remove(s); },
+			"add_sprite", WrapAdd<World, Sprite>(),
+			"remove_sprite", WrapRemove<World, Sprite>(),
 
-			"add_background", [](World & w, Background & b) { w.add(b); },
-			"remove_background", [](World & w, Background & b) { w.remove(b); },
+			"add_background", WrapAdd<World, Background>(),
+			"remove_background", WrapRemove<World, Background>(),
 
 			"width", sol::property(&World::get_width),
 			"height", sol::property(&World::get_height)
 	);
 
-	// set sprite as current sprite
+	// set world as current world
 	lua["world"] = &Engine::get_instance().get_world();
 
-	// create Sprite data type
+	// create Input data type
 	lua.new_usertype<Input>("Input",
 			"new", sol::no_constructor,
 
 			"grab", &Input::grab,
-			"relesse", &Input::release,
+			"release", &Input::release,
 			"check", &Input::check,
 
-			"event", sol::property([this](Input &) { return lua.create_table_with(
-					// TODO: add keyboard, mousemotion and mousebutton events
-			); }),
-			"keystate", sol::property([this](Input &) { return lua.create_table_with(
-					// TODO: add keys
-			); })
+			"event", WrapEvent<Input>(lua),
+			"keystate", WrapKeystate<Input>(lua)
 	);
 
-	// set sprite as current sprite
-	lua["input"] = &Input::get_instance();
+	// set world as current world
+	lua["world"] = &Engine::get_instance().get_world();
 }
 
 void Script::load_file(const std::string & filename) {
@@ -147,5 +141,6 @@ void Script::load_file(const std::string & filename) {
 	std::ifstream file(filename);
 	if (!file)
 		throw std::runtime_error("Failed to load script " + filename);
+
 	script = std::string(std::istreambuf_iterator<char>(file), std::istreambuf_iterator<char>());
 }

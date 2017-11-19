@@ -25,15 +25,15 @@ void HUD::draw(const Viewport &) const {
 }
 
 void HUD::update(unsigned int ticks) {
-	const SDL_Event * event = Input::get_instance().get_event();
+	const SDL_Event & event = Input::get_instance().get_event();
 
 	// decrement first counter on whether this is shown at the beginning of game or not
 	if (first > 0)
 		first -= ticks;
 
-	if (event->type == SDL_KEYDOWN) {
+	if (event.type == SDL_KEYDOWN) {
 		// open hud on h
-		if (event->key.keysym.sym == SDLK_h)
+		if (event.key.keysym.sym == SDLK_h)
 			open = !open;
 	}
 }

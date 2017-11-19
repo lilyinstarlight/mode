@@ -33,7 +33,7 @@ all: $(DEP) main
 main: $(OBJ) $(LIBDIR)/lua/liblua.a
 
 $(LIBDIR)/lua/liblua.a: $(LIBDIR)/lua/makefile
-	make -C $(LIBDIR)/lua CC=$(CC) a
+	+make -C $(LIBDIR)/lua CC=$(CC) a
 
 clean:
 	$(RM) $(LIBDIR)/lua/{*.d,*.o,*.a,lua}

@@ -1,11 +1,11 @@
 EXE=mode
 
 all:
-	make -C build
+	+make -C build
 	cp build/main $(EXE)
 
 clean:
-	make -C build clean
+	+make -C build clean
 	rm $(EXE)
 
 .PHONY: all clean

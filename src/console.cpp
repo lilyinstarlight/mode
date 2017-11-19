@@ -32,36 +32,36 @@ void Console::draw(const Viewport & viewport) const {
 }
 
 void Console::update(unsigned int) {
-	const SDL_Event * event = Input::get_instance().get_event();
+	const SDL_Event & event = Input::get_instance().get_event();
 
 	if (open) {
 		// grab keyboard focus
 		if (!Input::get_instance().check("console"))
 			Input::get_instance().grab("console");
 
-		if (event->type == SDL_KEYDOWN) {
-			if (event->key.keysym.sym == SDLK_BACKQUOTE) {
+		if (event.type == SDL_KEYDOWN) {
+			if (event.key.keysym.sym == SDLK_BACKQUOTE) {
 				// stop text input
 				open = false;
 				SDL_StopTextInput();
 			}
-			else if (event->key.keysym.sym == SDLK_BACKSPACE) {
+			else if (event.key.keysym.sym == SDLK_BACKSPACE) {
 				// backspace
 				command.pop_back();
 			}
-			else if (event->key.keysym.sym == SDLK_RETURN) {
+			else if (event.key.keysym.sym == SDLK_RETURN) {
 				Script script(command);
 				command.clear();
 			}
 		}
-		else if (event->type == SDL_TEXTINPUT) {
+		else if (event.type == SDL_TEXTINPUT) {
 			// record text
-			command += event->text.text;
+			command += event.text.text;
 		}
 	}
 	else {
-		if (event->type == SDL_KEYDOWN) {
-			if (event->key.keysym.sym == SDLK_BACKQUOTE) {
+		if (event.type == SDL_KEYDOWN) {
+			if (event.key.keysym.sym == SDLK_BACKQUOTE) {
 				// open console and start text input so we get TextInput events
 				open = true;
 				SDL_StartTextInput();

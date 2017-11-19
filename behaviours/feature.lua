@@ -3,11 +3,9 @@ function update (ticks)
 end
 
 function observe (sprite)
-	print('observe')
 end
 
 function collide (sprite)
-	print('collision')
 end
 
---player.observe()
+player:observe()

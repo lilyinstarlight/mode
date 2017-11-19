@@ -24,10 +24,8 @@ Sprite::Sprite(const std::string & name) : Drawable(name,
 		sheets{},
 		state("idle"),
 		frame(0),
-		script_interval(200),
 		observer_interval(200),
 		frame_timer(0),
-		script_timer(script_interval),
 		observer_timer(observer_interval) {
 	script = new Script(name, *this);
 
@@ -65,10 +63,8 @@ Sprite::Sprite(const Sprite & s) :
 		sheets(s.sheets),
 		state(s.state),
 		frame(s.frame),
-		script_interval(500),
-		observer_interval(500),
+		observer_interval(200),
 		frame_timer(0),
-		script_timer(0),
 		observer_timer(0) {
 	// copy collision strategy
 	if (s.collision_strategy == &s.none_strategy)
@@ -93,18 +89,14 @@ void Sprite::draw(const Viewport & viewport) const {
 }
 
 void Sprite::update(unsigned int ticks) {
+	// run script update as necessary
+	script->call("update", ticks);
+
 	// increment frame as necessary
 	frame_timer += ticks;
 	if (sheets.at(state)->get_interval() > 0 && frame_timer > sheets.at(state)->get_interval()) {
 		frame = (frame + 1) % sheets.at(state)->get_frames();
 		frame_timer = 0;
-	}
-
-	// run script update as necessary
-	script_timer += ticks;
-	if (script_timer > script_interval) {
-		script->call("update", script_timer);
-		script_timer = 0;
 	}
 
 	// run script obverse for observers as necessary
@@ -149,9 +141,9 @@ void Sprite::ignore(Sprite & observer) {
 	observers.remove(&observer);
 }
 
-void Sprite::signal(const std::string & sig, const Sprite & sprite) {
+void Sprite::signal(const std::string & sig, Sprite & sprite) {
 	// call script with signal
-	script->call(sig, sprite);
+	script->call(sig, &sprite);
 }
 
 void Sprite::inject() {

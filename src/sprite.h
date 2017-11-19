@@ -30,16 +30,13 @@ class Sprite : public Drawable {
 
 		virtual const SDL_Surface * get_surface() const;
 
-		const Script & get_script() const { return *script; }
-		Script & get_script()             { return *script; } // caller can modify script
-
 		std::string get_state() const         { return state; }
 		void set_state(const std::string & s) { state = s;    }
 
 		void observe(Sprite & observer);
 		void ignore(Sprite & observer);
 
-		void signal(const std::string & sig, const Sprite & sprite);
+		void signal(const std::string & sig, Sprite & sprite);
 
 		void inject();
 
@@ -59,11 +56,9 @@ class Sprite : public Drawable {
 
 		unsigned int frame;
 
-		unsigned int script_interval;
 		unsigned int observer_interval;
 
 		float frame_timer;
-		float script_timer;
 		float observer_timer;
 };
 #endif
