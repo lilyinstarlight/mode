@@ -151,7 +151,7 @@ void Sprite::ignore(Sprite & observer) {
 
 void Sprite::signal(const std::string & sig, const Sprite & sprite) {
 	// call script with signal
-	get_script().call(sig, sprite);
+	script->call(sig, sprite);
 }
 
 void Sprite::inject() {

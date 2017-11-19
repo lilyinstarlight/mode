@@ -9,8 +9,6 @@ Player::Player() : Sprite("player"), hp(64) {
 	Input::get_instance().grab("player");
 }
 
-Player::Player(const Player & player) : Sprite("player"), hp(player.hp) {}
-
 Player::~Player() {
 	Input::get_instance().release("player");
 }

@@ -8,9 +8,7 @@
 
 #include "world.h"
 
-World::World() : width(Spec::get_instance().get_int("world/width")), height(Spec::get_instance().get_int("world/height")), player(nullptr), drawables{}, owning(true) {}
-
-World::World(const World & w) : width(w.width), height(w.height), player(w.player), drawables(w.drawables), owning(false) {}
+World::World() : width(Spec::get_instance().get_int("world/width")), height(Spec::get_instance().get_int("world/height")), player(nullptr), drawables{} {}
 
 void World::init() {
 	player = new Player();
@@ -32,11 +30,9 @@ void World::init() {
 }
 
 World::~World() {
-	if (owning) {
-		// free added drawables
-		for (Drawable * drawable : drawables) {
-			delete drawable;
-		}
+	// free added drawables
+	for (Drawable * drawable : drawables) {
+		delete drawable;
 	}
 }
 

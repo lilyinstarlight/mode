@@ -8,10 +8,9 @@
 class Player : public Sprite {
 	public:
 		Player();
-		Player(const Player & player);
-
 		virtual ~Player();
 
+		Player(const Player & player) = delete;
 		const Player & operator=(const Player & player) = delete;
 
 		void set_hp(int val) { hp = val;  }

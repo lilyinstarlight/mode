@@ -10,10 +10,9 @@ class Viewport;
 class World {
 	public:
 		World();
-		World(const World & w);
-
 		~World();
 
+		World(const World & w) = delete;
 		const World & operator=(const World & w) = delete;
 
 		void init();
@@ -34,7 +33,5 @@ class World {
 
 		Player * player;
 		std::set<Drawable *, DrawablePointerCompare> drawables; // compare points to keep drawables unique and ordered
-
-		bool owning;
 };
 #endif

@@ -87,7 +87,7 @@ void Script::load_api() {
 	);
 
 	// set sprite as current sprite
-	lua["player"] = Engine::get_instance().get_world().get_player();
+	lua["player"] = &Engine::get_instance().get_world().get_player();
 
 	// create Sprite data type
 	lua.new_usertype<Background>("Background",
@@ -120,7 +120,7 @@ void Script::load_api() {
 	);
 
 	// set sprite as current sprite
-	lua["world"] = Engine::get_instance().get_world();
+	lua["world"] = &Engine::get_instance().get_world();
 
 	// create Sprite data type
 	lua.new_usertype<Input>("Input",
@@ -139,7 +139,7 @@ void Script::load_api() {
 	);
 
 	// set sprite as current sprite
-	lua["world"] = Engine::get_instance().get_world();
+	lua["input"] = &Input::get_instance();
 }
 
 void Script::load_file(const std::string & filename) {
