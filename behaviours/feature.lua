@@ -1,3 +1,6 @@
+function dispatch (event)
+end
+
 function update (ticks)
 	sprite.vel.y = sprite.vel.y + ticks
 end

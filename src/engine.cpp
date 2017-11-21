@@ -22,7 +22,6 @@ void Engine::run() {
 	viewport = new Viewport(*world);
 
 	SDL_Event event;
-	const Uint8 * keystate;
 
 	Uint32 last = Clock::get_instance().get_ticks();
 	Uint32 ticks = 0;
@@ -30,8 +29,6 @@ void Engine::run() {
 	bool running = true;
 	while (running) {
 		while (SDL_PollEvent(&event)) {
-			keystate = SDL_GetKeyboardState(nullptr);
-
 			if (event.type == SDL_QUIT) {
 				// handle closing window
 				running = false;
@@ -52,18 +49,16 @@ void Engine::run() {
 						Clock::get_instance().pause();
 				}
 			}
-		}
 
-		// record input event
-		Input::get_instance().set_event(event);
-		Input::get_instance().set_keystate(keystate);
+			dispatch(event);
+		}
 
 		// increment and draw frames if time passed
 		ticks = Clock::get_instance().get_ticks();
 		if (ticks - last > 0) {
 			Clock::get_instance().incr_frame();
 
-			std::cerr << Clock::get_instance().get_fps() << " FPS        \r";
+			std::cout << Clock::get_instance().get_fps() << " FPS        \r";
 
 			draw();
 			update(ticks - last);
@@ -74,6 +69,18 @@ void Engine::run() {
 
 	delete viewport;
 	delete world;
+}
+
+void Engine::dispatch(const SDL_Event & event) {
+	// update world
+	world->dispatch(event);
+
+	// update console and hud
+	Console::get_instance().dispatch(event);
+	HUD::get_instance().dispatch(event);
+
+	// update viewport
+	viewport->dispatch(event);
 }
 
 void Engine::draw() const {

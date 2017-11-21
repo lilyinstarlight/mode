@@ -44,6 +44,12 @@ void World::remove(Drawable & drawable) {
 	drawables.erase(&drawable);
 }
 
+void World::dispatch(const SDL_Event & event) {
+	// draw ordered drawables
+	for (Drawable * drawable : drawables)
+		drawable->dispatch(event);
+}
+
 void World::draw(const Viewport & viewport) const {
 	// draw ordered drawables
 	for (Drawable * drawable : drawables)

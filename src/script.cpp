@@ -128,15 +128,13 @@ void Script::load_api() {
 			"release", &Input::release,
 			"check", &Input::check,
 
-			"event", sol::property(WrapEvent<Input>(lua)),
-
 			"get_key", WrapGetKey<Input>(lua)
 	);
 
 	// set world as current world
 	lua["input"] = &Input::get_instance();
 
-	// create Input data type
+	// create Spec data type
 	lua.new_usertype<Spec>("Spec",
 			"new", sol::no_constructor,
 
@@ -153,6 +151,14 @@ void Script::load_api() {
 
 	// set world as current world
 	lua["spec"] = &Spec::get_instance();
+
+	// create Event data type
+	lua.new_usertype<SDL_Event>("Event",
+			"new", sol::no_constructor,
+
+			"type", sol::property(WrapEventType(lua)),
+			"val", sol::property(WrapEventValue(lua))
+	);
 }
 
 void Script::load_file(const std::string & filename) {

@@ -29,7 +29,9 @@ class Engine {
 		World * world;
 		Viewport * viewport;
 
+		void dispatch(const SDL_Event & event);
 		void draw() const;
 		void update(unsigned int ticks);
+
 };
 #endif

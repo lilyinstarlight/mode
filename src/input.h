@@ -32,18 +32,13 @@ class Input {
 			return list.front() == name;
 		}
 
-		const SDL_Event & get_event() const  { return *event; }
-		void set_event(const SDL_Event & ev) { event = &ev;   }
-
-		bool get_key(const SDL_Scancode & key) const { return static_cast<bool>(keystate[key]); }
-		void set_keystate(const Uint8 * ks) { keystate = ks; }
+		bool get_key(const SDL_Scancode & key) const {
+			return static_cast<bool>(SDL_GetKeyboardState(nullptr)[key]);
+		}
 
 	private:
-		Input() : list{}, event(nullptr), keystate(nullptr) {}
+		Input() : list{} {}
 
 		std::list<std::string> list;
-
-		const SDL_Event * event;
-		const Uint8 * keystate;
 };
 #endif

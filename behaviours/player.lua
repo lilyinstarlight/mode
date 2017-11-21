@@ -3,8 +3,11 @@ speed_right = spec:get_float('player/speed/right')
 speed_up = spec:get_float('player/speed/up')
 speed_down = spec:get_float('player/speed/down')
 
+function dispatch (event)
+end
+
 function update (ticks)
-	if input:check("player") then
+	if input:check('player') then
 		sprite.vel.x = 0
 		sprite.vel.y = 0
 

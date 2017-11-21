@@ -13,6 +13,7 @@ class Drawable {
 
 		virtual ~Drawable() {}
 
+		virtual void dispatch(const SDL_Event & event) = 0;
 		virtual void draw(const Viewport & viewport) const = 0;
 		virtual void update(unsigned int ticks) = 0;
 

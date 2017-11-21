@@ -20,8 +20,9 @@ class World {
 		void add(Drawable & drawable);
 		void remove(Drawable & drawable);
 
-		void update(unsigned int);
-		void draw(const Viewport &) const;
+		void dispatch(const SDL_Event & event);
+		void update(unsigned int ticks);
+		void draw(const Viewport & viewport) const;
 
 		const Player & get_player() const { return *player; }
 		Player & get_player()             { return *player; } // caller can modify player

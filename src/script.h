@@ -4,6 +4,8 @@
 #include <unordered_map>
 #include <vector>
 
+#include <SDL.h>
+
 #include <sol2/sol.hpp>
 
 class Sprite;
@@ -69,11 +71,164 @@ class Script {
 		};
 
 		template <typename T>
-		class WrapEvent {
+		class WrapGetKey {
 			public:
-				WrapEvent(sol::state & l) : lua(l) {}
+				WrapGetKey(sol::state & l) : lua(l) {}
 
-				sol::table * operator()(T & input) {
+				bool operator()(T & input, std::string key) {
+					static std::unordered_map<std::string, SDL_Scancode> codes = {
+						{"0", SDL_SCANCODE_0},
+						{"1", SDL_SCANCODE_1},
+						{"2", SDL_SCANCODE_2},
+						{"3", SDL_SCANCODE_3},
+						{"4", SDL_SCANCODE_4},
+						{"5", SDL_SCANCODE_5},
+						{"6", SDL_SCANCODE_6},
+						{"7", SDL_SCANCODE_7},
+						{"8", SDL_SCANCODE_8},
+						{"9", SDL_SCANCODE_9},
+
+						{"a", SDL_SCANCODE_A},
+						{"b", SDL_SCANCODE_B},
+						{"c", SDL_SCANCODE_C},
+						{"d", SDL_SCANCODE_D},
+						{"e", SDL_SCANCODE_E},
+						{"f", SDL_SCANCODE_F},
+						{"g", SDL_SCANCODE_G},
+						{"h", SDL_SCANCODE_H},
+						{"i", SDL_SCANCODE_I},
+						{"j", SDL_SCANCODE_J},
+						{"k", SDL_SCANCODE_K},
+						{"l", SDL_SCANCODE_L},
+						{"m", SDL_SCANCODE_M},
+						{"n", SDL_SCANCODE_N},
+						{"o", SDL_SCANCODE_O},
+						{"p", SDL_SCANCODE_P},
+						{"q", SDL_SCANCODE_Q},
+						{"r", SDL_SCANCODE_R},
+						{"s", SDL_SCANCODE_S},
+						{"t", SDL_SCANCODE_T},
+						{"u", SDL_SCANCODE_U},
+						{"v", SDL_SCANCODE_V},
+						{"w", SDL_SCANCODE_W},
+						{"x", SDL_SCANCODE_X},
+						{"y", SDL_SCANCODE_Y},
+						{"z", SDL_SCANCODE_Z},
+
+						{"left", SDL_SCANCODE_LEFT},
+						{"right", SDL_SCANCODE_RIGHT},
+						{"up", SDL_SCANCODE_UP},
+						{"down", SDL_SCANCODE_DOWN},
+
+						{"f1", SDL_SCANCODE_F1},
+						{"f2", SDL_SCANCODE_F2},
+						{"f3", SDL_SCANCODE_F3},
+						{"f4", SDL_SCANCODE_F4},
+						{"f5", SDL_SCANCODE_F5},
+						{"f6", SDL_SCANCODE_F6},
+						{"f7", SDL_SCANCODE_F7},
+						{"f8", SDL_SCANCODE_F8},
+						{"f9", SDL_SCANCODE_F9},
+						{"f10", SDL_SCANCODE_F10},
+						{"f11", SDL_SCANCODE_F11},
+						{"f12", SDL_SCANCODE_F12},
+						{"f13", SDL_SCANCODE_F13},
+						{"f14", SDL_SCANCODE_F14},
+						{"f15", SDL_SCANCODE_F15},
+						{"f16", SDL_SCANCODE_F16},
+						{"f17", SDL_SCANCODE_F17},
+						{"f18", SDL_SCANCODE_F18},
+						{"f19", SDL_SCANCODE_F19},
+						{"f20", SDL_SCANCODE_F20},
+						{"f21", SDL_SCANCODE_F21},
+						{"f22", SDL_SCANCODE_F22},
+						{"f23", SDL_SCANCODE_F23},
+						{"f24", SDL_SCANCODE_F24},
+
+						{"'", SDL_SCANCODE_APOSTROPHE},
+						{"\\", SDL_SCANCODE_BACKSLASH},
+						{",", SDL_SCANCODE_COMMA},
+						{"=", SDL_SCANCODE_EQUALS},
+						{"`", SDL_SCANCODE_GRAVE},
+						{"[", SDL_SCANCODE_LEFTBRACKET},
+						{"-", SDL_SCANCODE_MINUS},
+						{".", SDL_SCANCODE_PERIOD},
+						{"]", SDL_SCANCODE_RIGHTBRACKET},
+						{";", SDL_SCANCODE_SEMICOLON},
+						{"/", SDL_SCANCODE_SLASH},
+						{" ", SDL_SCANCODE_SPACE},
+
+						{"back", SDL_SCANCODE_BACKSPACE},
+						{"delete", SDL_SCANCODE_DELETE},
+						{"end", SDL_SCANCODE_END},
+						{"home", SDL_SCANCODE_HOME},
+						{"insert", SDL_SCANCODE_INSERT},
+
+						{"pgdown", SDL_SCANCODE_PAGEDOWN},
+						{"pgup", SDL_SCANCODE_PAGEUP},
+
+						{"return", SDL_SCANCODE_RETURN},
+						{"tab", SDL_SCANCODE_TAB},
+
+						{"prntscrn", SDL_SCANCODE_PRINTSCREEN},
+
+						{"caps", SDL_SCANCODE_CAPSLOCK},
+						{"esc", SDL_SCANCODE_ESCAPE},
+						{"num", SDL_SCANCODE_NUMLOCKCLEAR},
+						{"scroll", SDL_SCANCODE_SCROLLLOCK},
+
+						{"lalt", SDL_SCANCODE_LALT},
+						{"lctrl", SDL_SCANCODE_LCTRL},
+						{"lshift", SDL_SCANCODE_LSHIFT},
+						{"ralt", SDL_SCANCODE_RALT},
+						{"rctrl", SDL_SCANCODE_RCTRL},
+						{"rshift", SDL_SCANCODE_RSHIFT},
+
+						{"menu", SDL_SCANCODE_MENU}
+					};
+
+					return input.get_key(codes[key]);
+				}
+
+			private:
+				sol::state & lua;
+		};
+
+		class WrapEventType {
+			public:
+				WrapEventType(sol::state & l) : lua(l) {}
+
+				std::string operator()(const SDL_Event & event) {
+					switch (event.type) {
+						case SDL_KEYDOWN:
+							return "keydown";
+
+						case SDL_KEYUP:
+							return "keyup";
+
+						case SDL_MOUSEMOTION:
+							return "motion";
+
+						case SDL_MOUSEBUTTONDOWN:
+							return "btndown";
+
+						case SDL_MOUSEBUTTONUP:
+							return "btnup";
+
+						default:
+							return "other";
+					}
+				}
+
+			private:
+				sol::state & lua;
+		};
+
+		class WrapEventValue {
+			public:
+				WrapEventValue(sol::state & l) : lua(l) {}
+
+				sol::table operator()(const SDL_Event & event) {
 					static std::unordered_map<SDL_Keycode, std::string> keys = {
 						{SDLK_0, "0"},
 						{SDLK_1, "1"},
@@ -209,187 +364,32 @@ class Script {
 						{SDL_BUTTON_RIGHT, "right"},
 					};
 
-					static sol::table event = lua.create_table_with(
-							"type", "none",
-							"key", "",
-							"rx", 0,
-							"ry", 0,
-							"mx", 0,
-							"my", 0,
-							"btn", "none"
-					);
-
-					const SDL_Event & ev = input.get_event();
-
-					switch (ev.type) {
+					switch (event.type) {
 						case SDL_KEYDOWN:
-							event["type"] = "keydown";
-
-							event["key"] = keys[ev.key.keysym.sym];
-							break;
-
 						case SDL_KEYUP:
-							event["type"] = "keyup";
-
-							event["key"] = keys[ev.key.keysym.sym];
-							break;
+							return lua.create_table_with(
+								"key", keys[event.key.keysym.sym]
+							);
 
 						case SDL_MOUSEMOTION:
-							event["type"] = "motion";
-							event["rx"] = ev.motion.xrel;
-							event["ry"] = ev.motion.yrel;
-
-							event["mx"] = ev.motion.x;
-							event["my"] = ev.motion.y;
-							break;
+							return lua.create_table_with(
+								"rx", event.motion.xrel,
+								"ry", event.motion.yrel,
+								"mx", event.motion.x,
+								"my", event.motion.y
+							);
 
 						case SDL_MOUSEBUTTONDOWN:
-							event["type"] = "btndown";
-
-							event["btn"] = btns[ev.button.button];
-
-							event["mx"] = ev.button.x;
-							event["my"] = ev.button.y;
-							break;
-
 						case SDL_MOUSEBUTTONUP:
-							event["type"] = "btnup";
-
-							event["btn"] = btns[ev.button.button];
-
-							event["mx"] = ev.button.x;
-							event["my"] = ev.button.y;
-							break;
+							return lua.create_table_with(
+								"btn", btns[event.button.button],
+								"mx", event.button.x,
+								"my", event.button.y
+							);
 
 						default:
-							event["type"] = "other";
+							return lua.create_table_with();
 					}
-
-					return &event;
-				}
-
-			private:
-				sol::state & lua;
-		};
-
-		template <typename T>
-		class WrapGetKey {
-			public:
-				WrapGetKey(sol::state & l) : lua(l) {}
-
-				bool operator()(T & input, std::string key) {
-					static std::unordered_map<std::string, SDL_Scancode> codes = {
-						{"0", SDL_SCANCODE_0},
-						{"1", SDL_SCANCODE_1},
-						{"2", SDL_SCANCODE_2},
-						{"3", SDL_SCANCODE_3},
-						{"4", SDL_SCANCODE_4},
-						{"5", SDL_SCANCODE_5},
-						{"6", SDL_SCANCODE_6},
-						{"7", SDL_SCANCODE_7},
-						{"8", SDL_SCANCODE_8},
-						{"9", SDL_SCANCODE_9},
-
-						{"a", SDL_SCANCODE_A},
-						{"b", SDL_SCANCODE_B},
-						{"c", SDL_SCANCODE_C},
-						{"d", SDL_SCANCODE_D},
-						{"e", SDL_SCANCODE_E},
-						{"f", SDL_SCANCODE_F},
-						{"g", SDL_SCANCODE_G},
-						{"h", SDL_SCANCODE_H},
-						{"i", SDL_SCANCODE_I},
-						{"j", SDL_SCANCODE_J},
-						{"k", SDL_SCANCODE_K},
-						{"l", SDL_SCANCODE_L},
-						{"m", SDL_SCANCODE_M},
-						{"n", SDL_SCANCODE_N},
-						{"o", SDL_SCANCODE_O},
-						{"p", SDL_SCANCODE_P},
-						{"q", SDL_SCANCODE_Q},
-						{"r", SDL_SCANCODE_R},
-						{"s", SDL_SCANCODE_S},
-						{"t", SDL_SCANCODE_T},
-						{"u", SDL_SCANCODE_U},
-						{"v", SDL_SCANCODE_V},
-						{"w", SDL_SCANCODE_W},
-						{"x", SDL_SCANCODE_X},
-						{"y", SDL_SCANCODE_Y},
-						{"z", SDL_SCANCODE_Z},
-
-						{"left", SDL_SCANCODE_LEFT},
-						{"right", SDL_SCANCODE_RIGHT},
-						{"up", SDL_SCANCODE_UP},
-						{"down", SDL_SCANCODE_DOWN},
-
-						{"f1", SDL_SCANCODE_F1},
-						{"f2", SDL_SCANCODE_F2},
-						{"f3", SDL_SCANCODE_F3},
-						{"f4", SDL_SCANCODE_F4},
-						{"f5", SDL_SCANCODE_F5},
-						{"f6", SDL_SCANCODE_F6},
-						{"f7", SDL_SCANCODE_F7},
-						{"f8", SDL_SCANCODE_F8},
-						{"f9", SDL_SCANCODE_F9},
-						{"f10", SDL_SCANCODE_F10},
-						{"f11", SDL_SCANCODE_F11},
-						{"f12", SDL_SCANCODE_F12},
-						{"f13", SDL_SCANCODE_F13},
-						{"f14", SDL_SCANCODE_F14},
-						{"f15", SDL_SCANCODE_F15},
-						{"f16", SDL_SCANCODE_F16},
-						{"f17", SDL_SCANCODE_F17},
-						{"f18", SDL_SCANCODE_F18},
-						{"f19", SDL_SCANCODE_F19},
-						{"f20", SDL_SCANCODE_F20},
-						{"f21", SDL_SCANCODE_F21},
-						{"f22", SDL_SCANCODE_F22},
-						{"f23", SDL_SCANCODE_F23},
-						{"f24", SDL_SCANCODE_F24},
-
-						{"'", SDL_SCANCODE_APOSTROPHE},
-						{"\\", SDL_SCANCODE_BACKSLASH},
-						{",", SDL_SCANCODE_COMMA},
-						{"=", SDL_SCANCODE_EQUALS},
-						{"`", SDL_SCANCODE_GRAVE},
-						{"[", SDL_SCANCODE_LEFTBRACKET},
-						{"-", SDL_SCANCODE_MINUS},
-						{".", SDL_SCANCODE_PERIOD},
-						{"]", SDL_SCANCODE_RIGHTBRACKET},
-						{";", SDL_SCANCODE_SEMICOLON},
-						{"/", SDL_SCANCODE_SLASH},
-						{" ", SDL_SCANCODE_SPACE},
-
-						{"back", SDL_SCANCODE_BACKSPACE},
-						{"delete", SDL_SCANCODE_DELETE},
-						{"end", SDL_SCANCODE_END},
-						{"home", SDL_SCANCODE_HOME},
-						{"insert", SDL_SCANCODE_INSERT},
-
-						{"pgdown", SDL_SCANCODE_PAGEDOWN},
-						{"pgup", SDL_SCANCODE_PAGEUP},
-
-						{"return", SDL_SCANCODE_RETURN},
-						{"tab", SDL_SCANCODE_TAB},
-
-						{"prntscrn", SDL_SCANCODE_PRINTSCREEN},
-
-						{"caps", SDL_SCANCODE_CAPSLOCK},
-						{"esc", SDL_SCANCODE_ESCAPE},
-						{"num", SDL_SCANCODE_NUMLOCKCLEAR},
-						{"scroll", SDL_SCANCODE_SCROLLLOCK},
-
-						{"lalt", SDL_SCANCODE_LALT},
-						{"lctrl", SDL_SCANCODE_LCTRL},
-						{"lshift", SDL_SCANCODE_LSHIFT},
-						{"ralt", SDL_SCANCODE_RALT},
-						{"rctrl", SDL_SCANCODE_RCTRL},
-						{"rshift", SDL_SCANCODE_RSHIFT},
-
-						{"menu", SDL_SCANCODE_MENU}
-					};
-
-					return input.get_key(codes[key]);
 				}
 
 			private:

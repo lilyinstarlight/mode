@@ -9,6 +9,10 @@ Viewport::Viewport(const World & w) :
 	height(Spec::get_instance().get_int("view/height")),
 	tracking(&world.get_player()) {}
 
+void Viewport::dispatch(const SDL_Event &) {
+	// nothing to dispatch right now
+}
+
 void Viewport::draw() const {
 	// nothing to draw right now
 }

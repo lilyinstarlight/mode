@@ -13,6 +13,7 @@ class HUD : public Drawable {
 		HUD(const HUD & hud) = delete;
 		const HUD & operator=(const HUD & hud) = delete;
 
+		virtual void dispatch(const SDL_Event & event);
 		virtual void draw(const Viewport & viewport) const;
 		virtual void update(unsigned int ticks);
 
@@ -22,12 +23,15 @@ class HUD : public Drawable {
 		virtual const SDL_Surface * get_surface() const { return surface; }
 		virtual const Image * get_image() const { return nullptr; }
 
+		void open()  { opened = true;  }
+		void close() { opened = false; }
+
 	private:
 		HUD();
 		~HUD() {}
 
-		unsigned int first;
-		bool open;
+		unsigned int initial;
+		bool opened;
 
 		SDL_Surface * surface;
 

@@ -13,8 +13,9 @@ class Background : public Drawable {
 		Background(const Background & b) = delete;
 		const Background & operator=(const Background & b) = delete;
 
-		void update(unsigned int ticks);
+		void dispatch(const SDL_Event & event);
 		void draw(const Viewport & viewport) const;
+		void update(unsigned int ticks);
 
 		int get_width() const  { return width;  }
 		int get_height() const { return height; }

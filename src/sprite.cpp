@@ -83,6 +83,11 @@ Sprite::~Sprite() {
 	delete script;
 }
 
+void Sprite::dispatch(const SDL_Event & event) {
+	// run script dispatch as necessary
+	script->call("dispatch", &event);
+}
+
 void Sprite::draw(const Viewport & viewport) const {
 	// draw current image in viewport
 	get_image()->draw(viewport, get_x(), get_y(), get_scale());

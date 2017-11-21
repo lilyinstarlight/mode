@@ -9,11 +9,19 @@ HUD & HUD::get_instance() {
 	return hud;
 }
 
-HUD::HUD() : Drawable("hud", Vector2f{0, 0}, 0, Vector2f{0, 0}, 1, 9001), first(1500), open(false), surface(nullptr), padding_top(20), padding_left(20), padding_font(4), size{padding_top, padding_left, Spec::get_instance().get_int("hud/width"), Spec::get_instance().get_int("hud/height")} {
+HUD::HUD() : Drawable("hud", Vector2f{0, 0}, 0, Vector2f{0, 0}, 1, 9001), initial(1500), opened(false), surface(nullptr), padding_top(20), padding_left(20), padding_font(4), size{padding_top, padding_left, Spec::get_instance().get_int("hud/width"), Spec::get_instance().get_int("hud/height")} {
+}
+
+void HUD::dispatch(const SDL_Event & event) {
+	if (event.type == SDL_KEYDOWN) {
+		// open hud on h
+		if (event.key.keysym.sym == SDLK_h)
+			opened = !opened;
+	}
 }
 
 void HUD::draw(const Viewport &) const {
-	if (first || open) {
+	if (initial || opened) {
 		// draw box
 		SDL_SetRenderDrawColor(Context::get_instance().get_renderer(), Spec::get_instance().get_int("hud/box/r"), Spec::get_instance().get_int("hud/box/g"), Spec::get_instance().get_int("hud/box/b"), Spec::get_instance().get_int("hud/box/a"));
 		SDL_RenderFillRect(Context::get_instance().get_renderer(), &size);
@@ -25,15 +33,7 @@ void HUD::draw(const Viewport &) const {
 }
 
 void HUD::update(unsigned int ticks) {
-	const SDL_Event & event = Input::get_instance().get_event();
-
-	// decrement first counter on whether this is shown at the beginning of game or not
-	if (first > 0)
-		first -= ticks;
-
-	if (event.type == SDL_KEYDOWN) {
-		// open hud on h
-		if (event.key.keysym.sym == SDLK_h)
-			open = !open;
-	}
+	// decrement initial counter on whether this is shown at the beginning of game or not
+	if (initial > 0)
+		initial -= ticks;
 }

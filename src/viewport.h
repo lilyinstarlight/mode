@@ -13,6 +13,7 @@ class Viewport {
 		Viewport(const Viewport & v) = delete;
 		const Viewport & operator=(const Viewport & v) = delete;
 
+		void dispatch(const SDL_Event & event);
 		void draw() const;
 		void update(unsigned int ticks);
 

@@ -20,6 +20,7 @@ class Sprite : public Drawable {
 		Sprite() = delete;
 		Sprite & operator=(const Sprite & s) = delete;
 
+		virtual void dispatch(const SDL_Event & event);
 		virtual void draw(const Viewport & viewport) const;
 		virtual void update(unsigned int ticks);
 
