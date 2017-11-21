@@ -14,7 +14,12 @@
 
 #include "script.h"
 
-Script::Script(const std::string & name, Sprite & s) : path("behaviours"), script(""), lua(), sprite(s) {
+Script::Script() : path("behaviours"), script(""), result(""), lua(), sprite(Engine::get_instance().get_world().get_player()) {
+	// prepare environment
+	load_api();
+}
+
+Script::Script(const std::string & name, Sprite & s) : path("behaviours"), script(""), result(""), lua(), sprite(s) {
 	// load file
 	load_file(path + "/" + name + ".lua");
 
@@ -22,23 +27,15 @@ Script::Script(const std::string & name, Sprite & s) : path("behaviours"), scrip
 	load_api();
 
 	// run script
-	lua.script(script);
+	result = lua.script(script);
 }
 
-Script::Script(const std::string & command) : path("behaviours"), script(command), lua(), sprite(Engine::get_instance().get_world().get_player()) {
-	// prepare environment
-	load_api();
-
-	// run command
-	lua.script(command);
-}
-
-Script::Script(const Script & s) : path(s.path), script(s.script), lua(), sprite(s.sprite) {
+Script::Script(const Script & s) : path(s.path), script(s.script), result(s.result), lua(), sprite(s.sprite) {
 	// prepare environment
 	load_api();
 
 	// run file
-	lua.script(script);
+	result = lua.script(script);
 }
 
 void Script::load_api() {
@@ -151,6 +148,26 @@ void Script::load_api() {
 
 	// set world as current world
 	lua["spec"] = &Spec::get_instance();
+
+	// create Spec data type
+	lua.new_usertype<Engine>("Engine",
+			"new", sol::no_constructor,
+
+			"stop", &Engine::stop
+	);
+
+	// set world as current world
+	lua["engine"] = &Engine::get_instance();
+
+	// create Spec data type
+	lua.new_usertype<HUD>("HUD",
+			"new", sol::no_constructor,
+
+			"string", sol::property(&HUD::get_string, &HUD::set_string)
+	);
+
+	// set world as current world
+	lua["engine"] = &Engine::get_instance();
 
 	// create Event data type
 	lua.new_usertype<SDL_Event>("Event",

@@ -12,6 +12,8 @@ class Engine {
 	public:
 		static Engine & get_instance();
 
+		~Engine() {}
+
 		Engine(const Engine &) = delete;
 		Engine& operator=(const Engine &) = delete;
 
@@ -22,16 +24,19 @@ class Engine {
 		const Viewport & get_viewport() const { return *viewport; }
 		Viewport & get_viewport()             { return *viewport; } // caller can modify viewport
 
+		bool is_running() const { return running; }
+		void stop() { running = false; }
+
 	private:
 		Engine();
-		~Engine() {}
-
-		World * world;
-		Viewport * viewport;
 
 		void dispatch(const SDL_Event & event);
 		void draw() const;
 		void update(unsigned int ticks);
 
+		World * world;
+		Viewport * viewport;
+
+		bool running;
 };
 #endif

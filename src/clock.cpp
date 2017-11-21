@@ -20,7 +20,7 @@ int Clock::get_fps() {
 	get_ticks();
 
 	if (cur_time - frame_time > 1000) {
-		int next = frames/(cur_time - frame_time);
+		int next = frames*1000/(cur_time - frame_time);
 
 		if (fps < 0) {
 			// initialize with straight reading
@@ -30,6 +30,7 @@ int Clock::get_fps() {
 			// apply low pass filter to subsequent readings
 			fps = fps_gain*next + (1 - fps_gain)*fps;
 			frame_time = cur_time;
+			frames = 0;
 		}
 	}
 

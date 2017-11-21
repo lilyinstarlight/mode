@@ -11,6 +11,10 @@ function update (ticks)
 		sprite.vel.x = 0
 		sprite.vel.y = 0
 
+		if input:get_key('q') then
+			engine:stop()
+		end
+
 		if input:get_key('a') then
 			sprite.vel.x = sprite.vel.x - speed_left
 		end

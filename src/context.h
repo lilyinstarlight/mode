@@ -6,6 +6,8 @@ class Context {
 	public:
 		static Context & get_instance();
 
+		~Context();
+
 		Context(const Context & context) = delete;
 		const Context & operator=(const Context & context) = delete;
 
@@ -14,7 +16,6 @@ class Context {
 
 	private:
 		Context();
-		~Context();
 
 		SDL_Window * window;
 		SDL_Renderer * renderer;

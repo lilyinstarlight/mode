@@ -13,7 +13,7 @@ Console & Console::get_instance() {
 	return console;
 }
 
-Console::Console() : Drawable("name", Vector2f{0, 0}, 0, Vector2f{0, 0}, 1, 9002), opened(false), command(""), surface(nullptr), padding_bottom(4), padding_left(5), padding_font(2) {
+Console::Console() : Drawable("name", Vector2f{0, 0}, 0, Vector2f{0, 0}, 1, 9002), opened(false), command(""), result(""), surface(nullptr), padding_bottom(4), padding_left(5), padding_font(2) {
 }
 
 void Console::dispatch(const SDL_Event & event) {
@@ -27,22 +27,47 @@ void Console::dispatch(const SDL_Event & event) {
 				// stop text input
 				opened = false;
 				SDL_StopTextInput();
+				command.clear();
+				result.clear();
 			}
 			else if (event.key.keysym.sym == SDLK_BACKSPACE) {
 				// backspace
-				command.pop_back();
+				if (result.empty()) {
+					if (!command.empty())
+						command.pop_back();
+				}
+				else {
+					result.clear();
+				}
 			}
 			else if (event.key.keysym.sym == SDLK_RETURN) {
-				Script script(command);
-				command.clear();
+				if (result.empty()) {
+					try {
+						Script script;
+						script.add_script(command);
+						result = script.get_result();
+					}
+					catch (std::runtime_error & err) {
+						result = "> lua error";
+					}
+
+					command.clear();
+				}
+				else {
+					result.clear();
+				}
 			}
 		}
-		else if (event.type == SDL_TEXTINPUT) {
+		else if (event.type == SDL_TEXTINPUT && std::string(event.text.text) != "`") {
 			// record text
 			command += event.text.text;
 		}
 	}
 	else {
+		// release keyboard focus
+		if (Input::get_instance().check("console"))
+			Input::get_instance().release("console");
+
 		if (event.type == SDL_KEYDOWN) {
 			if (event.key.keysym.sym == SDLK_BACKQUOTE) {
 				// open console and start text input so we get TextInput events
@@ -67,6 +92,9 @@ void Console::draw(const Viewport & viewport) const {
 
 		// draw text
 		SDL_Color color = {static_cast<Uint8>(Spec::get_instance().get_int("console/text/r")), static_cast<Uint8>(Spec::get_instance().get_int("console/text/g")), static_cast<Uint8>(Spec::get_instance().get_int("console/text/b")), 255};
-		Text::get_instance().write(Context::get_instance().get_renderer(), command + "█", rect.x + padding_font, rect.y + padding_font, color);
+		if (result.empty())
+			Text::get_instance().write(Context::get_instance().get_renderer(), "> " + command + "_", rect.x + padding_font, rect.y + padding_font, color);
+		else
+			Text::get_instance().write(Context::get_instance().get_renderer(), result, rect.x + padding_font, rect.y + padding_font, color);
 	}
 }

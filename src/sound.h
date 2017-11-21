@@ -10,6 +10,8 @@ class Sound {
 	public:
 		static Sound & get_instance();
 
+		~Sound();
+
 		Sound(const Sound &) = delete;
 		const Sound & operator=(const Sound &) = delete;
 
@@ -17,7 +19,6 @@ class Sound {
 		std::string check() const { return active; }
 	private:
 		Sound();
-		~Sound();
 
 		std::string path;
 

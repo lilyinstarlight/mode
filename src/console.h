@@ -11,6 +11,8 @@ class Console : public Drawable {
 	public:
 		static Console & get_instance();
 
+		~Console() {}
+
 		Console(const Console & console) = delete;
 		const Console & operator=(const Console & console) = delete;
 
@@ -29,10 +31,10 @@ class Console : public Drawable {
 
 	private:
 		Console();
-		~Console() {}
 
 		bool opened;
 		std::string command;
+		std::string result;
 
 		SDL_Surface * surface;
 

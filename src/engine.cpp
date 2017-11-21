@@ -12,7 +12,7 @@ Engine & Engine::get_instance() {
 	return engine;
 }
 
-Engine::Engine() : world(nullptr), viewport(nullptr) {}
+Engine::Engine() : world(nullptr), viewport(nullptr), running(false) {}
 
 void Engine::run() {
 	world = new World();
@@ -26,7 +26,7 @@ void Engine::run() {
 	Uint32 last = Clock::get_instance().get_ticks();
 	Uint32 ticks = 0;
 
-	bool running = true;
+	running = true;
 	while (running) {
 		while (SDL_PollEvent(&event)) {
 			if (event.type == SDL_QUIT) {
@@ -35,7 +35,7 @@ void Engine::run() {
 				break;
 			}
 			else if (event.type == SDL_KEYDOWN) {
-				if (event.key.keysym.sym == SDLK_ESCAPE || event.key.keysym.sym == SDLK_q) {
+				if (event.key.keysym.sym == SDLK_ESCAPE) {
 					// handle pressing q or escape
 					running = false;
 					break;
@@ -55,16 +55,16 @@ void Engine::run() {
 
 		// increment and draw frames if time passed
 		ticks = Clock::get_instance().get_ticks();
+
 		if (ticks - last > 0) {
 			Clock::get_instance().incr_frame();
-
-			std::cout << Clock::get_instance().get_fps() << " FPS        \r";
-
-			draw();
-			update(ticks - last);
-
-			last = ticks;
+			std::cout << Clock::get_instance().get_fps() << " FPS        \r" << std::flush;
 		}
+
+		draw();
+		update(ticks - last);
+
+		last = ticks;
 	}
 
 	delete viewport;

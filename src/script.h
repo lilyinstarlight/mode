@@ -12,15 +12,16 @@ class Sprite;
 
 class Script {
 	public:
+		Script();
 		Script(const std::string & name, Sprite & s);
-		Script(const std::string & command);
 		Script(const Script & s);
 
-		Script() = delete;
 		const Script & operator=(const Script & s) = delete;
 
-		const std::string & get_script() const { return script;                  }
-		void set_script(const std::string & s) { script = s; lua.script(script); }
+		const std::string & get_script() const { return script;                              }
+		void add_script(const std::string & s) { script += "\n" + s; result = lua.script(s); }
+
+		const std::string & get_result() const { return result; }
 
 		template<typename... T>
 		void call(const std::string & method, T... args) {
@@ -28,6 +29,7 @@ class Script {
 		}
 
 	private:
+
 		template <typename T, typename U>
 		class WrapObserve {
 			public:
@@ -402,6 +404,8 @@ class Script {
 		std::string path;
 
 		std::string script;
+		std::string result;
+
 		sol::state lua;
 		Sprite & sprite;
 };

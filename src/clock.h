@@ -4,6 +4,8 @@ class Clock {
 	public:
 		static Clock & get_instance();
 
+		~Clock() {}
+
 		Clock(const Clock & clock) = delete;
 		const Clock & operator=(const Clock & clock) = delete;
 
@@ -20,7 +22,6 @@ class Clock {
 
 	private:
 		Clock();
-		~Clock() {}
 
 		bool started, paused;
 		unsigned int start_time, cur_time;
