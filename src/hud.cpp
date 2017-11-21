@@ -21,7 +21,7 @@ void HUD::dispatch(const SDL_Event & event) {
 }
 
 void HUD::draw(const Viewport &) const {
-	if (initial || opened) {
+	if (initial > 0 || opened) {
 		// draw box
 		SDL_SetRenderDrawColor(Context::get_instance().get_renderer(), Spec::get_instance().get_int("hud/box/r"), Spec::get_instance().get_int("hud/box/g"), Spec::get_instance().get_int("hud/box/b"), Spec::get_instance().get_int("hud/box/a"));
 		SDL_RenderFillRect(Context::get_instance().get_renderer(), &size);
