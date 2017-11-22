@@ -12,7 +12,27 @@ Engine & Engine::get_instance() {
 	return engine;
 }
 
-Engine::Engine() : world(nullptr), viewport(nullptr), running(false) {}
+Engine::Engine() : world(nullptr), viewport(nullptr), state(STOPPED) {}
+
+void Engine::start() {
+	state = STARTING;
+
+	for(;;) {
+		run();
+
+		switch (state) {
+			case RESTARTING:
+				continue;
+
+			case STOPPING:
+				state = STOPPED;
+				return;
+
+			default:
+				return;
+		}
+	}
+}
 
 void Engine::run() {
 	world = new World();
@@ -26,18 +46,18 @@ void Engine::run() {
 	Uint32 last = Clock::get_instance().get_ticks();
 	Uint32 ticks = 0;
 
-	running = true;
-	while (running) {
+	state = RUNNING;
+	while (state == RUNNING) {
 		while (SDL_PollEvent(&event)) {
 			if (event.type == SDL_QUIT) {
 				// handle closing window
-				running = false;
+				state = STOPPING;
 				break;
 			}
 			else if (event.type == SDL_KEYDOWN) {
 				if (event.key.keysym.sym == SDLK_ESCAPE) {
-					// handle pressing q or escape
-					running = false;
+					// handle pressing escape
+					state = STOPPING;
 					break;
 				}
 

@@ -13,7 +13,7 @@ class Image {
 
 		void draw(const Viewport & viewport, int x, int y) const;
 		void draw(const Viewport & viewport, int x, int y, float scale) const;
-		void draw(const Viewport & viewport, int sx, int sy, int dx, int dy) const;
+		void draw(const SDL_Rect & src, const SDL_Rect & dst) const;
 
 		inline int get_width()  const { return surface->w; }
 		inline int get_height() const { return surface->h; }

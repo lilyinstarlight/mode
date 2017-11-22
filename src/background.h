@@ -13,9 +13,9 @@ class Background : public Drawable {
 		Background(const Background & b) = delete;
 		const Background & operator=(const Background & b) = delete;
 
-		void dispatch(const SDL_Event & event);
+		void dispatch(const SDL_Event &) {}
 		void draw(const Viewport & viewport) const;
-		void update(unsigned int ticks);
+		void update(unsigned int) {}
 
 		int get_width() const  { return width;  }
 		int get_height() const { return height; }
@@ -29,6 +29,7 @@ class Background : public Drawable {
 	private:
 		int width, height;
 		float factor;
+		bool tile;
 
 		const Image * image;
 };

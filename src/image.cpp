@@ -28,11 +28,7 @@ void Image::draw(const Viewport & viewport, int x, int y, float scale) const {
 	SDL_RenderCopy(renderer, texture, &view, &dest);
 }
 
-void Image::draw(const Viewport &, int sx, int sy, int dx, int dy) const {
-	// draw at given location
-	SDL_Rect src = {sx, sy, view.w, view.h};
-	SDL_Rect dst = {dx, dy, view.w, view.h};
-
+void Image::draw(const SDL_Rect & src, const SDL_Rect & dst) const {
 	// copy image into renderer
 	SDL_RenderCopy(renderer, texture, &src, &dst);
 }

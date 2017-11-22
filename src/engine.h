@@ -10,6 +10,8 @@
 
 class Engine {
 	public:
+		enum State {STOPPED, STOPPING, STARTING, RESTARTING, RUNNING};
+
 		static Engine & get_instance();
 
 		~Engine() {}
@@ -17,18 +19,21 @@ class Engine {
 		Engine(const Engine &) = delete;
 		Engine& operator=(const Engine &) = delete;
 
-		void run();
-
 		const World & get_world()       const { return *world;    }
 		World & get_world()                   { return *world;    } // caller can modify world
 		const Viewport & get_viewport() const { return *viewport; }
 		Viewport & get_viewport()             { return *viewport; } // caller can modify viewport
 
-		bool is_running() const { return running; }
-		void stop() { running = false; }
+		State get_state() const { return state; }
+
+		void start();
+		void restart() { state = RESTARTING; }
+		void stop() { state = STOPPING; }
 
 	private:
 		Engine();
+
+		void run();
 
 		void dispatch(const SDL_Event & event);
 		void draw() const;
@@ -37,6 +42,6 @@ class Engine {
 		World * world;
 		Viewport * viewport;
 
-		bool running;
+		State state;
 };
 #endif

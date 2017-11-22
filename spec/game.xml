@@ -47,6 +47,7 @@
 |                        |
 |    WASD to move        |
 |    H to toggle HUD     |
+|    R to restart        |
 |    Q to quit           |
 +------------------------+
 		</str>
@@ -74,7 +75,8 @@
 
 		<width>800</width>
 		<height>600</height>
-		<factor>1</factor>
+		<factor>0.1</factor>
+		<tile>true</tile>
 
 		<file>background.png</file>
 	</background>
@@ -85,7 +87,8 @@
 
 		<width>800</width>
 		<height>600</height>
-		<factor>2</factor>
+		<factor>0.5</factor>
+		<tile>false</tile>
 
 		<file>midground.png</file>
 	</midground>
@@ -96,7 +99,8 @@
 
 		<width>800</width>
 		<height>600</height>
-		<factor>10</factor>
+		<factor>1</factor>
+		<tile>true</tile>
 
 		<file>foreground.png</file>
 	</foreground>

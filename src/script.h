@@ -370,7 +370,8 @@ class Script {
 						case SDL_KEYDOWN:
 						case SDL_KEYUP:
 							return lua.create_table_with(
-								"key", keys[event.key.keysym.sym]
+								"key", keys[event.key.keysym.sym],
+								"rep", event.key.repeat
 							);
 
 						case SDL_MOUSEMOTION:

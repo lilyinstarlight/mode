@@ -22,7 +22,7 @@ void Console::dispatch(const SDL_Event & event) {
 		if (!Input::get_instance().check("console"))
 			Input::get_instance().grab("console");
 
-		if (event.type == SDL_KEYDOWN) {
+		if (event.type == SDL_KEYDOWN && event.key.repeat == 0) {
 			if (event.key.keysym.sym == SDLK_BACKQUOTE) {
 				// stop text input
 				opened = false;
@@ -68,7 +68,7 @@ void Console::dispatch(const SDL_Event & event) {
 		if (Input::get_instance().check("console"))
 			Input::get_instance().release("console");
 
-		if (event.type == SDL_KEYDOWN) {
+		if (event.type == SDL_KEYDOWN && event.key.repeat == 0) {
 			if (event.key.keysym.sym == SDLK_BACKQUOTE) {
 				// open console and start text input so we get TextInput events
 				opened = true;

@@ -153,6 +153,7 @@ void Script::load_api() {
 	lua.new_usertype<Engine>("Engine",
 			"new", sol::no_constructor,
 
+			"restart", &Engine::restart,
 			"stop", &Engine::stop
 	);
 
@@ -179,7 +180,7 @@ void Script::load_api() {
 	lua.new_usertype<SDL_Event>("Event",
 			"new", sol::no_constructor,
 
-			"type", sol::property(WrapEventType(lua)),
+			"ev", sol::property(WrapEventType(lua)),
 			"val", sol::property(WrapEventValue(lua))
 	);
 }

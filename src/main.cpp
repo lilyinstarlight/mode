@@ -8,7 +8,7 @@ int main(int, char * []) {
 	try {
 #endif
 		// run engine
-		Engine::get_instance().run();
+		Engine::get_instance().start();
 #ifdef NDEBUG
 	}
 	catch (std::runtime_error & err) {
