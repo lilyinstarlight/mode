@@ -4,16 +4,19 @@ speed_up = spec:get_float('player/speed/up')
 speed_down = spec:get_float('player/speed/down')
 
 function dispatch (event)
+	if event.type == 'keydown' then
+		if event.val['key'] == 'q' then
+			engine:stop()
+		elseif event.val['key'] == 'h' then
+			hud:toggle()
+		end
+	end
 end
 
 function update (ticks)
 	if input:check('player') then
 		sprite.vel.x = 0
 		sprite.vel.y = 0
-
-		if input:get_key('q') then
-			engine:stop()
-		end
 
 		if input:get_key('a') then
 			sprite.vel.x = sprite.vel.x - speed_left

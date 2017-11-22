@@ -12,13 +12,7 @@ HUD & HUD::get_instance() {
 HUD::HUD() : Drawable("hud", Vector2f{0, 0}, 0, Vector2f{0, 0}, 1, 9001), initial(1500), opened(false), surface(nullptr), padding_top(20), padding_left(20), padding_text(4), str(Spec::get_instance().get_str("hud/str")) {
 }
 
-void HUD::dispatch(const SDL_Event & event) {
-	if (event.type == SDL_KEYDOWN) {
-		// open hud on h
-		if (event.key.keysym.sym == SDLK_h)
-			opened = !opened;
-	}
-}
+void HUD::dispatch(const SDL_Event &) {}
 
 void HUD::draw(const Viewport &) const {
 	if (initial > 0 || opened) {

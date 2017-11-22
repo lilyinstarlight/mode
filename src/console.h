@@ -28,6 +28,9 @@ class Console : public Drawable {
 
 		void open()  { opened = true;  }
 		void close() { opened = false; }
+		void toggle() { opened = !opened; }
+
+		bool is_open() const { return opened; }
 
 	private:
 		Console();

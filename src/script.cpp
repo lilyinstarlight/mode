@@ -128,7 +128,7 @@ void Script::load_api() {
 			"get_key", WrapGetKey<Input>(lua)
 	);
 
-	// set world as current world
+	// set input
 	lua["input"] = &Input::get_instance();
 
 	// create Spec data type
@@ -146,7 +146,7 @@ void Script::load_api() {
 			"get_str", &Spec::get_str
 	);
 
-	// set world as current world
+	// set spec
 	lua["spec"] = &Spec::get_instance();
 
 	// create Spec data type
@@ -156,18 +156,24 @@ void Script::load_api() {
 			"stop", &Engine::stop
 	);
 
-	// set world as current world
+	// set engine
 	lua["engine"] = &Engine::get_instance();
 
 	// create Spec data type
 	lua.new_usertype<HUD>("HUD",
 			"new", sol::no_constructor,
 
+			"open", &HUD::open,
+			"close", &HUD::close,
+			"toggle", &HUD::toggle,
+
+			"opened", sol::property(&HUD::is_open),
+
 			"string", sol::property(&HUD::get_string, &HUD::set_string)
 	);
 
-	// set world as current world
-	lua["engine"] = &Engine::get_instance();
+	// set hud
+	lua["hud"] = &HUD::get_instance();
 
 	// create Event data type
 	lua.new_usertype<SDL_Event>("Event",

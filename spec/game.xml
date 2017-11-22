@@ -47,6 +47,7 @@
 |                        |
 |    WASD to move        |
 |    H to toggle HUD     |
+|    Q to quit           |
 +------------------------+
 		</str>
 	</hud>
