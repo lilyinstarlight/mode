@@ -12,7 +12,7 @@ Spec & Spec::get_instance() {
 Spec::Spec() : path("spec"), parser(path + "/game.xml"), data(parser.get_data()) {}
 
 bool Spec::check(const std::string & tag) const {
-	return data.count(tag) != 0;
+	return data.find(tag) != data.end();
 }
 
 std::vector<std::string> Spec::get_tops() const {

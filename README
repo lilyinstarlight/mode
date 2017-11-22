@@ -2,12 +2,12 @@ Name: Foster McLane
 Course: CPSC 4160
 Clemson Email Address: fmclane@g.clemson.edu
 
-Project no: 4
-Project due date: 2017-11-13
-Project description: Create an early playable game with a controllable player, HUD, collision detection, and AI.
+Project no: 5
+Project due date: 2017-11-30
+Project description: 
 
-The easiest part of this project: I found coming up with ideas for the framework was easy. It's the making it happen that was hard.
-Problems that I had in completing this project: I sorta started adding so much functionality that I got very bogged down. After writing 1700+ source lines of code, I had a new framework I called the "hacker" framework, but very little time to actually test and compose game elements using the framework. Testing and feature completeness will come with project 5.
+The easiest part of this project: 
+Problems that I had in completing this project: 
 
 Issues:
 * the sprites aren't showing up right for some reason - their sizes are also wrong

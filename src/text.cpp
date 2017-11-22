@@ -50,9 +50,9 @@ SDL_Surface * Text::write(const std::string & text, SDL_Color color) const {
     const SDL_PixelFormat * fmt = surfaces.front()->format;
     Uint32 key;
 
-    SDL_GetColorKey(surfaces.front(), &key);
     SDL_Surface * combined = SDL_CreateRGBSurface(0, width, height, fmt->BitsPerPixel, fmt->Rmask, fmt->Gmask, fmt->Bmask, fmt->Amask);
-    SDL_SetColorKey(combined, SDL_TRUE, key);
+    if (SDL_GetColorKey(surfaces.front(), &key) == 0)
+	SDL_SetColorKey(combined, SDL_TRUE, key);
 
     SDL_Rect dst = {0, 0, width, height};
 
