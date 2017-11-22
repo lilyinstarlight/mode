@@ -5,10 +5,12 @@ speed_down = spec:get_float('player/speed/down')
 
 function dispatch (event)
 	if event.type == 'keydown' then
-		if event.val['key'] == 'q' then
-			engine:stop()
-		elseif event.val['key'] == 'h' then
-			hud:toggle()
+		if input:check('player') then
+			if event.val['key'] == 'q' then
+				engine:stop()
+			elseif event.val['key'] == 'h' then
+				hud:toggle()
+			end
 		end
 	end
 end
