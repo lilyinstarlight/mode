@@ -17,16 +17,17 @@ class Text {
 
 		void write(SDL_Renderer * renderer, const std::string & text, int x, int y, SDL_Color color) const;
 
+		SDL_Surface * write(const std::string & text, SDL_Color color) const;
+		void render(SDL_Renderer * renderer, SDL_Surface * text, int x, int y) const;
+
 		int get_size() const { return size; }
 	private:
 		Text();
 
-		int write_line(SDL_Renderer * renderer, const std::string & text, int x, int y, SDL_Color color) const;
 		std::vector<std::string> split(const std::string & string, char delimiter) const;
 
 		std::string path;
 		TTF_Font * font;
 		int size;
-		int padding;
 };
 #endif

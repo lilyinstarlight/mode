@@ -14,7 +14,7 @@ Text::~Text() {
     TTF_Quit();
 }
 
-Text::Text() : path("fonts"), font(nullptr), size(-1), padding(4) {
+Text::Text() : path("fonts"), font(nullptr), size(-1) {
     // init TTF
     if (TTF_Init() < 0)
 	throw std::runtime_error("Failed to initialize TTF");
@@ -28,32 +28,53 @@ Text::Text() : path("fonts"), font(nullptr), size(-1), padding(4) {
 }
 
 void Text::write(SDL_Renderer * renderer, const std::string & text, int x, int y, SDL_Color color) const {
-    int next = y;
-
-    for (std::string & line : split(text, '\n'))
-	next = write_line(renderer, line, x, next, color);
+    render(renderer, write(text, color), x, y);
 }
 
-int Text::write_line(SDL_Renderer * renderer, const std::string & text, int x, int y, SDL_Color color) const {
-    // write font at size
-    SDL_Surface * surface = TTF_RenderText_Solid(font, text.c_str(), color);
+SDL_Surface * Text::write(const std::string & text, SDL_Color color) const {
+    std::vector<SDL_Surface *> surfaces;
+    int width = 0;
+    int height = 0;
 
+    for (std::string & line : split(text, '\n')) {
+	surfaces.push_back(TTF_RenderUTF8_Solid(font, line.c_str(), color));
+
+	if (surfaces.back()->w > width)
+	    width = surfaces.back()->w;
+	height += surfaces.back()->h;
+    }
+
+    if (height == 0)
+	return nullptr;
+
+    const SDL_PixelFormat * fmt = surfaces.front()->format;
+    Uint32 key;
+
+    SDL_GetColorKey(surfaces.front(), &key);
+    SDL_Surface * combined = SDL_CreateRGBSurface(0, width, height, fmt->BitsPerPixel, fmt->Rmask, fmt->Gmask, fmt->Bmask, fmt->Amask);
+    SDL_SetColorKey(combined, SDL_TRUE, key);
+
+    SDL_Rect dst = {0, 0, width, height};
+
+    for (SDL_Surface * surface : surfaces) {
+	SDL_BlitSurface(surface, nullptr, combined, &dst);
+	dst.y += surface->h;
+	SDL_FreeSurface(surface);
+    }
+
+    return combined;
+}
+
+void Text::render(SDL_Renderer * renderer, SDL_Surface * text, int x, int y) const {
     // create texture of text
-    SDL_Texture * texture = SDL_CreateTextureFromSurface(renderer, surface);
+    SDL_Texture * texture = SDL_CreateTextureFromSurface(renderer, text);
 
-    int width = surface->w;
-    int height = surface->h;
-
-    SDL_FreeSurface(surface);
-
-    SDL_Rect dst = {x, y, width, height};
+    SDL_Rect dst = {x, y, text->w, text->h};
+    SDL_FreeSurface(text);
 
     // render texture
     SDL_RenderCopy(renderer, texture, nullptr, &dst);
     SDL_DestroyTexture(texture);
-
-    // return next line position
-    return y + height + padding;
 }
 
 std::vector<std::string> Text::split(const std::string & string, char delimiter) const {

@@ -1,13 +1,21 @@
 #include "spritesheet.h"
 
-SDL_Surface* SpriteSheet::crop(SDL_Surface * surf, const SDL_Rect & view) {
-	const SDL_PixelFormat * fmt = surf->format;
+SDL_Surface* SpriteSheet::crop(const SDL_Surface * surface, const SDL_Rect & view) {
+	const SDL_PixelFormat * fmt = surface->format;
+	SDL_BlendMode mode;
+
+	// store blend mode
+	SDL_GetSurfaceBlendMode(const_cast<SDL_Surface *>(surface), &mode);
+	SDL_SetSurfaceBlendMode(const_cast<SDL_Surface *>(surface), SDL_BLENDMODE_NONE);
 
 	// create new surface
 	SDL_Surface * sub = SDL_CreateRGBSurface(0, view.w, view.h, fmt->BitsPerPixel, fmt->Rmask, fmt->Gmask, fmt->Bmask, fmt->Amask);
 
 	// copy view of old surface into new surface
-	SDL_BlitSurface(surf, &view, sub, nullptr);
+	SDL_BlitSurface(const_cast<SDL_Surface *>(surface), &view, sub, nullptr);
+
+	// restore blend mode
+	SDL_SetSurfaceBlendMode(const_cast<SDL_Surface *>(surface), mode);
 
 	return sub;
 }

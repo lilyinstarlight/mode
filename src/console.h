@@ -20,8 +20,8 @@ class Console : public Drawable {
 		virtual void draw(const Viewport & viewport) const;
 		virtual void update(unsigned int) {}
 
-		virtual int get_width() const { return 0; };
-		virtual int get_height() const { return 0; };
+		virtual int get_width() const { return 0; }
+		virtual int get_height() const { return 0; }
 
 		virtual const SDL_Surface * get_surface() const { return surface; };
 		virtual const Image * get_image() const { return nullptr; };
