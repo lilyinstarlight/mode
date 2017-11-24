@@ -1,3 +1,6 @@
+collided = false
+collision = Dialog.new("collision", "Collision detected!", true, false)
+
 function dispatch (event)
 end
 
@@ -21,7 +24,4 @@ function collide (sprite)
 end
 
 player:observe()
-
-collided = false
-collision = Dialog.new("collision", "Collision detected!", true, false)
 world:add_dialog(collision)

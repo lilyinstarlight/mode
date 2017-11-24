@@ -20,7 +20,6 @@ end
 function update (ticks)
 	if input:check('player') then
 		sprite.vel.x = 0
-		sprite.vel.y = 0
 
 		if input:get_key('a') then
 			sprite.vel.x = sprite.vel.x - speed_left
@@ -37,5 +36,7 @@ function update (ticks)
 		if input:get_key('s') then
 			sprite.vel.y = sprite.vel.y + speed_down
 		end
+
+		sprite.vel.y = sprite.vel.y + ticks
 	end
 end

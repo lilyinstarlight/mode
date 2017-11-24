@@ -155,7 +155,7 @@
 			<y>0</y>
 		</velocity>
 
-		<scale>1</scale>
+		<scale>5</scale>
 
 		<sheets>
 		    <idle>
@@ -176,7 +176,7 @@
 		<speed>
 			<left>80</left>
 			<right>80</right>
-			<up>80</up>
+			<up>300</up>
 			<down>80</down>
 		</speed>
 
@@ -192,7 +192,7 @@
 			<y>0</y>
 		</velocity>
 
-		<scale>1</scale>
+		<scale>5</scale>
 
 		<sheets>
 		    <idle>
@@ -203,6 +203,6 @@
 		    </idle>
 		</sheets>
 
-		<collision>pixel</collision>
+		<collision>rectangular</collision>
 	</player>
 </spec>
