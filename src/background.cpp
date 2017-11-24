@@ -7,19 +7,21 @@ Background::Background(const std::string & name) : Drawable(name, Vector2f(0, 0)
 Background::Background(const Background & b) : Drawable(b), width(b.width), height(b.height), factor(b.factor), tile(b.tile), image(b.image) {}
 
 void Background::draw(const Viewport & viewport) const {
-	int x = viewport.get_x() - get_x();
-	int y = viewport.get_y() - get_y();
-
-	// draw adjusted background
-	SDL_Rect src = {x, y, get_width() - x, get_height() - y};
-	SDL_Rect dst = {0, 0, src.w, src.h};
-	image->draw(src, dst);
-
-	// draw tiled background
 	if (tile) {
-		src.x = 0;
-		src.w = viewport.get_width() - x;
-		dst.x = get_width() - x;
+		// iterate over tiles in map
+		for (int x = static_cast<int>(get_x()*factor - viewport.get_x()*factor) % get_width() - get_width(); x < viewport.get_width(); x += get_width()) {
+			for (int y = static_cast<int>(get_y()*factor - viewport.get_y()*factor) % get_height() - get_height(); y < viewport.get_height(); y += get_height()) {
+				// draw adjusted tile
+				SDL_Rect src = {0, 0, get_width(), get_height()};
+				SDL_Rect dst = {x, y, src.w, src.h};
+				image->draw(src, dst);
+			}
+		}
+	}
+	else {
+		// draw adjusted background
+		SDL_Rect src = {0, 0, get_width(), get_height()};
+		SDL_Rect dst = {static_cast<int>(get_x()*factor - viewport.get_x()*factor), static_cast<int>(get_y()*factor - viewport.get_y()*factor), src.w, src.h};
 		image->draw(src, dst);
 	}
 }

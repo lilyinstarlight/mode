@@ -192,6 +192,19 @@ void Script::load_api() {
 	// set hud
 	lua["hud"] = &Engine::get_instance().get_hud();
 
+	// create Spec data type
+	lua.new_usertype<Viewport>("Viewport",
+			"new", sol::no_constructor,
+
+			"width", sol::property(&Viewport::get_width),
+			"height", sol::property(&Viewport::get_height),
+
+			"pos", sol::property(&Viewport::get_position)
+	);
+
+	// set viewport
+	lua["view"] = &Engine::get_instance().get_viewport();
+
 	// create Event data type
 	lua.new_usertype<SDL_Event>("Event",
 			"new", sol::no_constructor,

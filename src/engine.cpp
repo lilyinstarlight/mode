@@ -33,12 +33,12 @@ void Engine::start() {
 
 void Engine::run() {
 	hud = new HUD();
-
 	world = new World();
+	viewport = new Viewport(*world);
 
 	world->init();
 
-	viewport = new Viewport(*world);
+	viewport->track(&world->get_player());
 
 	SDL_Event event;
 

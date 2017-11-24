@@ -7,9 +7,13 @@ Viewport::Viewport(const World & w) :
 	position(0, 0),
 	width(Spec::get_instance().get_int("view/width")),
 	height(Spec::get_instance().get_int("view/height")),
-	tracking(&world.get_player()) {}
+	tracking(nullptr) {}
 
 void Viewport::update(unsigned int) {
+	// bail if no object to track
+	if (!tracking)
+		return;
+
 	// track object
 	const float x = tracking->get_x();
 	const float y = tracking->get_y();
