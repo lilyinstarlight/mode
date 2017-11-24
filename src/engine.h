@@ -4,6 +4,7 @@
 
 #include "context.h"
 #include "clock.h"
+#include "hud.h"
 #include "player.h"
 #include "viewport.h"
 #include "world.h"
@@ -23,6 +24,8 @@ class Engine {
 		World & get_world()                   { return *world;    } // caller can modify world
 		const Viewport & get_viewport() const { return *viewport; }
 		Viewport & get_viewport()             { return *viewport; } // caller can modify viewport
+		const HUD & get_hud()           const { return *hud;      }
+		HUD & get_hud()                       { return *hud;      } // caller can modify hud
 
 		State get_state() const { return state; }
 
@@ -41,6 +44,7 @@ class Engine {
 
 		World * world;
 		Viewport * viewport;
+		HUD * hud;
 
 		State state;
 };

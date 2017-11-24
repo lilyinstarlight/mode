@@ -1,6 +1,7 @@
 #ifndef WORLD_H
 #define WORLD_H
 #include <set>
+#include <unordered_set>
 
 #include "drawable.h"
 #include "player.h"
@@ -19,6 +20,7 @@ class World {
 
 		void add(Drawable & drawable);
 		void remove(Drawable & drawable);
+		Drawable * get(const std::string & name);
 
 		void dispatch(const SDL_Event & event);
 		void update(unsigned int ticks);
@@ -33,6 +35,7 @@ class World {
 		int width, height;
 
 		Player * player;
+		std::unordered_set<Drawable *> owning;
 		std::set<Drawable *, DrawablePointerCompare> drawables; // compare points to keep drawables unique and ordered
 };
 #endif

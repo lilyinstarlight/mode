@@ -1,7 +1,4 @@
-#include <iostream>
-
 #include "console.h"
-#include "hud.h"
 #include "spec.h"
 #include "text.h"
 
@@ -12,7 +9,7 @@ Engine & Engine::get_instance() {
 	return engine;
 }
 
-Engine::Engine() : world(nullptr), viewport(nullptr), state(STOPPED) {}
+Engine::Engine() : world(nullptr), viewport(nullptr), hud(nullptr), state(STOPPED) {}
 
 void Engine::start() {
 	state = STARTING;
@@ -35,6 +32,8 @@ void Engine::start() {
 }
 
 void Engine::run() {
+	hud = new HUD();
+
 	world = new World();
 
 	world->init();
@@ -76,10 +75,8 @@ void Engine::run() {
 		// increment and draw frames if time passed
 		ticks = Clock::get_instance().get_ticks();
 
-		if (ticks - last > 0) {
+		if (ticks - last > 0)
 			Clock::get_instance().incr_frame();
-			std::cout << Clock::get_instance().get_fps() << " FPS        \r" << std::flush;
-		}
 
 		draw();
 		update(ticks - last);
@@ -89,18 +86,20 @@ void Engine::run() {
 
 	delete viewport;
 	delete world;
+
+	delete hud;
 }
 
 void Engine::dispatch(const SDL_Event & event) {
 	// update world
 	world->dispatch(event);
 
-	// update console and hud
-	Console::get_instance().dispatch(event);
-	HUD::get_instance().dispatch(event);
-
-	// update viewport
+	// update hud and viewport
+	hud->dispatch(event);
 	viewport->dispatch(event);
+
+	// update console
+	Console::get_instance().dispatch(event);
 }
 
 void Engine::draw() const {
@@ -108,11 +107,13 @@ void Engine::draw() const {
 	world->draw(*viewport);
 
 	// draw console and hud on top of world
-	Console::get_instance().draw(*viewport);
-	HUD::get_instance().draw(*viewport);
 
-	// draw viewport
+	// draw hud and viewport
+	hud->draw(*viewport);
 	viewport->draw();
+
+	// draw console on top
+	Console::get_instance().draw(*viewport);
 
 	// swap renderer buffers
 	SDL_RenderPresent(Context::get_instance().get_renderer());
@@ -122,10 +123,10 @@ void Engine::update(unsigned int ticks) {
 	// update world
 	world->update(ticks);
 
-	// update console and hud
-	Console::get_instance().update(ticks);
-	HUD::get_instance().update(ticks);
-
-	// update viewport
+	// update hud and viewport
+	hud->update(ticks);
 	viewport->update(ticks);
+
+	// update console
+	Console::get_instance().update(ticks);
 }

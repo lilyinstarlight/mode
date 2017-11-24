@@ -8,20 +8,25 @@
 
 #include "world.h"
 
-World::World() : width(Spec::get_instance().get_int("world/width")), height(Spec::get_instance().get_int("world/height")), player(nullptr), drawables{} {}
+World::World() : width(Spec::get_instance().get_int("world/width")), height(Spec::get_instance().get_int("world/height")), player(nullptr), owning{}, drawables{} {}
 
 void World::init() {
 	player = new Player();
+	owning.insert(player);
 	drawables.insert(player);
 
 	// get top level elements and add applicable ones to drawables
 	for (const std::string & str : Spec::get_instance().get_tops()) {
 		if (Spec::get_instance().check(str + "/type")) {
 			if (Spec::get_instance().get_str(str + "/type") == "background") {
-				drawables.insert(new Background(str));
+				Background * background = new Background(str);
+				owning.insert(background);
+				drawables.insert(background);
 			}
 			else if (Spec::get_instance().get_str(str + "/type") == "sprite") {
-				drawables.insert(new Sprite(str));
+				Sprite * sprite = new Sprite(str);
+				owning.insert(sprite);
+				drawables.insert(sprite);
 			}
 		}
 	}
@@ -31,7 +36,7 @@ void World::init() {
 
 World::~World() {
 	// free added drawables
-	for (Drawable * drawable : drawables) {
+	for (Drawable * drawable : owning) {
 		delete drawable;
 	}
 }
@@ -42,6 +47,15 @@ void World::add(Drawable & drawable) {
 
 void World::remove(Drawable & drawable) {
 	drawables.erase(&drawable);
+}
+
+Drawable * World::get(const std::string & name) {
+	for (Drawable * drawable : drawables) {
+		if (drawable->get_name() == name)
+			return drawable;
+	}
+
+	return nullptr;
 }
 
 void World::dispatch(const SDL_Event & event) {

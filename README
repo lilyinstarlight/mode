@@ -11,8 +11,6 @@ Problems that I had in completing this project:
 
 Issues:
 * the sprites aren't showing up right for some reason - their sizes are also wrong
-* the music is just a placeholder - I've composed a little bit but nothing of note
-* the backgrounds are just placeholers - I still need to adapt a background mockup I have
 * the backgrounds do not properly track against the viewport - I copied this code from tracker so I don't know what's going on here
 * scripting does not handle AI - right now it just demonstrates enforcing gravity with it but can observe the player and take actions
 

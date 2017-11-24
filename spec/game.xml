@@ -17,42 +17,6 @@
 		<size>16</size>
 	</font>
 
-	<hud>
-		<box>
-			<r>128</r>
-			<g>46</g>
-			<b>46</b>
-			<a>128</a>
-		</box>
-
-		<border>
-			<r>255</r>
-			<g>255</g>
-			<b>255</b>
-			<a>255</a>
-		</border>
-
-		<text>
-			<r>255</r>
-			<g>255</g>
-			<b>255</b>
-			<a>255</a>
-		</text>
-
-		<str>
-+------------------------+
-|        .:Mode:.        |
-|    A game where you    |
-|    write the rules.    |
-|                        |
-|    WASD to move        |
-|    H to toggle HUD     |
-|    R to restart        |
-|    Q to quit           |
-+------------------------+
-		</str>
-	</hud>
-
 	<console>
 		<box>
 			<r>128</r>
@@ -68,6 +32,77 @@
 			<a>255</a>
 		</text>
 	</console>
+
+	<hud>
+		<initial>5000</initial>
+
+		<position>
+			<x>20</x>
+			<y>20</y>
+		</position>
+
+		<rotation>0</rotation>
+
+		<text>
+			<r>255</r>
+			<g>255</g>
+			<b>255</b>
+			<a>255</a>
+		</text>
+
+		<box>
+			<r>128</r>
+			<g>46</g>
+			<b>46</b>
+			<a>128</a>
+		</box>
+
+		<str>
++------------------------+
+|        .:Mode:.        |
+|    A game where you    |
+|    write the rules.    |
+|                        |
+|    WASD to move        |
+|    H to toggle HUD     |
+|    R to restart        |
+|    Q to quit           |
+|                        |
+|        FPS: {fps}      |
+|        HP:  {hp}       |
+|                        |
++------------------------+
+		</str>
+	</hud>
+
+	<collision>
+		<position>
+			<x>20</x>
+			<y>550</y>
+		</position>
+
+		<rotation>0</rotation>
+
+		<text>
+			<r>255</r>
+			<g>255</g>
+			<b>255</b>
+			<a>255</a>
+		</text>
+
+		<box>
+			<r>128</r>
+			<g>46</g>
+			<b>46</b>
+			<a>128</a>
+		</box>
+
+		<str>
++---------------------+
+| Collision Detected! |
++---------------------+
+		</str>
+	</collision>
 
 	<background>
 		<type>background</type>
@@ -169,6 +204,6 @@
 		    </idle>
 		</sheets>
 
-		<collision>rectangular</collision>
+		<collision>pixel</collision>
 	</player>
 </spec>

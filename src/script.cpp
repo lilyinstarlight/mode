@@ -110,6 +110,9 @@ void Script::load_api() {
 			"add_background", WrapAdd<World, Background>(),
 			"remove_background", WrapRemove<World, Background>(),
 
+			"add_dialog", WrapAdd<World, Dialog>(),
+			"remove_dialog", WrapRemove<World, Dialog>(),
+
 			"width", sol::property(&World::get_width),
 			"height", sol::property(&World::get_height)
 	);
@@ -161,6 +164,19 @@ void Script::load_api() {
 	lua["engine"] = &Engine::get_instance();
 
 	// create Spec data type
+	lua.new_usertype<Dialog>("Dialog",
+			"new", sol::constructors<Dialog(std::string, std::string), Dialog(std::string, std::string, bool), Dialog(std::string, std::string, bool, bool)>(),
+
+			"open", &Dialog::open,
+			"close", &Dialog::close,
+			"toggle", &Dialog::toggle,
+
+			"opened", sol::property(&Dialog::is_open),
+
+			"string", sol::property(&Dialog::get_string, &Dialog::set_string)
+	);
+
+	// create Spec data type
 	lua.new_usertype<HUD>("HUD",
 			"new", sol::no_constructor,
 
@@ -174,7 +190,7 @@ void Script::load_api() {
 	);
 
 	// set hud
-	lua["hud"] = &HUD::get_instance();
+	lua["hud"] = &Engine::get_instance().get_hud();
 
 	// create Event data type
 	lua.new_usertype<SDL_Event>("Event",

@@ -8,9 +8,11 @@
 class Background : public Drawable {
 	public:
 		Background(const std::string & name);
+
+		Background(const Background & b);
+
 		virtual ~Background() {}
 
-		Background(const Background & b) = delete;
 		const Background & operator=(const Background & b) = delete;
 
 		void dispatch(const SDL_Event &) {}

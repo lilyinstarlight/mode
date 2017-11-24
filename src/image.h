@@ -23,6 +23,5 @@ class Image {
 		SDL_Renderer * renderer;
 		SDL_Surface * surface;
 		SDL_Texture * texture;
-		SDL_Rect view;
 };
 #endif

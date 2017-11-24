@@ -90,23 +90,23 @@ bool PixelCollisionStrategy::check(const Drawable & obj1, const Drawable & obj2)
 	SDL_LockSurface(s2);
 
 	// grab pixels
-	const Uint32 * pixels1 = static_cast<Uint32 *>(s1->pixels);
-	const Uint32 * pixels2 = static_cast<Uint32 *>(s2->pixels);
+	const Uint8 * pixels1 = static_cast<Uint8 *>(s1->pixels);
+	const Uint8 * pixels2 = static_cast<Uint8 *>(s2->pixels);
 
 	// for each pixel in the intersection
 	for (int col = area.x; col < area.x + area.w; ++col) {
 		for (int row = area.y; row < area.y + area.h; ++row) {
 			// calculate pixel indices
-			int idx1 = s1->pitch*(row - obj1.get_y()) + (col - obj1.get_x());
-			int idx2 = s2->pitch*(row - obj2.get_y()) + (col - obj2.get_x());
+			int idx1 = s1->pitch*(row - obj1.get_y()) + 4*(col - obj1.get_x());
+			int idx2 = s2->pitch*(row - obj2.get_y()) + 4*(col - obj2.get_x());
 
 			// ignore invalid indices
-			if (idx1 < 0 || idx2 < 0)
+			if (idx1 < 0 || idx1 >= obj1.get_width()*obj1.get_height() || idx2 < 0 || idx2 >= obj2.get_width()*obj2.get_height())
 				continue;
 
 			// get pixel
-			Uint32 pix1 = pixels1[idx1];
-			Uint32 pix2 = pixels2[idx2];
+			Uint32 pix1 = pixels1[idx1] << 3 | pixels1[idx1 + 1] << 2 | pixels1[idx1 + 2] << 1 | pixels1[idx1 + 3];
+			Uint32 pix2 = pixels2[idx2] << 3 | pixels2[idx2 + 1] << 2 | pixels2[idx2 + 2] << 1 | pixels2[idx2 + 3];
 
 			// if both are visible report collision
 			if (visible(pix1, s1) && visible(pix2, s2)) {
