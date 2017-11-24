@@ -97,11 +97,11 @@ bool PixelCollisionStrategy::check(const Drawable & obj1, const Drawable & obj2)
 	for (int col = area.x; col < area.x + area.w; ++col) {
 		for (int row = area.y; row < area.y + area.h; ++row) {
 			// calculate pixel indices
-			int idx1 = s1->pitch*(row - obj1.get_y()) + 4*(col - obj1.get_x());
-			int idx2 = s2->pitch*(row - obj2.get_y()) + 4*(col - obj2.get_x());
+			int idx1 = (s1->pitch*(row - obj1.get_y()) + 4*(col - obj1.get_x()))/obj1.get_scale();
+			int idx2 = (s2->pitch*(row - obj2.get_y()) + 4*(col - obj2.get_x()))/obj2.get_scale();
 
 			// ignore invalid indices
-			if (idx1 < 0 || idx1 >= obj1.get_width()*obj1.get_height() || idx2 < 0 || idx2 >= obj2.get_width()*obj2.get_height())
+			if (idx1 < 0 || idx1 >= s1->w*s1->h || idx2 < 0 || idx2 >= s2->w*s2->h)
 				continue;
 
 			// get pixel
