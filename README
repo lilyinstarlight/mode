@@ -11,7 +11,6 @@ Problems that I had in completing this project:
 
 Issues:
 * per pixel collision does not seem to work - I think it's calculating wrong index values
-* scripting does not handle AI - right now it just demonstrates enforcing gravity with it but can observe the player and take actions
 
 I've got some resources at https://github.com/ProjectPyLink/PyLink/tree/master/pylink/game/res I plan on recreating and merging.
 

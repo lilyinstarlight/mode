@@ -100,6 +100,10 @@ bool PixelCollisionStrategy::check(const Drawable & obj1, const Drawable & obj2)
 			int idx1 = ((y - obj1.get_y())*s1->w + x - obj1.get_x())/obj1.get_scale();
 			int idx2 = ((y - obj2.get_y())*s2->w + x - obj2.get_x())/obj2.get_scale();
 
+			// ignore invalid indices caused by rounding
+			if (idx1 < 0 || idx1 >= s1->w*s1->h || idx2 < 0 || idx2 >= s2->w*s2->h)
+				continue;
+
 			// get pixel
 			Uint32 pix1 = pixels1[idx1];
 			Uint32 pix2 = pixels2[idx2];

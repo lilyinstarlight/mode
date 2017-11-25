@@ -1,5 +1,6 @@
 collided = false
 collision = Dialog.new("collision", "Collision detected!", true, false)
+center = sprite.pos.y
 
 function dispatch (event)
 end
@@ -13,13 +14,17 @@ function update (ticks)
 
 	collided = false
 
-	sprite.vel.y = sprite.vel.y + ticks
+	sprite.pos.y = 20*math.sin(clock.ticks/500) + center
+	print(sprite.pos.y)
 end
 
-function observe (sprite)
+function observe (other)
+	local distance = sprite.pos.x + sprite.width/2 - other.pos.x - other.width/2
+
+	sprite.vel.x = -distance/10
 end
 
-function collide (sprite)
+function collide (other)
 	collided = true
 end
 

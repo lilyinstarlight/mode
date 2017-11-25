@@ -39,7 +39,7 @@ Script::Script(const Script & s) : path(s.path), script(s.script), result(s.resu
 }
 
 void Script::load_api() {
-	lua.open_libraries(sol::lib::base);
+	lua.open_libraries(sol::lib::base, sol::lib::math);
 
 	// create Vector data type
 	lua.new_usertype<Vector2f>("Vector",
@@ -152,7 +152,7 @@ void Script::load_api() {
 	// set spec
 	lua["spec"] = &Spec::get_instance();
 
-	// create Spec data type
+	// create Engine data type
 	lua.new_usertype<Engine>("Engine",
 			"new", sol::no_constructor,
 
@@ -162,6 +162,17 @@ void Script::load_api() {
 
 	// set engine
 	lua["engine"] = &Engine::get_instance();
+
+	// create Clock data type
+	lua.new_usertype<Clock>("Clock",
+			"new", sol::no_constructor,
+
+			"ticks", sol::property(&Clock::get_ticks),
+			"fps", sol::property(&Clock::get_fps)
+	);
+
+	// set clock
+	lua["clock"] = &Clock::get_instance();
 
 	// create Spec data type
 	lua.new_usertype<Dialog>("Dialog",
