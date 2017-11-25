@@ -20,9 +20,9 @@ function dispatch (event)
 end
 
 function update (ticks)
-	if input:check('player') then
-		sprite.vel.x = 0
+	sprite.vel.x = 0
 
+	if input:check('player') then
 		if input:get_key('a') then
 			sprite.vel.x = sprite.vel.x - speed.left
 		end
@@ -34,22 +34,22 @@ function update (ticks)
 		if input:get_key('s') then
 			sprite.vel.y = sprite.vel.y + speed.down
 		end
+	end
 
-		sprite.vel.y = sprite.vel.y + ticks
+	sprite.vel.y = sprite.vel.y + ticks
 
-		if sprite.pos.y >= world.height - sprite.height - 50 then
-			sprite.pos.y = world.height - sprite.height - 50
-			sprite.vel.y = 0
+	if sprite.pos.y >= world.height - sprite.height - 50 then
+		sprite.pos.y = world.height - sprite.height - 50
+		sprite.vel.y = 0
 
-			if input:get_key('w') then
-				sprite.vel.y = sprite.vel.y - speed.up
-			end
+		if input:check('player') and input:get_key('w') then
+			sprite.vel.y = sprite.vel.y - speed.up
 		end
+	end
 
-		if sprite.vel.x < 0 then
-			sprite.state = 'left'
-		else
-			sprite.state = 'right'
-		end
+	if sprite.vel.x < 0 then
+		sprite.state = 'left'
+	elseif sprite.vel.x > 0 then
+		sprite.state = 'right'
 	end
 end
