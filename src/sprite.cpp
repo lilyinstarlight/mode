@@ -1,7 +1,8 @@
-#include <cmath>
+#include <SDL2/SDL2_rotozoom.h>
 
 #include "imagefactory.h"
 #include "spec.h"
+#include "util.h"
 
 #include "sprite.h"
 
@@ -90,7 +91,7 @@ void Sprite::dispatch(const SDL_Event & event) {
 
 void Sprite::draw(const Viewport & viewport) const {
 	// draw current image in viewport
-	get_image()->draw(viewport, get_x(), get_y(), get_scale());
+	get_image()->draw(viewport, get_x(), get_y(), get_rotation(), get_scale());
 }
 
 void Sprite::update(unsigned int ticks) {
@@ -125,11 +126,27 @@ const Image * Sprite::get_image() const {
 }
 
 int Sprite::get_width() const {
-	return get_scale()*sheets.at(state)->get_image(frame)->get_width();
+	const Image * image = sheets.at(state)->get_image(frame);
+
+	int width, height;
+	if (get_rotation() <= Vector2f::EPSILON)
+		width = image->get_width()*get_scale();
+	else
+		rotozoomSurfaceSize(image->get_width(), image->get_height(), -get_rotation(), get_scale(), &width, &height);
+
+	return width;
 }
 
 int Sprite::get_height() const {
-	return get_scale()*sheets.at(state)->get_image(frame)->get_height();
+	const Image * image = sheets.at(state)->get_image(frame);
+
+	int width, height;
+	if (get_rotation() <= Vector2f::EPSILON)
+		height = image->get_height()*get_scale();
+	else
+		rotozoomSurfaceSize(image->get_width(), image->get_height(), -get_rotation(), get_scale(), &width, &height);
+
+	return height;
 }
 
 const SDL_Surface * Sprite::get_surface() const {

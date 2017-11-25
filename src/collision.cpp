@@ -1,12 +1,8 @@
+#include <SDL2/SDL2_rotozoom.h>
+
+#include "util.h"
+
 #include "collision.h"
-
-int CollisionStrategy::max(int left, int right) const {
-	return right > left ? right : left;
-}
-
-int CollisionStrategy::min(int left, int right) const {
-	return right < left ? right : left;
-}
 
 float CollisionStrategy::distance(const Vector2f & p1, const Vector2f & p2) const {
 	return std::sqrt(std::pow(p2[0] - p1[0], 2) + std::pow(p2[1] - p1[1], 2));
@@ -14,10 +10,10 @@ float CollisionStrategy::distance(const Vector2f & p1, const Vector2f & p2) cons
 
 SDL_Rect CollisionStrategy::intersection(const Drawable & obj1, const Drawable & obj2) const {
 	// get intersection points using max and min
-	int x1 = max(obj1.get_x(), obj2.get_x());
-	int y1 = max(obj1.get_y(), obj2.get_y());
-	int x2 = min(obj1.get_x() + obj1.get_width(), obj2.get_x() + obj2.get_width());
-	int y2 = min(obj1.get_y() + obj1.get_height(), obj2.get_y() + obj2.get_height());
+	int x1 = Util::max(obj1.get_x(), obj2.get_x());
+	int y1 = Util::max(obj1.get_y(), obj2.get_y());
+	int x2 = Util::min(obj1.get_x() + obj1.get_width(), obj2.get_x() + obj2.get_width());
+	int y2 = Util::min(obj1.get_y() + obj1.get_height(), obj2.get_y() + obj2.get_height());
 
 	// calculate intersection size
 	int w = x2 - x1;
@@ -59,8 +55,8 @@ bool RectangularCollisionStrategy::check(const Drawable & obj1, const Drawable &
 
 bool CircularCollisionStrategy::check(const Drawable & obj1, const Drawable & obj2) const {
 	// get radii
-	unsigned int r1 = max(obj1.get_width(), obj1.get_height());
-	unsigned int r2 = max(obj2.get_width(), obj2.get_height());
+	unsigned int r1 = Util::max(obj1.get_width(), obj1.get_height());
+	unsigned int r2 = Util::max(obj2.get_width(), obj2.get_height());
 
 	// get maximum collision distance
 	float collision_distance = r1/2.0f + r2/2.0f;
@@ -82,14 +78,8 @@ bool PixelCollisionStrategy::check(const Drawable & obj1, const Drawable & obj2)
 		return false;
 
 	// create new surfaces to perform calculations with
-	SDL_Surface * s1 = SDL_CreateRGBSurface(0, obj1.get_width(), obj1.get_height(), obj1.get_surface()->format->BitsPerPixel, obj1.get_surface()->format->Rmask, obj1.get_surface()->format->Gmask, obj1.get_surface()->format->Bmask, obj1.get_surface()->format->Amask);
-	SDL_Surface * s2 = SDL_CreateRGBSurface(0, obj2.get_width(), obj2.get_height(), obj2.get_surface()->format->BitsPerPixel, obj2.get_surface()->format->Rmask, obj2.get_surface()->format->Gmask, obj2.get_surface()->format->Bmask, obj2.get_surface()->format->Amask);
-
-	// surfaces are not modified so tell compiler
-	SDL_Rect r1 = {0, 0, obj1.get_width(), obj1.get_height()};
-	SDL_BlitSurface(const_cast<SDL_Surface *>(obj1.get_surface()), nullptr, s1, &r1);
-	SDL_Rect r2 = {0, 0, obj2.get_width(), obj2.get_height()};
-	SDL_BlitSurface(const_cast<SDL_Surface *>(obj2.get_surface()), nullptr, s2, &r2);
+	SDL_Surface * s1 = rotozoomSurface(const_cast<SDL_Surface *>(obj1.get_surface()), -obj1.get_rotation(), obj1.get_scale(), SMOOTHING_OFF);
+	SDL_Surface * s2 = rotozoomSurface(const_cast<SDL_Surface *>(obj2.get_surface()), -obj2.get_rotation(), obj2.get_scale(), SMOOTHING_OFF);
 
 	// lock surfaces to prevent modification
 	SDL_LockSurface(s1);
@@ -103,8 +93,8 @@ bool PixelCollisionStrategy::check(const Drawable & obj1, const Drawable & obj2)
 	for (int x = area.x; x < area.x + area.w; ++x) {
 		for (int y = area.y; y < area.y + area.h; ++y) {
 			// calculate pixel indices
-			int idx1 = ((y - static_cast<int>(obj1.get_y()))*s1->pitch + (x - static_cast<int>(obj1.get_x()))*s1->format->BitsPerPixel);
-			int idx2 = ((y - static_cast<int>(obj2.get_y()))*s2->pitch + (x - static_cast<int>(obj2.get_x()))*s2->format->BitsPerPixel);
+			int idx1 = ((y - static_cast<int>(obj1.get_y()))*s1->pitch + (x - static_cast<int>(obj1.get_x()))*s1->format->BytesPerPixel);
+			int idx2 = ((y - static_cast<int>(obj2.get_y()))*s2->pitch + (x - static_cast<int>(obj2.get_x()))*s2->format->BytesPerPixel);
 
 			// get pixel
 			const Uint32 * pix1 = static_cast<const Uint32 *>(static_cast<const void *>(pixels1 + idx1));

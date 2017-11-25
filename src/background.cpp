@@ -14,7 +14,7 @@ void Background::draw(const Viewport & viewport) const {
 				// draw adjusted tile
 				SDL_Rect src = {0, 0, get_width(), get_height()};
 				SDL_Rect dst = {x, y, src.w, src.h};
-				image->draw(src, dst);
+				image->draw(src, dst, 0);
 			}
 		}
 	}
@@ -22,6 +22,6 @@ void Background::draw(const Viewport & viewport) const {
 		// draw adjusted background
 		SDL_Rect src = {0, 0, get_width(), get_height()};
 		SDL_Rect dst = {static_cast<int>(get_x()*factor - viewport.get_x()*factor), static_cast<int>(get_y()*factor - viewport.get_y()*factor), src.w, src.h};
-		image->draw(src, dst);
+		image->draw(src, dst, 0);
 	}
 }

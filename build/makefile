@@ -3,7 +3,7 @@ CXX=g++
 
 CXXFLAGS=-std=c++14 -fsanitize=address -ggdb -Wall -Wpedantic -Wextra -Weffc++ -Werror `sdl2-config --cflags` -isystem $(LIBDIR) -I `sdl2-config --prefix`/include/
 LDFLAGS=-std=c++14 -fsanitize=address
-LDLIBS=-lm -ldl -lexpat `sdl2-config --libs` -lSDL2_image -lSDL2_ttf -lSDL2_mixer
+LDLIBS=-lm -ldl -lexpat `sdl2-config --libs` -lSDL2_image -lSDL2_ttf -lSDL2_mixer -lSDL2_gfx
 
 ROOT=..
 

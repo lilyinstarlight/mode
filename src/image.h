@@ -12,8 +12,8 @@ class Image {
 		Image & operator=(const Image & image);
 
 		void draw(const Viewport & viewport, int x, int y) const;
-		void draw(const Viewport & viewport, int x, int y, float scale) const;
-		void draw(const SDL_Rect & src, const SDL_Rect & dst) const;
+		void draw(const Viewport & viewport, int x, int y, float rotation, float scale) const;
+		void draw(const SDL_Rect & src, const SDL_Rect & dst, float rotation) const;
 
 		inline int get_width()  const { return surface->w; }
 		inline int get_height() const { return surface->h; }

@@ -16,11 +16,11 @@ Image & Image::operator=(const Image & image) {
 }
 
 void Image::draw(const Viewport & viewport, int x, int y) const {
-	draw(viewport, x, y, 1.0f);
+	draw(viewport, x, y, 0.0f, 1.0f);
 }
 
-void Image::draw(const Viewport & viewport, int x, int y, float scale) const {
-	SDL_Rect src, dest;
+void Image::draw(const Viewport & viewport, int x, int y, float rotation, float scale) const {
+	SDL_Rect src, dst;
 
 	// draw image from origin
 	src.x = 0;
@@ -29,16 +29,16 @@ void Image::draw(const Viewport & viewport, int x, int y, float scale) const {
 	src.h = surface->h;
 
 	// draw within viewport
-	dest.x = x - viewport.get_x();
-	dest.y = y - viewport.get_y();
-	dest.w = scale*surface->w;
-	dest.h = scale*surface->h;
+	dst.x = x - viewport.get_x();
+	dst.y = y - viewport.get_y();
+	dst.w = scale*surface->w;
+	dst.h = scale*surface->h;
 
-	// copy image into renderer
-	SDL_RenderCopy(renderer, texture, &src, &dest);
+	// draw image
+	draw(src, dst, rotation);
 }
 
-void Image::draw(const SDL_Rect & src, const SDL_Rect & dst) const {
+void Image::draw(const SDL_Rect & src, const SDL_Rect & dst, float rotation) const {
 	// copy image into renderer
-	SDL_RenderCopy(renderer, texture, &src, &dst);
+	SDL_RenderCopyEx(renderer, texture, &src, &dst, rotation, nullptr, SDL_FLIP_NONE);
 }

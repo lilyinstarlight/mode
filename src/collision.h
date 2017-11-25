@@ -13,8 +13,6 @@ class CollisionStrategy {
 		virtual bool check(const Drawable & obj1, const Drawable & obj2) const = 0;
 
 	protected:
-		int max(int left, int right) const;
-		int min(int left, int right) const;
 		float distance(const Vector2f & p1, const Vector2f & p2) const;
 		SDL_Rect intersection(const Drawable & obj1, const Drawable & obj2) const;
 		bool visible(Uint32 pixel, const SDL_Surface * surface) const;
