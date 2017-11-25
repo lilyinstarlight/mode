@@ -203,6 +203,6 @@
 		    </idle>
 		</sheets>
 
-		<collision>rectangular</collision>
+		<collision>pixel</collision>
 	</player>
 </spec>

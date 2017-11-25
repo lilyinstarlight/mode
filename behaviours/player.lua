@@ -8,13 +8,13 @@ speed = {
 grounded = false
 
 function dispatch (event)
-	if event.ev == 'keydown' and event.val['rep'] == 0 then
+	if event.ev == 'keydown' and event.val.rep == 0 then
 		if input:check('player') then
-			if event.val['key'] == 'q' then
+			if event.val.key == 'q' then
 				engine:stop()
-			elseif event.val['key'] == 'r' then
+			elseif event.val.key == 'r' then
 				engine:restart()
-			elseif event.val['key'] == 'h' then
+			elseif event.val.key == 'h' then
 				hud:toggle()
 			end
 		end
@@ -28,19 +28,19 @@ function update (ticks)
 		sprite.vel.x = 0
 
 		if input:get_key('a') then
-			sprite.vel.x = sprite.vel.x - speed['left']
+			sprite.vel.x = sprite.vel.x - speed.left
 		end
 
 		if input:get_key('d') then
-			sprite.vel.x = sprite.vel.x + speed['right']
+			sprite.vel.x = sprite.vel.x + speed.right
 		end
 
 		if input:get_key('w') and grounded then
-			sprite.vel.y = sprite.vel.y - speed['up']
+			sprite.vel.y = sprite.vel.y - speed.up
 		end
 
 		if input:get_key('s') then
-			sprite.vel.y = sprite.vel.y + speed['down']
+			sprite.vel.y = sprite.vel.y + speed.down
 		end
 
 		sprite.vel.y = sprite.vel.y + ticks
