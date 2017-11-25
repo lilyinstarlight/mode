@@ -18,7 +18,7 @@ function update (ticks)
 
 	if sprite.vel.x < 0 then
 		sprite.state = 'left'
-	else
+	elseif sprite.vel.x > 0 then
 		sprite.state = 'right'
 	end
 end
