@@ -1,10 +1,10 @@
 #include "collision.h"
 
-unsigned int CollisionStrategy::max(unsigned int left, unsigned int right) const {
+int CollisionStrategy::max(int left, int right) const {
 	return right > left ? right : left;
 }
 
-unsigned int CollisionStrategy::min(unsigned int left, unsigned int right) const {
+int CollisionStrategy::min(int left, int right) const {
 	return right < left ? right : left;
 }
 
@@ -81,46 +81,54 @@ bool PixelCollisionStrategy::check(const Drawable & obj1, const Drawable & obj2)
 	if (area.x == 0 && area.y == 0 && area.w == 0 && area.h == 0)
 		return false;
 
-	// surfaces are not modified so tell the compiler that
-	SDL_Surface * s1 = const_cast<SDL_Surface *>(obj1.get_surface());
-	SDL_Surface * s2 = const_cast<SDL_Surface *>(obj2.get_surface());
+	// create new surfaces to perform calculations with
+	SDL_Surface * s1 = SDL_CreateRGBSurface(0, obj1.get_width(), obj1.get_height(), obj1.get_surface()->format->BitsPerPixel, obj1.get_surface()->format->Rmask, obj1.get_surface()->format->Gmask, obj1.get_surface()->format->Bmask, obj1.get_surface()->format->Amask);
+	SDL_Surface * s2 = SDL_CreateRGBSurface(0, obj2.get_width(), obj2.get_height(), obj2.get_surface()->format->BitsPerPixel, obj2.get_surface()->format->Rmask, obj2.get_surface()->format->Gmask, obj2.get_surface()->format->Bmask, obj2.get_surface()->format->Amask);
+
+	// surfaces are not modified so tell compiler
+	SDL_Rect r1 = {0, 0, obj1.get_width(), obj1.get_height()};
+	SDL_BlitSurface(const_cast<SDL_Surface *>(obj1.get_surface()), nullptr, s1, &r1);
+	SDL_Rect r2 = {0, 0, obj2.get_width(), obj2.get_height()};
+	SDL_BlitSurface(const_cast<SDL_Surface *>(obj2.get_surface()), nullptr, s2, &r2);
 
 	// lock surfaces to prevent modification
 	SDL_LockSurface(s1);
 	SDL_LockSurface(s2);
 
 	// grab pixels
-	const Uint32 * pixels1 = static_cast<Uint32 *>(s1->pixels);
-	const Uint32 * pixels2 = static_cast<Uint32 *>(s2->pixels);
+	const Uint8 * pixels1 = static_cast<Uint8 *>(s1->pixels);
+	const Uint8 * pixels2 = static_cast<Uint8 *>(s2->pixels);
 
 	// for each pixel in the intersection
-	for (float x = area.x; x < area.x + area.w; ++x) {
-		for (float y = area.y; y < area.y + area.h; ++y) {
+	for (int x = area.x; x < area.x + area.w; ++x) {
+		for (int y = area.y; y < area.y + area.h; ++y) {
 			// calculate pixel indices
-			int idx1 = ((y - obj1.get_y())*s1->w + x - obj1.get_x())/obj1.get_scale();
-			int idx2 = ((y - obj2.get_y())*s2->w + x - obj2.get_x())/obj2.get_scale();
-
-			// ignore invalid indices caused by rounding
-			if (idx1 < 0 || idx1 >= s1->w*s1->h || idx2 < 0 || idx2 >= s2->w*s2->h)
-				continue;
+			int idx1 = ((y - static_cast<int>(obj1.get_y()))*s1->pitch + (x - static_cast<int>(obj1.get_x()))*s1->format->BitsPerPixel);
+			int idx2 = ((y - static_cast<int>(obj2.get_y()))*s2->pitch + (x - static_cast<int>(obj2.get_x()))*s2->format->BitsPerPixel);
 
 			// get pixel
-			Uint32 pix1 = pixels1[idx1];
-			Uint32 pix2 = pixels2[idx2];
+			const Uint32 * pix1 = static_cast<const Uint32 *>(static_cast<const void *>(pixels1 + idx1));
+			const Uint32 * pix2 = static_cast<const Uint32 *>(static_cast<const void *>(pixels2 + idx2));
 
 			// if both are visible report collision
-			if (visible(pix1, s1) && visible(pix2, s2)) {
+			if (visible(*pix1, s1) && visible(*pix2, s2)) {
 				SDL_UnlockSurface(s1);
 				SDL_UnlockSurface(s2);
+
+				SDL_FreeSurface(s1);
+				SDL_FreeSurface(s2);
 
 				return true;
 			}
 		}
 	}
 
-	// unlock surfaces
+	// unlock and free surfaces
 	SDL_UnlockSurface(s1);
 	SDL_UnlockSurface(s2);
+
+	SDL_FreeSurface(s1);
+	SDL_FreeSurface(s2);
 
 	// if no visible collision report no collision
 	return false;

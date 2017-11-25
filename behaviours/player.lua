@@ -5,8 +5,6 @@ speed = {
 	down = spec:get_float('player/speed/down')
 }
 
-grounded = false
-
 function dispatch (event)
 	if event.ev == 'keydown' and event.val.rep == 0 then
 		if input:check('player') then
@@ -22,8 +20,6 @@ function dispatch (event)
 end
 
 function update (ticks)
-	grounded = sprite.pos.y == view.height - sprite.height
-
 	if input:check('player') then
 		sprite.vel.x = 0
 
@@ -35,14 +31,25 @@ function update (ticks)
 			sprite.vel.x = sprite.vel.x + speed.right
 		end
 
-		if input:get_key('w') and grounded then
-			sprite.vel.y = sprite.vel.y - speed.up
-		end
-
 		if input:get_key('s') then
 			sprite.vel.y = sprite.vel.y + speed.down
 		end
 
 		sprite.vel.y = sprite.vel.y + ticks
+
+		if sprite.pos.y >= world.height - sprite.height - 50 then
+			sprite.pos.y = world.height - sprite.height - 50
+			sprite.vel.y = 0
+
+			if input:get_key('w') then
+				sprite.vel.y = sprite.vel.y - speed.up
+			end
+		end
+
+		if sprite.vel.x < 0 then
+			sprite.state = 'left'
+		else
+			sprite.state = 'right'
+		end
 	end
 end

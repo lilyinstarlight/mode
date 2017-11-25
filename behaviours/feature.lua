@@ -15,7 +15,12 @@ function update (ticks)
 	collided = false
 
 	sprite.pos.y = 20*math.sin(clock.ticks/500) + center
-	print(sprite.pos.y)
+
+	if sprite.vel.x < 0 then
+		sprite.state = 'left'
+	else
+		sprite.state = 'right'
+	end
 end
 
 function observe (other)

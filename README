@@ -10,6 +10,7 @@ The easiest part of this project:
 Problems that I had in completing this project: 
 
 Issues:
+* setting test color does not seem to work - I think it's related to how rendered surfaces are combined
 * per pixel collision does not seem to work - I think it's calculating wrong index values
 
 I've got some resources at https://github.com/ProjectPyLink/PyLink/tree/master/pylink/game/res I plan on recreating and merging.

@@ -44,17 +44,17 @@
 		<rotation>0</rotation>
 
 		<text>
-			<r>255</r>
+			<r>0</r>
 			<g>255</g>
-			<b>255</b>
+			<b>0</b>
 			<a>255</a>
 		</text>
 
 		<box>
-			<r>128</r>
-			<g>46</g>
-			<b>46</b>
-			<a>128</a>
+			<r>20</r>
+			<g>20</g>
+			<b>20</b>
+			<a>200</a>
 		</box>
 
 		<str>
@@ -75,6 +75,8 @@
 	</hud>
 
 	<collision>
+		<type>dialog</type>
+
 		<position>
 			<x>20</x>
 			<y>550</y>
@@ -83,17 +85,17 @@
 		<rotation>0</rotation>
 
 		<text>
-			<r>255</r>
+			<r>0</r>
 			<g>255</g>
-			<b>255</b>
+			<b>0</b>
 			<a>255</a>
 		</text>
 
 		<box>
-			<r>128</r>
-			<g>46</g>
-			<b>46</b>
-			<a>128</a>
+			<r>20</r>
+			<g>20</g>
+			<b>20</b>
+			<a>200</a>
 		</box>
 
 		<str>
@@ -103,41 +105,45 @@
 		</str>
 	</collision>
 
-	<background>
+	<sky>
 		<type>background</type>
 		<index>0</index>
 
-		<width>800</width>
-		<height>600</height>
-		<factor>0.1</factor>
+		<factor>0</factor>
 		<tile>true</tile>
 
-		<file>background.png</file>
-	</background>
+		<file>sky.png</file>
+	</sky>
 
-	<midground>
+	<clouds>
 		<type>background</type>
 		<index>10</index>
 
-		<width>800</width>
-		<height>600</height>
-		<factor>0.5</factor>
+		<factor>0.1</factor>
 		<tile>false</tile>
 
-		<file>midground.png</file>
-	</midground>
+		<file>clouds.png</file>
+	</clouds>
 
-	<foreground>
+	<city>
 		<type>background</type>
 		<index>20</index>
 
-		<width>800</width>
-		<height>600</height>
+		<factor>0.5</factor>
+		<tile>true</tile>
+
+		<file>city.png</file>
+	</city>
+
+	<ground>
+		<type>background</type>
+		<index>30</index>
+
 		<factor>1</factor>
 		<tile>true</tile>
 
-		<file>foreground.png</file>
-	</foreground>
+		<file>ground.png</file>
+	</ground>
 
 	<feature>
 		<type>sprite</type>
@@ -158,12 +164,19 @@
 		<scale>5</scale>
 
 		<sheets>
-		    <idle>
-				<file>feature.idle.png</file>
+		    <left>
+				<file>feature.left.png</file>
 
 				<frames>4</frames>
 				<interval>100</interval>
-		    </idle>
+		    </left>
+
+		    <right>
+				<file>feature.right.png</file>
+
+				<frames>4</frames>
+				<interval>100</interval>
+		    </right>
 		</sheets>
 
 		<collision>none</collision>
@@ -195,14 +208,21 @@
 		<scale>5</scale>
 
 		<sheets>
-		    <idle>
-				<file>hero.idle.png</file>
+		    <left>
+				<file>hero.left.png</file>
 
 				<frames>52</frames>
 				<interval>100</interval>
-		    </idle>
+		    </left>
+
+		    <right>
+				<file>hero.right.png</file>
+
+				<frames>52</frames>
+				<interval>100</interval>
+		    </right>
 		</sheets>
 
-		<collision>pixel</collision>
+		<collision>rectangular</collision>
 	</player>
 </spec>

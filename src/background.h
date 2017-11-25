@@ -19,8 +19,8 @@ class Background : public Drawable {
 		void draw(const Viewport & viewport) const;
 		void update(unsigned int) {}
 
-		int get_width() const  { return width;  }
-		int get_height() const { return height; }
+		int get_width() const  { return image->get_width();  }
+		int get_height() const { return image->get_height(); }
 
 		int get_factor() const { return factor; }
 		void set_factor(int f) { factor = f;    }
@@ -29,7 +29,6 @@ class Background : public Drawable {
 		virtual const Image * get_image() const { return image; };
 
 	private:
-		int width, height;
 		float factor;
 		bool tile;
 
