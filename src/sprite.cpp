@@ -23,7 +23,7 @@ Sprite::Sprite(const std::string & name) : Drawable(name,
 		collision_strategy(&rectangular_strategy),
 		observers{},
 		sheets{},
-		state("idle"),
+		state(Spec::get_instance().get_str(name + "/state")),
 		frame(0),
 		observer_interval(200),
 		frame_timer(0),
@@ -33,10 +33,6 @@ Sprite::Sprite(const std::string & name) : Drawable(name,
 	// load sheets for different states
 	for (const std::string & sheet : Spec::get_instance().get_subs(name + "/sheets"))
 		sheets[sheet] = ImageFactory::get_instance().get_sheet(name + "/sheets/" + sheet);
-
-	// set default as first sheet
-	if (sheets.size() > 0)
-		state = sheets.begin()->first;
 
 	// set collision strategy
 	std::string collision = Spec::get_instance().get_str(name + "/collision");

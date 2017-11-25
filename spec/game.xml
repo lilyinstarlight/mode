@@ -148,6 +148,7 @@
 	<feature>
 		<type>sprite</type>
 		<index>50</index>
+		<state>left</state>
 
 		<position>
 			<x>600</x>
@@ -185,6 +186,7 @@
 	<player>
 		<type>player</type>
 		<index>100</index>
+		<state>right</state>
 
 		<speed>
 			<left>80</left>
