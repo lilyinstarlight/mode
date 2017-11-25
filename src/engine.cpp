@@ -32,6 +32,8 @@ void Engine::start() {
 }
 
 void Engine::run() {
+	Clock::get_instance().start();
+
 	hud = new HUD();
 	world = new World();
 	viewport = new Viewport(*world);
@@ -60,26 +62,26 @@ void Engine::run() {
 					break;
 				}
 
-				if (event.key.keysym.sym == SDLK_p) {
+				if (event.key.keysym.sym == SDLK_TAB) {
 					// (un)pause clock
-					if (Clock::get_instance().is_paused())
-						Clock::get_instance().start();
-					else
+					if (Clock::get_instance().is_running())
 						Clock::get_instance().pause();
+					else
+						Clock::get_instance().start();
 				}
 			}
 
-			dispatch(event);
+			if (Clock::get_instance().is_running())
+				dispatch(event);
 		}
 
 		// increment and draw frames if time passed
-		ticks = Clock::get_instance().get_ticks();
-
-		if (ticks - last > 0)
-			Clock::get_instance().incr_frame();
-
+		Clock::get_instance().incr_frame();
 		draw();
-		update(ticks - last);
+
+		ticks = Clock::get_instance().get_ticks();
+		if (Clock::get_instance().is_running())
+			update(ticks - last);
 
 		last = ticks;
 	}
@@ -88,6 +90,8 @@ void Engine::run() {
 	delete world;
 
 	delete hud;
+
+	Clock::get_instance().stop();
 }
 
 void Engine::dispatch(const SDL_Event & event) {
@@ -105,8 +109,6 @@ void Engine::dispatch(const SDL_Event & event) {
 void Engine::draw() const {
 	// draw world
 	world->draw(*viewport);
-
-	// draw console and hud on top of world
 
 	// draw hud and viewport
 	hud->draw(*viewport);

@@ -18,12 +18,12 @@ class Clock {
 		void pause();
 		void stop();
 
-		bool is_paused() const;
+		bool is_running() const;
 
 	private:
 		Clock();
 
-		bool started, paused;
+		bool started, running;
 		unsigned int start_time, cur_time;
 		unsigned int frames, frame_time;
 		int fps;

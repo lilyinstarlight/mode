@@ -24,7 +24,7 @@ function update (ticks)
 end
 
 function observe (other)
-	local distance =other.pos.x + other.width/2 -  sprite.pos.x - sprite.width/2
+	local distance = other.pos.x + other.width/2 -  sprite.pos.x - sprite.width/2
 
 	sprite.vel.x = distance/10
 end

@@ -7,10 +7,10 @@ Clock & Clock::get_instance() {
 	return clock;
 }
 
-Clock::Clock() : started(false), paused(false), start_time(0), cur_time(0), frames(0), frame_time(0), fps(-1), fps_gain(0.1) {}
+Clock::Clock() : started(false), running(false), start_time(0), cur_time(0), frames(0), frame_time(0), fps(-1), fps_gain(0.8) {}
 
 unsigned int Clock::get_ticks() {
-	if (!paused)
+	if (running)
 		cur_time = SDL_GetTicks() - start_time;
 
 	return cur_time;
@@ -38,20 +38,22 @@ int Clock::get_fps() {
 }
 
 void Clock::incr_frame() {
-	if (!paused)
+	if (running)
 		++frames;
 }
 
 void Clock::start() {
-	if (started && paused) {
-		// unpause
-		paused = false;
-		start_time += SDL_GetTicks() - cur_time;
+	if (started) {
+		if (!running) {
+			// unpause
+			running = true;
+			start_time += SDL_GetTicks() - cur_time;
+		}
 	}
 	else {
 		// initialize clock
 		started = true;
-		paused = false;
+		running = true;
 		start_time = SDL_GetTicks();
 		cur_time = SDL_GetTicks();
 		frames = 0;
@@ -61,13 +63,13 @@ void Clock::start() {
 }
 
 void Clock::pause() {
-	paused = true;
+	running = false;
 }
 
 void Clock::stop() {
 	started = false;
 }
 
-bool Clock::is_paused() const {
-	return paused;
+bool Clock::is_running() const {
+	return running;
 }
