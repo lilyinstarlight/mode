@@ -68,6 +68,10 @@
 |    R to restart        |
 |    Q to quit           |
 |                        |
+|    ESC to exit         |
+|    TAB to pause        |
+|    ` to open console   |
+|                        |
 |        FPS: {fps}      |
 |        HP:  {hp}       |
 +------------------------+

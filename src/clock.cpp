@@ -45,9 +45,9 @@ void Clock::incr_frame() {
 void Clock::start() {
 	if (started) {
 		if (!running) {
-			// unpause
+			// unpause and drift clock
 			running = true;
-			start_time += SDL_GetTicks() - cur_time;
+			start_time = SDL_GetTicks() - cur_time;
 		}
 	}
 	else {

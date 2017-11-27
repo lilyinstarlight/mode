@@ -71,8 +71,7 @@ void Engine::run() {
 				}
 			}
 
-			if (Clock::get_instance().is_running())
-				dispatch(event);
+			dispatch(event);
 		}
 
 		// increment and draw frames if time passed
@@ -80,9 +79,7 @@ void Engine::run() {
 		draw();
 
 		ticks = Clock::get_instance().get_ticks();
-		if (Clock::get_instance().is_running())
-			update(ticks - last);
-
+		update(ticks - last);
 		last = ticks;
 	}
 
@@ -96,7 +93,8 @@ void Engine::run() {
 
 void Engine::dispatch(const SDL_Event & event) {
 	// update world
-	world->dispatch(event);
+	if (Clock::get_instance().is_running())
+		world->dispatch(event);
 
 	// update hud and viewport
 	hud->dispatch(event);
@@ -123,7 +121,8 @@ void Engine::draw() const {
 
 void Engine::update(unsigned int ticks) {
 	// update world
-	world->update(ticks);
+	if (Clock::get_instance().is_running())
+		world->update(ticks);
 
 	// update hud and viewport
 	hud->update(ticks);
