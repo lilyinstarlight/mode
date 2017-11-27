@@ -61,13 +61,16 @@ void Engine::run() {
 					state = STOPPING;
 					break;
 				}
-
-				if (event.key.keysym.sym == SDLK_TAB) {
+				else if (event.key.keysym.sym == SDLK_TAB) {
 					// (un)pause clock
 					if (Clock::get_instance().is_running())
 						Clock::get_instance().pause();
 					else
 						Clock::get_instance().start();
+				}
+				else if (event.key.keysym.sym == SDLK_F1) {
+					// toggle hud
+					hud->toggle();
 				}
 			}
 
