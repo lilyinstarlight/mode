@@ -1,8 +1,10 @@
 #ifndef SPRITE_H
 #define SPRITE_H
-#include <map>
+#include <unordered_map>
 #include <list>
+#include <stack>
 #include <string>
+#include <utility>
 #include <vector>
 
 #include "collision.h"
@@ -31,8 +33,9 @@ class Sprite : public Drawable {
 
 		virtual const SDL_Surface * get_surface() const;
 
-		std::string get_state() const         { return state; }
-		void set_state(const std::string & s) { state = s;    }
+		std::string get_state() const;
+		void set_state(const std::string & s);
+		void push_state(const std::string & s);
 
 		void observe(Sprite & observer);
 		void ignore(Sprite & observer);
@@ -52,10 +55,8 @@ class Sprite : public Drawable {
 		CollisionStrategy * collision_strategy;
 		std::list<Sprite *> observers;
 
-		std::map<std::string, Sheet *> sheets;
-		std::string state;
-
-		unsigned int frame;
+		std::unordered_map<std::string, Sheet *> sheets;
+		std::stack<std::pair<std::string, unsigned int>> state;
 
 		unsigned int observer_interval;
 

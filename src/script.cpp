@@ -59,6 +59,7 @@ void Script::load_api() {
 			"inject", &Sprite::inject,
 
 			"state", sol::property(&Sprite::get_state, &Sprite::set_state),
+			"push", &Sprite::push_state,
 
 			"width", sol::property(&Sprite::get_width),
 			"height", sol::property(&Sprite::get_height),

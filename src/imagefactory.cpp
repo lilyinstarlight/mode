@@ -128,7 +128,7 @@ Sheet * ImageFactory::get_sheet(const std::string & name) {
 	}
 
 	// create new sheet with frames
-	Sheet * sheet = new Sheet(images, Spec::get_instance().get_int(name + "/frames"), Spec::get_instance().get_int(name + "/interval"));
+	Sheet * sheet = new Sheet(images, Spec::get_instance().get_int(name + "/frames"), Spec::get_instance().get_int(name + "/interval"), Spec::get_instance().get_bool(name + "/loop"));
 
 	// store surfaces, textures, and sheet
 	multi_surface[name] = surfaces;

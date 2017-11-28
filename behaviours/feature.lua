@@ -17,9 +17,9 @@ function update (ticks)
 	sprite.pos.y = 20*math.sin(clock.ticks/500) + center
 
 	if sprite.vel.x < 0 then
-		sprite.state = 'left'
+		sprite.state = 'fly.left'
 	elseif sprite.vel.x > 0 then
-		sprite.state = 'right'
+		sprite.state = 'fly.right'
 	end
 end
 

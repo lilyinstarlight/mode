@@ -23,12 +23,13 @@ Sprite::Sprite(const std::string & name) : Drawable(name,
 		collision_strategy(&rectangular_strategy),
 		observers{},
 		sheets{},
-		state(Spec::get_instance().get_str(name + "/state")),
-		frame(0),
+		state(),
 		observer_interval(200),
 		frame_timer(0),
 		observer_timer(observer_interval) {
 	script = new Script(name, *this);
+
+	state.push(std::pair<std::string, unsigned int>{Spec::get_instance().get_str(name + "/state"), 0});
 
 	// load sheets for different states
 	for (const std::string & sheet : Spec::get_instance().get_subs(name + "/sheets"))
@@ -59,10 +60,9 @@ Sprite::Sprite(const Sprite & s) :
 		observers(s.observers),
 		sheets(s.sheets),
 		state(s.state),
-		frame(s.frame),
-		observer_interval(200),
-		frame_timer(0),
-		observer_timer(0) {
+		observer_interval(s.observer_interval),
+		frame_timer(s.frame_timer),
+		observer_timer(s.observer_timer) {
 	// copy collision strategy
 	if (s.collision_strategy == &s.none_strategy)
 		collision_strategy = &none_strategy;
@@ -95,9 +95,19 @@ void Sprite::update(unsigned int ticks) {
 	script->call("update", ticks);
 
 	// increment frame as necessary
+	Sheet * sheet = sheets.at(state.top().first);
 	frame_timer += ticks;
-	if (sheets.at(state)->get_interval() > 0 && frame_timer > sheets.at(state)->get_interval()) {
-		frame = (frame + 1) % sheets.at(state)->get_frames();
+	if (sheet->get_interval() > 0 && frame_timer > sheet->get_interval()) {
+
+		state.top().second += 1;
+
+		if (state.top().second >= static_cast<unsigned int>(sheet->get_frames())) {
+			if (sheet->get_loop())
+				state.top().second = 0;
+			else
+				state.pop();
+		}
+
 		frame_timer = 0;
 	}
 
@@ -118,11 +128,11 @@ void Sprite::update(unsigned int ticks) {
 }
 
 const Image * Sprite::get_image() const {
-	return sheets.at(state)->get_image(frame);
+	return sheets.at(state.top().first)->get_image(state.top().second);
 }
 
 int Sprite::get_width() const {
-	const Image * image = sheets.at(state)->get_image(frame);
+	const Image * image = sheets.at(state.top().first)->get_image(state.top().second);
 
 	int width, height;
 	if (get_rotation() <= Vector2f::EPSILON)
@@ -134,7 +144,7 @@ int Sprite::get_width() const {
 }
 
 int Sprite::get_height() const {
-	const Image * image = sheets.at(state)->get_image(frame);
+	const Image * image = sheets.at(state.top().first)->get_image(state.top().second);
 
 	int width, height;
 	if (get_rotation() <= Vector2f::EPSILON)
@@ -146,7 +156,28 @@ int Sprite::get_height() const {
 }
 
 const SDL_Surface * Sprite::get_surface() const {
-	return sheets.at(state)->get_image(frame)->get_surface();
+	const Image * image = sheets.at(state.top().first)->get_image(state.top().second);
+	return image->get_surface();
+}
+
+std::string Sprite::get_state() const {
+	return state.top().first;
+}
+
+void Sprite::set_state(const std::string & s) {
+	if (s == state.top().first)
+		return;
+
+	state.pop();
+	push_state(s);
+}
+
+void Sprite::push_state(const std::string & s) {
+	if (s == state.top().first)
+		return;
+
+	state.push(std::pair<std::string, unsigned int>{s, 0});
+	frame_timer = 0;
 }
 
 void Sprite::observe(Sprite & observer) {

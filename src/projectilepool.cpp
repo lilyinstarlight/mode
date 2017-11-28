@@ -1,6 +1,8 @@
+#include "engine.h"
+
 #include "projectilepool.h"
 
-static ProjectilePool & ProjectilePool::get_instance() {
+ProjectilePool & ProjectilePool::get_instance() {
 	static ProjectilePool projectile_pool;
 	return projectile_pool;
 }
@@ -12,6 +14,7 @@ ProjectilePool::~ProjectilePool() {
 }
 
 const Sprite & ProjectilePool::create() {
+	return Engine::get_instance().get_world().get_player();
 }
 
 void ProjectilePool::destroy(const Sprite &) {

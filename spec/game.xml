@@ -152,7 +152,7 @@
 	<feature>
 		<type>sprite</type>
 		<index>50</index>
-		<state>left</state>
+		<state>fly.left</state>
 
 		<position>
 			<x>600</x>
@@ -169,19 +169,23 @@
 		<scale>5</scale>
 
 		<sheets>
-		    <left>
-				<file>feature.left.png</file>
+		    <fly.left>
+				<file>feature.fly.left.png</file>
 
 				<frames>4</frames>
 				<interval>100</interval>
-		    </left>
 
-		    <right>
-				<file>feature.right.png</file>
+				<loop>true</loop>
+		    </fly.left>
+
+		    <fly.right>
+				<file>feature.fly.right.png</file>
 
 				<frames>4</frames>
 				<interval>100</interval>
-		    </right>
+
+				<loop>true</loop>
+		    </fly.right>
 		</sheets>
 
 		<collision>none</collision>
@@ -190,12 +194,12 @@
 	<player>
 		<type>player</type>
 		<index>100</index>
-		<state>right</state>
+		<state>idle.right</state>
 
 		<speed>
-			<left>80</left>
-			<right>80</right>
-			<up>800</up>
+			<left>140</left>
+			<right>140</right>
+			<up>580</up>
 			<down>80</down>
 		</speed>
 
@@ -214,19 +218,59 @@
 		<scale>5</scale>
 
 		<sheets>
-		    <left>
-				<file>hero.left.png</file>
+		    <idle.left>
+				<file>hero.idle.left.png</file>
 
 				<frames>52</frames>
 				<interval>100</interval>
-		    </left>
 
-		    <right>
-				<file>hero.right.png</file>
+				<loop>true</loop>
+		    </idle.left>
+
+		    <idle.right>
+				<file>hero.idle.right.png</file>
 
 				<frames>52</frames>
 				<interval>100</interval>
-		    </right>
+
+				<loop>true</loop>
+		    </idle.right>
+
+		    <run.left>
+				<file>hero.idle.left.png</file>
+
+				<frames>4</frames>
+				<interval>100</interval>
+
+				<loop>true</loop>
+		    </run.left>
+
+		    <run.right>
+				<file>hero.idle.right.png</file>
+
+				<frames>4</frames>
+				<interval>100</interval>
+
+				<loop>true</loop>
+		    </run.right>
+
+		    <jump.left>
+				<file>hero.jump.left.png</file>
+
+				<frames>12</frames>
+				<interval>100</interval>
+
+				<loop>false</loop>
+		    </jump.left>
+
+		    <jump.right>
+				<file>hero.jump.right.png</file>
+
+				<frames>12</frames>
+				<interval>100</interval>
+
+				<loop>false</loop>
+		    </jump.right>
 		</sheets>
 
 		<collision>pixel</collision>
