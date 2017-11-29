@@ -5,7 +5,7 @@ speed = {
 	down = spec:get_float('player/speed/down')
 }
 
-land = 40
+land = 200
 left = false
 
 function dispatch (event)
@@ -29,7 +29,7 @@ function update (ticks)
 
 	bottom = ground.pos.y - sprite.height
 	grounded = sprite.pos.y >= bottom and sprite.vel.y >= 0
-	landing = not grounded and sprite.pos.y >= bottom - land
+	landing = not grounded and sprite.pos.y >= bottom - land and sprite.vel.y >= 0
 
 	sprite.vel.x = 0
 
@@ -49,21 +49,6 @@ function update (ticks)
 
 	sprite.vel.y = sprite.vel.y + ticks
 
-	if grounded then
-		sprite.vel.y = 0
-		sprite.pos.y = bottom
-
-		if input:check('player') and input:get_key('w') then
-			sprite.vel.y = sprite.vel.y - speed.up
-
-			if left then
-				sprite:push('jump.left')
-			else
-				sprite:push('jump.right')
-			end
-		end
-	end
-
 	if sprite.vel.x < 0 then
 		sprite.state = 'run.left'
 		left = true
@@ -75,6 +60,31 @@ function update (ticks)
 			sprite.state = 'idle.left'
 		else
 			sprite.state = 'idle.right'
+		end
+	end
+
+	if grounded then
+		sprite.vel.y = 0
+		sprite.pos.y = bottom
+
+		if input:check('player') and input:get_key('w') then
+			sprite.vel.y = sprite.vel.y - speed.up
+
+			if left then
+				sprite:clear()
+				sprite:push('jump.left')
+			else
+				sprite:clear()
+				sprite:push('jump.right')
+			end
+		end
+	end
+
+	if landing then
+		if left then
+			sprite:push('land.left')
+		else
+			sprite:push('land.right')
 		end
 	end
 end

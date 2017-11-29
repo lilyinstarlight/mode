@@ -65,6 +65,9 @@ class Drawable {
 class DrawablePointerCompare {
 	public:
 		bool operator() (const Drawable * left, const Drawable * right) const {
+			if (left->get_index() == right->get_index())
+				return left < right;
+
 			return left->get_index() < right->get_index();
 		}
 };

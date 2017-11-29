@@ -1,8 +1,7 @@
 #ifndef GLIDER_H
 #define GLIDER_H
-#include <string>
-
 #include "sprite.h"
+#include "vector2f.h"
 
 class Glider : public Sprite {
 	public:

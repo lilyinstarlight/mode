@@ -3,7 +3,7 @@ Course: CPSC 4160
 Clemson Email Address: fmclane@g.clemson.edu
 
 Project no: 5
-Project due date: 2017-11-30
+Project due date: 2017-12-03
 Project description: 
 
 The easiest part of this project: 
@@ -11,6 +11,7 @@ Problems that I had in completing this project:
 
 Requirements:
 * SDL2{,-image,-mixer,-ttf,-gfx}
+* expat
 
 Issues:
 * width/height aren't calculated right for rotated sprites (I think this is an SDL2_gfx issue)
@@ -20,6 +21,10 @@ Extras:
 * scripting
 * console
 * animation states
+* world (re)loading
+* sprite indexing
+* background tiling
+* dialog abstraction
 
 I hope you enjoy an early preview of Mode, a side-scrolling puzzle platformer where you write the rules!
 

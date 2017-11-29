@@ -186,6 +186,11 @@ std::string Sprite::pop_state() {
 	return s;
 }
 
+void Sprite::clear_state() {
+	while (state.size() > 1)
+		state.pop_back();
+}
+
 void Sprite::push_state(const std::string & s) {
 	if (s == state.back().first)
 		return;

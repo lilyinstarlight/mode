@@ -61,6 +61,7 @@ void Script::load_api() {
 			"state", sol::property(&Sprite::get_state, &Sprite::set_state),
 			"peek", &Sprite::peek_state,
 			"pop", &Sprite::pop_state,
+			"clear", &Sprite::clear_state,
 			"push", &Sprite::push_state,
 
 			"width", sol::property(&Sprite::get_width),

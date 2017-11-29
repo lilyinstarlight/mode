@@ -38,6 +38,7 @@ class Sprite : public Drawable {
 
 		std::string peek_state() const;
 		std::string pop_state();
+		void clear_state();
 		void push_state(const std::string & s);
 
 		void observe(Sprite & observer);
