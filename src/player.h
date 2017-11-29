@@ -1,8 +1,5 @@
 #ifndef PLAYER_H
 #define PLAYER_H
-#include <string>
-
-#include "input.h"
 #include "sprite.h"
 
 class Player : public Sprite {

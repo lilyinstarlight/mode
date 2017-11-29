@@ -72,6 +72,14 @@ class Script {
 				}
 		};
 
+		template <typename T, typename U>
+		class WrapGet {
+			public:
+				U * operator()(T & obj, const std::string & name) {
+					return dynamic_cast<U *>(obj.get(name));
+				}
+		};
+
 		template <typename T>
 		class WrapGetKey {
 			public:

@@ -4,10 +4,6 @@
 
 #include "collision.h"
 
-float CollisionStrategy::distance(const Vector2f & p1, const Vector2f & p2) const {
-	return std::sqrt(std::pow(p2[0] - p1[0], 2) + std::pow(p2[1] - p1[1], 2));
-}
-
 SDL_Rect CollisionStrategy::intersection(const Drawable & obj1, const Drawable & obj2) const {
 	// get intersection points using max and min
 	int x1 = Util::max(obj1.get_x(), obj2.get_x());
@@ -66,7 +62,7 @@ bool CircularCollisionStrategy::check(const Drawable & obj1, const Drawable & ob
 	Vector2f mid2{obj2.get_x() + obj2.get_width()/2.0f, obj2.get_y() + obj2.get_height()/2.0f};
 
 	// check if midpoint distance is greater than maximum collision distance
-	return distance(mid1, mid2) <= collision_distance;
+	return Util::distance(mid1, mid2) <= collision_distance;
 }
 
 bool PixelCollisionStrategy::check(const Drawable & obj1, const Drawable & obj2) const {

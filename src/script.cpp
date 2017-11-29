@@ -59,6 +59,8 @@ void Script::load_api() {
 			"inject", &Sprite::inject,
 
 			"state", sol::property(&Sprite::get_state, &Sprite::set_state),
+			"peek", &Sprite::peek_state,
+			"pop", &Sprite::pop_state,
 			"push", &Sprite::push_state,
 
 			"width", sol::property(&Sprite::get_width),
@@ -107,12 +109,15 @@ void Script::load_api() {
 
 			"add_sprite", WrapAdd<World, Sprite>(),
 			"remove_sprite", WrapRemove<World, Sprite>(),
+			"get_sprite", WrapGet<World, Sprite>(),
 
 			"add_background", WrapAdd<World, Background>(),
 			"remove_background", WrapRemove<World, Background>(),
+			"get_background", WrapGet<World, Background>(),
 
 			"add_dialog", WrapAdd<World, Dialog>(),
 			"remove_dialog", WrapRemove<World, Dialog>(),
+			"get_dialog", WrapGet<World, Dialog>(),
 
 			"width", sol::property(&World::get_width),
 			"height", sol::property(&World::get_height)
@@ -156,6 +161,8 @@ void Script::load_api() {
 	// create Engine data type
 	lua.new_usertype<Engine>("Engine",
 			"new", sol::no_constructor,
+
+			"load", &Engine::load,
 
 			"restart", &Engine::restart,
 			"stop", &Engine::stop

@@ -11,6 +11,8 @@ class Context {
 		Context(const Context & context) = delete;
 		const Context & operator=(const Context & context) = delete;
 
+		void reload();
+
 		SDL_Window * get_window() const { return window; }
 		SDL_Renderer * get_renderer() const { return renderer; }
 

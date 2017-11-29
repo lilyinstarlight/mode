@@ -4,8 +4,6 @@
 #include <string>
 #include <vector>
 
-#include "xml.h"
-
 class Spec {
 	public:
 		static Spec & get_instance();
@@ -14,6 +12,8 @@ class Spec {
 
 		Spec(const Spec &) = delete;
 		Spec & operator=(const Spec &) = delete;
+
+		void load(const std::string & world);
 
 		bool check(const std::string & tag) const;
 
@@ -30,8 +30,6 @@ class Spec {
 
 		std::string path;
 
-		XML parser;
-
-		const std::unordered_map<std::string, std::string> data;
+		std::unordered_map<std::string, std::string> data;
 };
 #endif

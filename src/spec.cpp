@@ -2,6 +2,8 @@
 #include <string>
 #include <unordered_set>
 
+#include "xml.h"
+
 #include "spec.h"
 
 Spec & Spec::get_instance() {
@@ -9,7 +11,11 @@ Spec & Spec::get_instance() {
 	return spec;
 }
 
-Spec::Spec() : path("spec"), parser(path + "/game.xml"), data(parser.get_data()) {}
+Spec::Spec() : path("spec"), data(XML(path + "/game.xml").get_data()) {}
+
+void Spec::load(const std::string & world) {
+	data = XML(path + "/" + world + ".xml").get_data();
+}
 
 bool Spec::check(const std::string & tag) const {
 	return data.find(tag) != data.end();

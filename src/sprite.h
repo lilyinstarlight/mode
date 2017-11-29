@@ -1,9 +1,9 @@
 #ifndef SPRITE_H
 #define SPRITE_H
-#include <unordered_map>
+#include <deque>
 #include <list>
-#include <stack>
 #include <string>
+#include <unordered_map>
 #include <utility>
 #include <vector>
 
@@ -35,6 +35,9 @@ class Sprite : public Drawable {
 
 		std::string get_state() const;
 		void set_state(const std::string & s);
+
+		std::string peek_state() const;
+		std::string pop_state();
 		void push_state(const std::string & s);
 
 		void observe(Sprite & observer);
@@ -56,7 +59,7 @@ class Sprite : public Drawable {
 		std::list<Sprite *> observers;
 
 		std::unordered_map<std::string, Sheet *> sheets;
-		std::stack<std::pair<std::string, unsigned int>> state;
+		std::deque<std::pair<std::string, unsigned int>> state;
 
 		unsigned int observer_interval;
 

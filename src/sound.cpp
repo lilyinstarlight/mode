@@ -20,6 +20,10 @@ Sound::Sound() : path("sounds"), active(), active_channel(-1), chunks{}, fade(10
 		throw std::runtime_error("Failed to initialize mixer");
 }
 
+void Sound::reload() {
+	play(Spec::get_instance().get_str("sound/initial"));
+}
+
 void Sound::play(const std::string & name, int loops) {
 	std::unordered_map<std::string, Mix_Chunk *>::const_iterator pos = chunks.find(name);
 	if (pos == chunks.end()) {

@@ -1,7 +1,4 @@
-#include <SDL.h>
-
 #include "input.h"
-#include "spec.h"
 
 #include "player.h"
 

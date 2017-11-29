@@ -1,4 +1,5 @@
 #include "console.h"
+#include "sound.h"
 #include "spec.h"
 #include "text.h"
 
@@ -9,7 +10,14 @@ Engine & Engine::get_instance() {
 	return engine;
 }
 
-Engine::Engine() : world(nullptr), viewport(nullptr), hud(nullptr), state(STOPPED) {}
+Engine::Engine() : loaded("game"), world(nullptr), viewport(nullptr), hud(nullptr), state(STOPPED) {}
+
+void Engine::load(const std::string & w) {
+	loaded = w;
+
+	if (state == RUNNING)
+		state = RESTARTING;
+}
 
 void Engine::start() {
 	state = STARTING;
@@ -32,15 +40,18 @@ void Engine::start() {
 }
 
 void Engine::run() {
-	Clock::get_instance().start();
+	Spec::get_instance().load(loaded);
+	Context::get_instance().reload();
+	Sound::get_instance().reload();
 
 	hud = new HUD();
 	world = new World();
 	viewport = new Viewport(*world);
 
 	world->init();
-
 	viewport->track(&world->get_player());
+
+	Clock::get_instance().start();
 
 	SDL_Event event;
 
@@ -86,12 +97,12 @@ void Engine::run() {
 		last = ticks;
 	}
 
+	Clock::get_instance().stop();
+
 	delete viewport;
 	delete world;
-
 	delete hud;
 
-	Clock::get_instance().stop();
 }
 
 void Engine::dispatch(const SDL_Event & event) {

@@ -2,7 +2,6 @@
 #include <string>
 
 #include "background.h"
-#include "sound.h"
 #include "sprite.h"
 #include "spec.h"
 
@@ -30,8 +29,6 @@ void World::init() {
 			}
 		}
 	}
-
-	Sound::get_instance().play("theme");
 }
 
 World::~World() {

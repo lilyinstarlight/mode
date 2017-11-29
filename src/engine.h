@@ -1,5 +1,7 @@
 #ifndef ENGINE_H
 #define ENGINE_H
+#include <string>
+
 #include <SDL.h>
 
 #include "context.h"
@@ -20,6 +22,8 @@ class Engine {
 		Engine(const Engine &) = delete;
 		Engine& operator=(const Engine &) = delete;
 
+		void load(const std::string & w);
+
 		const World & get_world()       const { return *world;    }
 		World & get_world()                   { return *world;    } // caller can modify world
 		const Viewport & get_viewport() const { return *viewport; }
@@ -32,6 +36,7 @@ class Engine {
 		void start();
 		void restart() { state = RESTARTING; }
 		void stop() { state = STOPPING; }
+		bool is_running() { return state == RUNNING; }
 
 	private:
 		Engine();
@@ -41,6 +46,8 @@ class Engine {
 		void dispatch(const SDL_Event & event);
 		void draw() const;
 		void update(unsigned int ticks);
+
+		std::string loaded;
 
 		World * world;
 		Viewport * viewport;

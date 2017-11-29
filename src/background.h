@@ -7,6 +7,8 @@
 
 class Background : public Drawable {
 	public:
+		enum Tile { NONE, X, Y, BOTH };
+
 		Background(const std::string & name);
 
 		Background(const Background & b);
@@ -30,7 +32,7 @@ class Background : public Drawable {
 
 	private:
 		float factor;
-		bool tile;
+		Tile tile;
 
 		const Image * image;
 };

@@ -7,6 +7,9 @@ int main(int, char * []) {
 #ifdef NDEBUG
 	try {
 #endif
+		// load intro world
+		Engine::get_instance().load("intro");
+
 		// run engine
 		Engine::get_instance().start();
 #ifdef NDEBUG

@@ -9,6 +9,9 @@ Project description:
 The easiest part of this project: 
 Problems that I had in completing this project: 
 
+Requirements:
+* SDL2{,-image,-mixer,-ttf,-gfx}
+
 Issues:
 * width/height aren't calculated right for rotated sprites (I think this is an SDL2_gfx issue)
 

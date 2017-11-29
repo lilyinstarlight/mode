@@ -15,6 +15,8 @@ class Sound {
 		Sound(const Sound &) = delete;
 		const Sound & operator=(const Sound &) = delete;
 
+		void reload();
+
 		void play(const std::string & name, int loops = -1);
 		std::string check() const { return active; }
 	private:

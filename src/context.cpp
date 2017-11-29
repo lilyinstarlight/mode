@@ -14,8 +14,7 @@ Context::Context() : window(nullptr), renderer(nullptr) {
 	}
 
 	// create window
-	std::string title = Spec::get_instance().get_str("title");
-	window = SDL_CreateWindow(title.c_str(), SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, Spec::get_instance().get_int("view/width"), Spec::get_instance().get_int("view/height"), SDL_WINDOW_SHOWN);
+	window = SDL_CreateWindow(Spec::get_instance().get_str("title").c_str(), SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, Spec::get_instance().get_int("view/width"), Spec::get_instance().get_int("view/height"), SDL_WINDOW_SHOWN);
 
 	if (!window)
 		throw std::runtime_error("Failed to make window: " + std::string(SDL_GetError()));
@@ -29,11 +28,15 @@ Context::Context() : window(nullptr), renderer(nullptr) {
 	// add alpha blending
 	if(SDL_SetRenderDrawBlendMode(renderer, SDL_BLENDMODE_BLEND) < 0)
 		throw std::runtime_error("Failed to enable alpha blending: " + std::string(SDL_GetError()));
-
 }
 
 Context::~Context() {
 	SDL_DestroyRenderer(renderer);
 	SDL_DestroyWindow(window);
 	SDL_Quit();
+}
+
+void Context::reload() {
+	SDL_SetWindowSize(window, Spec::get_instance().get_int("view/width"), Spec::get_instance().get_int("view/height"));
+	SDL_SetWindowTitle(window, Spec::get_instance().get_str("title").c_str());
 }
