@@ -32,10 +32,6 @@ function dispatch (event)
 end
 
 function update (ticks)
-	if ground == nil then
-		ground = world:get_background('ground')
-	end
-
 	bottom = ground.pos.y - sprite.height
 	grounded = sprite.pos.y >= bottom and sprite.vel.y >= 0
 	landing = not grounded and sprite.pos.y >= bottom - land and sprite.vel.y >= 0
@@ -80,3 +76,5 @@ function update (ticks)
 		sprite:push('land')
 	end
 end
+
+ground = world:get_background('ground')

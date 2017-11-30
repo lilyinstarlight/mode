@@ -16,6 +16,8 @@ class Console : public Drawable {
 		Console(const Console & console) = delete;
 		const Console & operator=(const Console & console) = delete;
 
+		virtual void load() {}
+
 		virtual void dispatch(const SDL_Event & event);
 		virtual void draw(const Viewport & viewport) const;
 		virtual void update(unsigned int) {}

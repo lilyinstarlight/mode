@@ -9,16 +9,28 @@ template<typename T>
 class Pool {
 	public:
 		Pool(const std::string & n) : initial(5), name(n), used{}, free{} {
-			for (int i = 0; i < initial; ++i)
-				free.push_back(new T(name));
+			for (int i = 0; i < initial; ++i) {
+				T * t = new T(name, *this);
+				t->load();
+
+				free.push_back(t);
+			}
 		}
 
 		Pool(const Pool & p) : used{}, free{} {
-			for (T * obj : p.used)
-				used.push_back(new T(*obj));
+			for (T * obj : p.used) {
+				T * t = new T(*obj);
+				t->load();
 
-			for (T * obj : free)
-				free.push_back(new T(*obj));
+				used.push_back(t);
+			}
+
+			for (T * obj : free) {
+				T * t = new T(*obj);
+				t->load();
+
+				free.push_back(t);
+			}
 		}
 
 		virtual ~Pool() {
@@ -31,32 +43,11 @@ class Pool {
 
 		const Pool & operator=(const Pool &) = delete;
 
-		virtual void dispatch(const SDL_Event & event) {
-			for (T * obj : used) {
-				if (obj->is_alive())
-					obj->dispatch(event);
-				else
-					destroy(*obj);
-			}
-		}
-
-		virtual void draw(const Viewport & viewport) const {
-			for (T * obj : used)
-				obj->draw(viewport);
-		}
-
-		virtual void update(unsigned int ticks) {
-			for (T * obj : used) {
-				if (obj->is_alive())
-					obj->update(ticks);
-				else
-					destroy(*obj);
-			}
-		}
-
 		T & create() {
 			if (free.empty()) {
-				used.push_back(new T(name));
+				T * t = new T(name, *this);
+				t->load();
+				used.push_back(t);
 			}
 			else {
 				used.push_back(free.back());

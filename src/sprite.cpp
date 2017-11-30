@@ -82,6 +82,10 @@ Sprite::~Sprite() {
 	delete script;
 }
 
+void Sprite::load() {
+	script->load();
+}
+
 void Sprite::dispatch(const SDL_Event & event) {
 	// run script dispatch as necessary
 	script->call("dispatch", &event);
@@ -214,6 +218,11 @@ void Sprite::observe(Sprite & observer) {
 void Sprite::ignore(Sprite & observer) {
 	// remove observer
 	observers.remove(&observer);
+}
+
+void Sprite::signal(const std::string & sig) {
+	// call script with signal
+	script->call(sig);
 }
 
 void Sprite::signal(const std::string & sig, Sprite & sprite) {

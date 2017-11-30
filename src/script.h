@@ -18,6 +18,8 @@ class Script {
 
 		const Script & operator=(const Script & s) = delete;
 
+		void load();
+
 		const std::string & get_script() const { return script;                              }
 		void add_script(const std::string & s) { script += "\n" + s; result = lua.script(s); }
 
@@ -61,6 +63,7 @@ class Script {
 			public:
 				void operator()(T & obj, U & other) {
 					obj.add(other);
+					other.load();
 				}
 		};
 

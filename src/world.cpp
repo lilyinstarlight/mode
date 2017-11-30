@@ -29,6 +29,15 @@ void World::init() {
 			}
 		}
 	}
+
+	// load deferred sprites
+	player->load();
+
+	for (Drawable * drawable : owning) {
+		Sprite * sprite = dynamic_cast<Sprite *>(drawable);
+		if (sprite)
+			sprite->load();
+	}
 }
 
 World::~World() {

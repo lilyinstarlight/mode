@@ -263,9 +263,9 @@
 		<type>projectile</type>
 		<index>51</index>
 		<direction>left</direction>
-		<state>idle</state>
+		<state>shoot</state>
 
-		<max>200</max>
+		<max>100</max>
 
 		<position>
 			<x>600</x>
@@ -282,23 +282,23 @@
 		<scale>5</scale>
 
 		<sheets>
-		    <idle.left>
-				<file>glider.idle.left.png</file>
+		    <shoot.left>
+				<file>glider.shoot.left.png</file>
 
-				<frames>6</frames>
+				<frames>4</frames>
 				<interval>100</interval>
 
 				<loop>true</loop>
-		    </idle.left>
+		    </shoot.left>
 
-		    <idle.right>
-				<file>glider.idle.right.png</file>
+		    <shoot.right>
+				<file>glider.shoot.right.png</file>
 
-				<frames>6</frames>
+				<frames>4</frames>
 				<interval>100</interval>
 
 				<loop>true</loop>
-		    </idle.right>
+		    </shoot.right>
 		</sheets>
 
 		<collision>pixel</collision>
@@ -319,7 +319,7 @@
 
 		<glider>
 			<offset>
-				<x>20</x>
+				<x>-20</x>
 				<y>0</y>
 			</offset>
 

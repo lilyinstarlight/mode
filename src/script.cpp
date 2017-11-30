@@ -15,27 +15,20 @@
 
 #include "script.h"
 
-Script::Script() : path("behaviours"), script(""), result(""), lua(), sprite(Engine::get_instance().get_world().get_player()) {
-	// prepare environment
-	load_api();
-}
+Script::Script() : path("behaviours"), script(""), result(""), lua(), sprite(Engine::get_instance().get_world().get_player()) {}
 
 Script::Script(const std::string & name, Sprite & s) : path("behaviours"), script(""), result(""), lua(), sprite(s) {
 	// load file
 	load_file(path + "/" + name + ".lua");
+}
 
+Script::Script(const Script & s) : path(s.path), script(s.script), result(s.result), lua(), sprite(s.sprite) {}
+
+void Script::load() {
 	// prepare environment
 	load_api();
 
 	// run script
-	result = lua.script(script);
-}
-
-Script::Script(const Script & s) : path(s.path), script(s.script), result(s.result), lua(), sprite(s.sprite) {
-	// prepare environment
-	load_api();
-
-	// run file
 	result = lua.script(script);
 }
 
@@ -84,6 +77,7 @@ void Script::load_api() {
 			"new", sol::constructors<Projectile(std::string)>(),
 
 			"alive", sol::property(&Projectile::is_alive),
+			"kill", &Projectile::kill,
 			"origin", sol::property(&Projectile::get_origin)
 	);
 
@@ -100,8 +94,12 @@ void Script::load_api() {
 			"shoot", &Player::shoot
 	);
 
-	// set player as current player (nil for player behaviour)
-	lua["player"] = &Engine::get_instance().get_world().get_player();
+	// set player as current player
+	Player * player = dynamic_cast<Player *>(&sprite);
+	if (!player)
+		player = &Engine::get_instance().get_world().get_player();
+
+	lua["player"] = player;
 
 	// create Background data type
 	lua.new_usertype<Background>("Background",

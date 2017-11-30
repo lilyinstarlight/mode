@@ -22,6 +22,8 @@ class Sprite : public Drawable {
 		Sprite() = delete;
 		Sprite & operator=(const Sprite & s) = delete;
 
+		virtual void load();
+
 		virtual void dispatch(const SDL_Event & event);
 		virtual void draw(const Viewport & viewport) const;
 		virtual void update(unsigned int ticks);
@@ -49,6 +51,7 @@ class Sprite : public Drawable {
 
 		const std::list<Sprite *> & get_observers() const { return observers; }
 
+		void signal(const std::string & sig);
 		void signal(const std::string & sig, Sprite & sprite);
 
 		void inject();

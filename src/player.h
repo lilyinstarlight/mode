@@ -12,11 +12,9 @@ class Player : public Sprite {
 		Player(const Player & player) = delete;
 		const Player & operator=(const Player & player) = delete;
 
-		virtual void dispatch(const SDL_Event & event);
-		virtual void draw(const Viewport & viewport) const;
-		virtual void update(unsigned int ticks);
-
 		void shoot();
+
+		Pool<Projectile> & get_pool() { return gliders; }
 
 		void set_hp(int val) { hp = val;  }
 		int get_hp()   const { return hp; }

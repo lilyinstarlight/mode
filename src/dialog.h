@@ -16,6 +16,8 @@ class Dialog : public Drawable {
 
 		const Dialog & operator=(const Dialog & dialog) = delete;
 
+		virtual void load() {}
+
 		virtual void dispatch(const SDL_Event &) {}
 		virtual void draw(const Viewport & viewport) const;
 		virtual void update(unsigned int) {}
