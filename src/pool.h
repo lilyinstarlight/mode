@@ -8,7 +8,7 @@
 template<typename T>
 class Pool {
 	public:
-		Pool(const std::string & n) : initial(5), name(n), used{}, free{} {
+		Pool(const std::string & n, int initial) : name(n), used{}, free{} {
 			for (int i = 0; i < initial; ++i) {
 				T * t = new T(name, *this);
 				t->load();
@@ -42,6 +42,10 @@ class Pool {
 		}
 
 		const Pool & operator=(const Pool &) = delete;
+
+		const std::vector<T *> & get_used() const { return used; }
+
+		const std::vector<T *> & get_free() const { return free; }
 
 		T & create() {
 			if (free.empty()) {
@@ -77,7 +81,6 @@ class Pool {
 		}
 
 	private:
-		int initial;
 		std::string name;
 
 		std::vector<T *> used;

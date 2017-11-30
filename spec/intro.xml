@@ -78,6 +78,9 @@
 |                        |
 |        FPS: {fps}      |
 |        HP:  {hp}       |
+|                        |
+|    G. Free: {free}     |
+|    G. Used: {used}     |
 +------------------------+
 		</str>
 	</hud>
@@ -261,7 +264,7 @@
 
 	<glider>
 		<type>projectile</type>
-		<index>51</index>
+		<index>101</index>
 		<direction>left</direction>
 		<state>shoot</state>
 
@@ -310,6 +313,8 @@
 		<direction>right</direction>
 		<state>idle</state>
 
+		<hp>64</hp>
+
 		<speed>
 			<left>140</left>
 			<right>140</right>
@@ -318,6 +323,8 @@
 		</speed>
 
 		<glider>
+			<initial>5</initial>
+
 			<offset>
 				<x>-20</x>
 				<y>0</y>

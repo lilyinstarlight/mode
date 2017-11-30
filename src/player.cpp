@@ -6,7 +6,7 @@
 
 #include "player.h"
 
-Player::Player() : Sprite("player"), gliders("glider"), hp(64) {
+Player::Player() : Sprite("player"), gliders("glider", Spec::get_instance().get_int("player/glider/initial")), hp(Spec::get_instance().get_int("player/hp")) {
 	Input::get_instance().grab("player");
 }
 

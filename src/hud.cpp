@@ -22,6 +22,9 @@ void HUD::update(unsigned int ticks) {
 	copy = replace(copy, "{fps}", std::to_string(Clock::get_instance().get_fps()));
 	copy = replace(copy, "{hp}", std::to_string(Engine::get_instance().get_world().get_player().get_hp()));
 
+	copy = replace(copy, "{free}", std::to_string(Engine::get_instance().get_world().get_player().get_pool().get_free().size()));
+	copy = replace(copy, "{used}", std::to_string(Engine::get_instance().get_world().get_player().get_pool().get_used().size()));
+
 	Dialog::set_string(copy);
 }
 
