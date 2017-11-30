@@ -24,6 +24,8 @@ function dispatch (event)
 				engine:restart()
 			elseif event.val.key == 'h' then
 				hud:toggle()
+			elseif event.val.key == ' ' then
+				player:shoot()
 			end
 		end
 	end

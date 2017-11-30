@@ -95,7 +95,9 @@ void Script::load_api() {
 			"new", sol::no_constructor,
 
 			"observe", WrapObserve<Player, Sprite>(sprite),
-			"ignore", WrapIgnore<Player, Sprite>(sprite)
+			"ignore", WrapIgnore<Player, Sprite>(sprite),
+
+			"shoot", &Player::shoot
 	);
 
 	// set player as current player (nil for player behaviour)
