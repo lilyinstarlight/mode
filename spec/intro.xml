@@ -176,7 +176,8 @@
 	<feature>
 		<type>sprite</type>
 		<index>50</index>
-		<state>fly.left</state>
+		<direction>left</direction>
+		<state>fly</state>
 
 		<position>
 			<x>600</x>
@@ -218,7 +219,8 @@
 	<slime>
 		<type>sprite</type>
 		<index>51</index>
-		<state>idle.left</state>
+		<direction>left</direction>
+		<state>idle</state>
 
 		<position>
 			<x>600</x>
@@ -257,10 +259,56 @@
 		<collision>none</collision>
 	</slime>
 
+	<glider>
+		<type>projectile</type>
+		<index>51</index>
+		<direction>left</direction>
+		<state>idle</state>
+
+		<max>200</max>
+
+		<position>
+			<x>600</x>
+			<y>400</y>
+		</position>
+
+		<rotation>0</rotation>
+
+		<velocity>
+			<x>0</x>
+			<y>0</y>
+		</velocity>
+
+		<scale>5</scale>
+
+		<sheets>
+		    <idle.left>
+				<file>glider.idle.left.png</file>
+
+				<frames>6</frames>
+				<interval>100</interval>
+
+				<loop>true</loop>
+		    </idle.left>
+
+		    <idle.right>
+				<file>glider.idle.right.png</file>
+
+				<frames>6</frames>
+				<interval>100</interval>
+
+				<loop>true</loop>
+		    </idle.right>
+		</sheets>
+
+		<collision>pixel</collision>
+	</glider>
+
 	<player>
 		<type>player</type>
 		<index>100</index>
-		<state>idle.right</state>
+		<direction>right</direction>
+		<state>idle</state>
 
 		<speed>
 			<left>140</left>
@@ -268,6 +316,15 @@
 			<up>580</up>
 			<down>80</down>
 		</speed>
+
+		<glider>
+			<offset>
+				<x>20</x>
+				<y>0</y>
+			</offset>
+
+			<speed>200</speed>
+		</glider>
 
 		<position>
 			<x>100</x>

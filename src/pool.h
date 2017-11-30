@@ -5,12 +5,12 @@
 
 #include "sprite.h"
 
-template<typename T, typename... Args>
+template<typename T>
 class Pool {
 	public:
-		Pool(Args...) : initial(5), name(n) {
+		Pool(const std::string & n) : initial(5), name(n), used{}, free{} {
 			for (int i = 0; i < initial; ++i)
-				free.push_back(new T(Args...));
+				free.push_back(new T(name));
 		}
 
 		Pool(const Pool & p) : used{}, free{} {
@@ -21,7 +21,7 @@ class Pool {
 				free.push_back(new T(*obj));
 		}
 
-		~Pool() {
+		virtual ~Pool() {
 			for (T * obj : used)
 				delete obj;
 
@@ -34,19 +34,15 @@ class Pool {
 		virtual void dispatch(const SDL_Event & event) {
 			for (T * obj : used) {
 				if (obj->is_alive())
-					obj->dispatch();
+					obj->dispatch(event);
 				else
 					destroy(*obj);
 			}
 		}
 
 		virtual void draw(const Viewport & viewport) const {
-			for (T * obj : used) {
-				if (obj->is_alive())
-					obj->draw(viewport);
-				else
-					destroy(*obj);
-			}
+			for (T * obj : used)
+				obj->draw(viewport);
 		}
 
 		virtual void update(unsigned int ticks) {
@@ -58,9 +54,9 @@ class Pool {
 			}
 		}
 
-		const T & create() {
+		T & create() {
 			if (free.empty()) {
-				used.push_back(new T(Args...));
+				used.push_back(new T(name));
 			}
 			else {
 				used.push_back(free.back());
@@ -74,11 +70,11 @@ class Pool {
 
 		void destroy(const T & obj) {
 			// find object
-			std::vector<T *>::iterator it;
+			typename std::vector<T *>::iterator it;
 			for (it = used.begin(); it != used.end(); ++it) {
-				if (it == &obj) {
+				if (*it == &obj) {
 					free.push_back(*it);
-					used.remove(it);
+					it = used.erase(it);
 
 					free.back()->destroy();
 
@@ -86,7 +82,7 @@ class Pool {
 				}
 			}
 
-			throw std::runtime_error("Tried to destroy non-existent pool object " + name);
+			throw std::runtime_error("Tried to destroy non-existent pool object in " + name);
 		}
 
 	private:

@@ -6,6 +6,7 @@
 #include "engine.h"
 #include "hud.h"
 #include "player.h"
+#include "projectile.h"
 #include "spec.h"
 #include "sprite.h"
 #include "vector2f.h"
@@ -58,6 +59,7 @@ void Script::load_api() {
 
 			"inject", &Sprite::inject,
 
+			"direction", sol::property(&Sprite::get_direction, &Sprite::set_direction),
 			"state", sol::property(&Sprite::get_state, &Sprite::set_state),
 			"peek", &Sprite::peek_state,
 			"pop", &Sprite::pop_state,
@@ -76,6 +78,17 @@ void Script::load_api() {
 
 	// set sprite as current sprite
 	lua["sprite"] = &sprite;
+
+	// create Projectile data type
+	lua.new_usertype<Projectile>("Projectile",
+			"new", sol::constructors<Projectile(std::string)>(),
+
+			"alive", sol::property(&Projectile::is_alive),
+			"origin", sol::property(&Projectile::get_origin)
+	);
+
+	// set projectile as current sprite if a projectile
+	lua["projectile"] = dynamic_cast<Projectile *>(&sprite);
 
 	// create Player data type
 	lua.new_usertype<Player>("Player",

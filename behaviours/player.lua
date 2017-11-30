@@ -5,8 +5,15 @@ speed = {
 	down = spec:get_float('player/speed/down')
 }
 
+glider = {
+	offset = {
+		x = spec:get_int('player/glider/offset/x'),
+		y = spec:get_int('player/glider/offset/y')
+	},
+	speed = spec:get_int('player/glider/speed')
+}
+
 land = 200
-left = false
 
 function dispatch (event)
 	if event.ev == 'keydown' and event.val.rep == 0 then
@@ -49,18 +56,10 @@ function update (ticks)
 
 	sprite.vel.y = sprite.vel.y + ticks
 
-	if sprite.vel.x < 0 then
-		sprite.state = 'run.left'
-		left = true
-	elseif sprite.vel.x > 0 then
-		sprite.state = 'run.right'
-		left = false
+	if sprite.vel.x < 0 or sprite.vel.x > 0 then
+		sprite.state = 'run'
 	else
-		if left then
-			sprite.state = 'idle.left'
-		else
-			sprite.state = 'idle.right'
-		end
+		sprite.state = 'idle'
 	end
 
 	if grounded then
@@ -70,21 +69,12 @@ function update (ticks)
 		if input:check('player') and input:get_key('w') then
 			sprite.vel.y = sprite.vel.y - speed.up
 
-			if left then
-				sprite:clear()
-				sprite:push('jump.left')
-			else
-				sprite:clear()
-				sprite:push('jump.right')
-			end
+			sprite:clear()
+			sprite:push('jump')
 		end
 	end
 
 	if landing then
-		if left then
-			sprite:push('land.left')
-		else
-			sprite:push('land.right')
-		end
+		sprite:push('land')
 	end
 end

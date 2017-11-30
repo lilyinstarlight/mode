@@ -23,6 +23,7 @@ Sprite::Sprite(const std::string & name) : Drawable(name,
 		collision_strategy(&rectangular_strategy),
 		observers{},
 		sheets{},
+		direction(Spec::get_instance().get_str(name + "/direction")),
 		state(),
 		observer_interval(200),
 		frame_timer(0),
@@ -59,6 +60,7 @@ Sprite::Sprite(const Sprite & s) :
 		collision_strategy(&rectangular_strategy),
 		observers(s.observers),
 		sheets(s.sheets),
+		direction(s.direction),
 		state(s.state),
 		observer_interval(s.observer_interval),
 		frame_timer(s.frame_timer),
@@ -91,11 +93,16 @@ void Sprite::draw(const Viewport & viewport) const {
 }
 
 void Sprite::update(unsigned int ticks) {
+	if (get_velocity_x() < 0)
+		direction = "left";
+	else if (get_velocity_x() > 0)
+		direction = "right";
+
 	// run script update as necessary
 	script->call("update", ticks);
 
 	// increment frame as necessary
-	Sheet * sheet = sheets.at(state.back().first);
+	Sheet * sheet = sheets.at(state.back().first + "." + direction);
 	frame_timer += ticks;
 	if (sheet->get_interval() > 0 && frame_timer > sheet->get_interval()) {
 		state.back().second += 1;
@@ -131,11 +138,11 @@ void Sprite::update(unsigned int ticks) {
 }
 
 const Image * Sprite::get_image() const {
-	return sheets.at(state.back().first)->get_image(state.back().second);
+	return sheets.at(state.back().first + "." + direction)->get_image(state.back().second);
 }
 
 int Sprite::get_width() const {
-	const Image * image = sheets.at(state.back().first)->get_image(state.back().second);
+	const Image * image = sheets.at(state.back().first + "." + direction)->get_image(state.back().second);
 
 	int width, height;
 	if (get_rotation() <= Vector2f::EPSILON)
@@ -147,7 +154,7 @@ int Sprite::get_width() const {
 }
 
 int Sprite::get_height() const {
-	const Image * image = sheets.at(state.back().first)->get_image(state.back().second);
+	const Image * image = sheets.at(state.back().first + "." + direction)->get_image(state.back().second);
 
 	int width, height;
 	if (get_rotation() <= Vector2f::EPSILON)
@@ -159,7 +166,7 @@ int Sprite::get_height() const {
 }
 
 const SDL_Surface * Sprite::get_surface() const {
-	const Image * image = sheets.at(state.back().first)->get_image(state.back().second);
+	const Image * image = sheets.at(state.back().first + "." + direction)->get_image(state.back().second);
 	return image->get_surface();
 }
 

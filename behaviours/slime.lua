@@ -3,7 +3,6 @@ collision = Dialog.new("collision", "Collision detected!", true, false)
 center = sprite.pos.y
 
 land = 200
-left = false
 
 function dispatch (event)
 end
@@ -26,12 +25,6 @@ function update (ticks)
 	collided = false
 
 	sprite.vel.y = sprite.vel.y + ticks
-
-	if sprite.vel.x < 0 then
-		sprite.state = 'idle.left'
-	elseif sprite.vel.x > 0 then
-		sprite.state = 'idle.right'
-	end
 
 	if grounded then
 		sprite.vel.y = 0

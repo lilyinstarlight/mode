@@ -33,6 +33,9 @@ class Sprite : public Drawable {
 
 		virtual const SDL_Surface * get_surface() const;
 
+		std::string get_direction() const         { return direction; }
+		void set_direction(const std::string & d) { direction = d;    }
+
 		std::string get_state() const;
 		void set_state(const std::string & s);
 
@@ -43,6 +46,8 @@ class Sprite : public Drawable {
 
 		void observe(Sprite & observer);
 		void ignore(Sprite & observer);
+
+		const std::list<Sprite *> & get_observers() const { return observers; }
 
 		void signal(const std::string & sig, Sprite & sprite);
 
@@ -60,6 +65,8 @@ class Sprite : public Drawable {
 		std::list<Sprite *> observers;
 
 		std::unordered_map<std::string, Sheet *> sheets;
+
+		std::string direction;
 		std::deque<std::pair<std::string, unsigned int>> state;
 
 		unsigned int observer_interval;
