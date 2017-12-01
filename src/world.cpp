@@ -9,6 +9,13 @@
 
 World::World() : width(Spec::get_instance().get_int("world/width")), height(Spec::get_instance().get_int("world/height")), player(nullptr), owning{}, drawables{} {}
 
+World::~World() {
+	// free added drawables
+	for (Drawable * drawable : owning) {
+		delete drawable;
+	}
+}
+
 void World::init() {
 	player = new Player();
 	owning.insert(player);
@@ -33,18 +40,19 @@ void World::init() {
 	// load deferred sprites
 	player->load();
 
-	for (Drawable * drawable : owning) {
+	for (Drawable * drawable : drawables) {
 		Sprite * sprite = dynamic_cast<Sprite *>(drawable);
 		if (sprite)
 			sprite->load();
 	}
 }
 
-World::~World() {
-	// free added drawables
-	for (Drawable * drawable : owning) {
-		delete drawable;
-	}
+void World::destroy(Drawable * drawable) {
+	drawables.erase(drawable);
+	owning.erase(drawable);
+
+	fprintf(stderr, "deleting\n");
+	delete drawable;
 }
 
 void World::add(Drawable & drawable) {

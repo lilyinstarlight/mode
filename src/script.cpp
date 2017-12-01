@@ -45,7 +45,7 @@ void Script::load_api() {
 
 	// create Sprite data type
 	lua.new_usertype<Sprite>("Sprite",
-			"new", sol::constructors<Sprite(std::string)>(),
+			"new", sol::factories(WrapCreate<World, Sprite, std::string>(Engine::get_instance().get_world())),
 
 			"observe", WrapObserve<Sprite, Sprite>(sprite),
 			"ignore", WrapIgnore<Sprite, Sprite>(sprite),
@@ -74,7 +74,7 @@ void Script::load_api() {
 
 	// create Projectile data type
 	lua.new_usertype<Projectile>("Projectile",
-			"new", sol::constructors<Projectile(std::string)>(),
+			"new", sol::factories(WrapCreate<World, Projectile, std::string>(Engine::get_instance().get_world())),
 
 			"alive", sol::property(&Projectile::is_alive),
 			"kill", &Projectile::kill,
@@ -103,7 +103,7 @@ void Script::load_api() {
 
 	// create Background data type
 	lua.new_usertype<Background>("Background",
-			"new", sol::constructors<Background(std::string)>(),
+			"new", sol::factories(WrapCreate<World, Background, std::string>(Engine::get_instance().get_world())),
 
 			"factor", sol::property(&Background::get_factor, &Background::set_factor),
 
@@ -124,14 +124,17 @@ void Script::load_api() {
 			"add_sprite", WrapAdd<World, Sprite>(),
 			"remove_sprite", WrapRemove<World, Sprite>(),
 			"get_sprite", WrapGet<World, Sprite>(),
+			"destroy_sprite", WrapDestroy<World, Sprite>(),
 
 			"add_background", WrapAdd<World, Background>(),
 			"remove_background", WrapRemove<World, Background>(),
 			"get_background", WrapGet<World, Background>(),
+			"destroy_background", WrapDestroy<World, Background>(),
 
 			"add_dialog", WrapAdd<World, Dialog>(),
 			"remove_dialog", WrapRemove<World, Dialog>(),
 			"get_dialog", WrapGet<World, Dialog>(),
+			"destroy_dialog", WrapDestroy<World, Dialog>(),
 
 			"width", sol::property(&World::get_width),
 			"height", sol::property(&World::get_height)
@@ -198,7 +201,7 @@ void Script::load_api() {
 
 	// create Spec data type
 	lua.new_usertype<Dialog>("Dialog",
-			"new", sol::constructors<Dialog(std::string, std::string), Dialog(std::string, std::string, bool), Dialog(std::string, std::string, bool, bool)>(),
+			"new", sol::factories(WrapCreate<World, Dialog, std::string, std::string>(Engine::get_instance().get_world()), WrapCreate<World, Dialog, std::string, std::string, bool>(Engine::get_instance().get_world()), WrapCreate<World, Dialog, std::string, std::string, bool, bool>(Engine::get_instance().get_world())),
 
 			"open", &Dialog::open,
 			"close", &Dialog::close,
@@ -232,7 +235,9 @@ void Script::load_api() {
 			"width", sol::property(&Viewport::get_width),
 			"height", sol::property(&Viewport::get_height),
 
-			"pos", sol::property(&Viewport::get_position)
+			"pos", sol::property(&Viewport::get_position),
+
+			"track", &Viewport::track
 	);
 
 	// set viewport

@@ -18,9 +18,17 @@ class World {
 
 		void init();
 
+		template<typename T, typename... Args>
+		T * create(Args... args) {
+			T * t = new T(args...);
+			owning.insert(t);
+			return t;
+		}
+
 		void add(Drawable & drawable);
 		void remove(Drawable & drawable);
 		Drawable * get(const std::string & name);
+		void destroy(Drawable * drawable);
 
 		void dispatch(const SDL_Event & event);
 		void update(unsigned int ticks);

@@ -15,6 +15,7 @@ Requirements:
 
 Issues:
 * width/height aren't calculated right for rotated sprites (I think this is an SDL2_gfx issue)
+* platforms
 
 Extras:
 * sound

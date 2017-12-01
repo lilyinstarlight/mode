@@ -34,7 +34,7 @@ end
 function update (ticks)
 	bottom = ground.pos.y - sprite.height
 	grounded = sprite.pos.y >= bottom and sprite.vel.y >= 0
-	landing = not grounded and sprite.pos.y >= bottom - land and sprite.vel.y >= 0
+	landing = not grounded and sprite.pos.y >= bottom - land*sprite.vel.y and sprite.vel.y >= 0
 
 	sprite.vel.x = 0
 

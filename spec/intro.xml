@@ -197,23 +197,25 @@
 		<scale>5</scale>
 
 		<sheets>
-		    <fly.left>
-				<file>feature.fly.left.png</file>
+			<fly>
+				<left>
+					<file>feature.fly.left.png</file>
 
-				<frames>4</frames>
-				<interval>100</interval>
+					<frames>4</frames>
+					<interval>100</interval>
 
-				<loop>true</loop>
-		    </fly.left>
+					<loop>true</loop>
+				</left>
 
-		    <fly.right>
-				<file>feature.fly.right.png</file>
+				<right>
+					<file>feature.fly.right.png</file>
 
-				<frames>4</frames>
-				<interval>100</interval>
+					<frames>4</frames>
+					<interval>100</interval>
 
-				<loop>true</loop>
-		    </fly.right>
+					<loop>true</loop>
+				</right>
+			</fly>
 		</sheets>
 
 		<collision>none</collision>
@@ -240,23 +242,25 @@
 		<scale>5</scale>
 
 		<sheets>
-		    <idle.left>
-				<file>slime.idle.left.png</file>
+			<idle>
+				<left>
+					<file>slime.idle.left.png</file>
 
-				<frames>28</frames>
-				<interval>100</interval>
+					<frames>28</frames>
+					<interval>100</interval>
 
-				<loop>true</loop>
-		    </idle.left>
+					<loop>true</loop>
+				</left>
 
-		    <idle.right>
-				<file>slime.idle.right.png</file>
+				<right>
+					<file>slime.idle.right.png</file>
 
-				<frames>28</frames>
-				<interval>100</interval>
+					<frames>28</frames>
+					<interval>100</interval>
 
-				<loop>true</loop>
-		    </idle.right>
+					<loop>true</loop>
+				</right>
+			</idle>
 		</sheets>
 
 		<collision>none</collision>
@@ -285,23 +289,25 @@
 		<scale>5</scale>
 
 		<sheets>
-		    <shoot.left>
-				<file>glider.shoot.left.png</file>
+			<shoot>
+				<left>
+					<file>glider.shoot.left.png</file>
 
-				<frames>4</frames>
-				<interval>100</interval>
+					<frames>4</frames>
+					<interval>100</interval>
 
-				<loop>true</loop>
-		    </shoot.left>
+					<loop>true</loop>
+				</left>
 
-		    <shoot.right>
-				<file>glider.shoot.right.png</file>
+				<right>
+					<file>glider.shoot.right.png</file>
 
-				<frames>4</frames>
-				<interval>100</interval>
+					<frames>4</frames>
+					<interval>100</interval>
 
-				<loop>true</loop>
-		    </shoot.right>
+					<loop>true</loop>
+				</right>
+			</shoot>
 		</sheets>
 
 		<collision>pixel</collision>
@@ -348,77 +354,85 @@
 		<scale>5</scale>
 
 		<sheets>
-		    <idle.left>
-				<file>hero.idle.left.png</file>
+		    <idle>
+				<left>
+					<file>hero.idle.left.png</file>
 
-				<frames>52</frames>
-				<interval>100</interval>
+					<frames>52</frames>
+					<interval>100</interval>
 
-				<loop>true</loop>
-		    </idle.left>
+					<loop>true</loop>
+				</left>
 
-		    <idle.right>
-				<file>hero.idle.right.png</file>
+				<right>
+					<file>hero.idle.right.png</file>
 
-				<frames>52</frames>
-				<interval>100</interval>
+					<frames>52</frames>
+					<interval>100</interval>
 
-				<loop>true</loop>
-		    </idle.right>
+					<loop>true</loop>
+				</right>
+		    </idle>
 
-		    <run.left>
-				<file>hero.run.left.png</file>
+			<run>
+				<left>
+					<file>hero.run.left.png</file>
 
-				<frames>4</frames>
-				<interval>100</interval>
+					<frames>4</frames>
+					<interval>100</interval>
 
-				<loop>true</loop>
-		    </run.left>
+					<loop>true</loop>
+				</left>
 
-		    <run.right>
-				<file>hero.run.right.png</file>
+				<right>
+					<file>hero.run.right.png</file>
 
-				<frames>4</frames>
-				<interval>100</interval>
+					<frames>4</frames>
+					<interval>100</interval>
 
-				<loop>true</loop>
-		    </run.right>
+					<loop>true</loop>
+				</right>
+			</run>
 
-		    <land.left>
-				<file>hero.land.left.png</file>
+			<land>
+				<left>
+					<file>hero.land.left.png</file>
 
-				<frames>7</frames>
-				<interval>100</interval>
+					<frames>7</frames>
+					<interval>100</interval>
 
-				<loop>false</loop>
-		    </land.left>
+					<loop>false</loop>
+				</left>
 
-		    <land.right>
-				<file>hero.land.right.png</file>
+				<right>
+					<file>hero.land.right.png</file>
 
-				<frames>7</frames>
-				<interval>100</interval>
+					<frames>7</frames>
+					<interval>100</interval>
 
-				<loop>false</loop>
-		    </land.right>
+					<loop>false</loop>
+				</right>
+			</land>
 
-		    <jump.left>
-				<file>hero.jump.left.png</file>
+			<jump>
+				<left>
+					<file>hero.jump.left.png</file>
 
-				<frames>5</frames>
-				<interval>100</interval>
+					<frames>5</frames>
+					<interval>100</interval>
 
-				<loop>false</loop>
-		    </jump.left>
+					<loop>false</loop>
+				</left>
 
-		    <jump.right>
-				<file>hero.jump.right.png</file>
+				<right>
+					<file>hero.jump.right.png</file>
 
-				<frames>5</frames>
-				<interval>100</interval>
+					<frames>5</frames>
+					<interval>100</interval>
 
-				<loop>false</loop>
-		    </jump.right>
+					<loop>false</loop>
+				</right>
+			</jump>
 		</sheets>
 
 		<collision>pixel</collision>

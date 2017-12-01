@@ -16,6 +16,8 @@ class Script {
 		Script(const std::string & name, Sprite & s);
 		Script(const Script & s);
 
+		~Script() {}
+
 		const Script & operator=(const Script & s) = delete;
 
 		void load();
@@ -31,7 +33,6 @@ class Script {
 		}
 
 	private:
-
 		template <typename T, typename U>
 		class WrapObserve {
 			public:
@@ -58,6 +59,19 @@ class Script {
 				U & other;
 		};
 
+		template <typename T, typename U, typename... Args>
+		class WrapCreate {
+			public:
+				WrapCreate(T & o) : other(o) {}
+
+				U * operator()(Args... args) {
+					return other.template create<U>(args...);
+				}
+
+			private:
+				T & other;
+		};
+
 		template <typename T, typename U>
 		class WrapAdd {
 			public:
@@ -80,6 +94,14 @@ class Script {
 			public:
 				U * operator()(T & obj, const std::string & name) {
 					return dynamic_cast<U *>(obj.get(name));
+				}
+		};
+
+		template <typename T, typename U>
+		class WrapDestroy {
+			public:
+				void operator()(T & obj, U * u) {
+					return obj.destroy(u);
 				}
 		};
 
