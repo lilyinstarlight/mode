@@ -16,10 +16,7 @@ class Projectile : public Sprite {
 		const Projectile & operator=(const Projectile &) = delete;
 
 		virtual void dispatch(const SDL_Event & event);
-		virtual void update(unsigned int ticks);
-
-		bool is_alive() const { return alive;  }
-		void kill()           { alive = false; }
+		virtual void update(unsigned int ticks, World & world);
 
 		Vector2f get_origin() const         { return origin;           }
 		void set_origin()                   { origin = get_position(); }
@@ -31,7 +28,6 @@ class Projectile : public Sprite {
 	private:
 		Pool<Projectile> & pool;
 
-		bool alive;
 		Vector2f origin;
 };
 #endif

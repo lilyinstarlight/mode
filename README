@@ -4,10 +4,10 @@ Clemson Email Address: fmclane@g.clemson.edu
 
 Project no: 5
 Project due date: 2017-12-03
-Project description: 
+Project description: Object Pooling, Explosions, Projectiles
 
-The easiest part of this project: 
-Problems that I had in completing this project: 
+The easiest part of this project: Stealing the sprites from a game I am currently developing was pretty easy.
+Problems that I had in completing this project: I have this issue where I keep implementing features faster than I can use them in the game. There's a lot of code there that while it works, is unused. I'll definitely be using them next time around when I have code injection for sprites complete.
 
 Requirements:
 * SDL2{,-image,-mixer,-ttf,-gfx}
@@ -15,8 +15,9 @@ Requirements:
 
 Issues:
 * width/height aren't calculated right for rotated sprites (I think this is an SDL2_gfx issue)
-* platforms
-* menu world
+* need to add platform class/drawable
+* need to add menu world
+* need to add code injection editor class/drawable to modify sprites in game
 
 Extras:
 * sound
@@ -27,7 +28,14 @@ Extras:
 * sprite indexing
 * background tiling
 * dialog abstraction
-* platforms
+* platforms (soon)
+* menu (soon)
+* code injection (soon)
+
+Credits:
+* sprites by Ben Golden taken from our game PyLink - https://github.com/ProjectPyLink/PyLink
+* the creators of Lua - https://www.lua.org/authors.html
+* the creators of Sol - https://github.com/ThePhD/sol2/graphs/contributors
 
 I hope you enjoy an early preview of Mode, a side-scrolling puzzle platformer where you write the rules!
 

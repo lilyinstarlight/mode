@@ -44,11 +44,13 @@ void Console::dispatch(const SDL_Event & event) {
 				if (result.empty()) {
 					try {
 						Script script;
+						script.load();
 						script.add_script(command);
 						result = script.get_result();
 					}
 					catch (std::runtime_error & err) {
-						result = "> lua error";
+						std::string str = err.what();
+						result = "> lua error" + str.substr(str.rfind(":"));
 					}
 
 					command.clear();

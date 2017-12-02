@@ -46,7 +46,7 @@ void Engine::run() {
 
 	hud = new HUD();
 	world = new World();
-	viewport = new Viewport(*world);
+	viewport = new Viewport();
 
 	world->init();
 	viewport->track(&world->get_player());
@@ -74,10 +74,14 @@ void Engine::run() {
 				}
 				else if (event.key.keysym.sym == SDLK_TAB) {
 					// (un)pause clock
-					if (Clock::get_instance().is_running())
+					if (Clock::get_instance().is_running()) {
 						Clock::get_instance().pause();
-					else
+						hud->open();
+					}
+					else {
 						Clock::get_instance().start();
+						hud->close();
+					}
 				}
 				else if (event.key.keysym.sym == SDLK_F1) {
 					// toggle hud
@@ -139,9 +143,9 @@ void Engine::update(unsigned int ticks) {
 		world->update(ticks);
 
 	// update hud and viewport
-	hud->update(ticks);
-	viewport->update(ticks);
+	hud->update(ticks, *world);
+	viewport->update(ticks, *world);
 
 	// update console
-	Console::get_instance().update(ticks);
+	Console::get_instance().update(ticks, *world);
 }

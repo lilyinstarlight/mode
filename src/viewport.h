@@ -6,16 +6,15 @@
 
 class Viewport {
 	public:
-		Viewport(const World & w);
+		Viewport();
 		~Viewport() {}
 
-		Viewport() = delete;
 		Viewport(const Viewport & v) = delete;
 		const Viewport & operator=(const Viewport & v) = delete;
 
 		void dispatch(const SDL_Event &) {}
 		void draw() const {}
-		void update(unsigned int ticks);
+		void update(unsigned int ticks, World & world);
 
 		int get_height() const { return height; }
 		int get_width() const  { return width; }
@@ -31,8 +30,6 @@ class Viewport {
 		const Drawable * get_tracking() const { return tracking; }
 
 	private:
-		const World & world;
-
 		Vector2f position;
 		int width, height;
 

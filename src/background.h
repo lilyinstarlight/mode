@@ -21,7 +21,7 @@ class Background : public Drawable {
 
 		virtual void dispatch(const SDL_Event &) {}
 		virtual void draw(const Viewport & viewport) const;
-		virtual void update(unsigned int) {}
+		virtual void update(unsigned int, World &) {}
 
 		int get_width() const  { return image->get_width();  }
 		int get_height() const { return image->get_height(); }

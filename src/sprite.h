@@ -14,7 +14,7 @@
 
 class Sprite : public Drawable {
 	public:
-		Sprite(const std::string & name);
+		Sprite(const std::string & name, bool dead = false);
 		Sprite(const Sprite & s);
 
 		virtual ~Sprite();
@@ -26,7 +26,11 @@ class Sprite : public Drawable {
 
 		virtual void dispatch(const SDL_Event & event);
 		virtual void draw(const Viewport & viewport) const;
-		virtual void update(unsigned int ticks);
+		virtual void update(unsigned int ticks, World & world);
+
+		virtual bool is_alive() const { return alive;  }
+		virtual void revive()         { alive = true; }
+		virtual void kill()           { alive = false; }
 
 		virtual const Image * get_image() const;
 
@@ -71,6 +75,8 @@ class Sprite : public Drawable {
 
 		std::string direction;
 		std::deque<std::pair<std::string, unsigned int>> state;
+
+		bool alive;
 
 		unsigned int observer_interval;
 

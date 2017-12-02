@@ -3,10 +3,11 @@
 #include "imagefactory.h"
 #include "spec.h"
 #include "util.h"
+#include "world.h"
 
 #include "sprite.h"
 
-Sprite::Sprite(const std::string & name) : Drawable(name,
+Sprite::Sprite(const std::string & name, bool dead) : Drawable(name,
 			Vector2f(Spec::get_instance().get_int(name + "/position/x"),
 					 Spec::get_instance().get_int(name + "/position/y")),
 					 Spec::get_instance().get_int(name + "/rotation"),
@@ -25,6 +26,7 @@ Sprite::Sprite(const std::string & name) : Drawable(name,
 		sheets{},
 		direction(Spec::get_instance().get_str(name + "/direction")),
 		state(),
+		alive(!dead),
 		observer_interval(200),
 		frame_timer(0),
 		observer_timer(observer_interval) {
@@ -64,6 +66,7 @@ Sprite::Sprite(const Sprite & s) :
 		sheets(s.sheets),
 		direction(s.direction),
 		state(s.state),
+		alive(s.alive),
 		observer_interval(s.observer_interval),
 		frame_timer(s.frame_timer),
 		observer_timer(s.observer_timer) {
@@ -98,7 +101,7 @@ void Sprite::draw(const Viewport & viewport) const {
 	get_image()->draw(viewport, get_x(), get_y(), get_rotation(), get_scale());
 }
 
-void Sprite::update(unsigned int ticks) {
+void Sprite::update(unsigned int ticks, World & world) {
 	if (get_velocity_x() < 0)
 		direction = "left";
 	else if (get_velocity_x() > 0)
@@ -114,6 +117,11 @@ void Sprite::update(unsigned int ticks) {
 		state.back().second += 1;
 
 		if (state.back().second >= static_cast<unsigned int>(sheet->get_frames())) {
+			if (!alive) {
+				world.remove(*this);
+				return;
+			}
+
 			if (sheet->get_loop())
 				state.back().second = 0;
 			else {

@@ -18,9 +18,10 @@ function update (ticks)
 end
 
 function observe (other)
-	local distance = other.pos.x + other.width/2 -  sprite.pos.x - sprite.width/2
-
-	sprite.vel.x = distance/10
+	if other.name == 'player' then
+		local distance = other.pos.x + other.width/2 -  sprite.pos.x - sprite.width/2
+		sprite.vel.x = distance/10
+	end
 end
 
 function collide (other)

@@ -14,7 +14,7 @@ class HUD : public Dialog {
 
 		const HUD & operator=(const HUD & hud) = delete;
 
-		virtual void update(unsigned int ticks);
+		virtual void update(unsigned int ticks, World & world);
 
 		const std::string & get_string() const { return str; }
 		void set_string(const std::string & s) { str = s;    }

@@ -20,7 +20,7 @@ class Console : public Drawable {
 
 		virtual void dispatch(const SDL_Event & event);
 		virtual void draw(const Viewport & viewport) const;
-		virtual void update(unsigned int) {}
+		virtual void update(unsigned int, World &) {}
 
 		virtual int get_width() const { return 0; }
 		virtual int get_height() const { return 0; }

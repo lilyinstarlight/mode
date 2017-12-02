@@ -1,6 +1,6 @@
 #include "clock.h"
-#include "engine.h"
 #include "spec.h"
+#include "world.h"
 
 #include "hud.h"
 
@@ -8,7 +8,7 @@ HUD::HUD() : Dialog("hud", "", true, true), initial(Spec::get_instance().get_int
 
 HUD::HUD(const HUD & hud) : Dialog(hud), initial(hud.initial), str(hud.str) {}
 
-void HUD::update(unsigned int ticks) {
+void HUD::update(unsigned int ticks, World & world) {
 	// decrement initial counter on whether this is shown at the beginning of game or not
 	if (initial > 0) {
 		initial -= ticks;
@@ -20,10 +20,10 @@ void HUD::update(unsigned int ticks) {
 	std::string copy(str);
 
 	copy = replace(copy, "{fps}", std::to_string(Clock::get_instance().get_fps()));
-	copy = replace(copy, "{hp}", std::to_string(Engine::get_instance().get_world().get_player().get_hp()));
+	copy = replace(copy, "{hp}", std::to_string(world.get_player().get_hp()));
 
-	copy = replace(copy, "{free}", std::to_string(Engine::get_instance().get_world().get_player().get_pool().get_free().size()));
-	copy = replace(copy, "{used}", std::to_string(Engine::get_instance().get_world().get_player().get_pool().get_used().size()));
+	copy = replace(copy, "{free}", std::to_string(world.get_player().get_pool().get_free().size()));
+	copy = replace(copy, "{used}", std::to_string(world.get_player().get_pool().get_used().size()));
 
 	Dialog::set_string(copy);
 }

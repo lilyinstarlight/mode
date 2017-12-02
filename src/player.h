@@ -12,6 +12,8 @@ class Player : public Sprite {
 		Player(const Player & player) = delete;
 		const Player & operator=(const Player & player) = delete;
 
+		void update(unsigned int ticks, World & world);
+
 		void shoot();
 
 		Pool<Projectile> & get_pool() { return gliders; }
@@ -23,5 +25,6 @@ class Player : public Sprite {
 		Pool<Projectile> gliders;
 
 		int hp;
+		bool shot;
 };
 #endif

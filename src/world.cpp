@@ -46,7 +46,6 @@ void World::destroy(Drawable * drawable) {
 	drawables.erase(drawable);
 	owning.erase(drawable);
 
-	fprintf(stderr, "deleting\n");
 	delete drawable;
 }
 
@@ -82,8 +81,6 @@ void World::draw(const Viewport & viewport) const {
 void World::update(unsigned int ticks) {
 	// update drawables
 	for (Drawable * drawable : drawables) {
-		drawable->update(ticks);
-
 		// set position based on velocity delta
 		Vector2f pos = drawable->get_position() + drawable->get_velocity()*ticks/1000;
 		drawable->set_position(pos);
@@ -106,5 +103,7 @@ void World::update(unsigned int ticks) {
 			drawable->set_y(height - drawable->get_height());
 			drawable->set_velocity_y(0);
 		}
+
+		drawable->update(ticks, *this);
 	}
 }

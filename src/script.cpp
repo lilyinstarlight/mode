@@ -62,6 +62,8 @@ void Script::load_api() {
 			"clear", &Sprite::clear_state,
 			"push", &Sprite::push_state,
 
+			"name", sol::property(&Sprite::get_name),
+
 			"width", sol::property(&Sprite::get_width),
 			"height", sol::property(&Sprite::get_height),
 

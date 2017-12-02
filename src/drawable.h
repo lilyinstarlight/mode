@@ -7,6 +7,8 @@
 #include "image.h"
 #include "vector2f.h"
 
+class World;
+
 class Drawable {
 	public:
 		Drawable(const std::string & name, const Vector2f & position, float rotation, const Vector2f & velocity, float scale, int index) : name(name), position(position), rotation(rotation), velocity(velocity), scale(scale), index(index) {};
@@ -17,7 +19,7 @@ class Drawable {
 
 		virtual void dispatch(const SDL_Event & event) = 0;
 		virtual void draw(const Viewport & viewport) const = 0;
-		virtual void update(unsigned int ticks) = 0;
+		virtual void update(unsigned int ticks, World & world) = 0;
 
 		virtual int get_width() const = 0;
 		virtual int get_height() const = 0;
@@ -25,8 +27,8 @@ class Drawable {
 		virtual const SDL_Surface * get_surface() const = 0;
 		virtual const Image * get_image() const = 0;
 
-		const std::string& get_name() const { return name; }
-		void set_name(const std::string& n) { name = n;    }
+		const std::string & get_name() const { return name; }
+		void set_name(const std::string & n) { name = n;    }
 
 		const Vector2f & get_position() const    { return position; }
 		void  set_position(const Vector2f & pos) { position = pos;  }

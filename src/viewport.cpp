@@ -2,14 +2,13 @@
 
 #include "viewport.h"
 
-Viewport::Viewport(const World & w) :
-	world(w),
+Viewport::Viewport() :
 	position(0, 0),
 	width(Spec::get_instance().get_int("view/width")),
 	height(Spec::get_instance().get_int("view/height")),
 	tracking(nullptr) {}
 
-void Viewport::update(unsigned int) {
+void Viewport::update(unsigned int, World & world) {
 	// bail if no object to track
 	if (!tracking)
 		return;
