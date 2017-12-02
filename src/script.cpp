@@ -50,6 +50,9 @@ void Script::load_api() {
 			"observe", WrapObserve<Sprite, Sprite>(sprite),
 			"ignore", WrapIgnore<Sprite, Sprite>(sprite),
 
+			"signal", &Sprite::signal,
+			"send", &Sprite::send,
+
 			"inject", &Sprite::inject,
 
 			"direction", sol::property(&Sprite::get_direction, &Sprite::set_direction),

@@ -37,14 +37,9 @@ void World::init() {
 		}
 	}
 
-	// load deferred sprites
-	player->load();
-
-	for (Drawable * drawable : drawables) {
-		Sprite * sprite = dynamic_cast<Sprite *>(drawable);
-		if (sprite)
-			sprite->load();
-	}
+	// load deferred drawables
+	for (Drawable * drawable : drawables)
+		drawable->load();
 }
 
 void World::destroy(Drawable * drawable) {

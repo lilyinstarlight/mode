@@ -21,6 +21,7 @@ class World {
 		template<typename T, typename... Args>
 		T * create(Args... args) {
 			T * t = new T(args...);
+			t->load();
 			owning.insert(t);
 			return t;
 		}

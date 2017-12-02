@@ -131,7 +131,7 @@ void Sprite::update(unsigned int ticks) {
 	observer_timer += ticks;
 	if (observer_timer > observer_interval) {
 		for (Sprite * observer : observers)
-			observer->signal("observe", *this);
+			observer->send("observe", *this);
 
 		observer_timer = 0;
 	}
@@ -139,7 +139,7 @@ void Sprite::update(unsigned int ticks) {
 	// check collision with observers
 	for (Sprite * observer : observers) {
 		if (collision_strategy->check(*this, *observer))
-			observer->signal("collide", *this);
+			observer->send("collide", *this);
 	}
 }
 
@@ -227,8 +227,8 @@ void Sprite::signal(const std::string & sig) {
 	script->call(sig);
 }
 
-void Sprite::signal(const std::string & sig, Sprite & sprite) {
-	// call script with signal
+void Sprite::send(const std::string & sig, Sprite & sprite) {
+	// call script with signal and sprite
 	script->call(sig, &sprite);
 }
 

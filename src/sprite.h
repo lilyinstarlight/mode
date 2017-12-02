@@ -52,7 +52,7 @@ class Sprite : public Drawable {
 		const std::list<Sprite *> & get_observers() const { return observers; }
 
 		void signal(const std::string & sig);
-		void signal(const std::string & sig, Sprite & sprite);
+		void send(const std::string & sig, Sprite & sprite);
 
 		void inject();
 

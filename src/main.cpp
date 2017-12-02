@@ -7,8 +7,8 @@ int main(int, char * []) {
 #ifdef NDEBUG
 	try {
 #endif
-		// load intro world
-		Engine::get_instance().load("intro");
+		// load level 1 world
+		Engine::get_instance().load("lvl1");
 
 		// run engine
 		Engine::get_instance().start();

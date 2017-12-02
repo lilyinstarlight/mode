@@ -68,6 +68,7 @@
 |    write the rules.    |
 |                        |
 |    WASD to move        |
+|    SPACE to shoot      |
 |    H to toggle HUD     |
 |    R to restart        |
 |    Q to quit           |
@@ -272,7 +273,7 @@
 		<direction>left</direction>
 		<state>shoot</state>
 
-		<max>100</max>
+		<max>300</max>
 
 		<position>
 			<x>600</x>
