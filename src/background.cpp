@@ -2,7 +2,15 @@
 
 #include "background.h"
 
-Background::Background(const std::string & name) : Drawable(name, Vector2f(Spec::get_instance().get_int(name + "/position/x"), Spec::get_instance().get_int(name + "/position/y")), 0, Vector2f(0, 0), 1, Spec::get_instance().get_int(name + "/index")), factor(Spec::get_instance().get_float(name + "/factor")), tile(NONE), image(ImageFactory::get_instance().get_image(name)) {
+Background::Background(const std::string & name) : Drawable(name,
+		Spec::get_instance().get_str(name + "/type"),
+		Vector2f(Spec::get_instance().get_int(name + "/position/x"),
+		         Spec::get_instance().get_int(name + "/position/y")),
+		0, Vector2f(0, 0), 1, Spec::get_instance().get_int(name + "/index")
+	),
+	factor(Spec::get_instance().get_float(name + "/factor")),
+	tile(NONE),
+	image(ImageFactory::get_instance().get_image(name)) {
 	std::string tiling = Spec::get_instance().get_str(name + "/tile");
 	if (tiling == "none")
 		tile = NONE;

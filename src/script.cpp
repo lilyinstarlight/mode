@@ -63,6 +63,7 @@ void Script::load_api() {
 			"push", &Sprite::push_state,
 
 			"name", sol::property(&Sprite::get_name),
+			"type", sol::property(&Sprite::get_type),
 
 			"width", sol::property(&Sprite::get_width),
 			"height", sol::property(&Sprite::get_height),
@@ -111,6 +112,9 @@ void Script::load_api() {
 			"new", sol::factories(WrapCreate<World, Background, std::string>(Engine::get_instance().get_world())),
 
 			"factor", sol::property(&Background::get_factor, &Background::set_factor),
+
+			"name", sol::property(&Sprite::get_name),
+			"type", sol::property(&Sprite::get_type),
 
 			"width", sol::property(&Background::get_width),
 			"height", sol::property(&Background::get_height),
@@ -207,6 +211,9 @@ void Script::load_api() {
 	// create Spec data type
 	lua.new_usertype<Dialog>("Dialog",
 			"new", sol::factories(WrapCreate<World, Dialog, std::string, std::string>(Engine::get_instance().get_world()), WrapCreate<World, Dialog, std::string, std::string, bool>(Engine::get_instance().get_world()), WrapCreate<World, Dialog, std::string, std::string, bool, bool>(Engine::get_instance().get_world())),
+
+			"name", sol::property(&Sprite::get_name),
+			"type", sol::property(&Sprite::get_type),
 
 			"open", &Dialog::open,
 			"close", &Dialog::close,

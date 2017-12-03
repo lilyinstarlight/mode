@@ -6,9 +6,10 @@
 #include "hud.h"
 
 Dialog::Dialog(const std::string & name, const std::string & text, bool top, bool open) : Drawable(name,
+			Spec::get_instance().get_str(name + "/type"),
 			Vector2f(Spec::get_instance().get_int(name + "/position/x"),
 					 Spec::get_instance().get_int(name + "/position/y")),
-					 Spec::get_instance().get_int(name + "/rotation"),
+			Spec::get_instance().get_int(name + "/rotation"),
 			Vector2f(0, 0), 1, 9001),
 		above(top),
 		opened(open),

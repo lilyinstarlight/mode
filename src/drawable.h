@@ -11,7 +11,7 @@ class World;
 
 class Drawable {
 	public:
-		Drawable(const std::string & name, const Vector2f & position, float rotation, const Vector2f & velocity, float scale, int index) : name(name), position(position), rotation(rotation), velocity(velocity), scale(scale), index(index) {};
+		Drawable(const std::string & name, const std::string & type, const Vector2f & position, float rotation, const Vector2f & velocity, float scale, int index) : name(name), type(type), position(position), rotation(rotation), velocity(velocity), scale(scale), index(index) {};
 
 		virtual ~Drawable() {}
 
@@ -29,6 +29,9 @@ class Drawable {
 
 		const std::string & get_name() const { return name; }
 		void set_name(const std::string & n) { name = n;    }
+
+		const std::string & get_type() const { return type; }
+		void set_type(const std::string & t) { type = t;    }
 
 		const Vector2f & get_position() const    { return position; }
 		void  set_position(const Vector2f & pos) { position = pos;  }
@@ -59,6 +62,7 @@ class Drawable {
 
 	private:
 		std::string name;
+		std::string type;
 		Vector2f position;
 		float rotation;
 		Vector2f velocity;

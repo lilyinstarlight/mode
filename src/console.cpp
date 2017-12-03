@@ -13,7 +13,7 @@ Console & Console::get_instance() {
 	return console;
 }
 
-Console::Console() : Drawable("name", Vector2f{0, 0}, 0, Vector2f{0, 0}, 1, 9002), opened(false), command(""), result(""), surface(nullptr), padding_bottom(4), padding_left(5), padding_font(2) {
+Console::Console() : Drawable("console", "console", Vector2f{0, 0}, 0, Vector2f{0, 0}, 1, 9002), opened(false), command(""), result(""), surface(nullptr), padding_bottom(4), padding_left(5), padding_font(2) {
 }
 
 void Console::dispatch(const SDL_Event & event) {

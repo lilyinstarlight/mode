@@ -38,6 +38,8 @@
 	</console>
 
 	<hud>
+		<type>hud</type>
+
 		<initial>5000</initial>
 
 		<position>

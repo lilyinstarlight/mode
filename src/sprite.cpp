@@ -8,13 +8,14 @@
 #include "sprite.h"
 
 Sprite::Sprite(const std::string & name, bool dead) : Drawable(name,
+			Spec::get_instance().get_str(name + "/type"),
 			Vector2f(Spec::get_instance().get_int(name + "/position/x"),
 					 Spec::get_instance().get_int(name + "/position/y")),
-					 Spec::get_instance().get_int(name + "/rotation"),
+			Spec::get_instance().get_int(name + "/rotation"),
 			Vector2f(Spec::get_instance().get_int(name + "/velocity/x"),
 					 Spec::get_instance().get_int(name + "/velocity/y")),
-					 Spec::get_instance().get_int(name + "/scale"),
-					 Spec::get_instance().get_int(name + "/index")
+			Spec::get_instance().get_int(name + "/scale"),
+			Spec::get_instance().get_int(name + "/index")
 		),
 		script(nullptr),
 		none_strategy(),
