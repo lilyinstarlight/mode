@@ -13,6 +13,11 @@ void Viewport::update(unsigned int, World & world) {
 	if (!tracking)
 		return;
 
+	if (!world.check(tracking)) {
+		tracking = nullptr;
+		return;
+	}
+
 	// track object
 	const float x = tracking->get_x();
 	const float y = tracking->get_y();

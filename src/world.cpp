@@ -57,7 +57,11 @@ void World::remove(Drawable & drawable) {
 	drawables.erase(&drawable);
 }
 
-Drawable * World::get(const std::string & name) {
+bool World::check(const Drawable * drawable) const {
+	return drawables.find(const_cast<Drawable *>(drawable)) != drawables.end();
+}
+
+Drawable * World::get(const std::string & name) const {
 	for (Drawable * drawable : drawables) {
 		if (drawable->get_name() == name)
 			return drawable;

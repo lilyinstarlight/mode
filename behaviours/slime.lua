@@ -33,6 +33,10 @@ end
 
 function collide (other)
 	collided = true
+
+	if other.type == 'player' then
+		other:kill()
+	end
 end
 
 ground = world:get_background('ground')

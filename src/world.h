@@ -28,7 +28,8 @@ class World {
 
 		void add(Drawable & drawable);
 		void remove(Drawable & drawable);
-		Drawable * get(const std::string & name);
+		bool check(const Drawable * drawable) const;
+		Drawable * get(const std::string & name) const;
 		void destroy(Drawable * drawable);
 
 		void dispatch(const SDL_Event & event);

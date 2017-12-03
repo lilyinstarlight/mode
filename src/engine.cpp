@@ -87,6 +87,10 @@ void Engine::run() {
 					// toggle hud
 					hud->toggle();
 				}
+				else if (event.key.keysym.sym == SDLK_BACKSPACE) {
+					// restart level
+					restart();
+				}
 			}
 
 			dispatch(event);

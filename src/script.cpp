@@ -53,6 +53,9 @@ void Script::load_api() {
 			"signal", &Sprite::signal,
 			"send", &Sprite::send,
 
+			"revive", &Sprite::revive,
+			"kill", &Sprite::kill,
+
 			"inject", &Sprite::inject,
 
 			"direction", sol::property(&Sprite::get_direction, &Sprite::set_direction),

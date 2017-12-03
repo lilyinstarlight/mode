@@ -29,8 +29,8 @@ class Sprite : public Drawable {
 		virtual void update(unsigned int ticks, World & world);
 
 		virtual bool is_alive() const { return alive;  }
-		virtual void revive()         { alive = true; }
-		virtual void kill()           { alive = false; }
+		virtual void revive();
+		virtual void kill();
 
 		virtual const Image * get_image() const;
 

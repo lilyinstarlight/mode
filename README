@@ -14,6 +14,9 @@ Requirements:
 * expat
 
 Issues:
+* sprite death needs to be fixed
+* death dialog that shows engine-level commands should be shown on player death
+* death/birth animations need to be added for all sprites
 * width/height aren't calculated right for rotated sprites (I think this is an SDL2_gfx issue)
 * need to add platform class/drawable
 * need to add menu world

@@ -152,6 +152,18 @@ void Sprite::update(unsigned int ticks, World & world) {
 	}
 }
 
+void Sprite::revive() {
+	alive = true;
+	clear_state();
+	push_state("revive");
+}
+
+void Sprite::kill() {
+	alive = false;
+	clear_state();
+	push_state("kill");
+}
+
 const Image * Sprite::get_image() const {
 	return sheets.at(state.back().first + "." + direction)->get_image(state.back().second);
 }
