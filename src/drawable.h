@@ -2,7 +2,7 @@
 #define DRAWABLE_H
 #include <string>
 
-#include <SDL.h>
+#include <SDL2/SDL.h>
 
 #include "image.h"
 #include "vector2f.h"

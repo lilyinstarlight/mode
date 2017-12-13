@@ -1,5 +1,3 @@
-#include <SDL.h>
-
 #include "context.h"
 #include "script.h"
 #include "spec.h"

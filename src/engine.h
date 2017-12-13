@@ -2,7 +2,7 @@
 #define ENGINE_H
 #include <string>
 
-#include <SDL.h>
+#include <SDL2/SDL.h>
 
 #include "context.h"
 #include "clock.h"

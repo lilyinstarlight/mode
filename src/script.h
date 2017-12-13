@@ -4,7 +4,7 @@
 #include <unordered_map>
 #include <vector>
 
-#include <SDL.h>
+#include <SDL2/SDL.h>
 
 #include <sol2/sol.hpp>
 

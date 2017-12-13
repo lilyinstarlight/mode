@@ -1,6 +1,6 @@
 #ifndef CONTEXT_H
 #define CONTEXT_H
-#include <SDL.h>
+#include <SDL2/SDL.h>
 
 class Context {
 	public:

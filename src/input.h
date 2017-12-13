@@ -3,7 +3,7 @@
 #include <list>
 #include <string>
 
-#include <SDL.h>
+#include <SDL2/SDL.h>
 
 class Input {
 	public:
