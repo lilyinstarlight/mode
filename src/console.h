@@ -13,7 +13,7 @@ class Console : public Drawable {
 		Console();
 		Console(const Console & console);
 
-		virtual ~Console() {}
+		virtual ~Console();
 
 		const Console & operator=(const Console & console) = delete;
 
@@ -36,6 +36,8 @@ class Console : public Drawable {
 		bool is_open() const { return opened; }
 
 	private:
+		Script * script;
+
 		bool opened;
 		std::string command;
 		std::string result;

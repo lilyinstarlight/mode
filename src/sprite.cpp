@@ -1,5 +1,6 @@
 #include <SDL2/SDL2_rotozoom.h>
 
+#include "engine.h"
 #include "imagefactory.h"
 #include "spec.h"
 #include "util.h"
@@ -254,5 +255,6 @@ void Sprite::send(const std::string & sig, Sprite & sprite) {
 }
 
 void Sprite::inject() {
-	// TODO: pull up script of object script in HUD
+	// pull up editor for script
+	Engine::get_instance().get_editor().open(*script);
 }

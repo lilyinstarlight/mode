@@ -9,7 +9,7 @@ Engine & Engine::get_instance() {
 	return engine;
 }
 
-Engine::Engine() : loaded("game"), world(nullptr), console(nullptr), editor(nullptr), viewport(nullptr), hud(nullptr), state(STOPPED) {}
+Engine::Engine() : loaded("game"), world(nullptr), viewport(nullptr), hud(nullptr), console(nullptr), editor(nullptr), state(STOPPED) {}
 
 void Engine::load(const std::string & w) {
 	loaded = w;

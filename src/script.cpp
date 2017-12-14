@@ -33,14 +33,22 @@ void Script::load() {
 }
 
 void Script::set_script(const std::string & s) {
-	// refresh state
-	lua = sol::state();
+	std::string old = script;
 
-	// set new script
-	script = s;
+	try {
+		// refresh state
+		lua = sol::state();
 
-	// reload
-	load();
+		// set new script
+		script = s;
+
+		// reload
+		load();
+	}
+	catch (std::runtime_error & err) {
+		std::string str = err.what();
+		result = "> lua error" + str.substr(str.rfind(":"));
+	}
 }
 
 void Script::add_script(const std::string & s) {

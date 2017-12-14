@@ -32,6 +32,10 @@ class Engine {
 		Viewport & get_viewport()             { return *viewport; } // caller can modify viewport
 		const HUD & get_hud()           const { return *hud;      }
 		HUD & get_hud()                       { return *hud;      } // caller can modify hud
+		const Console & get_console()   const { return *console;  }
+		Console & get_console()               { return *console;  } // caller can modify console
+		const Editor & get_editor()     const { return *editor;   }
+		Editor & get_editor()                 { return *editor;   } // caller can modify editor
 
 		State get_state() const { return state; }
 
@@ -52,10 +56,10 @@ class Engine {
 		std::string loaded;
 
 		World * world;
-		Console * console;
-		Editor * editor;
 		Viewport * viewport;
 		HUD * hud;
+		Console * console;
+		Editor * editor;
 
 		State state;
 };

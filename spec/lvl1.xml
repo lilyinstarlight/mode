@@ -25,19 +25,38 @@
 
 	<console>
 		<box>
-			<r>128</r>
-			<g>128</g>
-			<b>128</b>
-			<a>128</a>
+			<r>20</r>
+			<g>20</g>
+			<b>20</b>
+			<a>200</a>
 		</box>
 
 		<text>
-			<r>255</r>
+			<r>0</r>
 			<g>255</g>
-			<b>255</b>
+			<b>0</b>
 			<a>255</a>
 		</text>
 	</console>
+
+	<editor>
+		<columns>40</columns>
+		<rows>30</rows>
+
+		<box>
+			<r>20</r>
+			<g>20</g>
+			<b>20</b>
+			<a>200</a>
+		</box>
+
+		<text>
+			<r>0</r>
+			<g>255</g>
+			<b>0</b>
+			<a>255</a>
+		</text>
+	</editor>
 
 	<hud>
 		<type>hud</type>

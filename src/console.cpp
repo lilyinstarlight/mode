@@ -5,9 +5,14 @@
 
 #include "console.h"
 
-Console::Console() : Drawable("console", "console", Vector2f(0, 0), 0, Vector2f(0, 0), 1, 9003), opened(false), command(""), result(""), surface(nullptr), padding_bottom(4), padding_left(5), padding_font(2) {}
+Console::Console() : Drawable("console", "console", Vector2f(0, 0), 0, Vector2f(0, 0), 1, 9003), script(nullptr), opened(false), command(""), result(""), surface(nullptr), padding_bottom(4), padding_left(5), padding_font(2) {}
 
-Console::Console(const Console & console) : Drawable(console), opened(console.opened), command(console.command), result(console.result), surface(nullptr), padding_bottom(console.padding_bottom), padding_left(console.padding_left), padding_font(console.padding_font) {}
+Console::Console(const Console & console) : Drawable(console), script(console.script), opened(console.opened), command(console.command), result(console.result), surface(nullptr), padding_bottom(console.padding_bottom), padding_left(console.padding_left), padding_font(console.padding_font) {}
+
+Console::~Console() {
+	if (script)
+		delete script;
+}
 
 void Console::dispatch(const SDL_Event & event) {
 	if (opened) {
@@ -15,6 +20,12 @@ void Console::dispatch(const SDL_Event & event) {
 		if (!Input::get_instance().check("console")) {
 			Input::get_instance().grab("console");
 			SDL_StartTextInput();
+
+			if (script)
+				delete script;
+
+			script = new Script();
+			script->load();
 		}
 
 		if (event.type == SDL_KEYDOWN) {
@@ -31,14 +42,17 @@ void Console::dispatch(const SDL_Event & event) {
 			else if (event.key.keysym.sym == SDLK_RETURN) {
 				if (result.empty()) {
 					try {
-						Script script;
-						script.load();
-						script.add_script(command);
-						result = script.get_result();
+						script->add_script(command);
+						result = script->get_result();
 					}
 					catch (std::runtime_error & err) {
 						std::string str = err.what();
 						result = "> lua error" + str.substr(str.rfind(":"));
+
+						delete script;
+
+						script = new Script();
+						script->load();
 					}
 
 					command.clear();
@@ -48,7 +62,7 @@ void Console::dispatch(const SDL_Event & event) {
 				}
 			}
 		}
-		else if (event.type == SDL_TEXTINPUT) {
+		else if (event.type == SDL_TEXTINPUT && std::string(event.text.text) != "`") {
 			// record text
 			command += event.text.text;
 		}
@@ -61,6 +75,11 @@ void Console::dispatch(const SDL_Event & event) {
 
 			command.clear();
 			result.clear();
+
+			if (script)
+				delete script;
+
+			script = nullptr;
 		}
 	}
 }
@@ -77,7 +96,7 @@ void Console::draw(const Viewport & viewport) const {
 		// draw text
 		SDL_Color color = {static_cast<Uint8>(Spec::get_instance().get_int("console/text/r")), static_cast<Uint8>(Spec::get_instance().get_int("console/text/g")), static_cast<Uint8>(Spec::get_instance().get_int("console/text/b")), 255};
 		if (result.empty())
-			Text::get_instance().write(Context::get_instance().get_renderer(), "> " + command + "█", rect.x + padding_font, rect.y + padding_font, color);
+			Text::get_instance().write(Context::get_instance().get_renderer(), "> " + command + "_", rect.x + padding_font, rect.y + padding_font, color);
 		else
 			Text::get_instance().write(Context::get_instance().get_renderer(), result, rect.x + padding_font, rect.y + padding_font, color);
 	}

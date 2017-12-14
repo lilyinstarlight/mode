@@ -12,8 +12,6 @@
 
 class Editor : public Drawable {
 	public:
-		static constexpr int LINE_LENGTH = 80;
-
 		Editor();
 		Editor(const Editor & editor);
 
@@ -41,8 +39,8 @@ class Editor : public Drawable {
 		void reload();
 
 	private:
-
 		Script * script;
+		std::string result;
 
 		std::string view;
 		std::deque<std::deque<char>> buffers;
@@ -50,6 +48,9 @@ class Editor : public Drawable {
 		std::deque<char>::iterator pos;
 
 		SDL_Surface * surface;
+
+		int columns;
+		int rows;
 
 		int padding_top;
 		int padding_left;
