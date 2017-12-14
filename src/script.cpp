@@ -32,6 +32,22 @@ void Script::load() {
 	result = lua.script(script);
 }
 
+void Script::set_script(const std::string & s) {
+	// refresh state
+	lua = sol::state();
+
+	// set new script
+	script = s;
+
+	// reload
+	load();
+}
+
+void Script::add_script(const std::string & s) {
+	script += "\n" + s;
+	result = lua.script(s);
+}
+
 void Script::load_api() {
 	lua.open_libraries(sol::lib::base, sol::lib::math);
 

@@ -4,8 +4,10 @@
 
 #include <SDL2/SDL.h>
 
+#include "console.h"
 #include "context.h"
 #include "clock.h"
+#include "editor.h"
 #include "hud.h"
 #include "player.h"
 #include "viewport.h"
@@ -50,6 +52,8 @@ class Engine {
 		std::string loaded;
 
 		World * world;
+		Console * console;
+		Editor * editor;
 		Viewport * viewport;
 		HUD * hud;
 

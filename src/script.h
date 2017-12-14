@@ -22,8 +22,10 @@ class Script {
 
 		void load();
 
-		const std::string & get_script() const { return script;                              }
-		void add_script(const std::string & s) { script += "\n" + s; result = lua.script(s); }
+		const std::string & get_script() const { return script; }
+
+		void set_script(const std::string & s);
+		void add_script(const std::string & s);
 
 		const std::string & get_result() const { return result; }
 
@@ -441,6 +443,7 @@ class Script {
 		std::string result;
 
 		sol::state lua;
+
 		Sprite & sprite;
 };
 #endif

@@ -3,7 +3,7 @@
 #include "text.h"
 #include "viewport.h"
 
-#include "hud.h"
+#include "dialog.h"
 
 Dialog::Dialog(const std::string & name, const std::string & text, bool top, bool open) : Drawable(name,
 			Spec::get_instance().get_str(name + "/type"),

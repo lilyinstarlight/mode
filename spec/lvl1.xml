@@ -10,6 +10,8 @@
 	<world>
 		<width>1600</width>
 		<height>600</height>
+
+		<collision>rectangular</collision>
 	</world>
 
 	<font>
@@ -81,9 +83,6 @@
 |                        |
 |        FPS: {fps}      |
 |        HP:  {hp}       |
-|                        |
-|    G. Free: {free}     |
-|    G. Used: {used}     |
 +------------------------+
 		</str>
 	</hud>

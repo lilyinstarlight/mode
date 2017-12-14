@@ -54,7 +54,7 @@ Vector2f Vector2f::operator*(float scale) const {
 }
 
 Vector2f Vector2f::operator/(float scale) const {
-	if (scale < EPSILON && scale > -EPSILON)
+	if (scale < Vector2f::EPSILON && scale > -Vector2f::EPSILON)
 		throw std::runtime_error("Division by near zero");
 
 	return Vector2f(x/scale, y/scale);
@@ -80,7 +80,7 @@ const Vector2f & Vector2f::operator*=(float scale) {
 }
 
 const Vector2f & Vector2f::operator/=(float scale) {
-	if (scale < EPSILON && scale > -EPSILON)
+	if (scale < Vector2f::EPSILON && scale > -Vector2f::EPSILON)
 		throw std::runtime_error("Division by near zero");
 
 	x /= scale;

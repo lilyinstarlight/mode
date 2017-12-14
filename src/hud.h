@@ -7,7 +7,6 @@
 class HUD : public Dialog {
 	public:
 		HUD();
-
 		HUD(const HUD & hud);
 
 		virtual ~HUD() {}

@@ -1,21 +1,25 @@
-#ifndef CONSOLE_H
-#define CONSOLE_H
+#ifndef EDITOR_H
+#define EDITOR_H
+#include <deque>
 #include <string>
 
 #include <SDL2/SDL.h>
 
 #include "drawable.h"
 #include "input.h"
+#include "script.h"
 #include "viewport.h"
 
-class Console : public Drawable {
+class Editor : public Drawable {
 	public:
-		Console();
-		Console(const Console & console);
+		static constexpr int LINE_LENGTH = 80;
 
-		virtual ~Console() {}
+		Editor();
+		Editor(const Editor & editor);
 
-		const Console & operator=(const Console & console) = delete;
+		virtual ~Editor() {}
+
+		const Editor & operator=(const Editor & editor) = delete;
 
 		virtual void load() {}
 
@@ -29,20 +33,25 @@ class Console : public Drawable {
 		virtual const SDL_Surface * get_surface() const { return surface; };
 		virtual const Image * get_image() const { return nullptr; };
 
-		void open()  { opened = true;  }
-		void close() { opened = false; }
-		void toggle() { opened = !opened; }
+		void open(Script & s);
+		void close();
 
-		bool is_open() const { return opened; }
+		bool is_open() const { return script; }
+
+		void reload();
 
 	private:
-		bool opened;
-		std::string command;
-		std::string result;
+
+		Script * script;
+
+		std::string view;
+		std::deque<std::deque<char>> buffers;
+		std::deque<std::deque<char>>::iterator buffer;
+		std::deque<char>::iterator pos;
 
 		SDL_Surface * surface;
 
-		int padding_bottom;
+		int padding_top;
 		int padding_left;
 		int padding_font;
 };

@@ -9,7 +9,6 @@
 class Dialog : public Drawable {
 	public:
 		Dialog(const std::string & name, const std::string & text = "", bool top = false, bool open = true);
-
 		Dialog(const Dialog & dialog);
 
 		virtual ~Dialog() {}

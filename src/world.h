@@ -2,7 +2,9 @@
 #define WORLD_H
 #include <set>
 #include <unordered_set>
+#include <utility>
 
+#include "collision.h"
 #include "drawable.h"
 #include "player.h"
 
@@ -36,6 +38,8 @@ class World {
 		void update(unsigned int ticks);
 		void draw(const Viewport & viewport) const;
 
+		std::pair<Drawable *, Vector2f> cast(Vector2f point, float direction);
+
 		const Player & get_player() const { return *player; }
 		Player & get_player()             { return *player; } // caller can modify player
 
@@ -47,5 +51,12 @@ class World {
 		Player * player;
 		std::unordered_set<Drawable *> owning;
 		std::set<Drawable *, DrawablePointerCompare> drawables; // compare points to keep drawables unique and ordered
+
+		NoneCollisionStrategy none_strategy;
+		RectangularCollisionStrategy rectangular_strategy;
+		CircularCollisionStrategy circular_strategy;
+		PixelCollisionStrategy pixel_strategy;
+
+		CollisionStrategy * collision_strategy;
 };
 #endif
