@@ -154,12 +154,18 @@ void Sprite::update(unsigned int ticks, World & world) {
 }
 
 void Sprite::revive() {
+	if (alive)
+		return;
+
 	alive = true;
 	clear_state();
 	push_state("revive");
 }
 
 void Sprite::kill() {
+	if (!alive)
+		return;
+
 	alive = false;
 	clear_state();
 	push_state("kill");
@@ -215,6 +221,9 @@ std::string Sprite::peek_state() const {
 }
 
 std::string Sprite::pop_state() {
+	if (state.back().first == "revive" || state.back().first == "kill")
+		return state.back().first;
+
 	const std::string & s = state.back().first;
 	state.pop_back();
 
@@ -222,11 +231,17 @@ std::string Sprite::pop_state() {
 }
 
 void Sprite::clear_state() {
+	if (state.back().first == "revive" || state.back().first == "kill")
+		return;
+
 	while (state.size() > 1)
 		state.pop_back();
 }
 
 void Sprite::push_state(const std::string & s) {
+	if (state.back().first == "revive" || state.back().first == "kill")
+		return;
+
 	if (s == state.back().first)
 		return;
 

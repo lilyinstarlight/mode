@@ -9,9 +9,9 @@
 
 #include "editor.h"
 
-Editor::Editor() : Drawable("editor", "editor", Vector2f(0, 0), 0, Vector2f(0, 0), 1, 9002), script(nullptr), result(""), view(""), buffers{std::deque<char>{}}, buffer(buffers.begin()), pos(buffer->begin()), surface(nullptr), columns(Spec::get_instance().get_int("editor/columns")), rows(Spec::get_instance().get_int("editor/rows")), padding_top(4), padding_left(5), padding_font(2) {}
+Editor::Editor() : Drawable("editor", "editor", Vector2f(0, 0), 0, Vector2f(0, 0), 1, 9002), script(nullptr), result(""), view(""), buffers{std::deque<char>{}}, buffer(buffers.begin()), pos(buffer->begin()), surface(nullptr), columns(Spec::get_instance().get_int("editor/columns")), rows(Spec::get_instance().get_int("editor/rows")), top(0), padding_top(4), padding_left(5), padding_font(2) {}
 
-Editor::Editor(const Editor & editor) : Drawable(editor), script(editor.script), result(editor.result), view(editor.view), buffers(editor.buffers), buffer(editor.buffer), pos(editor.pos), surface(nullptr), columns(editor.columns), rows(editor.rows), padding_top(4), padding_left(5), padding_font(2) {}
+Editor::Editor(const Editor & editor) : Drawable(editor), script(editor.script), result(editor.result), view(editor.view), buffers(editor.buffers), buffer(editor.buffer), pos(editor.pos), surface(nullptr), columns(editor.columns), rows(editor.rows), top(editor.top), padding_top(4), padding_left(5), padding_font(2) {}
 
 void Editor::dispatch(const SDL_Event & event) {
 	if (script) {
@@ -23,14 +23,25 @@ void Editor::dispatch(const SDL_Event & event) {
 
 		if (event.type == SDL_KEYDOWN) {
 			if (event.key.keysym.sym == SDLK_BACKSPACE) {
-				// backspace
+				if (pos == buffer->begin()) {
+					if (buffer != buffers.begin()) {
+						pos = (buffer - 1)->insert((buffer - 1)->end(), buffer->begin(), buffer->end());
+						buffer = buffers.erase(buffer) - 1;
+					}
+				}
+				else {
+					pos = buffer->erase(pos - 1);
+				}
 			}
 			else if (event.key.keysym.sym == SDLK_RETURN) {
 				std::deque<char> line(pos, buffer->end());
 				buffer->erase(pos, buffer->end());
 
-				buffer = buffers.insert(buffer, line);
+				buffer = buffers.insert(buffer + 1, line);
 				pos = buffer->begin();
+			}
+			else if (event.key.keysym.sym == SDLK_TAB) {
+				pos = buffer->insert(pos, '\t') + 1;
 			}
 			else if (event.key.keysym.sym == SDLK_LEFT) {
 				if (pos != buffer->begin())
@@ -48,7 +59,7 @@ void Editor::dispatch(const SDL_Event & event) {
 					++pos;
 			}
 			else if (event.key.keysym.sym == SDLK_DOWN) {
-				if (buffer != buffers.end()) {
+				if (buffer != buffers.end() - 1) {
 					int p = pos - buffer->begin();
 					++buffer;
 					pos = buffer->begin() + Util::min(p, buffer->size());
@@ -60,7 +71,9 @@ void Editor::dispatch(const SDL_Event & event) {
 		else if (event.type == SDL_TEXTINPUT) {
 			// record text
 			std::string text(event.text.text);
-			pos = buffer->insert(pos, text.begin(), text.end());
+			pos = buffer->insert(pos, text.begin(), text.end()) + text.length();
+
+			reload();
 		}
 	}
 	else {
@@ -83,7 +96,7 @@ void Editor::draw(const Viewport & viewport) const {
 
 		// draw text
 		SDL_Color color = {static_cast<Uint8>(Spec::get_instance().get_int("editor/text/r")), static_cast<Uint8>(Spec::get_instance().get_int("editor/text/g")), static_cast<Uint8>(Spec::get_instance().get_int("editor/text/b")), 255};
-		Text::get_instance().write(Context::get_instance().get_renderer(), view, rect.x + padding_font, rect.y + padding_font, color);
+		Text::get_instance().write(Context::get_instance().get_renderer(), view, rect.x + padding_font, rect.y + padding_font, 0, color);
 	}
 }
 
@@ -143,6 +156,8 @@ void Editor::close() {
 	catch (std::runtime_error & err) {
 		std::string str = err.what();
 		result = "> lua error" + str.substr(str.rfind(":"));
+
+		return;
 	}
 
 	script = nullptr;
@@ -153,38 +168,53 @@ void Editor::close() {
 void Editor::reload() {
 	std::stringstream ss;
 
-	std::deque<std::deque<char>>::iterator buf = buffers.begin();
+	top = Util::max(buffer - buffers.begin() - rows, 0);
+
+	std::deque<std::deque<char>>::iterator buf = buffers.begin() + top;
 	std::deque<char>::iterator iter = buf->begin();
-	int cols = 0;
+
+	int col = 0;
+	int row = 0;
 
 	while (buf != buffers.end()) {
-		if (iter == buf->end()) {
-			if (cols == 0)
-				ss << " ";
-			else
-				cols = 0;
+		if (row > rows)
+			break;
 
-			ss << "\n";
+		if (iter == buf->end()) {
+			if (iter == pos)
+				ss << "_\n";
+			else
+				ss << " \n";
+
+			col = 0;
+			++row;
 
 			++buf;
 			iter = buf->begin();
 			continue;
 		}
 		else {
-			++cols;
+			++col;
 		}
 
-		if (cols > columns) {
+		if (col > columns) {
 			ss << "\n▶";
-			cols = 0;
+			col = 0;
+			++row;
 		}
 
-		if (iter == pos)
-			ss << "_";
-		else if (*iter == '\t')
-			ss << "  ";
-		else
-			ss << *iter;
+		if (*iter == '\t') {
+			if (iter == pos)
+				ss << "_ ";
+			else
+				ss << "  ";
+		}
+		else {
+			if (iter == pos)
+				ss << "_";
+			else
+				ss << *iter;
+		}
 
 		++iter;
 	}

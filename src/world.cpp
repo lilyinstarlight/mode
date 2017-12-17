@@ -7,28 +7,10 @@
 
 #include "world.h"
 
-World::World() : width(Spec::get_instance().get_int("world/width")), height(Spec::get_instance().get_int("world/height")),
+World::World() : width(Spec::get_instance().get_int("world/width")), height(Spec::get_instance().get_int("world/height")), far(Spec::get_instance().get_float("world/far")),
 		player(nullptr),
 		owning{},
-		drawables{},
-		none_strategy(),
-		rectangular_strategy(),
-		circular_strategy(),
-		pixel_strategy(),
-		collision_strategy(&rectangular_strategy) {
-	// set collision strategy
-	std::string collision = Spec::get_instance().get_str("world/collision");
-	if (collision == "none")
-		collision_strategy = &none_strategy;
-	else if (collision == "rectangular")
-		collision_strategy = &rectangular_strategy;
-	else if (collision == "circular")
-		collision_strategy = &circular_strategy;
-	else if (collision == "pixel")
-		collision_strategy = &pixel_strategy;
-	else
-		throw std::runtime_error("Invalid collision strategy: " + Spec::get_instance().get_str("world/collision"));
-}
+		drawables{} {}
 
 World::~World() {
 	// free added drawables
@@ -134,5 +116,39 @@ void World::draw(const Viewport & viewport) const {
 }
 
 std::pair<Drawable *, Vector2f> World::cast(Vector2f point, float direction) {
-	return std::make_pair(*drawables.begin(), direction*point);
+	Drawable * close = nullptr;
+	Vector2f hit(point);
+	float mag = far;
+
+	for (Drawable * drawable : drawables) {
+		std::vector<Vector2f> corners{Vector2f(drawable->get_x(), drawable->get_y()), Vector2f(drawable->get_x() + drawable->get_width(), drawable->get_y()), Vector2f(drawable->get_x(), drawable->get_y() + drawable->get_height()), Vector2f(drawable->get_x() + drawable->get_width(), drawable->get_y() + drawable->get_height())};
+
+		for (Vector2f & corner : corners) {
+			Vector2f cross(cos(direction)*(corner[1] - point[1]), sin(direction)*(corner[0] - point[0]));
+
+			if (cross[0] > drawable->get_x() && cross[0] < drawable->get_x() + drawable->get_width()) {
+				Vector2f pt(cross[0], drawable->get_y());
+				float m = pt.magnitude();
+
+				if (m < mag) {
+					close = drawable;
+					hit = pt;
+					mag = m;
+				}
+			}
+
+			if (cross[1] > drawable->get_y() && cross[1] < drawable->get_y() + drawable->get_height()) {
+				Vector2f pt(drawable->get_x(), cross[1]);
+				float m = pt.magnitude();
+
+				if (m < mag) {
+					close = drawable;
+					hit = pt;
+					mag = m;
+				}
+			}
+		}
+	}
+
+	return std::make_pair(close, hit);
 }

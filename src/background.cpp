@@ -21,7 +21,7 @@ Background::Background(const std::string & name) : Drawable(name,
 	else if (tiling == "both")
 		tile = BOTH;
 	else
-		throw std::runtime_error("Invalid collision strategy: " + Spec::get_instance().get_str(get_name() + "/collision"));
+		throw std::runtime_error("Invalid tiling: " + Spec::get_instance().get_str(get_name() + "/tile"));
 }
 
 Background::Background(const Background & b) : Drawable(b), factor(b.factor), tile(b.tile), image(b.image) {}

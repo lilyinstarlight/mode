@@ -52,6 +52,8 @@ class Editor : public Drawable {
 		int columns;
 		int rows;
 
+		int top;
+
 		int padding_top;
 		int padding_left;
 		int padding_font;

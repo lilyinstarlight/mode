@@ -48,15 +48,10 @@ class World {
 	private:
 		int width, height;
 
+		float far;
+
 		Player * player;
 		std::unordered_set<Drawable *> owning;
 		std::set<Drawable *, DrawablePointerCompare> drawables; // compare points to keep drawables unique and ordered
-
-		NoneCollisionStrategy none_strategy;
-		RectangularCollisionStrategy rectangular_strategy;
-		CircularCollisionStrategy circular_strategy;
-		PixelCollisionStrategy pixel_strategy;
-
-		CollisionStrategy * collision_strategy;
 };
 #endif

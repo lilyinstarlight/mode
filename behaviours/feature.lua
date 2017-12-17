@@ -26,6 +26,11 @@ end
 
 function collide (other)
 	collided = true
+
+	if other.name == 'glider' then
+		other:kill()
+		sprite:inject()
+	end
 end
 
 player:observe()

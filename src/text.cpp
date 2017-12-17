@@ -27,8 +27,10 @@ Text::Text() : path("fonts"), font(nullptr), size(-1) {
 	throw std::runtime_error("Failed to load font");
 }
 
-void Text::write(SDL_Renderer * renderer, const std::string & text, int x, int y, SDL_Color color) const {
-    render(renderer, write(text, color), x, y);
+void Text::write(SDL_Renderer * renderer, const std::string & text, int x, int y, float rotation, SDL_Color color) const {
+    SDL_Surface * surface = write(text, color);
+    render(renderer, surface, x, y, rotation);
+    destroy(surface);
 }
 
 SDL_Surface * Text::write(const std::string & text, SDL_Color color) const {
@@ -64,16 +66,19 @@ SDL_Surface * Text::write(const std::string & text, SDL_Color color) const {
     return combined;
 }
 
-void Text::render(SDL_Renderer * renderer, SDL_Surface * text, int x, int y) const {
+void Text::render(SDL_Renderer * renderer, SDL_Surface * text, int x, int y, float rotation) const {
     // create texture of text
     SDL_Texture * texture = SDL_CreateTextureFromSurface(renderer, text);
 
     SDL_Rect dst = {x, y, text->w, text->h};
-    SDL_FreeSurface(text);
 
     // render texture
-    SDL_RenderCopy(renderer, texture, nullptr, &dst);
+    SDL_RenderCopyEx(renderer, texture, nullptr, &dst, rotation, nullptr, SDL_FLIP_NONE);
     SDL_DestroyTexture(texture);
+}
+
+void Text::destroy(SDL_Surface * text) const {
+    SDL_FreeSurface(text);
 }
 
 std::vector<std::string> Text::split(const std::string & string, char delimiter) const {

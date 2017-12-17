@@ -19,12 +19,12 @@ class Dialog : public Drawable {
 
 		virtual void dispatch(const SDL_Event &) {}
 		virtual void draw(const Viewport & viewport) const;
-		virtual void update(unsigned int, World &) {}
+		virtual void update(unsigned int, World &);
 
-		virtual int get_width() const { return 0; }
-		virtual int get_height() const { return 0; }
+		virtual int get_width() const { return size.w; }
+		virtual int get_height() const { return size.h; }
 
-		virtual const SDL_Surface * get_surface() const { return nullptr; }
+		virtual const SDL_Surface * get_surface() const { return text; }
 		virtual const Image * get_image() const { return nullptr; }
 
 		const std::string & get_string() const { return str; }
@@ -46,5 +46,8 @@ class Dialog : public Drawable {
 		std::string str;
 		SDL_Color color;
 		SDL_Color box;
+
+		SDL_Surface * text;
+		SDL_Rect size;
 };
 #endif

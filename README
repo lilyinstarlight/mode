@@ -6,21 +6,20 @@ Project no: 6
 Project due date: 2017-12-13
 Project description: Pizzazz
 
-The easiest part of this project: Stealing the sprites from a game I am currently developing was pretty easy.
-Problems that I had in completing this project: I have this issue where I keep implementing features faster than I can use them in the game. There's a lot of code there that while it works, is unused. I'll definitely be using them next time around when I have code injection for sprites complete.
+The easiest part of this project: 
+Problems that I had in completing this project: 
 
 Requirements:
 * SDL2{,-image,-mixer,-ttf,-gfx}
 * expat
 
 Issues:
-* sprite death needs to be fixed
 * death dialog that shows engine-level commands should be shown on player death
 * death/birth animations need to be added for all sprites
 * width/height aren't calculated right for rotated sprites (I think this is an SDL2_gfx issue)
+* need to test physics raycasting
 * need to add platform class/drawable
 * need to add menu world
-* need to add code injection editor class/drawable to modify sprites in game
 
 Extras:
 * sound
@@ -32,8 +31,8 @@ Extras:
 * background tiling
 * dialog abstraction
 * physics raycasting
-* platforms
-* menu
+* platforms (soon)
+* menu (soon)
 * code injection
 
 Credits:

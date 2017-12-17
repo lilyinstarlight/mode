@@ -26,6 +26,8 @@ void HUD::update(unsigned int ticks, World & world) {
 	copy = replace(copy, "{used}", std::to_string(world.get_player().get_pool().get_used().size()));
 
 	Dialog::set_string(copy);
+
+	Dialog::update(ticks, world);
 }
 
 std::string HUD::replace(const std::string & text, const std::string & find, const std::string & replace) {

@@ -43,10 +43,13 @@ void Engine::run() {
 	Context::get_instance().reload();
 	Sound::get_instance().reload();
 
-	editor = new Editor();
-	console = new Console();
+	if (Spec::get_instance().check("editor/box/r"))
+		editor = new Editor();
+	if (Spec::get_instance().check("console/box/r"))
+		console = new Console();
 
-	hud = new HUD();
+	if (Spec::get_instance().check("hud/type"))
+		hud = new HUD();
 
 	world = new World();
 	viewport = new Viewport();
@@ -70,14 +73,14 @@ void Engine::run() {
 				break;
 			}
 			else if (event.type == SDL_KEYDOWN && event.key.repeat == 0) {
-				if (editor->is_open()) {
+				if (editor && editor->is_open()) {
 					if (event.key.keysym.sym == SDLK_ESCAPE) {
 						editor->close();
 					}
 				}
 				else {
 					if (event.key.keysym.sym == SDLK_ESCAPE) {
-						if (console->is_open()) {
+						if (console && console->is_open()) {
 							console->close();
 						}
 						else {
@@ -90,23 +93,27 @@ void Engine::run() {
 						// (un)pause clock
 						if (Clock::get_instance().is_running()) {
 							Clock::get_instance().pause();
-							hud->open();
+							if (hud)
+								hud->open();
 						}
 						else {
 							Clock::get_instance().start();
-							hud->close();
+							if (hud)
+								hud->close();
 						}
 					}
 					else if (event.key.keysym.sym == SDLK_F1) {
 						// toggle hud
-						hud->toggle();
+						if (hud)
+							hud->toggle();
 					}
 					else if (event.key.keysym.sym == SDLK_BACKQUOTE) {
 						// toggle console
-						console->toggle();
+						if (console)
+							console->toggle();
 					}
 					else if (event.key.keysym.sym == SDLK_BACKSPACE) {
-						if (!console->is_open()) {
+						if (!(console && console->is_open())) {
 							// restart level
 							restart();
 						}
@@ -131,10 +138,13 @@ void Engine::run() {
 	delete viewport;
 	delete world;
 
-	delete hud;
+	if (hud)
+		delete hud;
 
-	delete console;
-	delete editor;
+	if (console)
+		delete console;
+	if (editor)
+		delete editor;
 }
 
 void Engine::dispatch(const SDL_Event & event) {
@@ -142,22 +152,28 @@ void Engine::dispatch(const SDL_Event & event) {
 	if (Clock::get_instance().is_running())
 		world->dispatch(event);
 
-	// update hud and viewport
-	hud->dispatch(event);
+	// update hud and stuff
+	if (hud)
+		hud->dispatch(event);
 	viewport->dispatch(event);
-	editor->dispatch(event);
-	console->dispatch(event);
+	if (editor)
+		editor->dispatch(event);
+	if (console)
+		console->dispatch(event);
 }
 
 void Engine::draw() const {
 	// draw world
 	world->draw(*viewport);
 
-	// draw hud and viewport
-	hud->draw(*viewport);
+	// draw hud and stuff
+	if (hud)
+		hud->draw(*viewport);
 	viewport->draw();
-	editor->draw(*viewport);
-	console->draw(*viewport);
+	if (editor)
+		editor->draw(*viewport);
+	if (console)
+		console->draw(*viewport);
 
 	// swap renderer buffers
 	SDL_RenderPresent(Context::get_instance().get_renderer());
@@ -169,8 +185,11 @@ void Engine::update(unsigned int ticks) {
 		world->update(ticks);
 
 	// update hud and viewport
-	hud->update(ticks, *world);
+	if (hud)
+		hud->update(ticks, *world);
 	viewport->update(ticks, *world);
-	editor->update(ticks, *world);
-	console->update(ticks, *world);
+	if (editor)
+		editor->update(ticks, *world);
+	if (console)
+		console->update(ticks, *world);
 }
