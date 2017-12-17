@@ -106,7 +106,7 @@
 		</str>
 	</hud>
 
-	<collision>
+	<win>
 		<type>dialog</type>
 
 		<position>
@@ -131,11 +131,11 @@
 		</box>
 
 		<str>
-+---------------------+
-| Collision Detected! |
-+---------------------+
++----------+
+| You Win! |
++----------+
 		</str>
-	</collision>
+	</win>
 
 	<sky>
 		<type>background</type>

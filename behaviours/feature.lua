@@ -1,19 +1,11 @@
-collided = false
-collision = Dialog.new("collision", "Collision detected!", true, false)
 center = sprite.pos.y
+
+win = Dialog.new("win", "", true, false)
 
 function dispatch (event)
 end
 
 function update (ticks)
-	if collided then
-		collision:open()
-	else
-		collision:close()
-	end
-
-	collided = false
-
 	sprite.pos.y = 20*math.sin(clock.ticks/500) + center
 end
 
@@ -27,11 +19,13 @@ end
 function collide (other)
 	collided = true
 
-	if other.name == 'glider' then
+	if other.name == 'player' then
+		other:kill()
+	elseif other.name == 'glider' then
 		other:kill()
 		sprite:inject()
 	end
 end
 
 player:observe()
-world:add_dialog(collision)
+world:add_dialog(win)
