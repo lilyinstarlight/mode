@@ -6,19 +6,21 @@ Project no: 6
 Project due date: 2017-12-13
 Project description: Pizzazz
 
-The easiest part of this project: 
-Problems that I had in completing this project: 
+The easiest part of this project: I quite enjoyed coming up with and testing out cool new things to add and tweak in the game.
+Problems that I had in completing this project: I've had too many personal problems to put in all of the work I would like for this. That said, I still put a ton of work into it with regard to the scripting and in-game editor.
 
 Requirements:
 * SDL2{,-image,-mixer,-ttf,-gfx}
 * expat
 
 Issues:
+* width/height aren't calculated right for rotated sprites (I think this is an SDL2_gfx issue)
 * death dialog that shows engine-level commands should be shown on player death
 * death/birth animations need to be added for all sprites
-* width/height aren't calculated right for rotated sprites (I think this is an SDL2_gfx issue)
+* death/birth sounds need to be added for all sprites
+* first level with defined win goal
 * need to test physics raycasting
-* need to add platform class/drawable
+* need to test platforms
 * need to add menu world
 
 Extras:
@@ -30,13 +32,14 @@ Extras:
 * sprite indexing
 * background tiling
 * dialog abstraction
-* physics raycasting
-* platforms (soon)
-* menu (soon)
 * code injection
+* physics raycasting (unused)
+* platforms (unused)
+* menu (soon)
 
 Credits:
 * sprites by Ben Golden taken from our game PyLink - https://github.com/ProjectPyLink/PyLink
+* shoot sound by LittleRobotSoundFactory - https://freesound.org/people/LittleRobotSoundFactory/sounds/270343/
 * the creators of Lua - https://www.lua.org/authors.html
 * the creators of Sol - https://github.com/ThePhD/sol2/graphs/contributors
 * the fabulous Dr. Brian Malloy

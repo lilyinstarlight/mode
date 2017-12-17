@@ -40,8 +40,8 @@
 	</console>
 
 	<editor>
-		<columns>40</columns>
-		<rows>30</rows>
+		<columns>48</columns>
+		<rows>33</rows>
 
 		<box>
 			<r>20</r>
@@ -372,6 +372,10 @@
 		</sheets>
 
 		<collision>pixel</collision>
+
+		<sound>
+			<revive>shoot</revive>
+		</sound>
 	</glider>
 
 	<player>

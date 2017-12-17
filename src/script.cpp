@@ -7,6 +7,7 @@
 #include "hud.h"
 #include "player.h"
 #include "projectile.h"
+#include "sound.h"
 #include "spec.h"
 #include "sprite.h"
 #include "vector2f.h"
@@ -234,6 +235,18 @@ void Script::load_api() {
 
 	// set clock
 	lua["clock"] = &Clock::get_instance();
+
+	// create Clock data type
+	lua.new_usertype<Sound>("Clock",
+			"new", sol::no_constructor,
+
+			"active", sol::property(&Sound::check),
+
+			"play", &Sound::play
+	);
+
+	// set sound
+	lua["sound"] = &Sound::get_instance();
 
 	// create Spec data type
 	lua.new_usertype<Dialog>("Dialog",

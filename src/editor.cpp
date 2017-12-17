@@ -168,7 +168,7 @@ void Editor::close() {
 void Editor::reload() {
 	std::stringstream ss;
 
-	top = Util::max(buffer - buffers.begin() - rows, 0);
+	top = Util::min(Util::max(buffer - buffers.begin() - rows/2, 0), buffers.size() - rows);
 
 	std::deque<std::deque<char>>::iterator buf = buffers.begin() + top;
 	std::deque<char>::iterator iter = buf->begin();

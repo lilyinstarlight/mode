@@ -2,6 +2,7 @@
 
 #include "engine.h"
 #include "imagefactory.h"
+#include "sound.h"
 #include "spec.h"
 #include "util.h"
 #include "world.h"
@@ -160,6 +161,9 @@ void Sprite::revive() {
 	alive = true;
 	clear_state();
 	push_state("revive");
+
+	if (Spec::get_instance().check(get_name() + "/sound/revive"))
+		Sound::get_instance().play(Spec::get_instance().get_str(get_name() + "/sound/revive"));
 }
 
 void Sprite::kill() {
@@ -169,6 +173,9 @@ void Sprite::kill() {
 	alive = false;
 	clear_state();
 	push_state("kill");
+
+	if (Spec::get_instance().check(get_name() + "/sound/kill"))
+		Sound::get_instance().play(Spec::get_instance().get_str(get_name() + "/sound/kill"));
 }
 
 const Image * Sprite::get_image() const {
