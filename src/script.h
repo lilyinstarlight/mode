@@ -233,7 +233,7 @@ class Script {
 
 		class WrapEventType {
 			public:
-				WrapEventType(sol::state & l) : lua(l) {}
+				WrapEventType(sol::state &) {}
 
 				std::string operator()(const SDL_Event & event) {
 					switch (event.type) {
@@ -256,9 +256,6 @@ class Script {
 							return "other";
 					}
 				}
-
-			private:
-				sol::state & lua;
 		};
 
 		class WrapEventValue {
