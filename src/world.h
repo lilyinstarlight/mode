@@ -53,5 +53,7 @@ class World {
 		Player * player;
 		std::unordered_set<Drawable *> owning;
 		std::set<Drawable *, DrawablePointerCompare> drawables; // compare points to keep drawables unique and ordered
+		std::unordered_set<Drawable *> destroyables;
+		std::unordered_set<Drawable *> removables;
 };
 #endif

@@ -46,10 +46,7 @@ void World::init() {
 }
 
 void World::destroy(Drawable * drawable) {
-	drawables.erase(drawable);
-	owning.erase(drawable);
-
-	delete drawable;
+	destroyables.insert(drawable);
 }
 
 void World::add(Drawable & drawable) {
@@ -57,7 +54,7 @@ void World::add(Drawable & drawable) {
 }
 
 void World::remove(Drawable & drawable) {
-	drawables.erase(&drawable);
+	removables.insert(&drawable);
 }
 
 bool World::check(const Drawable * drawable) const {
@@ -107,6 +104,23 @@ void World::update(unsigned int ticks) {
 
 		drawable->update(ticks, *this);
 	}
+
+	// remove deferred drawables
+	for (Drawable * drawable : removables) {
+		drawables.erase(drawable);
+	}
+
+	removables.clear();
+
+	// destroy deferred drawables
+	for (Drawable * drawable : destroyables) {
+		drawables.erase(drawable);
+		owning.erase(drawable);
+
+		delete drawable;
+	}
+
+	destroyables.clear();
 }
 
 void World::draw(const Viewport & viewport) const {
