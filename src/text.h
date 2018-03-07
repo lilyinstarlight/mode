@@ -15,6 +15,8 @@ class Text {
 		Text(const Text &) = delete;
 		const Text & operator=(const Text &) = delete;
 
+		void reload();
+
 		void write(SDL_Renderer * renderer, const std::string & text, int x, int y, float rotation, SDL_Color color) const;
 
 		SDL_Surface * write(const std::string & text, SDL_Color color) const;

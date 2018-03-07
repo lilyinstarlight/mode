@@ -18,6 +18,12 @@ Text::Text() : path("fonts"), font(nullptr), size(-1) {
     // init TTF
     if (TTF_Init() < 0)
 	throw std::runtime_error("Failed to initialize TTF");
+}
+
+void Text::reload() {
+    // close open font
+    if (font)
+	TTF_CloseFont(font);
 
     // open font
     font = TTF_OpenFont((path + "/" + Spec::get_instance().get_str("font/file")).c_str(), Spec::get_instance().get_int("font/size"));

@@ -42,6 +42,7 @@ void Engine::run() {
 	Spec::get_instance().load(loaded);
 	Context::get_instance().reload();
 	Sound::get_instance().reload();
+	Text::get_instance().reload();
 
 	if (Spec::get_instance().check("editor/box/r"))
 		editor = new Editor();
@@ -136,15 +137,24 @@ void Engine::run() {
 	Clock::get_instance().stop();
 
 	delete viewport;
+	viewport = nullptr;
 	delete world;
+	world = nullptr;
 
-	if (hud)
+	if (hud) {
 		delete hud;
+		editor = nullptr;
+	}
 
-	if (console)
+	if (console) {
 		delete console;
-	if (editor)
+		editor = nullptr;
+	}
+
+	if (editor) {
 		delete editor;
+		editor = nullptr;
+	}
 }
 
 void Engine::dispatch(const SDL_Event & event) {

@@ -15,7 +15,7 @@ Sound::~Sound() {
 }
 
 Sound::Sound() : path("sounds"), active(), active_channel(-1), chunks{}, fade(1000) {
-	// open font
+	// open mixer
 	if (Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 1024) < 0)
 		throw std::runtime_error("Failed to initialize mixer");
 }
