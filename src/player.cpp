@@ -6,7 +6,7 @@
 
 #include "player.h"
 
-Player::Player() : Sprite("player"), gliders("glider", Spec::get_instance().get_int("player/glider/initial")), hp(Spec::get_instance().get_int("player/hp")), shot(false) {
+Player::Player() : Sprite("player"), shooting(Spec::get_instance().check("player/projectile/name")), projectiles(shooting ? Spec::get_instance().get_str("player/projectile/name") : "", shooting ? Spec::get_instance().get_int("player/projectile/initial") : 0), hp(Spec::get_instance().check("player/hp") ? Spec::get_instance().get_int("player/hp") : 1), shot(false) {
 	Input::get_instance().grab("player");
 }
 
@@ -18,31 +18,32 @@ void Player::update(unsigned int ticks, World & world) {
 	Sprite::update(ticks, world);
 
 	if (shot) {
-		Projectile & glider = gliders.create();
-		world.add(glider);
+		Projectile & projectile = projectiles.create();
+		world.add(projectile);
 
 		for (Sprite * observer : get_observers())
-			glider.observe(*observer);
+			projectile.observe(*observer);
 
-		glider.set_y(get_y() + get_height()/2 + Spec::get_instance().get_int("player/glider/offset/y"));
+		projectile.set_y(get_y() + get_height()/2 + Spec::get_instance().get_int("player/projectile/offset/y"));
 
-		int speed = Spec::get_instance().get_int("player/glider/speed") + std::abs(get_velocity_x());
+		int speed = Spec::get_instance().get_int("player/projectile/speed") + std::abs(get_velocity_x());
 
 		if (get_direction() == "left") {
-			glider.set_x(get_x() - glider.get_width() - Spec::get_instance().get_int("player/glider/offset/x"));
-			glider.set_velocity_x(-speed);
+			projectile.set_x(get_x() - projectile.get_width() - Spec::get_instance().get_int("player/projectile/offset/x"));
+			projectile.set_velocity_x(-speed);
 		}
 		else {
-			glider.set_x(get_x() + get_width() + glider.get_width() + Spec::get_instance().get_int("player/glider/offset/x"));
-			glider.set_velocity_x(speed);
+			projectile.set_x(get_x() + get_width() + projectile.get_width() + Spec::get_instance().get_int("player/projectile/offset/x"));
+			projectile.set_velocity_x(speed);
 		}
 
-		glider.set_origin();
+		projectile.set_origin();
 
 		shot = false;
 	}
 }
 
 void Player::shoot() {
-	shot = true;
+	if (shooting)
+		shot = true;
 }

@@ -16,13 +16,14 @@ class Player : public Sprite {
 
 		void shoot();
 
-		Pool<Projectile> & get_pool() { return gliders; }
+		Pool<Projectile> & get_pool() { return projectiles; }
 
 		void set_hp(int val) { hp = val;  }
 		int get_hp()   const { return hp; }
 
 	private:
-		Pool<Projectile> gliders;
+		bool shooting;
+		Pool<Projectile> projectiles;
 
 		int hp;
 		bool shot;

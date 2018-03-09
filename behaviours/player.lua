@@ -7,10 +7,10 @@ speed = {
 
 glider = {
 	offset = {
-		x = spec:get_int('player/glider/offset/x'),
-		y = spec:get_int('player/glider/offset/y')
+		x = spec:get_int('player/projectile/offset/x'),
+		y = spec:get_int('player/projectile/offset/y')
 	},
-	speed = spec:get_int('player/glider/speed')
+	speed = spec:get_int('player/projectile/speed')
 }
 
 land = 200
