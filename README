@@ -2,13 +2,6 @@ Name: Foster McLane
 Course: CPSC 4160
 Clemson Email Address: fmclane@g.clemson.edu
 
-Project no: 6
-Project due date: 2017-12-13
-Project description: Pizzazz
-
-The easiest part of this project: I quite enjoyed coming up with and testing out cool new things to add and tweak in the game.
-Problems that I had in completing this project: I've had too many personal problems to put in all of the work I would like for this. That said, I still put a ton of work into it with regard to the scripting and in-game editor.
-
 Requirements:
 * SDL2{,-image,-mixer,-ttf,-gfx}
 * expat
