@@ -45,7 +45,9 @@ SDL_Surface * Text::write(const std::string & text, SDL_Color color) const {
     int height = 0;
 
     for (std::string & line : split(text, '\n')) {
-	surfaces.push_back(TTF_RenderUTF8_Solid(font, line.c_str(), color));
+	surfaces.push_back(TTF_RenderUTF8_Blended(font, line.c_str(), color));
+
+	SDL_SetSurfaceAlphaMod(surfaces.back(), color.a);
 
 	if (surfaces.back()->w > width)
 	    width = surfaces.back()->w;
@@ -55,11 +57,7 @@ SDL_Surface * Text::write(const std::string & text, SDL_Color color) const {
     if (height == 0)
 	return nullptr;
 
-    Uint32 key;
-
-    SDL_Surface * combined = SDL_CreateRGBSurface(0, width, height, 32, 0, 0, 0, 0xff);
-    if (SDL_GetColorKey(surfaces.front(), &key) == 0)
-	SDL_SetColorKey(combined, SDL_TRUE, key);
+    SDL_Surface * combined = SDL_CreateRGBSurfaceWithFormat(0, width, height, 32, surfaces.front()->format->format);
 
     SDL_Rect dst = {0, 0, width, height};
 

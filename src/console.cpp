@@ -94,7 +94,7 @@ void Console::draw(const Viewport & viewport) const {
 		SDL_RenderFillRect(Context::get_instance().get_renderer(), &rect);
 
 		// draw text
-		SDL_Color color = {static_cast<Uint8>(Spec::get_instance().get_int("console/text/r")), static_cast<Uint8>(Spec::get_instance().get_int("console/text/g")), static_cast<Uint8>(Spec::get_instance().get_int("console/text/b")), 255};
+		SDL_Color color = {static_cast<Uint8>(Spec::get_instance().get_int("console/text/r")), static_cast<Uint8>(Spec::get_instance().get_int("console/text/g")), static_cast<Uint8>(Spec::get_instance().get_int("console/text/b")), static_cast<Uint8>(Spec::get_instance().get_int("console/text/a"))};
 		if (result.empty())
 			Text::get_instance().write(Context::get_instance().get_renderer(), "> " + command + "_", rect.x + padding_font, rect.y + padding_font, 0, color);
 		else
