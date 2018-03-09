@@ -21,7 +21,8 @@ Sound::Sound() : path("sounds"), active(), active_channel(-1), chunks{}, fade(10
 }
 
 void Sound::reload() {
-	play(Spec::get_instance().get_str("sound/initial"), -1);
+	if (Spec::get_instance().check("sound/initial"))
+		play(Spec::get_instance().get_str("sound/initial"), -1);
 }
 
 void Sound::play(const std::string & name, int loops) {
