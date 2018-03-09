@@ -181,7 +181,7 @@ void Editor::reload() {
 			break;
 
 		if (iter == buf->end()) {
-			if (iter == pos)
+			if (buf == buffer && iter == pos)
 				ss << "_\n";
 			else
 				ss << " \n";
@@ -204,13 +204,13 @@ void Editor::reload() {
 		}
 
 		if (*iter == '\t') {
-			if (iter == pos)
+			if (buf == buffer && iter == pos)
 				ss << "_ ";
 			else
 				ss << "  ";
 		}
 		else {
-			if (iter == pos)
+			if (buf == buffer && iter == pos)
 				ss << "_";
 			else
 				ss << *iter;
