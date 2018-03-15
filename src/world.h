@@ -20,7 +20,7 @@ class World {
 
 		void init();
 
-		template<typename T, typename... Args>
+		template <typename T, typename... Args>
 		T * create(Args... args) {
 			T * t = new T(args...);
 			t->load();
@@ -38,13 +38,57 @@ class World {
 		void update(unsigned int ticks);
 		void draw(const Viewport & viewport) const;
 
-		std::pair<Drawable *, Vector2f> cast(Vector2f point, float direction);
+		template <typename T>
+		std::pair<T *, Vector2f> cast(Vector2f point, float direction) const {
+			T * close = nullptr;
+			Vector2f hit(point);
+			float mag = far;
+
+			Vector2f ray(std::cos(direction), std::sin(direction));
+
+			for (Drawable * drawable : drawables) {
+				T * obj = dynamic_cast<T *>(drawable);
+				if (obj) {
+					std::vector<Vector2f> corners{Vector2f(obj->get_x(), obj->get_y()), Vector2f(obj->get_x() + obj->get_width(), obj->get_y()), Vector2f(obj->get_x(), obj->get_y() + obj->get_height()), Vector2f(obj->get_x() + obj->get_width(), obj->get_y() + obj->get_height())};
+
+					for (unsigned int corner = 0; corner < corners.size(); ++corner) {
+						Vector2f & cur = corners[corner];
+						Vector2f & next = corners[(corner + 1) % corners.size()];
+
+						Vector2f cur_ray(next[1] - cur[1], next[0] - cur[0]);
+
+						Vector2f delta(cur[0] - point[0], cur[1] - point[1]);
+						float det = cur_ray[0] * ray[1] - cur_ray[1] * ray[0];
+
+						if (det == 0)
+							continue;
+
+						float u = (delta[1] * cur_ray[0] - delta[0] * cur_ray[1]) / det;
+						float v = (delta[1] * ray[0] - delta[0] * ray[1]) / det;
+
+						if (u > 0 && v > 0) {
+							Vector2f pt(point[0] + ray[0]*u, point[1] + ray[1]*u);
+							float m = pt.magnitude();
+
+							if (m < mag) {
+								close = obj;
+								hit = pt;
+								mag = m;
+							}
+						}
+					}
+				}
+			}
+
+			return std::make_pair(close, hit);
+		}
 
 		const Player & get_player() const { return *player; }
 		Player & get_player()             { return *player; } // caller can modify player
 
 		int get_width() const  { return width;  }
 		int get_height() const { return height; }
+
 	private:
 		int width, height;
 

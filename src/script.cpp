@@ -173,6 +173,8 @@ void Script::load_api() {
 			"get_dialog", WrapGet<World, Dialog>(),
 			"destroy_dialog", WrapDestroy<World, Dialog>(),
 
+			"cast", &World::cast<Sprite>,
+
 			"width", sol::property(&World::get_width),
 			"height", sol::property(&World::get_height)
 	);

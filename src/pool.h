@@ -5,7 +5,7 @@
 
 #include "sprite.h"
 
-template<typename T>
+template <typename T>
 class Pool {
 	public:
 		Pool(const std::string & n, int initial) : name(n), used{}, free{} {

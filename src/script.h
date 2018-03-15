@@ -29,7 +29,7 @@ class Script {
 
 		const std::string & get_result() const { return result; }
 
-		template<typename... T>
+		template <typename... T>
 		void call(const std::string & method, T... args) {
 			lua[method].call<T...>(args...);
 		}
