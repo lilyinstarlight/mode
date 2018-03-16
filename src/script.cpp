@@ -263,7 +263,13 @@ void Script::load_api() {
 
 			"opened", sol::property(&Dialog::is_open),
 
-			"string", sol::property(&Dialog::get_string, &Dialog::set_string)
+			"string", sol::property(&Dialog::get_string, &Dialog::set_string),
+
+			"pos", sol::property(&Dialog::get_position, &Dialog::set_position),
+			"rot", sol::property(&Dialog::get_rotation, &Dialog::set_rotation),
+			"vel", sol::property(&Dialog::get_velocity, &Dialog::set_velocity),
+			"scale", sol::property(&Dialog::get_scale, &Dialog::set_scale),
+			"idx", sol::property(&Dialog::get_index, &Dialog::set_index)
 	);
 
 	// create Spec data type
