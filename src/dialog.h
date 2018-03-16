@@ -46,6 +46,8 @@ class Dialog : public Drawable {
 		std::string str;
 		SDL_Color color;
 		SDL_Color box;
+		SDL_Color border;
+		int border_width;
 
 		SDL_Surface * text;
 		SDL_Rect size;

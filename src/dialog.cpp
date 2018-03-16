@@ -17,10 +17,12 @@ Dialog::Dialog(const std::string & name, const std::string & text, bool top, boo
 		str(text == "" ? Spec::get_instance().get_str(name + "/str") : text),
 		color{static_cast<Uint8>(Spec::get_instance().get_int(name + "/text/r")), static_cast<Uint8>(Spec::get_instance().get_int(name + "/text/g")), static_cast<Uint8>(Spec::get_instance().get_int(name + "/text/b")), static_cast<Uint8>(Spec::get_instance().get_int(name + "/text/a"))},
 		box{static_cast<Uint8>(Spec::get_instance().get_int(name + "/box/r")), static_cast<Uint8>(Spec::get_instance().get_int(name + "/box/g")), static_cast<Uint8>(Spec::get_instance().get_int(name + "/box/b")), static_cast<Uint8>(Spec::get_instance().get_int(name + "/box/a"))},
+		border{static_cast<Uint8>(Spec::get_instance().get_int(name + "/border/r")), static_cast<Uint8>(Spec::get_instance().get_int(name + "/border/g")), static_cast<Uint8>(Spec::get_instance().get_int(name + "/border/b")), static_cast<Uint8>(Spec::get_instance().get_int(name + "/border/a"))},
+		border_width(Spec::get_instance().get_int(name + "/border/width")),
 		text(Text::get_instance().write(str, color)),
 		size{0, 0, 0, 0} {}
 
-Dialog::Dialog(const Dialog & dialog) : Drawable(dialog), above(dialog.above), opened(dialog.opened), padding_text(dialog.padding_text), str(dialog.str), color(dialog.color), box(dialog.box), text(dialog.text), size(dialog.size) {}
+Dialog::Dialog(const Dialog & dialog) : Drawable(dialog), above(dialog.above), opened(dialog.opened), padding_text(dialog.padding_text), str(dialog.str), color(dialog.color), box(dialog.box), border(dialog.border), border_width(dialog.border_width), text(dialog.text), size(dialog.size) {}
 
 void Dialog::update(unsigned int, World &) {
 	if (opened) {
@@ -40,16 +42,28 @@ void Dialog::update(unsigned int, World &) {
 void Dialog::draw(const Viewport & viewport) const {
 	if (opened) {
 		SDL_Rect dst = size;
+		SDL_Rect bdr = size;
+
+		bdr.x -= border_width;
+		bdr.w += 2*border_width;
+		bdr.y -= border_width;
+		bdr.h += 2*border_width;
 
 		if (!above) {
-			dst.x = size.x - viewport.get_x();
-			dst.y = size.y - viewport.get_y();
+			dst.x = dst.x - viewport.get_x();
+			dst.y = dst.y - viewport.get_y();
+
+			bdr.x = bdr.x - viewport.get_x();
+			bdr.y = bdr.y - viewport.get_y();
 		}
+
+		// draw border
+		SDL_SetRenderDrawColor(Context::get_instance().get_renderer(), border.r, border.g, border.b, border.a);
+		SDL_RenderFillRect(Context::get_instance().get_renderer(), &bdr);
 
 		// draw box
 		SDL_SetRenderDrawColor(Context::get_instance().get_renderer(), box.r, box.g, box.b, box.a);
 		SDL_RenderFillRect(Context::get_instance().get_renderer(), &dst);
-
 
 		// draw text
 		Text::get_instance().render(Context::get_instance().get_renderer(), text, dst.x + padding_text, dst.y + padding_text, get_rotation());

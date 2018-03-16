@@ -70,6 +70,15 @@
 
 		<rotation>0</rotation>
 
+		<border>
+			<r>20</r>
+			<g>20</g>
+			<b>20</b>
+			<a>0</a>
+
+			<width>0</width>
+		</border>
+
 		<box>
 			<r>20</r>
 			<g>20</g>
@@ -116,12 +125,14 @@
 
 		<rotation>0</rotation>
 
-		<text>
-			<r>0</r>
-			<g>255</g>
-			<b>0</b>
-			<a>255</a>
-		</text>
+		<border>
+			<r>20</r>
+			<g>20</g>
+			<b>20</b>
+			<a>200</a>
+
+			<width>0</width>
+		</border>
 
 		<box>
 			<r>20</r>
@@ -129,6 +140,13 @@
 			<b>20</b>
 			<a>200</a>
 		</box>
+
+		<text>
+			<r>0</r>
+			<g>255</g>
+			<b>0</b>
+			<a>255</a>
+		</text>
 
 		<str>
 +----------+
