@@ -43,24 +43,24 @@ hud:
     {r: 0, g: 255, b: 0, a: 255}
 
   str: |
-      +------------------------+
-      |        .:Mode:.        |
-      |  A  game  where  you   |
-      |  write  the  rules.    |
-      |                        |
-      |  WASD  to  move        |
-      |  SPACE  to  shoot      |
-      |  H  to  toggle  HUD    |
-      |  R  to  restart        |
-      |  Q  to  quit           |
-      |                        |
-      |  ESC  to  exit         |
-      |  TAB  to  pause        |
-      |  `  to  open  console  |
-      |                        |
-      |      FPS: {fps}        |
-      |      HP:   {hp}        |
-      +------------------------+
+    +------------------------+
+    |        .:Mode:.        |
+    |    A game where you    |
+    |    write the rules.    |
+    |                        |
+    |    WASD to move        |
+    |    SPACE to shoot      |
+    |    H to toggle HUD     |
+    |    R to restart        |
+    |    Q to quit           |
+    |                        |
+    |    ESC to exit         |
+    |    TAB to pause        |
+    |    ` to open console   |
+    |                        |
+    |        FPS: {fps}      |
+    |        HP:  {hp}       |
+    +------------------------+
 
 win:
   type: dialog
@@ -74,9 +74,9 @@ win:
   text: {r: 0, g: 255, b: 0, a: 255}
 
   str: |
-      +----------+
-      | You Win! |
-      +----------+
+    +----------+
+    | You Win! |
+    +----------+
 
 sky:
   type: background
