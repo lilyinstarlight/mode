@@ -202,17 +202,33 @@ void Script::load_api() {
 
 			"check", &Spec::check,
 
-			"get_tops", &Spec::get_tops,
-			"get_subs", &Spec::get_subs,
-
 			"get_bool", &Spec::get_bool,
 			"get_int", &Spec::get_int,
 			"get_float", &Spec::get_float,
 			"get_str", &Spec::get_str
+
+			"get_keys", &Spec::get_keys
 	);
 
 	// set spec
 	lua["spec"] = &Spec::get_instance();
+
+	// create Save data type
+	lua.new_usertype<Save>("Save",
+			"new", sol::no_constructor,
+
+			"check", &Save::check,
+
+			"get_bool", &Save::get_bool,
+			"get_int", &Save::get_int,
+			"get_float", &Save::get_float,
+			"get_str", &Save::get_str
+
+			"get_keys", &Save::get_keys
+	);
+
+	// set spec
+	lua["save"] = &Save::get_instance();
 
 	// create Engine data type
 	lua.new_usertype<Engine>("Engine",

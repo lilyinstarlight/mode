@@ -25,7 +25,7 @@ void World::init() {
 	drawables.insert(player);
 
 	// get top level elements and add applicable ones to drawables
-	for (const std::string & str : Spec::get_instance().get_tops()) {
+	for (const std::string & str : Spec::get_instance().get_keys()) {
 		if (Spec::get_instance().check(str + "/type")) {
 			if (Spec::get_instance().get_str(str + "/type") == "background") {
 				Background * background = new Background(str);

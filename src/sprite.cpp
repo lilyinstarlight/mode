@@ -38,8 +38,8 @@ Sprite::Sprite(const std::string & name, bool dead) : Drawable(name,
 	state.push_back(std::pair<std::string, unsigned int>{Spec::get_instance().get_str(name + "/state"), 0});
 
 	// load sheets for different states
-	for (const std::string & sheet : Spec::get_instance().get_subs(name + "/sheets")) {
-		for (const std::string & direction : Spec::get_instance().get_subs(name + "/sheets/" + sheet))
+	for (const std::string & sheet : Spec::get_instance().get_keys(name + "/sheets")) {
+		for (const std::string & direction : Spec::get_instance().get_keys(name + "/sheets/" + sheet))
 			sheets[sheet + "." + direction] = ImageFactory::get_instance().get_sheet(name + "/sheets/" + sheet + "/" + direction);
 	}
 
