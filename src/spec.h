@@ -22,6 +22,6 @@ class Spec : public Yaml {
 		void save() = delete;
 
 	private:
-		Spec() : Yaml("game.yaml") {}
+		Spec() : Yaml("game") {}
 };
 #endif

@@ -15,6 +15,6 @@ class Save : public ModifiableYaml {
 		Save & operator=(const Save &) = delete;
 
 	private:
-		Save() : ModifiableYaml("save.yaml") {}
+		Save() : ModifiableYaml("save") {}
 };
 #endif
