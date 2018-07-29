@@ -1,124 +1,100 @@
+#include <fstream>
+#include <sstream>
+
 #include "yaml.h"
 
-Yaml::Yaml(const std::string & filename) : path("data"), file(path + "/" + filename), parent(nullptr), root(YAML::LoadFile(file)) {}
+Yaml::Yaml(const std::string & filename) : path("data"), file(path + "/" + filename), root(YAML::LoadFile(file)) {}
 
-Yaml::Yaml(const Yaml & yaml) : path(yaml.path), file(yaml.file), parent(yaml.parent), root(yaml.root) {}
+Yaml::Yaml(const Yaml & yaml) : path(yaml.path), file(yaml.file), root(yaml.root) {}
 
-Yaml::Yaml(const Yaml & yaml, YAML::Node & base) : path(yaml.path), file(yaml.file), parent(&yaml), root(base) {}
+Yaml & Yaml::operator=(const Yaml & other) {
+	if (&other == this)
+		return *this;
 
-const Yaml & Yaml::operator[](const unsigned int idx) const {
-	return Yaml(*this, root[idx]);
+	path = other.path;
+	file = other.file;
+	root = other.root;
+
+	return *this;
 }
 
-Yaml & Yaml::operator[](const unsigned int idx) {
-	return Yaml(*this, root[idx]);
+void Yaml::load(const std::string & filename) {
+	file = path + "/" + filename;
+	root = YAML::LoadFile(file);
 }
 
-const std::string & Yaml::operator[](const std::string & key) {
-	return root[idx];
+std::vector<std::string> Yaml::get_keys(const std::string & key) const {
+	YAML::Node node = resolve(key);
+
+	std::vector<std::string> keys(node.size());
+
+	for (const YAML::detail::iterator_value & kv : node)
+		keys.push_back(kv.first.as<std::string>());
+
+	return keys;
 }
 
-const Yaml & Yaml::operator[](const std::string & key) const {
-	return Yaml(*this, root[key]);
+bool Yaml::check(const std::string & key) const {
+	return resolve(key);
 }
 
-Yaml & Yaml::operator[](const std::string & key) {
-	return Yaml(*this, root[key]);
+bool Yaml::get_bool(const std::string & key) const {
+	return resolve(key).as<bool>();
 }
 
-std::vector<const std::string &> Yaml::get_keys() const {
-	std::vector<const std::string &> vec;
-
-	for (const std::pair<const std::string &, YAML::Node> & item : root)
-		vec.push_back(item.first);
-
-	return vec;
+int Yaml::get_int(const std::string & key) const {
+	return resolve(key).as<int>();
 }
 
-std::vector<const Yaml> Yaml::get_values() const {
-	std::vector<const Yaml> vec;
-
-	for (const YAML::Node & base : root)
-		vec.push_back(Yaml(*this, base));
-
-	return vec;
+float Yaml::get_float(const std::string & key) const {
+	return resolve(key).as<float>();
 }
 
-std::vector<Yaml> Yaml::get_values() {
-	std::vector<Yaml> vec;
-
-	for (YAML::Node & base : root)
-		vec.push_back(Yaml(*this, base));
-
-	return vec;
+std::string Yaml::get_str(const std::string & key) const {
+	return resolve(key).as<std::string>();
 }
 
-std::map<std::string, const Yaml> Yaml::get_items() const {
-	std::map<std::string, const Yaml> map;
+YAML::Node Yaml::resolve(const std::string & path) const {
+	YAML::Node node = root;
 
-	for (const std::pair<const std::string &, YAML::Node> & item : root)
-		map[item.first] = Yaml(*this, item.second);
+	std::stringstream ss(path);
+	std::string key;
+	while (std::getline(ss, key, '/'))
+		node = node[key];
 
-	return map;
+	return node;
 }
 
-std::map<std::string, Yaml> Yaml::get_items() {
-	std::map<std::string, Yaml> map;
+ModifiableYaml::ModifiableYaml(const std::string & filename) : Yaml(filename) {}
 
-	for (std::pair<const std::string &, YAML::Node> & item : root)
-		map[item.first] = Yaml(*this, item.second);
+ModifiableYaml::ModifiableYaml(const Yaml & yaml) : Yaml(yaml) {}
 
-	return map;
+ModifiableYaml & ModifiableYaml::operator=(const ModifiableYaml & other) {
+	if (&other == this)
+		return *this;
+
+	*this = other;
+
+	return *this;
 }
 
-bool Yaml::check() const {
-	return root;
+void ModifiableYaml::set_bool(const std::string & key, bool val) {
+	resolve(key) = val;
 }
 
-bool Yaml::get_bool() const {
-	return root.as<bool>();
+void ModifiableYaml::set_int(const std::string & key, int val) {
+	resolve(key) = val;
 }
 
-int Yaml::get_int() const {
-	return root.as<int>();
+void ModifiableYaml::set_float(const std::string & key, float val) {
+	resolve(key) = val;
 }
 
-float Yaml::get_float() const {
-	return root.as<float>();
+void ModifiableYaml::set_str(const std::string & key, const std::string & val) {
+	resolve(key) = val;
 }
 
-const std::string & Yaml::get_str() const {
-	return root.as<const std::string &>();
-}
-
-const Vector2f & Yaml::get_vec() const {
-	return root.as<const Vector2f &>();
-}
-
-const SDL_Color & Yaml::get_color() const {
-	return root.as<const SDL_Color &>();
-}
-
-void Yaml::set_bool(bool val) {
-	root = val;
-}
-
-void Yaml::set_int(int val) {
-	root = val;
-}
-
-void Yaml::set_float(float val) {
-	root = val;
-}
-
-void Yaml::set_str(const std::string & val) {
-	root = val;
-}
-
-void Yaml::set_vec(const Vector2f & vec) {
-	root = vec;
-}
-
-void Yaml::set_color(const SDL_Color & color) {
-	root = color;
+void ModifiableYaml::save() const {
+	std::ofstream out(file);
+	out << root;
 }

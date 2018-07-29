@@ -2,7 +2,7 @@
 #define SAVE_H
 #include "yaml.h"
 
-class Save : public Yaml {
+class Save : public ModifiableYaml {
 	public:
 		static Save & get_instance() {
 			static Save save;
@@ -15,6 +15,6 @@ class Save : public Yaml {
 		Save & operator=(const Save &) = delete;
 
 	private:
-		Save() : Yaml("save.yaml") {}
+		Save() : ModifiableYaml("save.yaml") {}
 };
 #endif

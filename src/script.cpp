@@ -7,6 +7,7 @@
 #include "hud.h"
 #include "player.h"
 #include "projectile.h"
+#include "save.h"
 #include "sound.h"
 #include "spec.h"
 #include "sprite.h"
@@ -202,12 +203,12 @@ void Script::load_api() {
 
 			"check", &Spec::check,
 
+			"get_keys", &Spec::get_keys,
+
 			"get_bool", &Spec::get_bool,
 			"get_int", &Spec::get_int,
 			"get_float", &Spec::get_float,
 			"get_str", &Spec::get_str
-
-			"get_keys", &Spec::get_keys
 	);
 
 	// set spec
@@ -219,12 +220,19 @@ void Script::load_api() {
 
 			"check", &Save::check,
 
+			"get_keys", &Save::get_keys,
+
 			"get_bool", &Save::get_bool,
 			"get_int", &Save::get_int,
 			"get_float", &Save::get_float,
-			"get_str", &Save::get_str
+			"get_str", &Save::get_str,
 
-			"get_keys", &Save::get_keys
+			"set_bool", &Save::get_bool,
+			"set_int", &Save::get_int,
+			"set_float", &Save::get_float,
+			"set_str", &Save::get_str,
+
+			"save", &Save::save
 	);
 
 	// set spec

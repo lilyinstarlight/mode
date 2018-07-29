@@ -8,10 +8,10 @@ class Vector2f {
 
 		explicit Vector2f(float vx = 0, float vy = 0);
 
-		Vector2f & operator=(const Vector2f &);
+		Vector2f & operator=(const Vector2f & other);
 
-		bool operator==(const Vector2f &other) const;
-		bool operator!=(const Vector2f &other) const;
+		bool operator==(const Vector2f & other) const;
+		bool operator!=(const Vector2f & other) const;
 
 		float & operator[](int index);
 		float operator[](int index) const;
