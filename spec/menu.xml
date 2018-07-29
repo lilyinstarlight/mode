@@ -201,7 +201,8 @@
 			<down>80</down>
 		</speed>
 
-		<glider>
+		<projectile>
+			<name>glider</name>
 			<initial>5</initial>
 
 			<offset>
@@ -210,7 +211,7 @@
 			</offset>
 
 			<speed>200</speed>
-		</glider>
+		</projectile>
 
 		<position>
 			<x>100</x>
