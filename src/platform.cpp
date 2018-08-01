@@ -14,7 +14,7 @@ Platform::Platform(const std::string & name) : Sprite(name), tile(NONE), surface
 	else if (tiling == "both")
 		tile = BOTH;
 	else
-		throw std::runtime_error("Invalid tiling: " + Spec::get_instance().get_str(get_name() + "/tiling"));
+		throw std::runtime_error("Invalid tiling: " + Spec::get_instance().get_str(get_name() + "/tile"));
 }
 
 Platform::Platform(const Platform & p) : Sprite(p), tile(p.tile), surface(SDL_ConvertSurface(p.surface, p.surface->format, 0)), size{0, 0, surface->w, surface->h} {}

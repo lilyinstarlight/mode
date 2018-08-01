@@ -24,6 +24,8 @@ class Platform : public Sprite {
 		void set_height(int height) { size.h = height; }
 		int get_height() const      { return size.h; }
 
+		Tile get_tile() const       { return tile; }
+
 		virtual const SDL_Surface * get_surface() const { return surface; };
 
 	private:

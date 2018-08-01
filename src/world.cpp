@@ -2,6 +2,7 @@
 #include <string>
 
 #include "background.h"
+#include "platform.h"
 #include "sprite.h"
 #include "spec.h"
 
@@ -31,6 +32,11 @@ void World::init() {
 				Background * background = new Background(str);
 				owning.insert(background);
 				drawables.insert(background);
+			}
+			else if (Spec::get_instance().get_str(str + "/type") == "platform") {
+				Platform * platform = new Platform(str);
+				owning.insert(platform);
+				drawables.insert(platform);
 			}
 			else if (Spec::get_instance().get_str(str + "/type") == "sprite") {
 				Sprite * sprite = new Sprite(str);

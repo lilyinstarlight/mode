@@ -45,7 +45,7 @@ class World {
 			float mag = far;
 
 			// calculate the ray to cast
-			Vector2f ray(std::cos(direction), std::sin(direction));
+			Vector2f ray(std::cos(direction), -std::sin(direction));
 
 			for (Drawable * drawable : drawables) {
 				// try to cast the object
@@ -71,7 +71,7 @@ class World {
 						float u = (delta[1] * cur_ray[0] - delta[0] * cur_ray[1]) / det;
 						float v = (delta[1] * ray[0] - delta[0] * ray[1]) / det;
 
-						// if it intersections the positive end of the ray and inside of the line segment
+						// if it intersects the positive end of the ray and inside of the line segment
 						if (u > 0.0 && v > 0.0 && v < 1.0) {
 							Vector2f pt = point + ray*u;
 							float m = (pt - point).magnitude();

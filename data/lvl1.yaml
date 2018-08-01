@@ -112,15 +112,35 @@ city:
   file: city.png
 
 ground:
-  type: background
+  type: platform
   index: 30
 
-  factor: 1
+  width: 100
+  height: 50
+
+  direction: up
+
+  state: still
+
+  position: {x: 20, y: 550}
+  rotation: 0
+  velocity: {x: 0, y: 0}
+
+  scale: 1
+
   tile: x
 
-  position: {x: 0, y: 549}
+  sheets:
+    still:
+      up:
+        file: ground.png
 
-  file: ground.png
+        frames: 1
+        interval: 100
+
+        loop: true
+
+  collision: rectangular
 
 feature:
   type: sprite

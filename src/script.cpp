@@ -5,6 +5,7 @@
 #include "collision.h"
 #include "engine.h"
 #include "hud.h"
+#include "platform.h"
 #include "player.h"
 #include "projectile.h"
 #include "save.h"
@@ -107,6 +108,16 @@ void Script::load_api() {
 	// set sprite as current sprite
 	lua["sprite"] = &sprite;
 
+	// create Sprite data type
+	lua.new_usertype<Platform>("Platform",
+			"new", sol::factories(WrapCreate<World, Platform, std::string>(Engine::get_instance().get_world())),
+
+			"tile", sol::property(&Platform::get_tile)
+	);
+
+	// set sprite as current sprite
+	lua["platform"] = dynamic_cast<Platform *>(&sprite);
+
 	// create Projectile data type
 	lua.new_usertype<Projectile>("Projectile",
 			"new", sol::factories(WrapCreate<World, Projectile, std::string>(Engine::get_instance().get_world())),
@@ -152,7 +163,9 @@ void Script::load_api() {
 			"rot", sol::property(&Background::get_rotation, &Background::set_rotation),
 			"vel", sol::property(&Background::get_velocity, &Background::set_velocity),
 			"scale", sol::property(&Background::get_scale, &Background::set_scale),
-			"idx", sol::property(&Background::get_index, &Background::set_index)
+			"idx", sol::property(&Background::get_index, &Background::set_index),
+
+			"tile", sol::property(&Background::get_tile)
 	);
 
 	// create World data type
@@ -163,6 +176,11 @@ void Script::load_api() {
 			"remove_sprite", WrapRemove<World, Sprite>(),
 			"get_sprite", WrapGet<World, Sprite>(),
 			"destroy_sprite", WrapDestroy<World, Sprite>(),
+
+			"add_platform", WrapAdd<World, Platform>(),
+			"remove_platform", WrapRemove<World, Platform>(),
+			"get_platform", WrapGet<World, Platform>(),
+			"destroy_platform", WrapDestroy<World, Platform>(),
 
 			"add_background", WrapAdd<World, Background>(),
 			"remove_background", WrapRemove<World, Background>(),
