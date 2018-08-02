@@ -6,7 +6,7 @@
 
 #include <SDL2/SDL.h>
 
-#include <sol2/sol.hpp>
+#include <sol.hpp>
 
 class Sprite;
 
