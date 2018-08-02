@@ -52,14 +52,14 @@ class World {
 				T * obj = dynamic_cast<T *>(drawable);
 				if (obj) {
 					// calculate four corners
-					std::vector<Vector2f> corners{Vector2f(obj->get_x(), obj->get_y()), Vector2f(obj->get_x() + obj->get_width(), obj->get_y()), Vector2f(obj->get_x(), obj->get_y() + obj->get_height()), Vector2f(obj->get_x() + obj->get_width(), obj->get_y() + obj->get_height())};
+					std::vector<Vector2f> corners{Vector2f(obj->get_x(), obj->get_y()), Vector2f(obj->get_x() + obj->get_width(), obj->get_y()), Vector2f(obj->get_x() + obj->get_width(), obj->get_y() + obj->get_height()), Vector2f(obj->get_x(), obj->get_y() + obj->get_height())};
 
 					for (unsigned int corner = 0; corner < corners.size(); ++corner) {
 						// calculate line segment from corners
 						Vector2f & cur = corners[corner];
 						Vector2f & next = corners[(corner + 1) % corners.size()];
 
-						Vector2f cur_ray(next[1] - cur[1], next[0] - cur[0]);
+						Vector2f cur_ray(next[0] - cur[0], next[1] - cur[1]);
 
 						// calculate intersection point
 						Vector2f delta(cur[0] - point[0], cur[1] - point[1]);

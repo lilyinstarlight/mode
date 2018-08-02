@@ -8,7 +8,7 @@ world:
   width: 1600
   height: 600
 
-  far: 100
+  far: 300
 
 font:
   file: PressStart2P.ttf
@@ -115,14 +115,14 @@ ground:
   type: platform
   index: 30
 
-  width: 100
+  width: 1600
   height: 50
 
   direction: up
 
   state: still
 
-  position: {x: 20, y: 550}
+  position: {x: 0, y: 550}
   rotation: 0
   velocity: {x: 0, y: 0}
 

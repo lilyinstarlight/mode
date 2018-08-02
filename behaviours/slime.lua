@@ -2,10 +2,13 @@ function dispatch (event)
 end
 
 function update (ticks)
-	ground, hit = world:cast(Vector.new(sprite.pos.x, sprite.pos.y + sprite.height), 3*3.14159/2)
+	ground_left, hit_left = world:cast(Vector.new(sprite.pos.x, sprite.pos.y + sprite.height), 3*3.14159/2)
+	ground_right, hit_right = world:cast(Vector.new(sprite.pos.x + sprite.width, sprite.pos.y + sprite.height), 3*3.14159/2)
 
-	if ground and ground.type == 'platform' then
-		bottom = ground.pos.y - sprite.height
+	if ground_left and ground_left.type == 'platform' then
+		bottom = ground_left.pos.y - sprite.height
+	elseif ground_right and ground_right.type == 'platform' then
+		bottom = ground_right.pos.y - sprite.height
 	else
 		bottom = world.height - sprite.height
 	end
