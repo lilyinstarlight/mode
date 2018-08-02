@@ -60,7 +60,7 @@ class Sprite : public Drawable {
 
 		void inject();
 
-	private:
+	protected:
 		Script * script;
 
 		NoneCollisionStrategy none_strategy;
@@ -71,6 +71,7 @@ class Sprite : public Drawable {
 		CollisionStrategy * collision_strategy;
 		std::list<Sprite *> observers;
 
+	private:
 		std::unordered_map<std::string, Sheet *> sheets;
 
 		std::string direction;

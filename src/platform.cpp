@@ -1,3 +1,5 @@
+#include <cmath>
+
 #include "context.h"
 #include "spec.h"
 
@@ -89,6 +91,13 @@ void Platform::update(unsigned int ticks, World & world) {
 
 			break;
 	}
+
+	// apply basic rigid body mechanics for each sprite
+	//for (Sprite * sprite : world.get_all<Sprite>()) {
+	//	if (collision_strategy->check(*this, *sprite))
+	//		// set velocity like so: shortest distance to nearest line segment
+	//		sprite->set_velocity();
+	//}
 
 	Sprite::update(ticks, world);
 }

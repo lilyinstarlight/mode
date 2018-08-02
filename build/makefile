@@ -1,5 +1,5 @@
-CC=gcc
-CXX=g++
+CC=clang
+CXX=clang++
 
 CXXFLAGS=-std=c++14 -fsanitize=address -ggdb -Wall -Wpedantic -Wextra -Weffc++ -Werror -isystem $(LIBDIR) -isystem $(LIBDIR)/lua -isystem $(LIBDIR)/sol2 `sdl2-config --cflags` -I `sdl2-config --prefix`/include/ `pkg-config --cflags yaml-cpp`
 LDFLAGS=-std=c++14 -fsanitize=address

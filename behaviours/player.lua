@@ -53,8 +53,8 @@ function update (ticks)
 		bottom = world.height
 	end
 
-	ceiling_left, hit_left = world:cast(Vector.new(sprite.pos.x, sprite.pos.y + sprite.height), 3.14159/2)
-	ceiling_right, hit_right = world:cast(Vector.new(sprite.pos.x + sprite.width, sprite.pos.y + sprite.height), 3.14159/2)
+	ceiling_left, hit_left = world:cast(Vector.new(sprite.pos.x, sprite.pos.y + sprite.height), 3.14159/2, 'platform')
+	ceiling_right, hit_right = world:cast(Vector.new(sprite.pos.x + sprite.width, sprite.pos.y + sprite.height), 3.14159/2, 'platform')
 
 	if ceiling_left and ceiling_left.type == 'platform' then
 		ceiling = ceiling_left
@@ -97,20 +97,12 @@ function update (ticks)
 	end
 
 	if grounded then
-		sprite.vel.y = 0
-		sprite.pos.y = bottom - sprite.height
-
 		if input:check('player') and input:get_key('w') then
 			sprite.vel.y = sprite.vel.y - speed.up
 
 			sprite:clear()
 			sprite:push('jump')
 		end
-	end
-
-	if ceiled then
-		sprite.vel.y = 0
-		sprite.pos.y = top
 	end
 
 	if landing then

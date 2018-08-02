@@ -40,6 +40,20 @@ class World {
 		void draw(const Viewport & viewport) const;
 
 		template <typename T>
+		std::vector<T *> get_all() const {
+			std::vector<T *> all;
+
+			for (Drawable * drawable : drawables) {
+				// try to cast the object
+				T * obj = dynamic_cast<T *>(drawable);
+				if (obj)
+					all.push_back(obj);
+			}
+
+			return all;
+		}
+
+		template <typename T>
 		std::pair<T *, Vector2f> cast(Vector2f point, float direction, std::string type = "") const {
 			T * close = nullptr;
 			Vector2f hit(point);
@@ -103,7 +117,7 @@ class World {
 
 		Player * player;
 		std::unordered_set<Drawable *> owning;
-		std::set<Drawable *, DrawablePointerCompare> drawables; // compare points to keep drawables unique and ordered
+		std::set<Drawable *, DrawablePointerCompare> drawables; // compare pointers to keep drawables unique and ordered
 		std::unordered_set<Drawable *> destroyables;
 		std::unordered_set<Drawable *> removables;
 };

@@ -40,6 +40,7 @@ void Script::set_script(const std::string & s) {
 
 	try {
 		// refresh state
+		std::cerr << "himom" << std::endl;
 		lua = sol::state();
 
 		// set new script
