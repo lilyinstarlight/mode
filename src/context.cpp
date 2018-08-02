@@ -1,3 +1,5 @@
+#include <SDL2/SDL_image.h>
+
 #include "spec.h"
 
 #include "context.h"
@@ -7,7 +9,7 @@ Context & Context::get_instance() {
 	return render_context;
 }
 
-Context::Context() : window(nullptr), renderer(nullptr) {
+Context::Context() : icon_path("textures"), window(nullptr), renderer(nullptr) {
 	// init SDL
 	if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_AUDIO) < 0) {
 		throw std::runtime_error("Failed to init SDL " + std::string(SDL_GetError()));
@@ -38,5 +40,11 @@ Context::~Context() {
 
 void Context::reload() {
 	SDL_SetWindowSize(window, Spec::get_instance().get_int("view/width"), Spec::get_instance().get_int("view/height"));
+
+	SDL_Surface * icon = IMG_Load((icon_path + "/" + Spec::get_instance().get_str("icon")).c_str());
+
 	SDL_SetWindowTitle(window, Spec::get_instance().get_str("title").c_str());
+	SDL_SetWindowIcon(window, icon);
+
+	SDL_FreeSurface(icon);
 }

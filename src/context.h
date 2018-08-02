@@ -1,5 +1,7 @@
 #ifndef CONTEXT_H
 #define CONTEXT_H
+#include <string>
+
 #include <SDL2/SDL.h>
 
 class Context {
@@ -18,6 +20,8 @@ class Context {
 
 	private:
 		Context();
+
+		std::string icon_path;
 
 		SDL_Window * window;
 		SDL_Renderer * renderer;
