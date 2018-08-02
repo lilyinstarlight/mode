@@ -11,7 +11,9 @@
 World::World() : width(Spec::get_instance().get_int("world/width")), height(Spec::get_instance().get_int("world/height")), far(Spec::get_instance().get_float("world/far")),
 		player(nullptr),
 		owning{},
-		drawables{} {}
+		drawables{},
+		destroyables{},
+		removables{} {}
 
 World::~World() {
 	// free added drawables

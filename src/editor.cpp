@@ -9,9 +9,9 @@
 
 #include "editor.h"
 
-Editor::Editor() : Drawable("editor", "editor", Vector2f(0, 0), 0, Vector2f(0, 0), 1, 9002), script(nullptr), result(""), view(""), buffers{std::deque<char>{}}, buffer(buffers.begin()), pos(buffer->begin()), surface(nullptr), columns(Spec::get_instance().get_int("editor/columns")), rows(Spec::get_instance().get_int("editor/rows")), top(0), padding_top(4), padding_left(5), padding_font(2) {}
+Editor::Editor() : Drawable("editor", "editor", Vector2f(0, 0), 0, Vector2f(0, 0), 1, 9002), script(nullptr), result(""), view(""), buffers{std::deque<char>{}}, buffer(buffers.begin()), pos(buffer->begin()), columns(Spec::get_instance().get_int("editor/columns")), rows(Spec::get_instance().get_int("editor/rows")), top(0), padding_top(4), padding_left(5), padding_font(2) {}
 
-Editor::Editor(const Editor & editor) : Drawable(editor), script(editor.script), result(editor.result), view(editor.view), buffers(editor.buffers), buffer(editor.buffer), pos(editor.pos), surface(nullptr), columns(editor.columns), rows(editor.rows), top(editor.top), padding_top(4), padding_left(5), padding_font(2) {}
+Editor::Editor(const Editor & editor) : Drawable(editor), script(editor.script), result(editor.result), view(editor.view), buffers(editor.buffers), buffer(editor.buffer), pos(editor.pos), columns(editor.columns), rows(editor.rows), top(editor.top), padding_top(4), padding_left(5), padding_font(2) {}
 
 void Editor::dispatch(const SDL_Event & event) {
 	if (script) {

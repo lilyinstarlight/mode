@@ -28,7 +28,7 @@ class Editor : public Drawable {
 		virtual int get_width() const { return 0; }
 		virtual int get_height() const { return 0; }
 
-		virtual const SDL_Surface * get_surface() const { return surface; };
+		virtual const SDL_Surface * get_surface() const { return nullptr; };
 		virtual const Image * get_image() const { return nullptr; };
 
 		void open(Script & s);
@@ -46,8 +46,6 @@ class Editor : public Drawable {
 		std::deque<std::deque<char>> buffers;
 		std::deque<std::deque<char>>::iterator buffer;
 		std::deque<char>::iterator pos;
-
-		SDL_Surface * surface;
 
 		int columns;
 		int rows;

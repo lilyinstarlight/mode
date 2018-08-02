@@ -20,7 +20,7 @@ Platform::Platform(const std::string & name) : Sprite(name), tile(NONE), surface
 Platform::Platform(const Platform & p) : Sprite(p), tile(p.tile), surface(SDL_ConvertSurface(p.surface, p.surface->format, 0)), size{0, 0, surface->w, surface->h} {}
 
 Platform::~Platform() {
-	delete surface;
+	SDL_FreeSurface(surface);
 }
 
 void Platform::draw(const Viewport & viewport) const {

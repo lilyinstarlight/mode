@@ -143,12 +143,12 @@ void Engine::run() {
 
 	if (hud) {
 		delete hud;
-		editor = nullptr;
+		hud = nullptr;
 	}
 
 	if (console) {
 		delete console;
-		editor = nullptr;
+		console = nullptr;
 	}
 
 	if (editor) {
