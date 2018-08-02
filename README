@@ -1,6 +1,6 @@
 Name: Foster McLane
 Course: CPSC 4160
-Clemson Email Address: fmclane@g.clemson.edu
+Clemson Email Address: fmclane@clemson.edu
 
 Requirements:
 * SDL2{,-image,-mixer,-ttf,-gfx}
@@ -11,9 +11,7 @@ Issues:
 * death dialog that shows engine-level commands should be shown on player death
 * death/birth animations need to be added for all sprites
 * death/birth sounds need to be added for all sprites
-* first level with defined win goal
-* need to test physics raycasting
-* need to test platforms
+* need to give first level a defined win goal
 * need to add menu world
 
 Extras:
@@ -26,8 +24,8 @@ Extras:
 * background tiling
 * dialog abstraction
 * code injection
-* physics raycasting (unused)
-* platforms (unused)
+* physics raycasting
+* platforms
 * menu (soon)
 
 Credits:
