@@ -7,6 +7,7 @@
 #include "collision.h"
 #include "drawable.h"
 #include "player.h"
+#include "vector2f.h"
 
 class Viewport;
 
@@ -39,7 +40,7 @@ class World {
 		void draw(const Viewport & viewport) const;
 
 		template <typename T>
-		std::pair<T *, Vector2f> cast(Vector2f point, float direction) const {
+		std::pair<T *, Vector2f> cast(Vector2f point, float direction, std::string type = "") const {
 			T * close = nullptr;
 			Vector2f hit(point);
 			float mag = far;
@@ -50,7 +51,7 @@ class World {
 			for (Drawable * drawable : drawables) {
 				// try to cast the object
 				T * obj = dynamic_cast<T *>(drawable);
-				if (obj) {
+				if (obj && (type.empty() || obj->get_type() == type)) {
 					// calculate four corners
 					std::vector<Vector2f> corners{Vector2f(obj->get_x(), obj->get_y()), Vector2f(obj->get_x() + obj->get_width(), obj->get_y()), Vector2f(obj->get_x() + obj->get_width(), obj->get_y() + obj->get_height()), Vector2f(obj->get_x(), obj->get_y() + obj->get_height())};
 

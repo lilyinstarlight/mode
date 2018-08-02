@@ -143,6 +143,37 @@ ground:
 
   collision: rectangular
 
+platform:
+  type: platform
+  index: 30
+
+  width: 600
+  height: 50
+
+  direction: up
+
+  state: still
+
+  position: {x: 400, y: 400}
+  rotation: 0
+  velocity: {x: 0, y: 0}
+
+  scale: 1
+
+  tile: x
+
+  sheets:
+    still:
+      up:
+        file: ground.png
+
+        frames: 1
+        interval: 100
+
+        loop: true
+
+  collision: rectangular
+
 feature:
   type: sprite
   index: 50
@@ -185,7 +216,7 @@ slime:
 
   state: idle
 
-  position: {x: 600, y: 400}
+  position: {x: 600, y: 300}
   rotation: 0
   velocity: {x: 0, y: 0}
 

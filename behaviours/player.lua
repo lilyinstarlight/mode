@@ -32,19 +32,45 @@ function dispatch (event)
 end
 
 function update (ticks)
-	ground_left, hit_left = world:cast(Vector.new(sprite.pos.x, sprite.pos.y + sprite.height), 3*3.14159/2)
-	ground_right, hit_right = world:cast(Vector.new(sprite.pos.x + sprite.width, sprite.pos.y + sprite.height), 3*3.14159/2)
+	ground_left, hit_left = world:cast(Vector.new(sprite.pos.x, sprite.pos.y + sprite.height), 3*3.14159/2, 'platform')
+	ground_right, hit_right = world:cast(Vector.new(sprite.pos.x + sprite.width, sprite.pos.y + sprite.height), 3*3.14159/2, 'platform')
 
-	if ground_left and ground_left.type == 'platform' then
-		bottom = ground_left.pos.y - sprite.height
-	elseif ground_right and ground_right.type == 'platform' then
-		bottom = ground_right.pos.y - sprite.height
+	if ground_left and ground_right then
+		if hit_left.y < hit_right.y then
+			ground = ground_left
+		else
+			ground = ground_right
+		end
+		bottom = ground.pos.y
+	elseif ground_left then
+		ground = ground_left
+		bottom = ground.pos.y
+	elseif ground_right then
+		ground = ground_right
+		bottom = ground.pos.y
 	else
-		bottom = world.height - sprite.height
+		ground = {height = 0}
+		bottom = world.height
 	end
 
-	grounded = sprite.pos.y >= bottom and sprite.vel.y >= 0
-	landing = not grounded and sprite.pos.y >= bottom - land*sprite.vel.y and sprite.vel.y >= 0
+	ceiling_left, hit_left = world:cast(Vector.new(sprite.pos.x, sprite.pos.y + sprite.height), 3.14159/2)
+	ceiling_right, hit_right = world:cast(Vector.new(sprite.pos.x + sprite.width, sprite.pos.y + sprite.height), 3.14159/2)
+
+	if ceiling_left and ceiling_left.type == 'platform' then
+		ceiling = ceiling_left
+		top = ceiling.pos.y + ceiling.height
+	elseif ceiling_right and ceiling_right.type == 'platform' then
+		ceiling = ceiling_right
+		top = ceiling.pos.y + ceiling.height
+	else
+		ceiling = {height = 0}
+		top = 0
+	end
+
+	grounded = sprite.pos.y - bottom + sprite.height >= 0 and sprite.pos.y - bottom + sprite.height <= ground.height and sprite.vel.y >= 0
+	ceiled = top - sprite.pos.y >= 0 and top - sprite.pos.y <= ceiling.height and sprite.vel.y < 0
+
+	landing = not grounded and sprite.pos.y >= bottom - sprite.height - land*sprite.vel.y and sprite.vel.y >= 0
 
 	sprite.vel.x = 0
 
@@ -72,7 +98,7 @@ function update (ticks)
 
 	if grounded then
 		sprite.vel.y = 0
-		sprite.pos.y = bottom
+		sprite.pos.y = bottom - sprite.height
 
 		if input:check('player') and input:get_key('w') then
 			sprite.vel.y = sprite.vel.y - speed.up
@@ -80,6 +106,11 @@ function update (ticks)
 			sprite:clear()
 			sprite:push('jump')
 		end
+	end
+
+	if ceiled then
+		sprite.vel.y = 0
+		sprite.pos.y = top
 	end
 
 	if landing then
