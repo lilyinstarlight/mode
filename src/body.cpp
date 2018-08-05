@@ -22,8 +22,8 @@ void Body::update(unsigned int ticks, World & world) {
 			continue;
 
 		// set velocity to normal
-		body->set_velocity_x(body->get_velocity_x()*normal.get_x()/hardness + elasticity*normal.get_x());
-		body->set_velocity_y(body->get_velocity_y()*normal.get_y()/hardness + elasticity*normal.get_y());
+		body->set_velocity_x(body->get_velocity_x()/(std::abs(normal.get_x())*hardness + 1) + elasticity*normal.get_x());
+		body->set_velocity_y(body->get_velocity_y()/(std::abs(normal.get_y())*hardness + 1) + elasticity*normal.get_y());
 	}
 
 	Sprite::update(ticks, world);
