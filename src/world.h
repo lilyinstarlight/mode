@@ -4,7 +4,6 @@
 #include <unordered_set>
 #include <utility>
 
-#include "collision.h"
 #include "drawable.h"
 #include "player.h"
 #include "vector2f.h"

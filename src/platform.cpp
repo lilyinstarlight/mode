@@ -5,7 +5,7 @@
 
 #include "platform.h"
 
-Platform::Platform(const std::string & name) : Sprite(name), tile(NONE), surface(SDL_CreateRGBSurface(0, Spec::get_instance().get_int(name + "/width"), Spec::get_instance().get_int(name + "/height"), get_image()->get_surface()->format->BitsPerPixel, get_image()->get_surface()->format->Rmask, get_image()->get_surface()->format->Gmask, get_image()->get_surface()->format->Bmask, get_image()->get_surface()->format->Amask)), size{0, 0, surface->w, surface->h} {
+Platform::Platform(const std::string & name) : Body(name, true), tile(NONE), surface(SDL_CreateRGBSurface(0, Spec::get_instance().get_int(name + "/width"), Spec::get_instance().get_int(name + "/height"), get_image()->get_surface()->format->BitsPerPixel, get_image()->get_surface()->format->Rmask, get_image()->get_surface()->format->Gmask, get_image()->get_surface()->format->Bmask, get_image()->get_surface()->format->Amask)), size{0, 0, surface->w, surface->h} {
 	std::string tiling = Spec::get_instance().get_str(name + "/tile");
 	if (tiling == "none")
 		tile = NONE;
@@ -19,7 +19,7 @@ Platform::Platform(const std::string & name) : Sprite(name), tile(NONE), surface
 		throw std::runtime_error("Invalid tiling: " + Spec::get_instance().get_str(get_name() + "/tile"));
 }
 
-Platform::Platform(const Platform & p) : Sprite(p), tile(p.tile), surface(SDL_ConvertSurface(p.surface, p.surface->format, 0)), size{0, 0, surface->w, surface->h} {}
+Platform::Platform(const Platform & p) : Body(p), tile(p.tile), surface(SDL_ConvertSurface(p.surface, p.surface->format, 0)), size{0, 0, surface->w, surface->h} {}
 
 Platform::~Platform() {
 	SDL_FreeSurface(surface);
@@ -92,12 +92,5 @@ void Platform::update(unsigned int ticks, World & world) {
 			break;
 	}
 
-	// apply basic rigid body mechanics for each sprite
-	//for (Sprite * sprite : world.get_all<Sprite>()) {
-	//	if (collision_strategy->check(*this, *sprite))
-	//		// set velocity like so: shortest distance to nearest line segment
-	//		sprite->set_velocity();
-	//}
-
-	Sprite::update(ticks, world);
+	Body::update(ticks, world);
 }

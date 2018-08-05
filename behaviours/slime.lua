@@ -25,6 +25,11 @@ function update (ticks)
 
 	grounded = sprite.pos.y - bottom + sprite.height >= 0 and sprite.pos.y - bottom + sprite.height <= ground.height and sprite.vel.y >= 0
 
+	if grounded then
+		sprite.pos.y = bottom - sprite.height
+		sprite.vel.y = 0
+	end
+
 	sprite.vel.y = sprite.vel.y + ticks
 end
 

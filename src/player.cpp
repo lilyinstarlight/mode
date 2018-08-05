@@ -6,7 +6,7 @@
 
 #include "player.h"
 
-Player::Player() : Sprite("player"), shooting(Spec::get_instance().check("player/projectile/name")), projectiles(shooting ? Spec::get_instance().get_str("player/projectile/name") : "", shooting ? Spec::get_instance().get_int("player/projectile/initial") : 0), hp(Spec::get_instance().check("player/hp") ? Spec::get_instance().get_int("player/hp") : 1), shot(false) {
+Player::Player() : Body("player"), shooting(Spec::get_instance().check("player/projectile/name")), projectiles(shooting ? Spec::get_instance().get_str("player/projectile/name") : "", shooting ? Spec::get_instance().get_int("player/projectile/initial") : 0), hp(Spec::get_instance().check("player/hp") ? Spec::get_instance().get_int("player/hp") : 1), shot(false) {
 	Input::get_instance().grab("player");
 }
 
@@ -15,7 +15,7 @@ Player::~Player() {
 }
 
 void Player::update(unsigned int ticks, World & world) {
-	Sprite::update(ticks, world);
+	Body::update(ticks, world);
 
 	if (shot) {
 		Projectile & projectile = projectiles.create();

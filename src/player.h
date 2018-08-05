@@ -1,10 +1,11 @@
 #ifndef PLAYER_H
 #define PLAYER_H
-#include "projectile.h"
-#include "pool.h"
-#include "sprite.h"
 
-class Player : public Sprite {
+#include "body.h"
+#include "pool.h"
+#include "projectile.h"
+
+class Player : public Body {
 	public:
 		Player();
 		virtual ~Player();

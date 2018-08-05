@@ -1,3 +1,5 @@
+#include <cmath>
+
 #include <SDL2/SDL2_rotozoom.h>
 
 #include "util.h"
@@ -36,9 +38,36 @@ bool CollisionStrategy::visible(Uint32 pixel, const SDL_Surface * surface) const
 	return pix != 0;
 }
 
+Vector2f NoneCollisionStrategy::get(const Drawable &, const Drawable &) const {
+	// never collide
+	return Vector2f(0, 0);
+}
+
 bool NoneCollisionStrategy::check(const Drawable &, const Drawable &) const {
 	// never collide
 	return false;
+}
+
+Vector2f RectangularCollisionStrategy::get(const Drawable & obj1, const Drawable & obj2) const {
+	// intersect objects
+	SDL_Rect area = intersection(obj1, obj2);
+
+	// check for collision
+	if (area.w == 0 && area.h == 0)
+		return Vector2f(0, 0);
+
+	if (area.w < area.h) {
+		if (obj1.get_x() < area.x)
+			return Vector2f(1, 0);
+		else
+			return Vector2f(-1, 0);
+	}
+	else {
+		if (obj1.get_y() < area.y)
+			return Vector2f(0, 1);
+		else
+			return Vector2f(0, -1);
+	}
 }
 
 bool RectangularCollisionStrategy::check(const Drawable & obj1, const Drawable & obj2) const {
@@ -49,7 +78,7 @@ bool RectangularCollisionStrategy::check(const Drawable & obj1, const Drawable &
 	return area.x != 0 || area.y != 0 || area.w != 0 || area.h != 0;
 }
 
-bool CircularCollisionStrategy::check(const Drawable & obj1, const Drawable & obj2) const {
+std::tuple<float, Vector2f, Vector2f> CircularCollisionStrategy::midpoints(const Drawable & obj1, const Drawable & obj2) const {
 	// get radii
 	unsigned int r1 = Util::max(obj1.get_width(), obj1.get_height());
 	unsigned int r2 = Util::max(obj2.get_width(), obj2.get_height());
@@ -61,8 +90,35 @@ bool CircularCollisionStrategy::check(const Drawable & obj1, const Drawable & ob
 	Vector2f mid1{obj1.get_x() + obj1.get_width()/2.0f, obj1.get_y() + obj1.get_height()/2.0f};
 	Vector2f mid2{obj2.get_x() + obj2.get_width()/2.0f, obj2.get_y() + obj2.get_height()/2.0f};
 
-	// check if midpoint distance is greater than maximum collision distance
+	return std::make_tuple(collision_distance, mid1, mid2);
+}
+
+Vector2f CircularCollisionStrategy::get(const Drawable & obj1, const Drawable & obj2) const {
+	float collision_distance;
+	Vector2f mid1, mid2;
+
+	std::tie(collision_distance, mid1, mid2) = midpoints(obj1, obj2);
+
+	// check for collision
+	if (Util::distance(mid1, mid2) > collision_distance)
+		return Vector2f(0, 0);
+
+	// return midpoint difference
+	return mid2 - mid1;
+}
+
+bool CircularCollisionStrategy::check(const Drawable & obj1, const Drawable & obj2) const {
+	float collision_distance;
+	Vector2f mid1, mid2;
+
+	std::tie(collision_distance, mid1, mid2) = midpoints(obj1, obj2);
+
+	// check if midpoint distance is less than maximum collision distance
 	return Util::distance(mid1, mid2) <= collision_distance;
+}
+
+Vector2f PixelCollisionStrategy::get(const Drawable &, const Drawable &) const {
+	return Vector2f(0, 0);
 }
 
 bool PixelCollisionStrategy::check(const Drawable & obj1, const Drawable & obj2) const {

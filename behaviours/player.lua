@@ -97,6 +97,9 @@ function update (ticks)
 	end
 
 	if grounded then
+		sprite.pos.y = bottom - sprite.height
+		sprite.vel.y = 0
+
 		if input:check('player') and input:get_key('w') then
 			sprite.vel.y = sprite.vel.y - speed.up
 

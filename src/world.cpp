@@ -40,6 +40,11 @@ void World::init() {
 				owning.insert(platform);
 				drawables.insert(platform);
 			}
+			else if (Spec::get_instance().get_str(str + "/type") == "body") {
+				Body * body = new Body(str, Spec::get_instance().get_bool(str + "/fixed"));
+				owning.insert(body);
+				drawables.insert(body);
+			}
 			else if (Spec::get_instance().get_str(str + "/type") == "sprite") {
 				Sprite * sprite = new Sprite(str);
 				owning.insert(sprite);

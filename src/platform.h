@@ -2,10 +2,11 @@
 #define PLATFORM_H
 #include <string>
 
-#include "drawable.h"
+#include "body.h"
 #include "viewport.h"
+#include "world.h"
 
-class Platform : public Sprite {
+class Platform : public Body {
 	public:
 		enum Tile { NONE, X, Y, BOTH };
 

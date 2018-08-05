@@ -116,6 +116,9 @@ ground:
   type: platform
   index: 30
 
+  hardness: 2
+  elasticity: 100
+
   width: 1600
   height: 50
 
@@ -147,6 +150,9 @@ platform:
   type: platform
   index: 30
 
+  hardness: 2
+  elasticity: 100
+
   width: 600
   height: 50
 
@@ -175,8 +181,13 @@ platform:
   collision: rectangular
 
 feature:
-  type: sprite
+  type: body
   index: 50
+
+  hardness: 2
+  elasticity: 100
+
+  fixed: false
 
   direction: left
 
@@ -209,8 +220,13 @@ feature:
   collision: none
 
 slime:
-  type: sprite
+  type: body
   index: 51
+
+  hardness: 2
+  elasticity: 100
+
+  fixed: false
 
   direction: left
 
@@ -317,6 +333,9 @@ glider:
 player:
   type: player
   index: 100
+
+  hardness: 2
+  elasticity: 100
 
   direction: right
   state: idle

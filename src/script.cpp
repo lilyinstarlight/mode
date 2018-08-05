@@ -40,7 +40,6 @@ void Script::set_script(const std::string & s) {
 
 	try {
 		// refresh state
-		std::cerr << "himom" << std::endl;
 		lua = sol::state();
 
 		// set new script
@@ -108,6 +107,19 @@ void Script::load_api() {
 
 	// set sprite as current sprite
 	lua["sprite"] = &sprite;
+
+	// create Sprite data type
+	lua.new_usertype<Body>("Body",
+			"new", sol::factories(WrapCreate<World, Body, std::string, bool>(Engine::get_instance().get_world())),
+
+			"hardness", sol::property(&Body::get_hardness, &Body::set_hardness),
+			"elasticity", sol::property(&Body::get_elasticity, &Body::set_elasticity),
+
+			"fixed", sol::property(&Body::is_fixed)
+	);
+
+	// set sprite as current sprite
+	lua["body"] = dynamic_cast<Body *>(&sprite);
 
 	// create Sprite data type
 	lua.new_usertype<Platform>("Platform",
