@@ -23,7 +23,7 @@ function update (ticks)
 		bottom = world.height
 	end
 
-	grounded = sprite.pos.y - bottom + sprite.height >= 0 and sprite.pos.y - bottom + sprite.height <= ground.height and sprite.vel.y >= 0
+	grounded = sprite.pos.y - bottom + sprite.height >= 0 and sprite.pos.y - bottom + sprite.height <= 2 and sprite.pos.y - bottom + sprite.height <= ground.height and sprite.vel.y >= 0
 
 	if grounded then
 		sprite.pos.y = bottom - sprite.height

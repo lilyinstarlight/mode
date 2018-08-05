@@ -1,3 +1,5 @@
+#include <SDL2/SDL.h>
+
 #include "spec.h"
 #include "world.h"
 
@@ -14,6 +16,9 @@ void Body::update(unsigned int ticks, World & world) {
 		if (body == this || body->is_fixed())
 			continue;
 
+		// get collision area
+		SDL_Rect area = collision_strategy->intersection(*this, *body);
+
 		// get collision normal
 		Vector2f normal = collision_strategy->get(*this, *body);
 
@@ -22,8 +27,8 @@ void Body::update(unsigned int ticks, World & world) {
 			continue;
 
 		// set velocity to normal
-		body->set_velocity_x(body->get_velocity_x()/(std::abs(normal.get_x())*hardness + 1) + elasticity*normal.get_x());
-		body->set_velocity_y(body->get_velocity_y()/(std::abs(normal.get_y())*hardness + 1) + elasticity*normal.get_y());
+		body->set_velocity_x(body->get_velocity_x()/(std::abs(area.w*normal.get_x())*hardness + 1) + elasticity*area.w*normal.get_x());
+		body->set_velocity_y(body->get_velocity_y()/(std::abs(area.h*normal.get_y())*hardness + 1) + elasticity*area.h*normal.get_y());
 	}
 
 	Sprite::update(ticks, world);

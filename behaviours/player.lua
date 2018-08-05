@@ -67,7 +67,7 @@ function update (ticks)
 		top = 0
 	end
 
-	grounded = sprite.pos.y - bottom + sprite.height >= 0 and sprite.pos.y - bottom + sprite.height <= ground.height and sprite.vel.y >= 0
+	grounded = sprite.pos.y - bottom + sprite.height >= 0 and sprite.pos.y - bottom + sprite.height <= 2 and sprite.pos.y - bottom + sprite.height <= ground.height and sprite.vel.y >= 0
 	ceiled = top - sprite.pos.y >= 0 and top - sprite.pos.y <= ceiling.height and sprite.vel.y < 0
 
 	landing = not grounded and sprite.pos.y >= bottom - sprite.height - land*sprite.vel.y and sprite.vel.y >= 0

@@ -10,11 +10,12 @@ class CollisionStrategy {
 		CollisionStrategy() {}
 		virtual ~CollisionStrategy() {}
 
+		SDL_Rect intersection(const Drawable & obj1, const Drawable & obj2) const;
+
 		virtual Vector2f get(const Drawable & obj1, const Drawable & obj2) const = 0;
 		virtual bool check(const Drawable & obj1, const Drawable & obj2) const = 0;
 
 	protected:
-		SDL_Rect intersection(const Drawable & obj1, const Drawable & obj2) const;
 		bool visible(Uint32 pixel, const SDL_Surface * surface) const;
 };
 

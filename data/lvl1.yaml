@@ -116,8 +116,8 @@ ground:
   type: platform
   index: 30
 
-  hardness: 1
-  elasticity: 100
+  hardness: 10
+  elasticity: 10
 
   width: 1600
   height: 50
@@ -150,8 +150,8 @@ platform:
   type: platform
   index: 30
 
-  hardness: 1
-  elasticity: 100
+  hardness: 10
+  elasticity: 10
 
   width: 600
   height: 50
@@ -185,7 +185,7 @@ feature:
   index: 50
 
   hardness: 1
-  elasticity: 100
+  elasticity: 10
 
   fixed: false
 
@@ -224,7 +224,7 @@ slime:
   index: 51
 
   hardness: 1
-  elasticity: 100
+  elasticity: 10
 
   fixed: false
 
@@ -335,7 +335,7 @@ player:
   index: 100
 
   hardness: 1
-  elasticity: 100
+  elasticity: 10
 
   direction: right
   state: idle

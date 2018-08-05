@@ -17,12 +17,8 @@ SDL_Rect CollisionStrategy::intersection(const Drawable & obj1, const Drawable &
 	int w = x2 - x1;
 	int h = y2 - y1;
 
-	if (w > 0 && h > 0)
-		// return non-zero intersection
-		return {x1, y1, w, h};
-	else
-		// return empty intersection
-		return {0, 0, 0, 0};
+	// return intersection (negative width and height for no intersection)
+	return {x1, y1, w, h};
 }
 
 bool CollisionStrategy::visible(Uint32 pixel, const SDL_Surface * surface) const {
@@ -53,7 +49,7 @@ Vector2f RectangularCollisionStrategy::get(const Drawable & obj1, const Drawable
 	SDL_Rect area = intersection(obj1, obj2);
 
 	// check for collision
-	if (area.w == 0 && area.h == 0)
+	if (area.w < 0 || area.h < 0)
 		return Vector2f(0, 0);
 
 	if (area.w < area.h) {
@@ -74,8 +70,8 @@ bool RectangularCollisionStrategy::check(const Drawable & obj1, const Drawable &
 	// intersect objects
 	SDL_Rect area = intersection(obj1, obj2);
 
-	// check for non-zero intersection
-	return area.x != 0 || area.y != 0 || area.w != 0 || area.h != 0;
+	// check for non-negative intersection
+	return area.w >= 0 && area.h >= 0;
 }
 
 std::tuple<float, Vector2f, Vector2f> CircularCollisionStrategy::midpoints(const Drawable & obj1, const Drawable & obj2) const {
@@ -126,7 +122,7 @@ bool PixelCollisionStrategy::check(const Drawable & obj1, const Drawable & obj2)
 	SDL_Rect area = intersection(obj1, obj2);
 
 	// check for zero intersection
-	if (area.x == 0 && area.y == 0 && area.w == 0 && area.h == 0)
+	if (area.w < 0 || area.h < 0)
 		return false;
 
 	// create new surfaces to perform calculations with

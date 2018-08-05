@@ -16,7 +16,7 @@ DEP!=echo $(SRC) | sed -e "s/\([^ ]*\).cpp/$(BUILDDIR)\/\1.d /g"
 OBJ!=echo $(SRC) | sed -e "s/\([^ ]*\).cpp/$(BUILDDIR)\/\1.o /g"
 
 $(BUILDDIR)/%.d: $(SRCDIR)/%.cpp
-	$(CXX) $(CXXFLAGS) -MT $(@:.d=.o) -MF $@ -MM $^
+	$(CXX) $(CXXFLAGS) -MQ $(@:.d=.o) -MF $@ -MM $^
 
 $(BUILDDIR)/%.o: $(SRCDIR)/%.cpp
 	$(CXX) $(CXXFLAGS) -c -o $@ $<
