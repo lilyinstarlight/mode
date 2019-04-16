@@ -18,45 +18,78 @@
 
 #include "script.h"
 
-Script::Script() : path("behaviours"), script(""), result(""), lua(), sprite(Engine::get_instance().get_world().get_player()) {}
+Script::Script() : path("behaviours"), script(""), lua(), sprite(Engine::get_instance().get_world().get_player()) {}
 
-Script::Script(const std::string & name, Sprite & s) : path("behaviours"), script(""), result(""), lua(), sprite(s) {
+Script::Script(const std::string & name, Sprite & s) : path("behaviours"), script(""), lua(), sprite(s) {
 	// load file
 	load_file(path + "/" + name + ".lua");
 }
 
-Script::Script(const Script & s) : path(s.path), script(s.script), result(s.result), lua(), sprite(s.sprite) {}
+Script::Script(const Script & s) : path(s.path), script(s.script), lua(), sprite(s.sprite) {}
 
 void Script::load() {
 	// prepare environment
 	load_api();
 
-	// run script
-	result = lua.script(script);
+	lua.script(script);
 }
 
 void Script::set_script(const std::string & s) {
-	std::string old = script;
+	// refresh state
+	lua = sol::state();
 
-	try {
-		// refresh state
-		lua = sol::state();
+	// set new script
+	script = s;
 
-		// set new script
-		script = s;
-
-		// reload
-		load();
-	}
-	catch (std::runtime_error & err) {
-		std::string str = err.what();
-		result = "> lua error" + str.substr(str.rfind(":"));
-	}
+	// reload
+	load();
 }
 
-void Script::add_script(const std::string & s) {
-	script += "\n" + s;
-	result = lua.script(s);
+std::string Script::run(const std::string & s) {
+	try {
+		// run script
+		sol::function_result result = lua.script(s);
+
+		switch (result.get_type()) {
+			case sol::type::none:
+				return "";
+
+			case sol::type::lua_nil:
+				return "nil";
+
+			case sol::type::string:
+				return result.get<std::string>();
+
+			case sol::type::number:
+				return std::to_string(result.get<double>());
+
+			case sol::type::boolean:
+				return std::to_string(result.get<bool>());
+
+			case sol::type::thread:
+				return "<thread>";
+
+			case sol::type::function:
+				return "<function>";
+
+			case sol::type::userdata:
+				return "<userdata>";
+
+			case sol::type::lightuserdata:
+				return "<lightuserdata>";
+
+			case sol::type::table:
+				return "<table>";
+
+			default:
+				return "<unknown>";
+		}
+	}
+	catch (sol::error & err) {
+		// store error
+		std::string str = err.what();
+		return "> lua error" + str.substr(str.rfind(":"));
+	}
 }
 
 void Script::load_api() {

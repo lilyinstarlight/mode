@@ -41,19 +41,7 @@ void Console::dispatch(const SDL_Event & event) {
 			}
 			else if (event.key.keysym.sym == SDLK_RETURN) {
 				if (result.empty()) {
-					try {
-						script->add_script(command);
-						result = script->get_result();
-					}
-					catch (std::runtime_error & err) {
-						std::string str = err.what();
-						result = "> lua error" + str.substr(str.rfind(":"));
-
-						delete script;
-
-						script = new Script();
-						script->load();
-					}
+					result = script->run(command);
 
 					command.clear();
 				}

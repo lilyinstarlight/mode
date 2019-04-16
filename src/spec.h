@@ -14,13 +14,6 @@ class Spec : public Yaml {
 		Spec(const Spec &) = delete;
 		Spec & operator=(const Spec &) = delete;
 
-		void set_bool(bool val) = delete;
-		void set_int(int val) = delete;
-		void set_float(float val) = delete;
-		void set_str(const std::string & val) = delete;
-
-		void save() = delete;
-
 	private:
 		Spec() : Yaml("game") {}
 };

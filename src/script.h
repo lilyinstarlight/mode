@@ -25,13 +25,17 @@ class Script {
 		const std::string & get_script() const { return script; }
 
 		void set_script(const std::string & s);
-		void add_script(const std::string & s);
 
-		const std::string & get_result() const { return result; }
+		std::string run(const std::string & s);
 
-		template <typename... T>
-		void call(const std::string & method, T... args) {
-			lua[method].call<T...>(args...);
+		template <typename... Args>
+		void call(const std::string & method, Args... args) {
+			lua[method](args...);
+		}
+
+		template <typename T, typename... Args>
+		T call(const std::string & method, Args... args) {
+			return lua[method](args...);
 		}
 
 	private:
@@ -437,7 +441,6 @@ class Script {
 		std::string path;
 
 		std::string script;
-		std::string result;
 
 		sol::state lua;
 
