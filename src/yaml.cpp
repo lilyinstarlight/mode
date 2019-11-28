@@ -3,7 +3,7 @@
 
 #include "yaml.h"
 
-Yaml::Yaml(const std::string & filename) : path("data"), file(path + "/" + filename + ".yaml"), root() {
+Yaml::Yaml(const std::string & filename, const std::string & path) : path(path), file(path + "/" + filename + ".yaml"), root() {
 	root = YAML::LoadFile(file);
 	if (!root.IsMap())
 		root = YAML::Node(YAML::NodeType::Map);
@@ -97,7 +97,7 @@ YAML::Node Yaml::resolve(const std::string & path) const {
 	return node;
 }
 
-ModifiableYaml::ModifiableYaml(const std::string & filename) : Yaml(filename) {}
+ModifiableYaml::ModifiableYaml(const std::string & filename, const std::string & path) : Yaml(filename, path) {}
 
 ModifiableYaml::ModifiableYaml(const Yaml & yaml) : Yaml(yaml) {}
 

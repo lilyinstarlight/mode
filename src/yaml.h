@@ -7,7 +7,7 @@
 
 class Yaml {
 	public:
-		Yaml(const std::string & filename);
+		Yaml(const std::string & filename, const std::string & path = "specs");
 		Yaml(const Yaml & yaml);
 		virtual ~Yaml() {}
 
@@ -31,10 +31,9 @@ class Yaml {
 		std::string parent(const std::string & path) const;
 		std::string leaf(const std::string & path) const;
 
-		// Note: YAML::Node types are reference types that cannot be const
-		//       therefore the return value of this function can mutate the
-		//       document but this is not a huge concern given this is an
-		//       internal API
+		// Note: YAML::Node is a reference type that cannot be const therefore
+		//       the return value of this function can mutate the document.
+		//       This is not a huge concern given this is an internal API.
 		YAML::Node resolve(const std::string & path) const;
 
 		std::string file;
@@ -44,7 +43,7 @@ class Yaml {
 
 class ModifiableYaml : public Yaml {
 	public:
-		ModifiableYaml(const std::string & filename);
+		ModifiableYaml(const std::string & filename, const std::string & path = "data");
 		ModifiableYaml(const Yaml & yaml);
 		virtual ~ModifiableYaml() {}
 
@@ -60,7 +59,7 @@ class ModifiableYaml : public Yaml {
 		void write() const;
 
 	protected:
-		// Note: See note above for why this works
+		// Note: See note above for why this works.
 		YAML::Node resolve(const std::string & path) { return Yaml::resolve(path); }
 };
 #endif
