@@ -1,6 +1,6 @@
 # .:mode:.
 
-> I hope you enjoy an early preview of Mode, a side-scrolling puzzle platformer where you write the rules!
+> I hope you enjoy an early preview of .:mode:., a side-scrolling puzzle platformer where you write the rules!
 > 
 > Fund our Kickstarter today and we will totally ship the game and not just take your money!
 
