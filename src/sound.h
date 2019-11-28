@@ -19,6 +19,7 @@ class Sound {
 
 		void play(const std::string & name, int loops = 0);
 		std::string check() const { return active; }
+
 	private:
 		Sound();
 

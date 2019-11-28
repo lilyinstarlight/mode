@@ -10,42 +10,40 @@ Text & Text::get_instance() {
 }
 
 Text::~Text() {
-    TTF_CloseFont(font);
+    // clean up after ourselves
+    for (std::pair<std::string, TTF_Font *> font : fonts)
+	TTF_CloseFont(font.second);
+
     TTF_Quit();
 }
 
-Text::Text() : path("fonts"), font(nullptr), size(-1) {
+Text::Text() : path("fonts"), fonts{} {
     // init TTF
     if (TTF_Init() < 0)
 	throw std::runtime_error("Failed to initialize TTF");
 }
 
-void Text::reload() {
-    // close open font
-    if (font)
-	TTF_CloseFont(font);
-
-    // open font
-    font = TTF_OpenFont((path + "/" + Spec::get_instance().get_str("font/file")).c_str(), Spec::get_instance().get_int("font/size"));
-    size = Spec::get_instance().get_int("font/size");
-
-    if (!font)
-	throw std::runtime_error("Failed to load font");
-}
-
-void Text::write(SDL_Renderer * renderer, const std::string & text, int x, int y, float rotation, SDL_Color color) const {
-    SDL_Surface * surface = write(text, color);
+void Text::write(SDL_Renderer * renderer, const std::string & name, const std::string & text, int x, int y, float rotation, SDL_Color color) {
+    SDL_Surface * surface = write(name, text, color);
     render(renderer, surface, x, y, rotation);
     destroy(surface);
 }
 
-SDL_Surface * Text::write(const std::string & text, SDL_Color color) const {
+SDL_Surface * Text::write(const std::string & name, const std::string & text, SDL_Color color) {
+    std::unordered_map<std::string, TTF_Font *>::const_iterator pos = fonts.find(name);
+    if (pos == fonts.end()) {
+	TTF_Font * font = TTF_OpenFont((path + "/" + Spec::get_instance().get_str(name + "/file")).c_str(), Spec::get_instance().get_int(name + "/size"));
+	if (!font)
+	    throw std::runtime_error("Failed to load font");
+	fonts[name] = font;
+    }
+
     std::vector<SDL_Surface *> surfaces;
     int width = 0;
     int height = 0;
 
     for (std::string & line : split(text, '\n')) {
-	surfaces.push_back(TTF_RenderUTF8_Blended(font, line.c_str(), color));
+	surfaces.push_back(TTF_RenderUTF8_Blended(fonts[name], line.c_str(), color));
 
 	SDL_SetSurfaceAlphaMod(surfaces.back(), color.a);
 

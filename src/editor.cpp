@@ -96,7 +96,7 @@ void Editor::draw(const Viewport & viewport) const {
 
 		// draw text
 		SDL_Color color = {static_cast<Uint8>(Spec::get_instance().get_int("editor/text/r")), static_cast<Uint8>(Spec::get_instance().get_int("editor/text/g")), static_cast<Uint8>(Spec::get_instance().get_int("editor/text/b")), 255};
-		Text::get_instance().write(Context::get_instance().get_renderer(), view, rect.x + padding_font, rect.y + padding_font, 0, color);
+		Text::get_instance().write(Context::get_instance().get_renderer(), Spec::get_instance().check("editor/font") ? "editor/font" : "font/default", view, rect.x + padding_font, rect.y + padding_font, 0, color);
 	}
 }
 

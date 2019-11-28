@@ -22,16 +22,16 @@ Sound::Sound() : path("sounds"), active(), active_channel(-1), chunks{}, fade(10
 
 void Sound::reload() {
 	if (Spec::get_instance().check("sound/initial"))
-		play(Spec::get_instance().get_str("sound/initial"), -1);
+		play("sound/initial", -1);
 }
 
 void Sound::play(const std::string & name, int loops) {
 	std::unordered_map<std::string, Mix_Chunk *>::const_iterator pos = chunks.find(name);
 	if (pos == chunks.end()) {
-		Mix_Chunk * chunk = Mix_LoadWAV((path + "/" + name + ".wav").c_str());
+		Mix_Chunk * chunk = Mix_LoadWAV((path + "/" + Spec::get_instance().get_str(name + "/file")).c_str());
 
 		if (!chunk)
-			throw std::runtime_error("Failed to load audio file " + path + "/" + name + ".wav");
+			throw std::runtime_error("Failed to load audio file " + path + "/" + Spec::get_instance().get_str(name + "/file"));
 
 		chunks[name] = chunk;
 	}
@@ -49,11 +49,11 @@ void Sound::play(const std::string & name, int loops) {
 		}
 
 		if (active_channel < 0)
-			throw std::runtime_error("Failed to play audio file " + path + "/" + name + ".wav: " + std::string(Mix_GetError()));
+			throw std::runtime_error("Failed to play audio file " + path + "/" + Spec::get_instance().get_str(name + "/file") + ": " + std::string(Mix_GetError()));
 	}
 	else {
 		if (Mix_PlayChannel(-1, chunks[name], loops) < 0)
-			throw std::runtime_error("Failed to play audio file " + path + "/" + name + ".wav: " + std::string(Mix_GetError()));
+			throw std::runtime_error("Failed to play audio file " + path + "/" + Spec::get_instance().get_str(name + "/file") + ": " + std::string(Mix_GetError()));
 	}
 
 }

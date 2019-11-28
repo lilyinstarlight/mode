@@ -2,6 +2,7 @@
 #define TEXT_H
 #include <string>
 #include <vector>
+#include <unordered_map>
 
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_ttf.h>
@@ -15,22 +16,18 @@ class Text {
 		Text(const Text &) = delete;
 		const Text & operator=(const Text &) = delete;
 
-		void reload();
+		void write(SDL_Renderer * renderer, const std::string & name, const std::string & text, int x, int y, float rotation, SDL_Color color);
 
-		void write(SDL_Renderer * renderer, const std::string & text, int x, int y, float rotation, SDL_Color color) const;
-
-		SDL_Surface * write(const std::string & text, SDL_Color color) const;
+		SDL_Surface * write(const std::string & name, const std::string & text, SDL_Color color);
 		void render(SDL_Renderer * renderer, SDL_Surface * text, int x, int y, float rotation) const;
 		void destroy(SDL_Surface * text) const;
 
-		int get_size() const { return size; }
 	private:
 		Text();
 
 		std::vector<std::string> split(const std::string & string, char delimiter) const;
 
 		std::string path;
-		TTF_Font * font;
-		int size;
+		std::unordered_map<std::string, TTF_Font *> fonts;
 };
 #endif

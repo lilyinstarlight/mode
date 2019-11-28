@@ -291,12 +291,14 @@ void Script::load_api() {
 			"get_float", &Save::get_float,
 			"get_str", &Save::get_str,
 
-			"set_bool", &Save::get_bool,
-			"set_int", &Save::get_int,
-			"set_float", &Save::get_float,
-			"set_str", &Save::get_str,
+			"remove", &Save::remove,
 
-			"save", &Save::save
+			"set_bool", &Save::set_bool,
+			"set_int", &Save::set_int,
+			"set_float", &Save::set_float,
+			"set_str", &Save::set_str,
+
+			"write", &Save::write
 	);
 
 	// set spec

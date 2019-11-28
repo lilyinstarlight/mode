@@ -81,6 +81,7 @@ Sheet * ImageFactory::get_sheet(const std::string & name) {
 	SDL_Surface * sheet_surface = IMG_Load((path + "/" + Spec::get_instance().get_str(name + "/file")).c_str());
 	if (!sheet_surface)
 		throw std::runtime_error("Failed to load " + Spec::get_instance().get_str(name + "/file"));
+	surfaces[name] = sheet_surface;
 
 	// load transparency color
 	bool transparency = Spec::get_instance().check(name + "/transparency/r");

@@ -4,8 +4,10 @@
 #include "yaml.h"
 
 Yaml::Yaml(const std::string & filename) : path("data"), file(path + "/" + filename + ".yaml"), root() {
-	std::ifstream in(file);
-	root = YAML::Load(in);
+	root = YAML::LoadFile(file);
+	if (!root.IsMap())
+		root = YAML::Node(YAML::NodeType::Map);
+	root.SetStyle(YAML::EmitterStyle::Block);
 }
 
 Yaml::Yaml(const Yaml & yaml) : path(yaml.path), file(yaml.file), root(yaml.root) {}
@@ -23,7 +25,11 @@ Yaml & Yaml::operator=(const Yaml & other) {
 
 void Yaml::load(const std::string & filename) {
 	file = path + "/" + filename + ".yaml";
+
 	root = YAML::LoadFile(file);
+	if (!root.IsMap())
+		root = YAML::Node(YAML::NodeType::Map);
+	root.SetStyle(YAML::EmitterStyle::Block);
 }
 
 std::vector<std::string> Yaml::get_keys(const std::string & key) const {
@@ -60,8 +66,24 @@ std::string Yaml::get_str(const std::string & key) const {
 	return resolve(key).as<std::string>();
 }
 
+std::string Yaml::parent(const std::string & path) const {
+	std::string::size_type pos = path.rfind('/');
+	if (pos == std::string::npos)
+		return "";
+
+	return path.substr(0, pos);
+}
+
+std::string Yaml::leaf(const std::string & path) const {
+	std::string::size_type pos = path.rfind('/');
+	if (pos == std::string::npos)
+		return path;
+
+	return path.substr(path.rfind('/') + 1);
+}
+
 YAML::Node Yaml::resolve(const std::string & path) const {
-	YAML::Node node = YAML::Clone(root);
+	YAML::Node node = root;
 
 	std::stringstream ss(path);
 	std::string key;
@@ -69,7 +91,7 @@ YAML::Node Yaml::resolve(const std::string & path) const {
 		if (!node.IsMap())
 			return YAML::Node();
 
-		node = node[key];
+		node.reset(node[key]);
 	}
 
 	return node;
@@ -88,6 +110,10 @@ ModifiableYaml & ModifiableYaml::operator=(const ModifiableYaml & other) {
 	return *this;
 }
 
+void ModifiableYaml::remove(const std::string & key) {
+	resolve(parent(key)).remove(leaf(key));
+}
+
 void ModifiableYaml::set_bool(const std::string & key, bool val) {
 	resolve(key) = val;
 }
@@ -104,7 +130,7 @@ void ModifiableYaml::set_str(const std::string & key, const std::string & val) {
 	resolve(key) = val;
 }
 
-void ModifiableYaml::save() const {
+void ModifiableYaml::write() const {
 	std::ofstream out(file);
 	out << root;
 }

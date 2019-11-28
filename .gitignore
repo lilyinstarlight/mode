@@ -5,3 +5,5 @@
 build/main
 lib/lua/lua
 mode
+
+data/save.yaml

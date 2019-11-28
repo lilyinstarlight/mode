@@ -75,7 +75,7 @@ void Console::dispatch(const SDL_Event & event) {
 void Console::draw(const Viewport & viewport) const {
 	if (opened) {
 		// drawing rectable
-		SDL_Rect rect = {padding_left, viewport.get_height() - Text::get_instance().get_size() - padding_bottom - padding_font, viewport.get_width() - padding_left*2, Text::get_instance().get_size() + padding_font*2};
+		SDL_Rect rect = {padding_left, viewport.get_height() - Spec::get_instance().get_int(std::string(Spec::get_instance().check("console/font") ? "console/font" : "font/default") + "/size") - padding_bottom - padding_font, viewport.get_width() - padding_left*2, Spec::get_instance().get_int(std::string(Spec::get_instance().check("console/font") ? "console/font" : "font/default") + "/size") + padding_font*2};
 
 		// draw box
 		SDL_SetRenderDrawColor(Context::get_instance().get_renderer(), Spec::get_instance().get_int("console/box/r"), Spec::get_instance().get_int("console/box/g"), Spec::get_instance().get_int("console/box/b"), Spec::get_instance().get_int("console/box/a"));
@@ -84,8 +84,8 @@ void Console::draw(const Viewport & viewport) const {
 		// draw text
 		SDL_Color color = {static_cast<Uint8>(Spec::get_instance().get_int("console/text/r")), static_cast<Uint8>(Spec::get_instance().get_int("console/text/g")), static_cast<Uint8>(Spec::get_instance().get_int("console/text/b")), static_cast<Uint8>(Spec::get_instance().get_int("console/text/a"))};
 		if (result.empty())
-			Text::get_instance().write(Context::get_instance().get_renderer(), "> " + command + "_", rect.x + padding_font, rect.y + padding_font, 0, color);
+			Text::get_instance().write(Context::get_instance().get_renderer(), Spec::get_instance().check("console/font") ? "console/font" : "font/default", "> " + command + "_", rect.x + padding_font, rect.y + padding_font, 0, color);
 		else
-			Text::get_instance().write(Context::get_instance().get_renderer(), result, rect.x + padding_font, rect.y + padding_font, 0, color);
+			Text::get_instance().write(Context::get_instance().get_renderer(), Spec::get_instance().check("console/font") ? "console/font" : "font/default", result, rect.x + padding_font, rect.y + padding_font, 0, color);
 	}
 }

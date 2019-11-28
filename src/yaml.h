@@ -28,6 +28,13 @@ class Yaml {
 		std::string path;
 
 	protected:
+		std::string parent(const std::string & path) const;
+		std::string leaf(const std::string & path) const;
+
+		// Note: YAML::Node types are reference types that cannot be const
+		//       therefore the return value of this function can mutate the
+		//       document but this is not a huge concern given this is an
+		//       internal API
 		YAML::Node resolve(const std::string & path) const;
 
 		std::string file;
@@ -43,11 +50,17 @@ class ModifiableYaml : public Yaml {
 
 		ModifiableYaml & operator=(const ModifiableYaml & other);
 
+		void remove(const std::string & key);
+
 		void set_bool(const std::string & key, bool val);
 		void set_int(const std::string & key, int val);
 		void set_float(const std::string & key, float val);
 		void set_str(const std::string & key, const std::string & val);
 
-		void save() const;
+		void write() const;
+
+	protected:
+		// Note: See note above for why this works
+		YAML::Node resolve(const std::string & path) { return Yaml::resolve(path); }
 };
 #endif

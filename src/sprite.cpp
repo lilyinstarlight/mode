@@ -163,7 +163,7 @@ void Sprite::revive() {
 	push_state("revive");
 
 	if (Spec::get_instance().check(get_name() + "/sound/revive"))
-		Sound::get_instance().play(Spec::get_instance().get_str(get_name() + "/sound/revive"));
+		Sound::get_instance().play(get_name() + "/sound/revive");
 }
 
 void Sprite::kill() {
@@ -175,7 +175,7 @@ void Sprite::kill() {
 	push_state("kill");
 
 	if (Spec::get_instance().check(get_name() + "/sound/kill"))
-		Sound::get_instance().play(Spec::get_instance().get_str(get_name() + "/sound/kill"));
+		Sound::get_instance().play(get_name() + "/sound/kill");
 }
 
 const Image * Sprite::get_image() const {

@@ -6,14 +6,11 @@
 
 class SpriteSheet {
 	public:
-		SpriteSheet(SDL_Surface * s, int width, int height, bool own = true) : src(s), view{0, 0, width, height}, rows(s->h/height), columns(s->w/width), frames(rows*columns), owning(own) {}
+		SpriteSheet(SDL_Surface * s, int width, int height) : src(s), view{0, 0, width, height}, rows(s->h/height), columns(s->w/width), frames(rows*columns) {}
 
-		~SpriteSheet() {
-			if (owning)
-				SDL_FreeSurface(src);
-		}
+		~SpriteSheet() {}
 
-		SpriteSheet(const SpriteSheet & ss) : src(ss.src), view(ss.view), rows(ss.rows), columns(ss.columns), frames(ss.frames), owning(false) {}
+		SpriteSheet(const SpriteSheet & ss) : src(ss.src), view(ss.view), rows(ss.rows), columns(ss.columns), frames(ss.frames) {}
 		const SpriteSheet & operator=(const SpriteSheet & ss) = delete;
 
 		unsigned int get_rows() const    { return rows; }
@@ -36,7 +33,5 @@ class SpriteSheet {
 		SDL_Surface * src;
 		SDL_Rect view;
 		unsigned int rows, columns, frames;
-
-		bool owning;
 };
 #endif

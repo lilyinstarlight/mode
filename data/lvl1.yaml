@@ -12,11 +12,13 @@ world:
   far: 300
 
 font:
-  file: PressStart2P.ttf
-  size: 16
+  default:
+    file: PressStart2P.ttf
+    size: 16
 
 sound:
-  initial: theme
+  initial:
+    file: theme.wav
 
 console:
   box: {r: 20, g: 20, b: 20, a: 200}
@@ -37,11 +39,8 @@ hud:
   rotation: 0
   border: {r: 20, g: 20, b: 20, a: 0, width: 0}
 
-  box:
-    {r: 20, g: 20, b: 20, a: 200}
-
-  text:
-    {r: 0, g: 255, b: 0, a: 255}
+  box: {r: 20, g: 20, b: 20, a: 200}
+  text: {r: 0, g: 255, b: 0, a: 255}
 
   str: |
     +------------------------+
@@ -328,7 +327,8 @@ glider:
   collision: pixel
 
   sound:
-    revive: shoot
+    revive:
+      file: shoot.wav
 
 player:
   type: player

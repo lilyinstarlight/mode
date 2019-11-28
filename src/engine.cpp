@@ -42,7 +42,6 @@ void Engine::run() {
 	Spec::get_instance().load(loaded);
 	Context::get_instance().reload();
 	Sound::get_instance().reload();
-	Text::get_instance().reload();
 
 	if (Spec::get_instance().check("editor/box/r"))
 		editor = new Editor();

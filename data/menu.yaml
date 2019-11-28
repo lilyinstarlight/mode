@@ -8,14 +8,17 @@ view:
 world:
   width: 1600
   height: 600
+
   far: 100
 
 font:
-  file: PressStart2P.ttf
-  size: 16
+  default:
+    file: PressStart2P.ttf
+    size: 16
 
 sound:
-  initial: theme
+  initial:
+    file: theme.wav
 
 console:
   box: {r: 20, g: 20, b: 20, a: 200}
