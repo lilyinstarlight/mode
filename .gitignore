@@ -1,9 +1,5 @@
-*.d
-*.o
-*.a
+/build
+/lib/lua/lua
+/mode
 
-build/main
-lib/lua/lua
-mode
-
-data/save.yaml
+/data

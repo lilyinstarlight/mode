@@ -10,6 +10,7 @@ LDLIBS=-lm -ldl `sdl2-config --libs` -lSDL2_image -lSDL2_ttf -lSDL2_mixer -lSDL2
 SRCDIR=src
 LIBDIR=lib
 BUILDDIR=build
+DATADIR=data
 
 SRC!=find $(SRCDIR) -maxdepth 1 -name "*.cpp" -printf "%f "
 DEP!=echo $(SRC) | sed -e "s/\([^ ]*\).cpp/$(BUILDDIR)\/\1.d /g"
@@ -21,13 +22,16 @@ $(BUILDDIR)/%.d: $(SRCDIR)/%.cpp
 $(BUILDDIR)/%.o: $(SRCDIR)/%.cpp
 	$(CXX) $(CXXFLAGS) -c -o $@ $<
 
+all: $(DEP) $(EXE) $(DATADIR)
+
 $(EXE): $(OBJ) $(LIBDIR)/lua/liblua.a
 	$(CXX) $(LDFLAGS) -o $@ $^ $(LDLIBS)
 
 $(LIBDIR)/lua/liblua.a: $(LIBDIR)/lua/makefile
 	+make -C $(LIBDIR)/lua CC=$(CC) a
 
-all: $(DEP) $(EXE)
+$(DATADIR):
+	mkdir -p data
 
 clean:
 	$(RM) $(LIBDIR)/lua/{*.d,*.o,*.a,lua}
