@@ -2,4 +2,7 @@
 /lib/lua/lua
 /mode
 
+/dist
+/mode.tar.gz
+
 /data
