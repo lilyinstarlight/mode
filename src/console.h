@@ -20,13 +20,13 @@ class Console : public Drawable {
 		virtual void load() {}
 
 		virtual void dispatch(const SDL_Event & event);
-		virtual void draw(const Viewport & viewport) const;
-		virtual void update(unsigned int, World &) {}
+		virtual void draw(const Viewport &) const;
+		virtual void update(unsigned int, World &);
 
 		virtual int get_width() const { return 0; }
 		virtual int get_height() const { return 0; }
 
-		virtual const SDL_Surface * get_surface() const { return surface; };
+		virtual const SDL_Surface * get_surface() const { return text; };
 		virtual const Image * get_image() const { return nullptr; };
 
 		void open()  { opened = true;  }
@@ -40,12 +40,19 @@ class Console : public Drawable {
 
 		bool opened;
 		std::string command;
+		int status;
 		std::string result;
+		std::string prompt;
 
-		SDL_Surface * surface;
+		std::string font;
+		SDL_Color color;
+		SDL_Color box;
+
+		SDL_Surface * text;
+		SDL_Rect size;
 
 		int padding_bottom;
 		int padding_left;
-		int padding_font;
+		int padding_text;
 };
 #endif

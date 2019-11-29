@@ -3,11 +3,8 @@
 
 #include "yaml.h"
 
-Yaml::Yaml(const std::string & filename, const std::string & path) : path(path), file(path + "/" + filename + ".yaml"), root() {
-	root = YAML::LoadFile(file);
-	if (!root.IsMap())
-		root = YAML::Node(YAML::NodeType::Map);
-	root.SetStyle(YAML::EmitterStyle::Block);
+Yaml::Yaml(const std::string & filename, const std::string & path) : path(path), file(), root() {
+	load(filename);
 }
 
 Yaml::Yaml(const Yaml & yaml) : path(yaml.path), file(yaml.file), root(yaml.root) {}
@@ -26,10 +23,12 @@ Yaml & Yaml::operator=(const Yaml & other) {
 void Yaml::load(const std::string & filename) {
 	file = path + "/" + filename + ".yaml";
 
-	root = YAML::LoadFile(file);
+	std::ifstream fin(file);
+	if (fin)
+		root = YAML::Load(fin);
+
 	if (!root.IsMap())
 		root = YAML::Node(YAML::NodeType::Map);
-	root.SetStyle(YAML::EmitterStyle::Block);
 }
 
 std::vector<std::string> Yaml::get_keys(const std::string & key) const {
@@ -132,5 +131,6 @@ void ModifiableYaml::set_str(const std::string & key, const std::string & val) {
 
 void ModifiableYaml::write() const {
 	std::ofstream out(file);
-	out << root;
+	if (root.size() > 0)
+		out << root << std::endl;
 }

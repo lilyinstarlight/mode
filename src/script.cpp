@@ -31,7 +31,10 @@ void Script::load() {
 	// prepare environment
 	load_api();
 
-	lua.script(script);
+	if (script.empty())
+		lua.require_file("repl", "libs/repl.lua");
+	else
+		lua.script(script);
 }
 
 void Script::set_script(const std::string & s) {
@@ -45,55 +48,34 @@ void Script::set_script(const std::string & s) {
 	load();
 }
 
-std::string Script::run(const std::string & s) {
+std::tuple<int, std::string> Script::repl(const std::string & s) {
 	try {
-		// run script
-		sol::function_result result = lua.script(s);
+		int status;
+		sol::object result;
 
-		switch (result.get_type()) {
-			case sol::type::none:
-				return "";
+		// repl line
+		sol::tie(status, result) = lua["repl"](s);
 
-			case sol::type::lua_nil:
-				return "nil";
+		std::string str;
+		if (result.get_type() == sol::type::lua_nil)
+			str = "";
+		else
+			str = result.as<std::string>();
 
-			case sol::type::string:
-				return result.get<std::string>();
-
-			case sol::type::number:
-				return std::to_string(result.get<double>());
-
-			case sol::type::boolean:
-				return std::to_string(result.get<bool>());
-
-			case sol::type::thread:
-				return "<thread>";
-
-			case sol::type::function:
-				return "<function>";
-
-			case sol::type::userdata:
-				return "<userdata>";
-
-			case sol::type::lightuserdata:
-				return "<lightuserdata>";
-
-			case sol::type::table:
-				return "<table>";
-
-			default:
-				return "<unknown>";
-		}
+		return std::make_tuple(status, str);
 	}
 	catch (sol::error & err) {
 		// store error
 		std::string str = err.what();
-		return "> lua error" + str.substr(str.rfind(":"));
+		return std::make_tuple<int, std::string>(-1, "internal error" + str.substr(str.rfind(":")));
 	}
 }
 
 void Script::load_api() {
-	lua.open_libraries(sol::lib::base, sol::lib::math);
+	if (script.empty())
+		lua.open_libraries(sol::lib::base, sol::lib::package, sol::lib::coroutine, sol::lib::string, sol::lib::math, sol::lib::table, sol::lib::debug);
+	else
+		lua.open_libraries(sol::lib::base, sol::lib::package, sol::lib::coroutine, sol::lib::string, sol::lib::math, sol::lib::table);
 
 	// create Vector data type
 	lua.new_usertype<Vector2f>("Vector",

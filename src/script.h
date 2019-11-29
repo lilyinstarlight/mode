@@ -1,6 +1,7 @@
 #ifndef SCRIPT_H
 #define SCRIPT_H
 #include <string>
+#include <tuple>
 #include <unordered_map>
 #include <vector>
 
@@ -26,7 +27,7 @@ class Script {
 
 		void set_script(const std::string & s);
 
-		std::string run(const std::string & s);
+		std::tuple<int, std::string> repl(const std::string & s);
 
 		template <typename... Args>
 		void call(const std::string & method, Args... args) {

@@ -4,7 +4,7 @@ function dispatch (event)
 end
 
 function update (ticks)
-	if math.sqrt(math.pow(sprite.pos.x - projectile.origin.x, 2) + math.pow(sprite.pos.y - projectile.origin.y, 2)) > max then
+	if math.sqrt((sprite.pos.x - projectile.origin.x)^2 + (sprite.pos.y - projectile.origin.y)^2) > max then
 		projectile:kill()
 	end
 

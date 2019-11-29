@@ -93,7 +93,7 @@ Sheet * ImageFactory::get_sheet(const std::string & name) {
 	}
 
 	// get number of frames
-	unsigned frames = Spec::get_instance().get_int(name + "/frames");
+	unsigned int frames = Spec::get_instance().get_int(name + "/frames");
 
 	// create vector for images, surfaces, and textures
 	std::vector<Image *> images;

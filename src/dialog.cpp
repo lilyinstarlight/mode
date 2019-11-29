@@ -15,20 +15,21 @@ Dialog::Dialog(const std::string & name, const std::string & text, bool top, boo
 		opened(open),
 		padding_text(4),
 		str(text == "" ? Spec::get_instance().get_str(name + "/str") : text),
+		font(Spec::get_instance().check(name + "/font") ? name + "/font" : "font/default"),
 		color{static_cast<Uint8>(Spec::get_instance().get_int(name + "/text/r")), static_cast<Uint8>(Spec::get_instance().get_int(name + "/text/g")), static_cast<Uint8>(Spec::get_instance().get_int(name + "/text/b")), static_cast<Uint8>(Spec::get_instance().get_int(name + "/text/a"))},
 		box{static_cast<Uint8>(Spec::get_instance().get_int(name + "/box/r")), static_cast<Uint8>(Spec::get_instance().get_int(name + "/box/g")), static_cast<Uint8>(Spec::get_instance().get_int(name + "/box/b")), static_cast<Uint8>(Spec::get_instance().get_int(name + "/box/a"))},
 		border{static_cast<Uint8>(Spec::get_instance().get_int(name + "/border/r")), static_cast<Uint8>(Spec::get_instance().get_int(name + "/border/g")), static_cast<Uint8>(Spec::get_instance().get_int(name + "/border/b")), static_cast<Uint8>(Spec::get_instance().get_int(name + "/border/a"))},
 		border_width(Spec::get_instance().get_int(name + "/border/width")),
-		text(Text::get_instance().write(Spec::get_instance().check(name + "/font") ? name + "/font" : "font/default", str, color)),
+		text(Text::get_instance().write(font, str, color)),
 		size{0, 0, 0, 0} {}
 
-Dialog::Dialog(const Dialog & dialog) : Drawable(dialog), above(dialog.above), opened(dialog.opened), padding_text(dialog.padding_text), str(dialog.str), color(dialog.color), box(dialog.box), border(dialog.border), border_width(dialog.border_width), text(dialog.text), size(dialog.size) {}
+Dialog::Dialog(const Dialog & dialog) : Drawable(dialog), above(dialog.above), opened(dialog.opened), padding_text(dialog.padding_text), str(dialog.str), font(dialog.font), color(dialog.color), box(dialog.box), border(dialog.border), border_width(dialog.border_width), text(Text::get_instance().write(font, str, color)), size(dialog.size) {}
 
 void Dialog::update(unsigned int, World &) {
 	if (opened) {
 		// recreate text surface
 		Text::get_instance().destroy(text);
-		text = Text::get_instance().write(Spec::get_instance().check(get_name() + "/font") ? get_name() + "/font" : "font/default", str, color);
+		text = Text::get_instance().write(font, str, color);
 
 		// calculate size
 		size.x = get_x();

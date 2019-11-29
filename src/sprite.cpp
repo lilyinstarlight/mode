@@ -119,26 +119,27 @@ void Sprite::update(unsigned int ticks, World & world) {
 	if (sheet->get_interval() > 0 && frame_timer > sheet->get_interval()) {
 		state.back().second += 1;
 
-		if (state.back().second >= static_cast<unsigned int>(sheet->get_frames())) {
-			if (!alive) {
-				world.remove(*this);
-				return;
-			}
-
-			if (sheet->get_loop())
+		if (state.back().second >= sheet->get_frames()) {
+			if (sheet->get_loop()) {
 				state.back().second = 0;
+			}
 			else {
 				if (state.size() > 0)
 					state.pop_back();
 				else
 					state.back().second = 0;
 			}
+
+			if (!alive) {
+				world.remove(*this);
+				return;
+			}
 		}
 
 		frame_timer = 0;
 	}
 
-	// run script obverse for observers as necessary
+	// run script observe for observers as necessary
 	observer_timer += ticks;
 	if (observer_timer > observer_interval) {
 		for (Sprite * observer : observers)

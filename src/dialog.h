@@ -2,6 +2,8 @@
 #define DIALOG_H
 #include <string>
 
+#include <SDL2/SDL.h>
+
 #include "drawable.h"
 #include "image.h"
 #include "input.h"
@@ -44,6 +46,7 @@ class Dialog : public Drawable {
 		int padding_text;
 
 		std::string str;
+		std::string font;
 		SDL_Color color;
 		SDL_Color box;
 		SDL_Color border;
