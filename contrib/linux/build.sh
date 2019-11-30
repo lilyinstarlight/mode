@@ -18,7 +18,7 @@ HOMEPAGE="https://github.com/fkmclane/mode"
 CONTACT="Foster McLane"
 EMAIL="fkmclane@gmail.com"
 
-DOMAIN="io.fooster.mode"
+DOMAIN="io.fooster"
 
 BIN_DIR="bin"
 TMP_DIR="tmp"
