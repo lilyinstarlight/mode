@@ -154,8 +154,8 @@ void Editor::close() {
 		script->set_script(ss.str());
 	}
 	catch (std::runtime_error & err) {
-		std::string str = err.what();
-		result = "> lua error" + str.substr(str.rfind(":"));
+		//TODO: actually put this error in the interface
+		result = err.what();
 
 		return;
 	}

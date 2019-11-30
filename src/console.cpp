@@ -70,8 +70,11 @@ void Console::dispatch(const SDL_Event & event) {
 			}
 		}
 		else if (event.type == SDL_TEXTINPUT && std::string(event.text.text) != "`") {
-			// record text
-			command += event.text.text;
+			if (result.empty())
+				// record text
+				command += event.text.text;
+			else
+				result.clear();
 		}
 	}
 	else {

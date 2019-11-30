@@ -18,20 +18,20 @@
 
 #include "script.h"
 
-Script::Script() : path("behaviours"), script(""), lua(), sprite(Engine::get_instance().get_world().get_player()) {}
+Script::Script() : path("behaviours"), interactive(true), script(""), lua(), sprite(Engine::get_instance().get_world().get_player()) {}
 
-Script::Script(const std::string & name, Sprite & s) : path("behaviours"), script(""), lua(), sprite(s) {
+Script::Script(const std::string & name, Sprite & s) : path("behaviours"), interactive(false), script(""), lua(), sprite(s) {
 	// load file
 	load_file(path + "/" + name + ".lua");
 }
 
-Script::Script(const Script & s) : path(s.path), script(s.script), lua(), sprite(s.sprite) {}
+Script::Script(const Script & s) : path(s.path), interactive(s.interactive), script(s.script), lua(), sprite(s.sprite) {}
 
 void Script::load() {
 	// prepare environment
 	load_api();
 
-	if (script.empty())
+	if (interactive)
 		lua.require_file("repl", "libs/repl.lua");
 	else
 		lua.script(script);
@@ -49,6 +49,9 @@ void Script::set_script(const std::string & s) {
 }
 
 std::tuple<int, std::string> Script::repl(const std::string & s) {
+	if (!interactive)
+		return std::make_tuple<int, std::string>(-1, "error: non-interactive interpreter");
+
 	try {
 		int status;
 		sol::object result;
@@ -65,14 +68,13 @@ std::tuple<int, std::string> Script::repl(const std::string & s) {
 		return std::make_tuple(status, str);
 	}
 	catch (sol::error & err) {
-		// store error
-		std::string str = err.what();
-		return std::make_tuple<int, std::string>(-1, "internal error" + str.substr(str.rfind(":")));
+		// return internal error not caught by REPL
+		return std::make_tuple<int, std::string>(-1, "internal error: " + std::string(err.what()));
 	}
 }
 
 void Script::load_api() {
-	if (script.empty())
+	if (interactive)
 		lua.open_libraries(sol::lib::base, sol::lib::package, sol::lib::coroutine, sol::lib::string, sol::lib::math, sol::lib::table, sol::lib::debug);
 	else
 		lua.open_libraries(sol::lib::base, sol::lib::package, sol::lib::coroutine, sol::lib::string, sol::lib::math, sol::lib::table);

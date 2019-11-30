@@ -24,7 +24,6 @@ class Script {
 		void load();
 
 		const std::string & get_script() const { return script; }
-
 		void set_script(const std::string & s);
 
 		std::tuple<int, std::string> repl(const std::string & s);
@@ -441,6 +440,7 @@ class Script {
 
 		std::string path;
 
+		bool interactive;
 		std::string script;
 
 		sol::state lua;
