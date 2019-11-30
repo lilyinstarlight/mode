@@ -43,8 +43,10 @@ clean:
 dist: all
 	mkdir -p $(DISTDIR)
 	cp -a $(DIST) $(DISTDIR)/
+
+tgz: dist
 	cd $(DISTDIR) && tar czf ../$(EXE).tar.gz $(DIST)
 
-.PHONY: all clean dist
+.PHONY: all clean dist tgz
 
 -include $(DEP)
