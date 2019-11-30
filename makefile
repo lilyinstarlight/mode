@@ -1,6 +1,11 @@
 EXE=mode
 DEBUG?=1
 
+CC?=gcc
+CXX?=g++
+
+include platform.mk
+
 SRCDIR=src
 LIBDIR=vendor
 BUILDDIR=build
@@ -8,11 +13,6 @@ DATADIR=data
 DISTDIR=dist
 
 DIST:=behaviours data fonts libs sounds specs textures $(EXE)
-
-CC?=gcc
-CXX?=g++
-
-include platform.mk
 
 SRC=$(shell find $(SRCDIR) -maxdepth 1 -name "*.cpp" -printf "%f ")
 DEP=$(shell echo $(SRC) | sed -e "s/\([^ ]*\).cpp/$(BUILDDIR)\/\1.d /g")
