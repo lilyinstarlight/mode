@@ -59,13 +59,13 @@ else ifneq ($(findstring mingw, $(MACHINE)),)
 
 ifeq ($(DEBUG), 1)
 
-CXXFLAGS?=-std=c++14 -O2 -mwindows -Dmain=WinMain -ggdb -Wall -Wpedantic -Wextra -Weffc++ -Werror -isystem $(LIBDIR) -isystem $(LIBDIR)/lua -isystem $(LIBDIR)/sol2 `sdl2-config --cflags` -I `sdl2-config --prefix`/include/ `pkg-config --cflags yaml-cpp`
+CXXFLAGS?=-std=c++14 -O2 -mwindows -ggdb -Wall -Wpedantic -Wextra -Weffc++ -Werror -isystem $(LIBDIR) -isystem $(LIBDIR)/lua -isystem $(LIBDIR)/sol2 `sdl2-config --cflags` -I `sdl2-config --prefix`/include/ `pkg-config --cflags yaml-cpp`
 LDFLAGS?=-std=c++14 -O2 -mwindows
 LDLIBS?=-lm `sdl2-config --libs` -lSDL2_image -lSDL2_ttf -lSDL2_mixer -lSDL2_gfx `pkg-config --libs yaml-cpp`
 
 else
 
-CXXFLAGS?=-std=c++14 -O2 -mwindows -Dmain=WinMain -DNDEBUG -Wall -Wpedantic -Wextra -Weffc++ -isystem $(LIBDIR) -isystem $(LIBDIR)/lua -isystem $(LIBDIR)/sol2 `sdl2-config --cflags` -I `sdl2-config --prefix`/include/ `pkg-config --cflags yaml-cpp`
+CXXFLAGS?=-std=c++14 -O2 -mwindows -DNDEBUG -Wall -Wpedantic -Wextra -Weffc++ -isystem $(LIBDIR) -isystem $(LIBDIR)/lua -isystem $(LIBDIR)/sol2 `sdl2-config --cflags` -I `sdl2-config --prefix`/include/ `pkg-config --cflags yaml-cpp`
 LDFLAGS?=-std=c++14 -O2 -mwindows
 LDLIBS?=-lm `sdl2-config --libs` -lSDL2_image -lSDL2_ttf -lSDL2_mixer -lSDL2_gfx `pkg-config --libs yaml-cpp`
 
