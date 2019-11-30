@@ -13,7 +13,7 @@
 4. Copy over source code
 	4.1. Run `cp -r /c/Users/[user]/Downloads/mode/ ./mode/`
 7. Build project
-	7.1. Run `cd mode; make dist; cd -`
+	7.1. Run `cd mode; make dist DEBUG=0; cd -`
 8. Copy executable and assets
 	8.1. Run `mkdir distrib`
 	8.2. Run `cp -r mode/dist/* distrib'

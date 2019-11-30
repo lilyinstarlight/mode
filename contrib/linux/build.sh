@@ -52,7 +52,7 @@ cp -r "$TMP_DIR"/"$NAME" "$BLD_DIR"/"$NAME"
 
 pushd "$BLD_DIR"/"$NAME"
 make clean
-make dist
+make dist DEBUG=0
 EXE="$(find dist -maxdepth 1 -type f -perm -u+x -printf '%f\n' | head -n1)"
 popd
 

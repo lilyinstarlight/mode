@@ -2,7 +2,7 @@
 	1.1. Go to https://brew.sh and run the install command from the page
 	1.2. Run `brew install sdl2{,_image,_mixer,_ttf,_gfx} yaml-cpp`
 2. Build project
-	2.1. Run `cd mode; make dist; cd -`
+	2.1. Run `cd mode; make dist DEBUG=0; cd -`
 3. Copy executable and assets
 	3.1. Run `mkdir -p distrib`
 	3.2. Run `cp -r mode/dist/* distrib'
