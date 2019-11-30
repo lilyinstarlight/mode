@@ -1,8 +1,8 @@
 /build
 /lib/lua/lua
 /mode
+/mode.exe
 
 /dist
-/mode.tar.gz
 
 /data
