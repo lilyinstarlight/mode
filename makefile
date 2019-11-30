@@ -23,17 +23,21 @@ all: $(DEP) $(EXE) $(DATADIR)
 $(EXE): $(OBJ) $(LIBDIR)/lua/liblua.a
 	$(CXX) $(LDFLAGS) -o $@ $^ $(LDLIBS)
 
-$(BUILDDIR)/%.d: $(BUILDDIR) $(SRCDIR)/%.cpp
-	$(CXX) $(CXXFLAGS) -MQ $(@:.d=.o) -MF $@ -MM $(word 2,$^)
+$(BUILDDIR)/%.d: $(SRCDIR)/%.cpp
+	$(CXX) $(CXXFLAGS) -MQ $(@:.d=.o) -MF $@ -MM $<
 
-$(BUILDDIR)/%.o: $(BUILDDIR) $(SRCDIR)/%.cpp
-	$(CXX) $(CXXFLAGS) -c -o $@ $(word 2,$^)
-
-$(BUILDDIR):
-	mkdir -p $@
+$(BUILDDIR)/%.o: $(SRCDIR)/%.cpp
+	$(CXX) $(CXXFLAGS) -c -o $@ $<
 
 $(LIBDIR)/lua/liblua.a: $(LIBDIR)/lua/makefile
 	+make -C $(LIBDIR)/lua CC=$(CC) MYCFLAGS="$(LUA_CFLAGS)" MYLDFLAGS="$(LUA_LDFLAGS)" MYLIBS="$(LUA_LDLIBS)" a
+
+$(DEP): | $(BUILDDIR)
+
+$(OBJ): | $(BUILDDIR)
+
+$(BUILDDIR):
+	mkdir -p $@
 
 $(DATADIR):
 	mkdir -p $@
