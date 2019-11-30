@@ -121,14 +121,8 @@ rm -f appimagetool
 wget "https://github.com/AppImage/AppImageKit/releases/download/continuous/appimagetool-x86_64.AppImage"
 chmod +x appimagetool-x86_64.AppImage
 ln -s appimagetool-x86_64.AppImage appimagetool
-
-rm -f appstreamcli-x86_64.AppImage
-rm -f appstreamcli
-wget "https://github.com/AppImage/appimage.github.io/releases/download/deps/appstreamcli-x86_64.AppImage"
-chmod +x appstreamcli-x86_64.AppImage
-ln -s appstreamcli-x86_64.AppImage appstreamcli
 popd
 
-PATH="$BIN_DIR:$PATH" appimagetool "$IMG_DIR"
+"$BIN_DIR"/appimagetool "$IMG_DIR"
 
 mv "$NAME-x86_64.AppImage" "$NAME.AppImage"
