@@ -1,5 +1,5 @@
 EXE=mode
-DEBUG?=0
+DEBUG?=1
 
 SRCDIR=src
 LIBDIR=vendor
