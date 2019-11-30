@@ -1,0 +1,30 @@
+1. Get MSYS2
+	1.1. Go to http://www.msys2.org/
+	1.2. Download 'msys2-x86_64-[date].exe'
+	1.3. Run installer
+2. Update MSYS2
+	2.1. Open MSYS2 MINGW64
+	2.2. Run `pacman -Syu`
+	2.3. Close window
+	2.1. Open MSYS2 MINGW64
+	2.2. Run `pacman -Syu`
+3. Install dependencies
+	3.1. Run `pacman -S base-devel mingw-w64-x86_64-{gcc,smpeg2,SDL2_ttf,SDL2_mixer,SDL2_image,SDL2_gfx,SDL2_net,SDL2,yaml-cpp}`
+4. Copy over source code
+	4.1. Run `cp -r /c/Users/[user]/Downloads/mode/ ./mode/`
+5. Edit 'mode/src/main.cpp'
+	5.1. Change `main` to `WinMain`
+6. Edit 'makefile'
+	6.1. Add '-mwindows' to CXXFLAGS and LDFLAGS
+7. Build project
+	7.1. Run `cd mode; make dist; cd -`
+8. Copy executable and assets
+	8.1. Run `mkdir distrib`
+	8.2. Run `cp -r mode/dist/* distrib'
+9. Gather DLLs
+	9.1. Run `ldd distrib/mode.exe`
+	9.2. Copy DLLs that begin with '/mingw64' to new 'distrib' folder
+10. Distribute
+	10.1 Run `cd distrib; zip -r ../mode.zip *; cd -`
+	10.2 Run `cp mode.zip /c/Users/[user]/Downloads/mode.zip`
+11. Artifact is 'mode.zip'
