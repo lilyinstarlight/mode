@@ -56,7 +56,7 @@ make dist DEBUG=0
 EXE="$(find dist -maxdepth 1 -type f -perm -u+x -printf '%f\n' | head -n1)"
 popd
 
-for DIST_FILE in "$TMP_DIR"/"$NAME"/dist/*; do
+for DIST_FILE in "$BLD_DIR"/"$NAME"/dist/*; do
   if [ "$(basename "$DIST_FILE")" == "$EXE" ]; then
     continue
   fi
