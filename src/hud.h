@@ -11,7 +11,7 @@ class HUD : public Dialog {
 
 		virtual ~HUD() {}
 
-		const HUD & operator=(const HUD & hud) = delete;
+		const HUD & operator=(const HUD &) = delete;
 
 		virtual void update(unsigned int ticks, World & world);
 

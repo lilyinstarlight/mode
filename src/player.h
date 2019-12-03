@@ -10,8 +10,8 @@ class Player : public Body {
 		Player();
 		virtual ~Player();
 
-		Player(const Player & player) = delete;
-		const Player & operator=(const Player & player) = delete;
+		Player(const Player &) = delete;
+		const Player & operator=(const Player &) = delete;
 
 		virtual void load();
 		virtual void update(unsigned int ticks, World & world);

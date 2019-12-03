@@ -15,7 +15,7 @@ class Dialog : public Drawable {
 
 		virtual ~Dialog() {}
 
-		const Dialog & operator=(const Dialog & dialog) = delete;
+		const Dialog & operator=(const Dialog &) = delete;
 
 		virtual void load() {}
 

@@ -11,7 +11,7 @@ class SpriteSheet {
 		~SpriteSheet() {}
 
 		SpriteSheet(const SpriteSheet & ss) : src(ss.src), view(ss.view), rows(ss.rows), columns(ss.columns), frames(ss.frames) {}
-		const SpriteSheet & operator=(const SpriteSheet & ss) = delete;
+		const SpriteSheet & operator=(const SpriteSheet &) = delete;
 
 		unsigned int get_rows() const    { return rows; }
 		unsigned int get_columns() const { return columns; }

@@ -11,7 +11,7 @@ class Body : public Sprite {
 		Body(const std::string & name, bool f = false);
 		Body(const Body & b);
 
-		const Body & operator=(const Body & b) = delete;
+		const Body & operator=(const Body &) = delete;
 
 		virtual void update(unsigned int ticks, World & world);
 

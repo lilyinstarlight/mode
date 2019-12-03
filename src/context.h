@@ -10,8 +10,8 @@ class Context {
 
 		~Context();
 
-		Context(const Context & context) = delete;
-		const Context & operator=(const Context & context) = delete;
+		Context(const Context &) = delete;
+		const Context & operator=(const Context &) = delete;
 
 		void reload();
 

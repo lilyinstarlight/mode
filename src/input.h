@@ -14,8 +14,8 @@ class Input {
 
 		~Input() {}
 
-		Input(const Input & input) = delete;
-		const Input & operator=(const Input & input) = delete;
+		Input(const Input &) = delete;
+		const Input & operator=(const Input &) = delete;
 
 		void grab(const std::string & name) {
 			// add to front of list

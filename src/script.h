@@ -19,7 +19,7 @@ class Script {
 
 		~Script() {}
 
-		const Script & operator=(const Script & s) = delete;
+		const Script & operator=(const Script &) = delete;
 
 		void load();
 

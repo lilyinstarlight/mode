@@ -17,7 +17,7 @@ class Editor : public Drawable {
 
 		virtual ~Editor() {}
 
-		const Editor & operator=(const Editor & editor) = delete;
+		const Editor & operator=(const Editor &) = delete;
 
 		virtual void load() {}
 

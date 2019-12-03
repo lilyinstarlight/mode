@@ -15,7 +15,7 @@ class Console : public Drawable {
 
 		virtual ~Console();
 
-		const Console & operator=(const Console & console) = delete;
+		const Console & operator=(const Console &) = delete;
 
 		virtual void load() {}
 

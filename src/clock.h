@@ -6,8 +6,8 @@ class Clock {
 
 		~Clock() {}
 
-		Clock(const Clock & clock) = delete;
-		const Clock & operator=(const Clock & clock) = delete;
+		Clock(const Clock &) = delete;
+		const Clock & operator=(const Clock &) = delete;
 
 		unsigned int get_ticks(); // not const since it updates cur_time
 		int get_fps(); // not const since it updates fps

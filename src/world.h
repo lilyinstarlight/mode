@@ -15,8 +15,8 @@ class World {
 		World();
 		~World();
 
-		World(const World & w) = delete;
-		const World & operator=(const World & w) = delete;
+		World(const World &) = delete;
+		const World & operator=(const World &) = delete;
 
 		void init();
 

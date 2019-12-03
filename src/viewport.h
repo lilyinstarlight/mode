@@ -9,8 +9,8 @@ class Viewport {
 		Viewport();
 		~Viewport() {}
 
-		Viewport(const Viewport & v) = delete;
-		const Viewport & operator=(const Viewport & v) = delete;
+		Viewport(const Viewport &) = delete;
+		const Viewport & operator=(const Viewport &) = delete;
 
 		void dispatch(const SDL_Event &) {}
 		void draw() const {}

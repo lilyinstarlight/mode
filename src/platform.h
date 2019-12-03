@@ -15,7 +15,7 @@ class Platform : public Body {
 
 		virtual ~Platform();
 
-		const Platform & operator=(const Platform & p) = delete;
+		const Platform & operator=(const Platform &) = delete;
 
 		virtual void draw(const Viewport & viewport) const;
 		virtual void update(unsigned int ticks, World & world);

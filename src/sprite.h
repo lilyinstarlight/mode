@@ -20,7 +20,7 @@ class Sprite : public Drawable {
 		virtual ~Sprite();
 
 		Sprite() = delete;
-		Sprite & operator=(const Sprite & s) = delete;
+		Sprite & operator=(const Sprite &) = delete;
 
 		virtual void load();
 

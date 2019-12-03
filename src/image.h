@@ -9,7 +9,7 @@ class Image {
 		Image(SDL_Surface * surface, SDL_Texture * texture);
 		Image(const Image & image);
 
-		Image & operator=(const Image & image) = delete;
+		Image & operator=(const Image &) = delete;
 
 		void draw(const Viewport & viewport, int x, int y) const;
 		void draw(const Viewport & viewport, int x, int y, float rotation, float scale) const;

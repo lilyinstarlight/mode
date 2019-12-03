@@ -15,7 +15,7 @@ class Background : public Drawable {
 
 		virtual ~Background() {}
 
-		const Background & operator=(const Background & b) = delete;
+		const Background & operator=(const Background &) = delete;
 
 		virtual void load() {}
 
