@@ -11,7 +11,7 @@ class Yaml {
 		Yaml(const Yaml & yaml);
 		virtual ~Yaml() {}
 
-		Yaml & operator=(const Yaml & other);
+		Yaml & operator=(const Yaml & other) = delete;
 
 		void load(const std::string & filename);
 

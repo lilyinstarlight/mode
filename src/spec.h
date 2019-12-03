@@ -9,7 +9,7 @@ class Spec : public Yaml {
 			return spec;
 		}
 
-		~Spec() {}
+		virtual ~Spec() {}
 
 		Spec(const Spec &) = delete;
 		Spec & operator=(const Spec &) = delete;

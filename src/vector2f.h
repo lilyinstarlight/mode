@@ -6,9 +6,10 @@ class Vector2f {
 	public:
 		static constexpr float EPSILON = 0.001;
 
-		explicit Vector2f(float vx = 0, float vy = 0);
+		Vector2f(float vx = 0, float vy = 0);
+		Vector2f(const Vector2f & v);
 
-		Vector2f & operator=(const Vector2f & other);
+		Vector2f & operator=(const Vector2f & v);
 
 		bool operator==(const Vector2f & other) const;
 		bool operator!=(const Vector2f & other) const;

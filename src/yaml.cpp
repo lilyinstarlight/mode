@@ -9,17 +9,6 @@ Yaml::Yaml(const std::string & filename, const std::string & path) : path(path),
 
 Yaml::Yaml(const Yaml & yaml) : path(yaml.path), file(yaml.file), root(yaml.root) {}
 
-Yaml & Yaml::operator=(const Yaml & other) {
-	if (&other == this)
-		return *this;
-
-	path = other.path;
-	file = other.file;
-	root = other.root;
-
-	return *this;
-}
-
 void Yaml::load(const std::string & filename) {
 	file = path + "/" + filename + ".yaml";
 

@@ -9,7 +9,7 @@ class Save : public ModifiableYaml {
 			return save;
 		}
 
-		~Save() {}
+		virtual ~Save() {}
 
 		Save(const Save &) = delete;
 		Save & operator=(const Save &) = delete;

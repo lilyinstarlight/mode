@@ -1,3 +1,5 @@
+#ifndef UTIL_H
+#define UTIL_H
 #include <cmath>
 
 #include "vector2f.h"
@@ -16,3 +18,4 @@ class Util {
 			return std::sqrt(std::pow(p2[0] - p1[0], 2) + std::pow(p2[1] - p1[1], 2));
 		}
 };
+#endif

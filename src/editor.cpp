@@ -49,7 +49,7 @@ void Editor::dispatch(const SDL_Event & event) {
 			}
 			else if (event.key.keysym.sym == SDLK_UP) {
 				if (buffer != buffers.begin()) {
-					int p = pos - buffer->begin();
+					unsigned int p = pos - buffer->begin();
 					--buffer;
 					pos = buffer->begin() + Util::min(p, buffer->size());
 				}
@@ -60,20 +60,20 @@ void Editor::dispatch(const SDL_Event & event) {
 			}
 			else if (event.key.keysym.sym == SDLK_DOWN) {
 				if (buffer != buffers.end() - 1) {
-					int p = pos - buffer->begin();
+					unsigned int p = pos - buffer->begin();
 					++buffer;
 					pos = buffer->begin() + Util::min(p, buffer->size());
 				}
 			}
 
-			reload();
+			refresh();
 		}
 		else if (event.type == SDL_TEXTINPUT) {
 			// record text
 			std::string text(event.text.text);
 			pos = buffer->insert(pos, text.begin(), text.end()) + text.length();
 
-			reload();
+			refresh();
 		}
 	}
 	else {
@@ -127,7 +127,7 @@ void Editor::open(Script & s) {
 	buffer = buffers.begin();
 	pos = buffer->begin();
 
-	reload();
+	refresh();
 }
 
 void Editor::close() {
@@ -165,10 +165,10 @@ void Editor::close() {
 	Clock::get_instance().start();
 }
 
-void Editor::reload() {
+void Editor::refresh() {
 	std::stringstream ss;
 
-	top = Util::min(Util::max(buffer - buffers.begin() - rows/2, 0), buffers.size() - rows);
+	top = Util::min(Util::max(buffer - buffers.begin() - rows/2, 0), Util::max(buffers.size() - rows, 0));
 
 	std::deque<std::deque<char>>::iterator buf = buffers.begin() + top;
 	std::deque<char>::iterator iter = buf->begin();

@@ -84,7 +84,7 @@ Drawable * World::get(const std::string & name) const {
 }
 
 void World::dispatch(const SDL_Event & event) {
-	// draw ordered drawables
+	// dispatch event to drawables
 	for (Drawable * drawable : drawables)
 		drawable->dispatch(event);
 }

@@ -4,20 +4,16 @@
 #include <vector>
 
 #include "sprite.h"
+#include "util.h"
 
 template <typename T>
 class Pool {
 	public:
-		Pool(const std::string & n, int initial) : name(n), used{}, free{} {
-			for (int i = 0; i < initial; ++i) {
-				T * t = new T(name, *this);
-				t->load();
-
-				free.push_back(t);
-			}
+		Pool(const std::string & n, unsigned int initial = 0) : name(n), used{}, free{} {
+			increase(initial);
 		}
 
-		Pool(const Pool & p) : used{}, free{} {
+		Pool(const Pool & p) : name(p.name), used{}, free{} {
 			for (T * obj : p.used) {
 				T * t = new T(*obj);
 				t->load();
@@ -33,7 +29,7 @@ class Pool {
 			}
 		}
 
-		virtual ~Pool() {
+		~Pool() {
 			for (T * obj : used)
 				delete obj;
 
@@ -44,13 +40,39 @@ class Pool {
 		const Pool & operator=(const Pool &) = delete;
 
 		const std::vector<T *> & get_used() const { return used; }
-
 		const std::vector<T *> & get_free() const { return free; }
+
+		void increase(unsigned int count) {
+			for (unsigned int i = 0; i < count; ++i) {
+				T * t = new T(name, *this);
+				t->load();
+
+				free.push_back(t);
+			}
+		}
+
+		void decrease(unsigned int count) {
+			count = Util::min(count, free.size());
+
+			for (unsigned int i = 0; i < count; ++i) {
+				typename std::vector<T *>::iterator it = free.begin();
+				delete *it;
+				free.erase(it);
+			}
+		}
+
+		void clear() {
+			for (T * obj : free)
+				delete obj;
+
+			free.clear();
+		}
 
 		T & create() {
 			if (free.empty()) {
 				T * t = new T(name, *this);
 				t->load();
+
 				used.push_back(t);
 			}
 			else {

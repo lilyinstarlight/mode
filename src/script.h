@@ -83,7 +83,6 @@ class Script {
 			public:
 				void operator()(T & obj, U & other) {
 					obj.add(other);
-					other.load();
 				}
 		};
 

@@ -6,12 +6,21 @@
 
 #include "player.h"
 
-Player::Player() : Body("player"), shooting(Spec::get_instance().check("player/projectile/name")), projectiles(shooting ? Spec::get_instance().get_str("player/projectile/name") : "", shooting ? Spec::get_instance().get_int("player/projectile/initial") : 0), hp(Spec::get_instance().check("player/hp") ? Spec::get_instance().get_int("player/hp") : 1), shot(false) {
+Player::Player() : Body("player"), shooting(Spec::get_instance().check("player/projectile/name")), projectiles(shooting ? Spec::get_instance().get_str("player/projectile/name") : "", 0), hp(Spec::get_instance().check("player/hp") ? Spec::get_instance().get_int("player/hp") : 1), shot(false) {
 	Input::get_instance().grab("player");
 }
 
 Player::~Player() {
 	Input::get_instance().release("player");
+}
+
+void Player::load() {
+	Body::load();
+
+	if (shooting) {
+		projectiles.clear();
+		projectiles.increase(Spec::get_instance().get_int("player/projectile/initial"));
+	}
 }
 
 void Player::update(unsigned int ticks, World & world) {

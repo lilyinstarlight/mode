@@ -7,14 +7,6 @@ Image::Image(SDL_Surface * surface, SDL_Texture * texture) : renderer(Context::g
 
 Image::Image(const Image & image) : renderer(image.renderer), surface(image.surface), texture(image.texture) {}
 
-Image & Image::operator=(const Image & image) {
-	renderer = image.renderer;
-	surface = image.surface;
-	texture = image.texture;
-
-	return *this;
-}
-
 void Image::draw(const Viewport & viewport, int x, int y) const {
 	draw(viewport, x, y, 0.0f, 1.0f);
 }

@@ -1,13 +1,13 @@
-MACHINE=$(shell gcc -dumpmachine)
+MACHINE=$(shell $(CC) -dumpmachine)
 
 
 #############
 ### Linux ###
 #############
 
-ifneq ($(findstring linux, $(MACHINE)),)
+ifneq ($(findstring linux,$(MACHINE)),)
 
-ifeq ($(DEBUG), 1)
+ifeq ($(DEBUG),1)
 
 CXXFLAGS?=-std=c++14 -fsanitize=address -ggdb -Wall -Wpedantic -Wextra -Weffc++ -Werror -isystem $(LIBDIR) -isystem $(LIBDIR)/lua -isystem $(LIBDIR)/sol2 `sdl2-config --cflags` -I `sdl2-config --prefix`/include/ `pkg-config --cflags yaml-cpp`
 LDFLAGS?=-std=c++14 -fsanitize=address
@@ -30,12 +30,12 @@ LUA_LDLIBS?=-ldl -lreadline -lhistory -lncurses
 ### macOS ###
 #############
 
-else ifneq ($(findstring darwin, $(MACHINE)),)
+else ifneq ($(findstring darwin,$(MACHINE)),)
 
-ifeq ($(DEBUG), 1)
+ifeq ($(DEBUG),1)
 
-CXXFLAGS?=-std=c++14 -fsanitize=address -ggdb -Wall -Wpedantic -Wextra -Weffc++ -Werror -isystem $(LIBDIR) -isystem $(LIBDIR)/lua -isystem $(LIBDIR)/sol2 `sdl2-config --cflags` -I `sdl2-config --prefix`/include/ `pkg-config --cflags yaml-cpp`
-LDFLAGS?=-std=c++14 -fsanitize=address
+CXXFLAGS?=-std=c++14 -fsanitize=address,undefined -ggdb -Wall -Wpedantic -Wextra -Weffc++ -Werror -isystem $(LIBDIR) -isystem $(LIBDIR)/lua -isystem $(LIBDIR)/sol2 `sdl2-config --cflags` -I `sdl2-config --prefix`/include/ `pkg-config --cflags yaml-cpp`
+LDFLAGS?=-std=c++14 -fsanitize=address,undefined
 LDLIBS?=-lm -ldl `sdl2-config --libs` -lSDL2_image -lSDL2_ttf -lSDL2_mixer -lSDL2_gfx `pkg-config --libs yaml-cpp`
 
 else
@@ -55,9 +55,9 @@ LUA_LDLIBS?=-ldl -lreadline -lncurses
 ### Windows (MinGW-w64) ###
 ###########################
 
-else ifneq ($(findstring mingw, $(MACHINE)),)
+else ifneq ($(findstring mingw,$(MACHINE)),)
 
-ifeq ($(DEBUG), 1)
+ifeq ($(DEBUG),1)
 
 CXXFLAGS?=-std=c++14 -O2 -mwindows -ggdb -Wall -Wpedantic -Wextra -Weffc++ -Werror -isystem $(LIBDIR) -isystem $(LIBDIR)/lua -isystem $(LIBDIR)/sol2 `sdl2-config --cflags` -I `sdl2-config --prefix`/include/ `pkg-config --cflags yaml-cpp`
 LDFLAGS?=-std=c++14 -O2 -mwindows
@@ -82,7 +82,7 @@ else
 ### Unknown ###
 ###############
 
-ifeq ($(DEBUG), 1)
+ifeq ($(DEBUG),1)
 
 CXXFLAGS?=-std=c++14 -Wall -Wpedantic -Wextra -Weffc++ -Werror -isystem $(LIBDIR) -isystem $(LIBDIR)/lua -isystem $(LIBDIR)/sol2 `sdl2-config --cflags` -I `sdl2-config --prefix`/include/ `pkg-config --cflags yaml-cpp`
 LDFLAGS?=-std=c++14

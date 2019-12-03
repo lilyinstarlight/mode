@@ -12,6 +12,9 @@ class World;
 class Drawable {
 	public:
 		Drawable(const std::string & name, const std::string & type, const Vector2f & position, float rotation, const Vector2f & velocity, float scale, int index) : name(name), type(type), position(position), rotation(rotation), velocity(velocity), scale(scale), index(index) {};
+		Drawable(const Drawable & d) : name(d.name), type(d.type), position(d.position), rotation(d.rotation), velocity(d.velocity), scale(d.scale), index(d.index) {};
+
+		Drawable & operator=(const Drawable & d) = delete;
 
 		virtual ~Drawable() {}
 

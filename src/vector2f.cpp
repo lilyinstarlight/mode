@@ -5,12 +5,14 @@
 
 Vector2f::Vector2f(float vx, float vy) : x(vx), y(vy) {}
 
-Vector2f & Vector2f::operator=(const Vector2f & other) {
-	if (&other == this)
+Vector2f::Vector2f(const Vector2f & v) : x(v.x), y(v.y) {}
+
+Vector2f & Vector2f::operator=(const Vector2f & v) {
+	if (&v == this)
 		return *this;
 
-	x = other.x;
-	y = other.y;
+	x = v.x;
+	y = v.y;
 
 	return *this;
 }

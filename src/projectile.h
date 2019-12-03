@@ -26,7 +26,7 @@ class Projectile : public Sprite {
 		void destroy();
 
 	private:
-		Pool<Projectile> & pool;
+		Pool<Projectile> * pool;
 
 		Vector2f origin;
 };

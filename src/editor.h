@@ -36,9 +36,9 @@ class Editor : public Drawable {
 
 		bool is_open() const { return script; }
 
-		void reload();
-
 	private:
+		void refresh();
+
 		Script * script;
 		std::string result;
 

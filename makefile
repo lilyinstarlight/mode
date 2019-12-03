@@ -50,6 +50,11 @@ dist: all
 	mkdir -p $(DISTDIR)
 	cp -a $(DIST) $(DISTDIR)/
 
-.PHONY: all clean dist
+distclean: clean
+	$(RM) -r $(BUILDDIR) $(DATADIR) $(DISTDIR)
 
+.PHONY: all clean dist distclean
+
+ifneq ($(filter-out clean distclean,$(MAKECMDGOALS)),)
 -include $(DEP)
+endif
