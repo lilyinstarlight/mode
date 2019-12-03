@@ -87,16 +87,7 @@ YAML::Node Yaml::resolve(const std::string & path) const {
 
 ModifiableYaml::ModifiableYaml(const std::string & filename, const std::string & path) : Yaml(filename, path) {}
 
-ModifiableYaml::ModifiableYaml(const Yaml & yaml) : Yaml(yaml) {}
-
-ModifiableYaml & ModifiableYaml::operator=(const ModifiableYaml & other) {
-	if (&other == this)
-		return *this;
-
-	*this = other;
-
-	return *this;
-}
+ModifiableYaml::ModifiableYaml(const ModifiableYaml & yaml) : Yaml(yaml) {}
 
 void ModifiableYaml::remove(const std::string & key) {
 	resolve(parent(key)).remove(leaf(key));

@@ -11,7 +11,7 @@ class Yaml {
 		Yaml(const Yaml & yaml);
 		virtual ~Yaml() {}
 
-		Yaml & operator=(const Yaml & other) = delete;
+		Yaml & operator=(const Yaml & yaml) = delete;
 
 		void load(const std::string & filename);
 
@@ -44,10 +44,10 @@ class Yaml {
 class ModifiableYaml : public Yaml {
 	public:
 		ModifiableYaml(const std::string & filename, const std::string & path = "data");
-		ModifiableYaml(const Yaml & yaml);
+		ModifiableYaml(const ModifiableYaml & yaml);
 		virtual ~ModifiableYaml() {}
 
-		ModifiableYaml & operator=(const ModifiableYaml & other);
+		ModifiableYaml & operator=(const ModifiableYaml & yaml) = delete;
 
 		void remove(const std::string & key);
 
