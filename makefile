@@ -43,8 +43,8 @@ $(DATADIR):
 	mkdir -p $@
 
 clean:
-	$(RM) $(LIBDIR)/lua/{*.d,*.o,*.a,lua}
-	$(RM) $(BUILDDIR)/{*.d,*.o,*.a} $(EXE)
+	$(RM) $(LIBDIR)/lua/*.d $(LIBDIR)/lua/*.o $(LIBDIR)/lua/*.a $(LIBDIR)/lua/lua
+	$(RM) $(BUILDDIR)/*.d $(BUILDDIR)/*.o $(BUILDDIR)/*.a $(EXE)
 
 dist: all
 	mkdir -p $(DISTDIR)
