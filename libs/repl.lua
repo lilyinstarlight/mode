@@ -2,42 +2,123 @@
 
 local context = {}
 for idx, val in pairs(_G) do
-	if idx ~= 'context' and idx ~= 'debug' then
+	if idx == '_G' then
+		context[idx] = context
+	else
 		context[idx] = val
 	end
 end
 
 local buf = ''
 
-function gather (status, ...)
-	return status, {n = select('#', ...), ...}
-end
+local function traceback (...)
+	local thread = nil
+	local message = nil
+	local level = nil
 
-function setenv (fun, env)
-	local idx = 1
+	if select('#', ...) > 0 then
+		if type(select(1, ...)) == 'thread' then
+			thread, message, level = select(1, ...)
+		else
+			message, level = select(1, ...)
+		end
+	end
+
+	if type(message) ~= 'nil' and type(message) ~= 'string' then
+		return message
+	end
+
+	if not level then
+		if not thread or thread == coroutine.running() then
+			level = 2
+		else
+			level = 0
+		end
+	end
+
+	local bt = ''
+
+	if message then
+		bt = bt .. message .. '\n'
+	end
+
+	bt = bt .. 'stack traceback:'
+
+	local llevel = level
 	while true do
-		local name = debug.getupvalue(fun, idx)
+		local info
+		if thread then
+			info = debug.getinfo(thread, llevel, "Slntf")
+		else
+			info = debug.getinfo(llevel, "Slntf")
+		end
 
-		if name == '_ENV' then
-			debug.setupvalue(fun, idx, env)
-			break
-		elseif not name then
+		if not info or info.func == repl then
 			break
 		end
 
-		idx = idx + 1
+		bt = bt .. string.format('\n\t%s:', info.short_src)
+		if info.currentline > 0 then
+			bt = bt .. string.format('%d:', info.currentline)
+		end
+
+		bt = bt .. ' in '
+
+		local name = nil
+		for idx, val in pairs(context) do
+			if val == info.func then
+				name = idx
+				break
+			end
+		end
+
+		if name then
+			bt = bt .. string.format('function \'%s\'', name)
+		elseif info.namewhat ~= '' then
+			bt = bt .. string.format('%s \'%s\'', info.namewhat, info.name)
+		elseif info.what == 'm' then
+			bt = bt .. 'main chunk'
+		elseif info.what ~= 'C' then
+			if info.short_src == '[repl]' and info.linedefined == 0 then
+				bt = bt .. 'interactive chunk'
+			else
+				bt = bt .. string.format('function <%s:%d>', info.short_src, info.linedefined)
+			end
+		else
+			bt = bt .. '?'
+		end
+
+		if info.istailcall then
+			bt = bt .. '\n\t(...tail calls...)'
+		end
+
+		llevel = llevel + 1
 	end
+
+	return bt
 end
 
-function repr (val, indent, start)
+local function gather (status, ...)
+	return status, {n = select('#', ...), ...}
+end
+
+local function repr (val, indent, path, seen)
 	indent = indent or 0
 	start = start or false
+	path = path or '<top>'
+	seen = seen or {}
 
 	local typ = type(val)
 
 	if typ == 'string' then
 		return string.format('%q', val)
 	elseif typ == 'table' then
+		if seen[val] then
+			return seen[val]
+		end
+
+		seen[val] = path
+
 		local str
 
 		if next(val) == nil then
@@ -51,8 +132,21 @@ function repr (val, indent, start)
 
 			str = str .. '{\n'
 
+			for tidx, tval in ipairs(val) do
+				str = str .. string.rep('  ', indent + 1) .. tidx .. ' = ' .. repr(tval, indent + 1, path .. '[' .. repr(tidx) .. ']', seen) .. ',\n'
+			end
+
 			for tidx, tval in pairs(val) do
-				str = str .. string.rep('  ', indent + 1) .. tidx .. ' = ' .. repr(tval, indent + 1) .. ',\n'
+				if not (type(tidx) == 'number' and tidx > 0 and tidx <= #val) then
+					local tpath
+					if type(tidx) == 'string' then
+						tpath = path .. '.' .. tidx
+					else
+						tpath = path .. '[' .. repr(tidx) .. ']'
+					end
+
+					str = str .. string.rep('  ', indent + 1) .. tidx .. ' = ' .. repr(tval, indent + 1, tpath, seen) .. ',\n'
+				end
 			end
 
 			str = str .. string.rep('  ', indent) .. '}'
@@ -66,12 +160,12 @@ function repr (val, indent, start)
 	end
 end
 
-function repl (chunk)
+local function repl (chunk)
 	buf = buf .. chunk
 
-	fun, err = load('return ' .. buf, 'repl')
+	fun, err = load('return ' .. buf, '=[repl]', 't', context)
 	if not fun then
-		fun, err = load(buf, 'repl')
+		fun, err = load(buf, '=[repl]', 't', context)
 	end
 
 	if fun then
@@ -79,9 +173,7 @@ function repl (chunk)
 
 		local result = ''
 
-		setenv(fun, context)
-
-		status, results = gather(xpcall(fun, function(...) return debug.traceback(...) end))
+		local status, results = gather(xpcall(fun, function(...) return traceback(...) end))
 		if status then
 			if results.n == 0 then
 				return 0, nil
