@@ -133,7 +133,7 @@ local function repr (val, indent, path, seen)
 			str = str .. '{\n'
 
 			for tidx, tval in ipairs(val) do
-				str = str .. string.rep('  ', indent + 1) .. tidx .. ' = ' .. repr(tval, indent + 1, path .. '[' .. repr(tidx) .. ']', seen) .. ',\n'
+				str = str .. string.rep('  ', indent + 1) .. repr(tval, indent + 1, path .. '[' .. repr(tidx) .. ']', seen) .. ',\n'
 			end
 
 			for tidx, tval in pairs(val) do
