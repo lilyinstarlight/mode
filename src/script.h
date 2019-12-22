@@ -1,5 +1,6 @@
 #ifndef SCRIPT_H
 #define SCRIPT_H
+#include <stdexcept>
 #include <string>
 #include <tuple>
 #include <unordered_map>
@@ -36,6 +37,13 @@ class Script {
 		template <typename T, typename... Args>
 		T call(const std::string & method, Args... args) {
 			return lua[method](args...);
+		}
+
+		template <typename... Args>
+		void call_if_exists(const std::string & method, Args... args) {
+			sol::optional<sol::function> fun = lua[method];
+			if (fun)
+				(*fun)(args...);
 		}
 
 	private:

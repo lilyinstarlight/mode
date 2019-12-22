@@ -1,3 +1,5 @@
+#include <stdexcept>
+
 #include "imagefactory.h"
 
 #include "background.h"

@@ -1,4 +1,5 @@
 #include <fstream>
+#include <stdexcept>
 
 #include "background.h"
 #include "clock.h"

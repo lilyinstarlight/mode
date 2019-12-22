@@ -1,3 +1,5 @@
+#include <stdexcept>
+
 #include <SDL2/SDL2_rotozoom.h>
 
 #include "engine.h"
@@ -96,7 +98,7 @@ void Sprite::load() {
 
 void Sprite::dispatch(const SDL_Event & event) {
 	// run script dispatch as necessary
-	script->call("dispatch", &event);
+	script->call_if_exists("dispatch", &event);
 }
 
 void Sprite::draw(const Viewport & viewport) const {
@@ -111,7 +113,7 @@ void Sprite::update(unsigned int ticks, World & world) {
 		direction = "right";
 
 	// run script update as necessary
-	script->call("update", ticks);
+	script->call_if_exists("update", ticks);
 
 	// increment frame as necessary
 	Sheet * sheet = sheets.at(state.back().first + "." + direction);
@@ -161,10 +163,14 @@ void Sprite::revive() {
 
 	alive = true;
 	clear_state();
-	push_state("revive");
+
+	if (Spec::get_instance().check(get_name() + "/sheets/revive"))
+		push_state("revive");
 
 	if (Spec::get_instance().check(get_name() + "/sound/revive"))
 		Sound::get_instance().play(get_name() + "/sound/revive");
+
+	signal("revive");
 }
 
 void Sprite::kill() {
@@ -173,10 +179,14 @@ void Sprite::kill() {
 
 	alive = false;
 	clear_state();
-	push_state("kill");
+
+	if (Spec::get_instance().check(get_name() + "/sheets/kill"))
+		push_state("kill");
 
 	if (Spec::get_instance().check(get_name() + "/sound/kill"))
 		Sound::get_instance().play(get_name() + "/sound/kill");
+
+	signal("kill");
 }
 
 const Image * Sprite::get_image() const {
@@ -269,12 +279,12 @@ void Sprite::ignore(Sprite & observer) {
 
 void Sprite::signal(const std::string & sig) {
 	// call script with signal
-	script->call(sig);
+	script->call_if_exists(sig);
 }
 
 void Sprite::send(const std::string & sig, Sprite & sprite) {
 	// call script with signal and sprite
-	script->call(sig, &sprite);
+	script->call_if_exists(sig, &sprite);
 }
 
 void Sprite::inject() {

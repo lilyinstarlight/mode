@@ -1,5 +1,6 @@
 #ifndef POOL_H
 #define POOL_H
+#include <stdexcept>
 #include <string>
 #include <vector>
 
@@ -80,7 +81,7 @@ class Pool {
 				free.pop_back();
 			}
 
-			used.back()->create();
+			used.back()->revive();
 
 			return *used.back();
 		}
@@ -93,7 +94,7 @@ class Pool {
 					free.push_back(*it);
 					it = used.erase(it);
 
-					free.back()->destroy();
+					free.back()->kill();
 
 					return;
 				}

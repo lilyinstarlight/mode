@@ -1,4 +1,5 @@
 #include <cmath>
+#include <stdexcept>
 
 #include "context.h"
 #include "spec.h"

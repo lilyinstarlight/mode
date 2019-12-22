@@ -1,6 +1,3 @@
-function dispatch (event)
-end
-
 function update (ticks)
 	ground_left, hit_left = world:cast(Vector.new(sprite.pos.x, sprite.pos.y + sprite.height), 3*3.14159/2, 'platform')
 	ground_right, hit_right = world:cast(Vector.new(sprite.pos.x + sprite.width, sprite.pos.y + sprite.height), 3*3.14159/2, 'platform')
@@ -31,9 +28,6 @@ function update (ticks)
 	end
 
 	sprite.vel.y = sprite.vel.y + ticks
-end
-
-function observe (other)
 end
 
 function collide (other)

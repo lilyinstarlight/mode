@@ -32,16 +32,8 @@ void Projectile::update(unsigned int ticks, World & world) {
 	}
 }
 
-void Projectile::create() {
-	revive();
+void Projectile::revive() {
+	Sprite::revive();
 
 	origin = get_position();
-
-	signal("create");
-}
-
-void Projectile::destroy() {
-	kill();
-
-	signal("destroy");
 }

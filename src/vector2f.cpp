@@ -1,3 +1,5 @@
+#include <stdexcept>
+
 #include <cmath>
 #include <string>
 

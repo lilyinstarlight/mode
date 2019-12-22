@@ -1,3 +1,5 @@
+#include <stdexcept>
+
 #include <SDL2/SDL_image.h>
 
 #include "spec.h"

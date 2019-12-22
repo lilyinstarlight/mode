@@ -1,3 +1,5 @@
+#include <stdexcept>
+
 #include <SDL2/SDL_image.h>
 
 #include "context.h"
@@ -11,7 +13,7 @@ ImageFactory & ImageFactory::get_instance() {
 	return image_factory;
 }
 
-ImageFactory::ImageFactory() : path("textures"), surfaces(), textures(), images(), multi_surface(), multi_texture(), sheets() {}
+ImageFactory::ImageFactory() : path("textures"), surfaces{}, textures{}, images{}, multi_surface{}, multi_texture{}, sheets{} {}
 
 ImageFactory::~ImageFactory() {
 	// clean up after ourselves
@@ -40,15 +42,17 @@ ImageFactory::~ImageFactory() {
 }
 
 Image * ImageFactory::get_image(const std::string & name) {
+	std::string filename = path + "/" + Spec::get_instance().get_str(name + "/file");
+
 	// get image if already made
 	std::unordered_map<std::string, Image *>::const_iterator pos = images.find(name);
 	if (pos != images.end())
 		return pos->second;
 
 	// load image from file
-	SDL_Surface * surface = IMG_Load((path + "/" + Spec::get_instance().get_str(name + "/file")).c_str());
+	SDL_Surface * surface = IMG_Load(filename.c_str());
 	if (!surface)
-		throw std::runtime_error("Failed to load " + Spec::get_instance().get_str(name + "/file"));
+		throw std::runtime_error("Failed to load image file " + filename);
 	surfaces[name] = surface;
 
 	// load transparency color
@@ -72,15 +76,17 @@ Image * ImageFactory::get_image(const std::string & name) {
 
 
 Sheet * ImageFactory::get_sheet(const std::string & name) {
+	std::string filename = path + "/" + Spec::get_instance().get_str(name + "/file");
+
 	// get sheet if already made
 	std::unordered_map<std::string, Sheet *>::const_iterator pos = sheets.find(name);
 	if (pos != sheets.end())
 		return pos->second;
 
 	// load sheet from file
-	SDL_Surface * sheet_surface = IMG_Load((path + "/" + Spec::get_instance().get_str(name + "/file")).c_str());
+	SDL_Surface * sheet_surface = IMG_Load(filename.c_str());
 	if (!sheet_surface)
-		throw std::runtime_error("Failed to load " + Spec::get_instance().get_str(name + "/file"));
+		throw std::runtime_error("Failed to load image file " + filename);
 	surfaces[name] = sheet_surface;
 
 	// load transparency color
@@ -113,7 +119,7 @@ Sheet * ImageFactory::get_sheet(const std::string & name) {
 
 	for (unsigned int i = 0; i < spritesheet.get_frames(); ++i) {
 		// create surface for each frame
-		SDL_Surface * surface = spritesheet[i];
+		SDL_Surface * surface = spritesheet.get(i);
 
 		// add transparency if necessary
 		if (transparency)

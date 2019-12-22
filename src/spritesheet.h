@@ -22,13 +22,6 @@ class SpriteSheet {
 
 		SDL_Surface* crop(const SDL_Surface * surface, const SDL_Rect & view);
 
-		SDL_Surface * operator()(unsigned int i, unsigned int j) {
-			return get(i, j);
-		}
-		SDL_Surface * operator[](unsigned int c) {
-			return get(c);
-		}
-
 	private:
 		SDL_Surface * src;
 		SDL_Rect view;

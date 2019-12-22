@@ -2,9 +2,6 @@ center = sprite.pos.y
 
 win = Dialog.new("win", "", true, false)
 
-function dispatch (event)
-end
-
 function update (ticks)
 	sprite.pos.y = 20*math.sin(clock.ticks/500) + center
 end

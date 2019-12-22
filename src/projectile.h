@@ -22,8 +22,7 @@ class Projectile : public Sprite {
 		void set_origin()                   { origin = get_position(); }
 		void set_origin(const Vector2f & o) { origin = o;              }
 
-		void create();
-		void destroy();
+		virtual void revive();
 
 	private:
 		Pool<Projectile> * pool;
