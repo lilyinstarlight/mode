@@ -1,11 +1,11 @@
 MACHINE=$(shell $(CC) -dumpmachine)
 
 
+ifneq ($(findstring linux,$(MACHINE)),)
+
 #############
 ### Linux ###
 #############
-
-ifneq ($(findstring linux,$(MACHINE)),)
 
 ifeq ($(DEBUG),1)
 
@@ -26,11 +26,11 @@ LUA_LDFLAGS?=
 LUA_LDLIBS?=-ldl -lreadline -lhistory -lncurses
 
 
+else ifneq ($(findstring darwin,$(MACHINE)),)
+
 #############
 ### macOS ###
 #############
-
-else ifneq ($(findstring darwin,$(MACHINE)),)
 
 ifeq ($(DEBUG),1)
 
@@ -51,11 +51,11 @@ LUA_LDFLAGS?=
 LUA_LDLIBS?=-ldl -lreadline -lncurses
 
 
+else ifneq ($(findstring mingw,$(MACHINE)),)
+
 ###########################
 ### Windows (MinGW-w64) ###
 ###########################
-
-else ifneq ($(findstring mingw,$(MACHINE)),)
 
 ifeq ($(DEBUG),1)
 
@@ -75,8 +75,8 @@ LUA_CFLAGS?=-std=c99 -DLUA_USE_WINDOWS
 LUA_LDFLAGS?=
 LUA_LDLIBS?=-lreadline -lhistory -lncurses
 
-else
 
+else
 
 ###############
 ### Unknown ###
