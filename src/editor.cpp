@@ -156,6 +156,7 @@ void Editor::close() {
 	}
 	catch (std::runtime_error & err) {
 		//TODO: actually put this error in the interface
+		//TODO: what about errors caught later? - should editor automatically be shown, enemy automatically killed, or enemy basically paused until edited again (any way showing error hopefully)?
 		result = err.what();
 
 		return;

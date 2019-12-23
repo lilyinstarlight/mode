@@ -2,6 +2,8 @@
 #define COLLISION_H
 #include <tuple>
 
+#include <SDL2/SDL.h>
+
 #include "drawable.h"
 #include "vector2f.h"
 
@@ -16,7 +18,8 @@ class CollisionStrategy {
 		virtual bool check(const Drawable & obj1, const Drawable & obj2) const = 0;
 
 	protected:
-		bool visible(Uint32 pixel, const SDL_Surface * surface) const;
+		Uint32 get_pixel(const SDL_Surface * surface, unsigned int x, unsigned int y) const;
+		bool visible(Uint32 pixel, const SDL_PixelFormat * format) const;
 };
 
 class NoneCollisionStrategy : public CollisionStrategy {

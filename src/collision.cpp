@@ -21,17 +21,39 @@ SDL_Rect CollisionStrategy::intersection(const Drawable & obj1, const Drawable &
 	return {x1, y1, w, h};
 }
 
-bool CollisionStrategy::visible(Uint32 pixel, const SDL_Surface * surface) const {
-	// ignore pixels that are not 32-bit
-	if (surface->format->BitsPerPixel != 32)
-		return true;
+Uint32 CollisionStrategy::get_pixel(const SDL_Surface * surface, unsigned int x, unsigned int y) const {
+    Uint8 * pix = (Uint8 *)surface->pixels + y*surface->pitch + x*surface->format->BytesPerPixel;
 
-	// check if pixel has full alpha value
-	Uint32 pix = pixel & surface->format->Amask;
-	pix >>= surface->format->Ashift;
-	pix <<= surface->format->Aloss;
+    switch(surface->format->BytesPerPixel) {
+		case 1:
+			return *pix;
 
-	return pix != 0;
+		case 2:
+			return *(Uint16 *)pix;
+
+		case 3:
+			if (SDL_BYTEORDER == SDL_BIG_ENDIAN)
+				return pix[0] << 16 | pix[1] << 8 | pix[2];
+			else
+				return pix[0] | pix[1] << 8 | pix[2] << 16;
+
+		case 4:
+			return *(Uint32 *)pix;
+
+		default:
+			throw std::runtime_error("Unknown bytes per pixel: " + std::to_string(surface->format->BytesPerPixel));
+    }
+
+	// should never happen
+	return 0;
+}
+
+bool CollisionStrategy::visible(Uint32 pixel, const SDL_PixelFormat * format) const {
+	// check if pixel has non-transparent alpha value
+	Uint8 red, green, blue, alpha;
+	SDL_GetRGBA(pixel, format, &red, &green, &blue, &alpha);
+
+	return alpha != 0;
 }
 
 Vector2f NoneCollisionStrategy::get(const Drawable &, const Drawable &) const {
@@ -133,23 +155,15 @@ bool PixelCollisionStrategy::check(const Drawable & obj1, const Drawable & obj2)
 	SDL_LockSurface(s1);
 	SDL_LockSurface(s2);
 
-	// grab pixels
-	const Uint8 * pixels1 = static_cast<Uint8 *>(s1->pixels);
-	const Uint8 * pixels2 = static_cast<Uint8 *>(s2->pixels);
-
 	// for each pixel in the intersection
 	for (int x = area.x; x < area.x + area.w; ++x) {
 		for (int y = area.y; y < area.y + area.h; ++y) {
-			// calculate pixel indices
-			int idx1 = ((y - static_cast<int>(obj1.get_y()))*s1->pitch + (x - static_cast<int>(obj1.get_x()))*s1->format->BytesPerPixel);
-			int idx2 = ((y - static_cast<int>(obj2.get_y()))*s2->pitch + (x - static_cast<int>(obj2.get_x()))*s2->format->BytesPerPixel);
-
-			// get pixel
-			const Uint32 * pix1 = static_cast<const Uint32 *>(static_cast<const void *>(pixels1 + idx1));
-			const Uint32 * pix2 = static_cast<const Uint32 *>(static_cast<const void *>(pixels2 + idx2));
+			// get pixels
+			Uint32 pix1 = get_pixel(s1, x - static_cast<int>(obj1.get_x()), y - static_cast<int>(obj1.get_y()));
+			Uint32 pix2 = get_pixel(s2, x - static_cast<int>(obj2.get_x()), y - static_cast<int>(obj2.get_y()));
 
 			// if both are visible report collision
-			if (visible(*pix1, s1) && visible(*pix2, s2)) {
+			if (visible(pix1, s1->format) && visible(pix2, s2->format)) {
 				SDL_UnlockSurface(s1);
 				SDL_UnlockSurface(s2);
 

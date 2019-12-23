@@ -1,10 +1,8 @@
 #include "spritesheet.h"
 
 SDL_Surface* SpriteSheet::crop(const SDL_Surface * surface, const SDL_Rect & view) {
-	const SDL_PixelFormat * fmt = surface->format;
-
 	// create new surface
-	SDL_Surface * sub = SDL_CreateRGBSurface(0, view.w, view.h, fmt->BitsPerPixel, fmt->Rmask, fmt->Gmask, fmt->Bmask, fmt->Amask);
+	SDL_Surface * sub = SDL_CreateRGBSurfaceWithFormat(0, view.w, view.h, surface->format->BitsPerPixel, surface->format->format);
 
 	// copy view of old surface into new surface
 	SDL_BlitSurface(const_cast<SDL_Surface *>(surface), &view, sub, nullptr);

@@ -1,7 +1,6 @@
 #ifndef SPRITESHEET_H
 #define SPRITESHEET_H
 #include <SDL2/SDL.h>
-#include <SDL2/SDL_surface.h>
 #include <SDL2/SDL_image.h>
 
 class SpriteSheet {
@@ -20,7 +19,7 @@ class SpriteSheet {
 		SDL_Surface * get(unsigned int i, unsigned int j);
 		SDL_Surface * get(unsigned int s);
 
-		SDL_Surface* crop(const SDL_Surface * surface, const SDL_Rect & view);
+		SDL_Surface * crop(const SDL_Surface * surface, const SDL_Rect & view);
 
 	private:
 		SDL_Surface * src;

@@ -17,7 +17,7 @@ class Image {
 
 		inline int get_width()  const { return surface->w; }
 		inline int get_height() const { return surface->h; }
-		SDL_Surface* get_surface() const { return surface; }
+		const SDL_Surface * get_surface() const { return surface; }
 
 	private:
 		SDL_Renderer * renderer;

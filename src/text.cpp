@@ -58,7 +58,7 @@ SDL_Surface * Text::write(const std::string & name, const std::string & text, SD
 	if (height == 0)
 		return nullptr;
 
-	SDL_Surface * combined = SDL_CreateRGBSurfaceWithFormat(0, width, height, 32, surfaces.front()->format->format);
+	SDL_Surface * combined = SDL_CreateRGBSurfaceWithFormat(0, width, height, surfaces.front()->format->BitsPerPixel, surfaces.front()->format->format);
 
 	SDL_Rect dst = {0, 0, width, height};
 

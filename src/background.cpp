@@ -29,7 +29,7 @@ Background::Background(const std::string & name) : Drawable(name,
 Background::Background(const Background & b) : Drawable(b), factor(b.factor), tile(b.tile), image(b.image) {}
 
 void Background::draw(const Viewport & viewport) const {
-	SDL_Rect src = {0, 0, get_width(), get_height()};
+	SDL_Rect src = {0, 0, image->get_width(), image->get_height()};
 	SDL_Rect dst = {static_cast<int>(get_x()*factor - viewport.get_x()*factor), static_cast<int>(get_y()*factor - viewport.get_y()*factor), src.w, src.h};
 
 	switch (tile) {
@@ -40,7 +40,7 @@ void Background::draw(const Viewport & viewport) const {
 
 		case X:
 			// iterate over tiles in map
-			for (int x = static_cast<int>(get_x()*factor - viewport.get_x()*factor) % get_width() - get_width(); x < viewport.get_width(); x += get_width()) {
+			for (int x = static_cast<int>(get_x()*factor - viewport.get_x()*factor) % image->get_width() - image->get_width(); x < viewport.get_width(); x += image->get_width()) {
 				// draw adjusted tile
 				dst.x = x;
 				image->draw(src, dst, 0);
@@ -50,7 +50,7 @@ void Background::draw(const Viewport & viewport) const {
 
 		case Y:
 			// iterate over tiles in map
-			for (int y = static_cast<int>(get_y()*factor - viewport.get_y()*factor) % get_height() - get_height(); y < viewport.get_height(); y += get_height()) {
+			for (int y = static_cast<int>(get_y()*factor - viewport.get_y()*factor) % image->get_height() - image->get_height(); y < viewport.get_height(); y += image->get_height()) {
 				// draw adjusted tile
 				dst.y = y;
 				image->draw(src, dst, 0);
@@ -60,8 +60,8 @@ void Background::draw(const Viewport & viewport) const {
 
 		case BOTH:
 			// iterate over tiles in map
-			for (int x = static_cast<int>(get_x()*factor - viewport.get_x()*factor) % get_width() - get_width(); x < viewport.get_width(); x += get_width()) {
-				for (int y = static_cast<int>(get_y()*factor - viewport.get_y()*factor) % get_height() - get_height(); y < viewport.get_height(); y += get_height()) {
+			for (int x = static_cast<int>(get_x()*factor - viewport.get_x()*factor) % image->get_width() - image->get_width(); x < viewport.get_width(); x += image->get_width()) {
+				for (int y = static_cast<int>(get_y()*factor - viewport.get_y()*factor) % image->get_height() - image->get_height(); y < viewport.get_height(); y += image->get_height()) {
 					// draw adjusted tile
 					dst.x = x;
 					dst.y = y;
