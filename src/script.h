@@ -40,10 +40,19 @@ class Script {
 		}
 
 		template <typename... Args>
-		void call_if_exists(const std::string & method, Args... args) {
+		void signal(const std::string & method, Args... args) {
 			sol::optional<sol::function> fun = lua[method];
 			if (fun)
 				(*fun)(args...);
+		}
+
+		template <typename T, typename... Args>
+		T call_optional(const std::string & method, const T & fallback, Args... args) {
+			sol::optional<sol::function> fun = lua[method];
+			if (fun)
+				return (*fun)(args...);
+			else
+				return fallback;
 		}
 
 	private:

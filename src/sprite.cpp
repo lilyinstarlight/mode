@@ -98,7 +98,7 @@ void Sprite::load() {
 
 void Sprite::dispatch(const SDL_Event & event) {
 	// run script dispatch as necessary
-	script->call_if_exists("dispatch", &event);
+	script->signal("dispatch", &event);
 }
 
 void Sprite::draw(const Viewport & viewport) const {
@@ -113,7 +113,7 @@ void Sprite::update(unsigned int ticks, World & world) {
 		direction = "right";
 
 	// run script update as necessary
-	script->call_if_exists("update", ticks);
+	script->signal("update", ticks);
 
 	// increment frame as necessary
 	Sheet * sheet = sheets.at(state.back().first + "." + direction);
@@ -279,12 +279,12 @@ void Sprite::ignore(Sprite & observer) {
 
 void Sprite::signal(const std::string & sig) {
 	// call script with signal
-	script->call_if_exists(sig);
+	script->signal(sig);
 }
 
 void Sprite::send(const std::string & sig, Sprite & sprite) {
 	// call script with signal and sprite
-	script->call_if_exists(sig, &sprite);
+	script->signal(sig, &sprite);
 }
 
 void Sprite::inject() {
