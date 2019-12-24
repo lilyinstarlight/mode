@@ -133,7 +133,7 @@ void Script::load_api() {
 			"hardness", sol::property(&Body::get_hardness, &Body::set_hardness),
 			"elasticity", sol::property(&Body::get_elasticity, &Body::set_elasticity),
 
-			"fixed", sol::property(&Body::is_fixed)
+			"fixed", sol::property(&Body::is_fixed, &Body::set_fixed)
 	);
 
 	// set sprite as current sprite

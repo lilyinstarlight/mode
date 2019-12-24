@@ -20,7 +20,8 @@ class Body : public Sprite {
 		float get_elasticity() const { return elasticity; }
 		void set_elasticity(float e) { elasticity = e; }
 
-		bool is_fixed() const { return fixed; }
+		bool is_fixed() const    { return fixed; }
+		void set_fixed(bool fix) { fixed = fix; }
 
 	private:
 		float hardness;
