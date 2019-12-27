@@ -2,6 +2,7 @@
 #define INPUT_H
 #include <list>
 #include <string>
+#include <vector>
 
 #include <SDL2/SDL.h>
 
@@ -30,6 +31,14 @@ class Input {
 		bool check(const std::string & name) const {
 			// check if at front of list
 			return list.front() == name;
+		}
+
+		const std::string & get() const {
+			return list.front();
+		}
+
+		std::vector<std::string> get_list() const {
+			return std::vector<std::string>(list.begin(), list.end());
 		}
 
 		bool get_key(const SDL_Scancode & key) const {

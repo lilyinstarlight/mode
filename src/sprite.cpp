@@ -267,6 +267,16 @@ void Sprite::push_state(const std::string & s) {
 	frame_timer = 0;
 }
 
+std::vector<std::string> Sprite::get_full_state() const {
+	std::vector<std::string> full;
+	full.reserve(state.size());
+
+	for (const std::pair<std::string, unsigned int> & s : state)
+		full.push_back(s.first);
+
+	return full;
+}
+
 void Sprite::observe(Sprite & observer) {
 	// add observer
 	observers.push_back(&observer);

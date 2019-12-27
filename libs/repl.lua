@@ -189,7 +189,7 @@ local function repl (chunk)
 				result = result .. '}'
 			end
 		else
-			result = result .. results[1]
+			return 3, results[1]
 		end
 
 		return 0, result

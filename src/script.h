@@ -112,6 +112,14 @@ class Script {
 		};
 
 		template <typename T, typename U>
+		class WrapCheck {
+			public:
+				bool operator()(T & obj, U * other) {
+					return obj.check(other);
+				}
+		};
+
+		template <typename T, typename U>
 		class WrapGet {
 			public:
 				U * operator()(T & obj, const std::string & name) {

@@ -109,6 +109,7 @@ void Script::load_api() {
 			"pop", &Sprite::pop_state,
 			"clear", &Sprite::clear_state,
 			"push", &Sprite::push_state,
+			"get_state", &Sprite::get_full_state,
 
 			"name", sol::property(&Sprite::get_name),
 			"type", sol::property(&Sprite::get_type),
@@ -130,6 +131,8 @@ void Script::load_api() {
 	lua.new_usertype<Body>("Body",
 			"new", sol::factories(WrapCreate<World, Body, std::string, bool>(Engine::get_instance().get_world())),
 
+			"name", sol::property(&Body::get_name),
+
 			"hardness", sol::property(&Body::get_hardness, &Body::set_hardness),
 			"elasticity", sol::property(&Body::get_elasticity, &Body::set_elasticity),
 
@@ -143,6 +146,8 @@ void Script::load_api() {
 	lua.new_usertype<Platform>("Platform",
 			"new", sol::factories(WrapCreate<World, Platform, std::string>(Engine::get_instance().get_world())),
 
+			"name", sol::property(&Platform::get_name),
+
 			"tile", sol::property(&Platform::get_tile)
 	);
 
@@ -152,6 +157,8 @@ void Script::load_api() {
 	// create Projectile data type
 	lua.new_usertype<Projectile>("Projectile",
 			"new", sol::factories(WrapCreate<World, Projectile, std::string>(Engine::get_instance().get_world())),
+
+			"name", sol::property(&Projectile::get_name),
 
 			"alive", sol::property(&Projectile::is_alive),
 			"kill", &Projectile::kill,
@@ -164,6 +171,8 @@ void Script::load_api() {
 	// create Player data type
 	lua.new_usertype<Player>("Player",
 			"new", sol::no_constructor,
+
+			"name", sol::property(&Player::get_name),
 
 			"observe", WrapObserve<Player, Sprite>(sprite),
 			"ignore", WrapIgnore<Player, Sprite>(sprite),
@@ -184,8 +193,7 @@ void Script::load_api() {
 
 			"factor", sol::property(&Background::get_factor, &Background::set_factor),
 
-			"name", sol::property(&Sprite::get_name),
-			"type", sol::property(&Sprite::get_type),
+			"name", sol::property(&Background::get_name),
 
 			"width", sol::property(&Background::get_width),
 			"height", sol::property(&Background::get_height),
@@ -206,22 +214,38 @@ void Script::load_api() {
 			"add_sprite", WrapAdd<World, Sprite>(),
 			"remove_sprite", WrapRemove<World, Sprite>(),
 			"get_sprite", WrapGet<World, Sprite>(),
+			"check_sprite", WrapCheck<World, Sprite>(),
 			"destroy_sprite", WrapDestroy<World, Sprite>(),
 
 			"add_platform", WrapAdd<World, Platform>(),
 			"remove_platform", WrapRemove<World, Platform>(),
 			"get_platform", WrapGet<World, Platform>(),
+			"check_platform", WrapCheck<World, Platform>(),
 			"destroy_platform", WrapDestroy<World, Platform>(),
 
 			"add_background", WrapAdd<World, Background>(),
 			"remove_background", WrapRemove<World, Background>(),
 			"get_background", WrapGet<World, Background>(),
+			"check_background", WrapCheck<World, Background>(),
 			"destroy_background", WrapDestroy<World, Background>(),
 
 			"add_dialog", WrapAdd<World, Dialog>(),
 			"remove_dialog", WrapRemove<World, Dialog>(),
 			"get_dialog", WrapGet<World, Dialog>(),
+			"check_dialog", WrapCheck<World, Dialog>(),
 			"destroy_dialog", WrapDestroy<World, Dialog>(),
+
+			"add_body", WrapAdd<World, Body>(),
+			"remove_body", WrapRemove<World, Body>(),
+			"get_body", WrapGet<World, Body>(),
+			"check_body", WrapCheck<World, Body>(),
+			"destroy_body", WrapDestroy<World, Body>(),
+
+			"add_platform", WrapAdd<World, Platform>(),
+			"remove_platform", WrapRemove<World, Platform>(),
+			"get_platform", WrapGet<World, Platform>(),
+			"check_platform", WrapCheck<World, Platform>(),
+			"destroy_platform", WrapDestroy<World, Platform>(),
 
 			"cast", &World::cast<Sprite>,
 
@@ -239,6 +263,9 @@ void Script::load_api() {
 			"grab", &Input::grab,
 			"release", &Input::release,
 			"check", &Input::check,
+			"get", &Input::get,
+
+			"get_list", &Input::get_list,
 
 			"get_key", WrapGetKey<Input>(lua)
 	);
@@ -314,7 +341,7 @@ void Script::load_api() {
 	lua["clock"] = &Clock::get_instance();
 
 	// create Clock data type
-	lua.new_usertype<Sound>("Clock",
+	lua.new_usertype<Sound>("Sound",
 			"new", sol::no_constructor,
 
 			"active", sol::property(&Sound::check),
@@ -329,8 +356,7 @@ void Script::load_api() {
 	lua.new_usertype<Dialog>("Dialog",
 			"new", sol::factories(WrapCreate<World, Dialog, std::string, std::string>(Engine::get_instance().get_world()), WrapCreate<World, Dialog, std::string, std::string, bool>(Engine::get_instance().get_world()), WrapCreate<World, Dialog, std::string, std::string, bool, bool>(Engine::get_instance().get_world())),
 
-			"name", sol::property(&Sprite::get_name),
-			"type", sol::property(&Sprite::get_type),
+			"name", sol::property(&Dialog::get_name),
 
 			"open", &Dialog::open,
 			"close", &Dialog::close,

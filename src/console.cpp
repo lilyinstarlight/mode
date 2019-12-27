@@ -102,8 +102,9 @@ void Console::update(unsigned int, World &) {
 				prompt = ">> " + command + "_";
 				break;
 
-			case 0:
 			case 1:
+			case 3:
+			case 0:
 			default:
 				if (result.empty())
 					prompt = "> " + command + "_";

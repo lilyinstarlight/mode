@@ -50,6 +50,8 @@ class Sprite : public Drawable {
 		void clear_state();
 		void push_state(const std::string & s);
 
+		std::vector<std::string> get_full_state() const;
+
 		void observe(Sprite & observer);
 		void ignore(Sprite & observer);
 
