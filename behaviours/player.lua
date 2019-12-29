@@ -5,14 +5,6 @@ speed = {
 	down = spec:get_float('player/speed/down')
 }
 
-glider = {
-	offset = {
-		x = spec:get_int('player/projectile/offset/x'),
-		y = spec:get_int('player/projectile/offset/y')
-	},
-	speed = spec:get_int('player/projectile/speed')
-}
-
 land = 200
 
 function dispatch (event)
