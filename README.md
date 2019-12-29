@@ -17,29 +17,25 @@ A 2D game engine based on SDL2, sol2, and Lua in C++ originally written for my C
 
 * width/height aren't calculated right for rotated sprites (I think this is an SDL2\_gfx issue)
 * death dialog that shows engine-level commands should be shown on player death
-* death/birth animations need to be added for all sprites
-* death/birth sounds need to be added for all sprites
-* need to give first level a defined win goal
-* need to add menu world
-* need to add rigid body physics to platforms
 
 
 ## Extras
 
-* window icon
-* sound
 * scripting
 * console
 * animation states
 * world (re)loading
 * sprite indexing
+* window icon
+* sound
 * background tiling
 * dialog abstraction
 * code injection
 * physics raycasting
 * platforms
-* rigid body physics (soon)
-* menu (soon)
+* rigid body physics (partially implemented)
+* menu (can already be implemented at runtime but no reference has been created)
+* more that have not been put here yet because I am lazy
 
 
 ## Credits
