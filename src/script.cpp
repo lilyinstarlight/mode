@@ -340,7 +340,7 @@ void Script::load_api() {
 	// set clock
 	lua["clock"] = &Clock::get_instance();
 
-	// create Clock data type
+	// create Sound data type
 	lua.new_usertype<Sound>("Sound",
 			"new", sol::no_constructor,
 
