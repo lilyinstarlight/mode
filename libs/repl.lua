@@ -174,33 +174,37 @@ local function repl (chunk)
 		local result = ''
 
 		local status, results = gather(xpcall(fun, function(...) return traceback(...) end))
-		if status then
-			if results.n == 0 then
-				return 0, nil
-			elseif results.n == 1 then
-				result = result .. repr(results[1])
-			else
-				result = result .. '{\n'
-				for i = 1, results.n do
-					result = result .. '  '
-					result = result .. repr(results[i], 1)
-					result = result .. ',\n'
-				end
-				result = result .. '}'
-			end
-		else
+		if not status then
+			-- error running chunk (includes traceback)
 			return 3, results[1]
 		end
 
+		if results.n == 0 then
+			return 0, nil
+		elseif results.n == 1 then
+			result = result .. repr(results[1])
+		else
+			result = result .. '{\n'
+			for i = 1, results.n do
+				result = result .. '  '
+				result = result .. repr(results[i], 1)
+				result = result .. ',\n'
+			end
+			result = result .. '}'
+		end
+
+		-- normal output
 		return 0, result
 	else
 		if string.match(err, '\'<eof>\'$') or string.match(err, '<eof>$') then
 			buf = buf .. '\n'
 
+			-- incomplete chunk
 			return 2, nil
 		else
 			buf = ''
 
+			-- error parsing chunk
 			return 1, err
 		end
 	end
