@@ -16,9 +16,9 @@ font:
     file: PressStart2P.ttf
     size: 16
 
-sound:
-  initial:
-    file: theme.wav
+#sound:
+#  initial:
+#    file: theme.wav
 
 console:
   box: {r: 20, g: 20, b: 20, a: 200}
