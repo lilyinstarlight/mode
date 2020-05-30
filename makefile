@@ -7,7 +7,7 @@ CXX?=g++
 include platform.mk
 
 SRCDIR=src
-LIBDIR=vendor
+VENDORDIR=vendor
 BUILDDIR=build
 DATADIR=data
 DISTDIR=dist
@@ -20,7 +20,7 @@ OBJ=$(shell echo $(SRC) | sed -e "s/\([^ ]*\).cpp/$(BUILDDIR)\/\1.o /g")
 
 all: $(DEP) $(EXE) $(DATADIR)
 
-$(EXE): $(OBJ) $(LIBDIR)/lua/liblua.a
+$(EXE): $(OBJ) $(VENDORDIR)/lua/liblua.a
 	$(CXX) $(LDFLAGS) -o $@ $^ $(LDLIBS)
 
 $(BUILDDIR)/%.d: $(SRCDIR)/%.cpp
@@ -29,8 +29,11 @@ $(BUILDDIR)/%.d: $(SRCDIR)/%.cpp
 $(BUILDDIR)/%.o: $(SRCDIR)/%.cpp
 	$(CXX) $(CXXFLAGS) -c -o $@ $<
 
-$(LIBDIR)/lua/liblua.a: $(LIBDIR)/lua/makefile
-	+make -C $(LIBDIR)/lua CC=$(CC) MYCFLAGS="$(LUA_CFLAGS)" MYLDFLAGS="$(LUA_LDFLAGS)" MYLIBS="$(LUA_LDLIBS)" a
+$(VENDORDIR)/lua/liblua.a: $(VENDORDIR)/lua/makefile
+	+make -C $(VENDORDIR)/lua CC=$(CC) MYCFLAGS="$(LUA_CFLAGS)" MYLDFLAGS="$(LUA_LDFLAGS)" MYLIBS="$(LUA_LDLIBS)" a
+
+$(VENDORDIR)/lua/lua: $(VENDORDIR)/lua/makefile
+	+make -C $(VENDORDIR)/lua CC=$(CC) MYCFLAGS="$(LUA_CFLAGS)" MYLDFLAGS="$(LUA_LDFLAGS)" MYLIBS="$(LUA_LDLIBS)" lua
 
 $(DEP): | $(BUILDDIR)
 
@@ -43,7 +46,7 @@ $(DATADIR):
 	mkdir -p $@
 
 clean:
-	$(RM) $(LIBDIR)/lua/*.d $(LIBDIR)/lua/*.o $(LIBDIR)/lua/*.a $(LIBDIR)/lua/lua
+	$(RM) $(VENDORDIR)/lua/*.d $(VENDORDIR)/lua/*.o $(VENDORDIR)/lua/*.a $(VENDORDIR)/lua/lua
 	$(RM) $(BUILDDIR)/*.d $(BUILDDIR)/*.o $(BUILDDIR)/*.a $(EXE)
 
 dist: all

@@ -9,13 +9,13 @@ ifneq ($(findstring linux,$(MACHINE)),)
 
 ifeq ($(DEBUG),1)
 
-CXXFLAGS?=-std=c++14 -fsanitize=address -ggdb -Wall -Wpedantic -Wextra -Weffc++ -Werror -isystem $(LIBDIR) -isystem $(LIBDIR)/lua -isystem $(LIBDIR)/sol2 `sdl2-config --cflags` -I `sdl2-config --prefix`/include/ `pkg-config --cflags yaml-cpp`
+CXXFLAGS?=-std=c++14 -fsanitize=address -ggdb -Wall -Wpedantic -Wextra -Weffc++ -Werror -isystem $(VENDORDIR) -isystem $(VENDORDIR)/lua -isystem $(VENDORDIR)/sol2 `sdl2-config --cflags` -I `sdl2-config --prefix`/include/ `pkg-config --cflags yaml-cpp`
 LDFLAGS?=-std=c++14 -fsanitize=address
 LDLIBS?=-lm -ldl `sdl2-config --libs` -lSDL2_image -lSDL2_ttf -lSDL2_mixer -lSDL2_gfx `pkg-config --libs yaml-cpp`
 
 else
 
-CXXFLAGS?=-std=c++14 -O2 -DNDEBUG -Wall -Wpedantic -Wextra -Weffc++ -isystem $(LIBDIR) -isystem $(LIBDIR)/lua -isystem $(LIBDIR)/sol2 `sdl2-config --cflags` -I `sdl2-config --prefix`/include/ `pkg-config --cflags yaml-cpp`
+CXXFLAGS?=-std=c++14 -O2 -DNDEBUG -Wall -Wpedantic -Wextra -Weffc++ -isystem $(VENDORDIR) -isystem $(VENDORDIR)/lua -isystem $(VENDORDIR)/sol2 `sdl2-config --cflags` -I `sdl2-config --prefix`/include/ `pkg-config --cflags yaml-cpp`
 LDFLAGS?=-std=c++14 -O2
 LDLIBS?=-lm -ldl `sdl2-config --libs` -lSDL2_image -lSDL2_ttf -lSDL2_mixer -lSDL2_gfx `pkg-config --libs yaml-cpp`
 
@@ -34,13 +34,13 @@ else ifneq ($(findstring darwin,$(MACHINE)),)
 
 ifeq ($(DEBUG),1)
 
-CXXFLAGS?=-std=c++14 -fsanitize=address,undefined -ggdb -Wall -Wpedantic -Wextra -Weffc++ -Werror -isystem $(LIBDIR) -isystem $(LIBDIR)/lua -isystem $(LIBDIR)/sol2 `sdl2-config --cflags` -I `sdl2-config --prefix`/include/ `pkg-config --cflags yaml-cpp`
+CXXFLAGS?=-std=c++14 -fsanitize=address,undefined -ggdb -Wall -Wpedantic -Wextra -Weffc++ -Werror -isystem $(VENDORDIR) -isystem $(VENDORDIR)/lua -isystem $(VENDORDIR)/sol2 `sdl2-config --cflags` -I `sdl2-config --prefix`/include/ `pkg-config --cflags yaml-cpp`
 LDFLAGS?=-std=c++14 -fsanitize=address,undefined
 LDLIBS?=-lm -ldl `sdl2-config --libs` -lSDL2_image -lSDL2_ttf -lSDL2_mixer -lSDL2_gfx `pkg-config --libs yaml-cpp`
 
 else
 
-CXXFLAGS?=-std=c++14 -O2 -DNDEBUG -Wall -Wpedantic -Wextra -Weffc++ -isystem $(LIBDIR) -isystem $(LIBDIR)/lua -isystem $(LIBDIR)/sol2 `sdl2-config --cflags` -I `sdl2-config --prefix`/include/ `pkg-config --cflags yaml-cpp`
+CXXFLAGS?=-std=c++14 -O2 -DNDEBUG -Wall -Wpedantic -Wextra -Weffc++ -isystem $(VENDORDIR) -isystem $(VENDORDIR)/lua -isystem $(VENDORDIR)/sol2 `sdl2-config --cflags` -I `sdl2-config --prefix`/include/ `pkg-config --cflags yaml-cpp`
 LDFLAGS?=-std=c++14 -O2
 LDLIBS?=-lm -ldl `sdl2-config --libs` -lSDL2_image -lSDL2_ttf -lSDL2_mixer -lSDL2_gfx `pkg-config --libs yaml-cpp`
 
@@ -59,13 +59,13 @@ else ifneq ($(findstring mingw,$(MACHINE)),)
 
 ifeq ($(DEBUG),1)
 
-CXXFLAGS?=-std=c++14 -O2 -mwindows -ggdb -Wall -Wpedantic -Wextra -Weffc++ -Werror -isystem $(LIBDIR) -isystem $(LIBDIR)/lua -isystem $(LIBDIR)/sol2 `sdl2-config --cflags` -I `sdl2-config --prefix`/include/ `pkg-config --cflags yaml-cpp`
+CXXFLAGS?=-std=c++14 -O2 -mwindows -ggdb -Wall -Wpedantic -Wextra -Weffc++ -Werror -isystem $(VENDORDIR) -isystem $(VENDORDIR)/lua -isystem $(VENDORDIR)/sol2 `sdl2-config --cflags` -I `sdl2-config --prefix`/include/ `pkg-config --cflags yaml-cpp`
 LDFLAGS?=-std=c++14 -O2 -mwindows
 LDLIBS?=-lm `sdl2-config --libs` -lSDL2_image -lSDL2_ttf -lSDL2_mixer -lSDL2_gfx `pkg-config --libs yaml-cpp`
 
 else
 
-CXXFLAGS?=-std=c++14 -O2 -mwindows -DNDEBUG -Wall -Wpedantic -Wextra -Weffc++ -isystem $(LIBDIR) -isystem $(LIBDIR)/lua -isystem $(LIBDIR)/sol2 `sdl2-config --cflags` -I `sdl2-config --prefix`/include/ `pkg-config --cflags yaml-cpp`
+CXXFLAGS?=-std=c++14 -O2 -mwindows -DNDEBUG -Wall -Wpedantic -Wextra -Weffc++ -isystem $(VENDORDIR) -isystem $(VENDORDIR)/lua -isystem $(VENDORDIR)/sol2 `sdl2-config --cflags` -I `sdl2-config --prefix`/include/ `pkg-config --cflags yaml-cpp`
 LDFLAGS?=-std=c++14 -O2 -mwindows
 LDLIBS?=-lm `sdl2-config --libs` -lSDL2_image -lSDL2_ttf -lSDL2_mixer -lSDL2_gfx `pkg-config --libs yaml-cpp`
 
@@ -84,13 +84,13 @@ else
 
 ifeq ($(DEBUG),1)
 
-CXXFLAGS?=-std=c++14 -Wall -Wpedantic -Wextra -Weffc++ -Werror -isystem $(LIBDIR) -isystem $(LIBDIR)/lua -isystem $(LIBDIR)/sol2 `sdl2-config --cflags` -I `sdl2-config --prefix`/include/ `pkg-config --cflags yaml-cpp`
+CXXFLAGS?=-std=c++14 -Wall -Wpedantic -Wextra -Weffc++ -Werror -isystem $(VENDORDIR) -isystem $(VENDORDIR)/lua -isystem $(VENDORDIR)/sol2 `sdl2-config --cflags` -I `sdl2-config --prefix`/include/ `pkg-config --cflags yaml-cpp`
 LDFLAGS?=-std=c++14
 LDLIBS?=-lm -ldl `sdl2-config --libs` -lSDL2_image -lSDL2_ttf -lSDL2_mixer -lSDL2_gfx `pkg-config --libs yaml-cpp`
 
 else
 
-CXXFLAGS?=-std=c++14 -DNDEBUG -Wall -Wpedantic -Wextra -Weffc++ -isystem $(LIBDIR) -isystem $(LIBDIR)/lua -isystem $(LIBDIR)/sol2 `sdl2-config --cflags` -I `sdl2-config --prefix`/include/ `pkg-config --cflags yaml-cpp`
+CXXFLAGS?=-std=c++14 -DNDEBUG -Wall -Wpedantic -Wextra -Weffc++ -isystem $(VENDORDIR) -isystem $(VENDORDIR)/lua -isystem $(VENDORDIR)/sol2 `sdl2-config --cflags` -I `sdl2-config --prefix`/include/ `pkg-config --cflags yaml-cpp`
 LDFLAGS?=-std=c++14
 LDLIBS?=-lm -ldl `sdl2-config --libs` -lSDL2_image -lSDL2_ttf -lSDL2_mixer -lSDL2_gfx `pkg-config --libs yaml-cpp`
 
