@@ -16,14 +16,14 @@
 	7.1. Run `cd mode; make dist DEBUG=0; cd -`
 8. Copy executable and assets
 	8.1. Run `mkdir distrib`
-	8.2. Run `cp -r mode/dist/* distrib'
+	8.2. Run `cp -r mode/dist/* distrib/'
 	8.3. Run `mkdir distrib/bin`
 	8.4. Run `mv distrib/mode.exe distrib/bin/`
 9. Gather DLLs
 	9.1. Run `ldd distrib/bin/mode.exe`
 	9.2. Copy DLLs that begin with '/mingw64' to new 'distrib/bin' folder
 10. Copy startup batch file
-	10.1. Run `cp mode/contrib/windows/mode.bat distrib`
+	10.1. Run `cp mode/contrib/windows/mode.bat distrib/`
 11. Distribute
 	11.1. Run `cd distrib; zip -r ../mode.zip *; cd -`
 	11.2. Run `cp mode.zip /c/Users/[user]/Downloads/mode.zip`

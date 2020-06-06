@@ -1,6 +1,6 @@
 [submodule "vendor/lua"]
 	path = vendor/lua
 	url = https://github.com/lua/lua.git
-[submodule "vendor/sol2"]
-	path = vendor/sol2
+[submodule "vendor/sol3"]
+	path = vendor/sol3
 	url = https://github.com/ThePhD/sol2.git
