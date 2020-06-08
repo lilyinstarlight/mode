@@ -4,17 +4,17 @@ SRC_DIR="$(dirname $(dirname "$(dirname "$SELF")"))"
 
 source "$(dirname "$(dirname "$SELF")")"/metadata.sh
 
-BIN_DIR='bin'
-TMP_DIR='tmp'
-BLD_DIR='build'
-IMG_DIR='image'
+BIN_DIR=bin
+TMP_DIR=tmp
+BUILD_DIR=build
+IMG_DIR=img
 
 rm -rf "$BIN_DIR"
 mkdir -p "$BIN_DIR"
 rm -rf "$TMP_DIR"
 mkdir -p "$TMP_DIR"
-rm -rf "$BLD_DIR"
-mkdir -p "$BLD_DIR"
+rm -rf "$BUILD_DIR"
+mkdir -p "$BUILD_DIR"
 rm -rf "$IMG_DIR"
 mkdir -p "$IMG_DIR"
 
@@ -32,15 +32,15 @@ mkdir -p "$IMG_DIR"/usr/share/metainfo
 mkdir -p "$IMG_DIR"/usr/share/"$NAME"
 
 
-cp -r "$TMP_DIR"/"$NAME" "$BLD_DIR"/"$NAME"
+cp -r "$TMP_DIR"/"$NAME" "$BUILD_DIR"/"$NAME"
 
-pushd "$BLD_DIR"/"$NAME"
+pushd "$BUILD_DIR"/"$NAME"
 make clean
 make dist DEBUG=0
 EXE="$(find dist -mindepth 1 -maxdepth 1 -type f -perm -u+x -printf '%f\n' | head -n1)"
 popd
 
-for DIST_FILE in "$BLD_DIR"/"$NAME"/dist/*; do
+for DIST_FILE in "$BUILD_DIR"/"$NAME"/dist/*; do
   if [ "$(basename "$DIST_FILE")" == "$EXE" ]; then
     continue
   fi
@@ -48,7 +48,7 @@ for DIST_FILE in "$BLD_DIR"/"$NAME"/dist/*; do
   cp -r "$DIST_FILE" "$IMG_DIR"/usr/share/"$NAME"/
 done
 
-cp "$BLD_DIR"/"$NAME"/dist/"$EXE" "$IMG_DIR"/usr/bin/"$NAME"
+cp "$BUILD_DIR"/"$NAME"/dist/"$EXE" "$IMG_DIR"/usr/bin/"$NAME"
 
 cat >"$IMG_DIR"/AppRun <<EOF
 #!/bin/sh
