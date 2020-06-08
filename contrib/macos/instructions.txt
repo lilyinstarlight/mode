@@ -1,32 +1,5 @@
 1. Install Homebrew and dependencies
 	1.1. Go to https://brew.sh and run the install command from the page
-	1.2. Run `brew install sdl2{,_image,_mixer,_ttf,_gfx} yaml-cpp`
-2. Build project
-	2.1. Run `cd mode; make dist DEBUG=0; cd -`
-3. Copy executable and assets
-	3.1. Run `mkdir -p distrib`
-	3.2. Run `cp -r mode/dist/* distrib'
-4. Gather DLLs
-	4.1. Run `mkdir distrib/dylib`
-	4.2. Run `otool -L distrib/mode`
-	4.3. Copy dylibs that begin with '/usr/local' to new 'distrib/dylib' folder
-	4.4. For each dylib run `install_name_tool -change [dylib] @executable_path/dylib/[dylib_basename] distrib/mode`
-5. Get Platypus
-	5.1. Go to https://sveinbjorn.org/platypus
-	5.2. Download 'platypus.zip'
-	5.2. Extract into 'Platypus.app'
-6. Run Platypus
-	6.1. Fill out the following details:
-		App Name: .:mode:.
-		Script Type: Shell
-		Script Path: /Users/[user]/Downloads/mode/contrib/macos/mode.sh
-		Interface: None
-		Identifier: io.fooster.mode
-		Author: Foster McLane
-		Run in Background: [x] (checked)
-		Remain Running After Execution: [ ] (unchecked)
-	6.2. For Select .icns File pick 'mode/contrib/macos/mode.icns'
-	6.3. For Bundled Files select the executable and all of the folders in the 'distrib' folder
-	6.4. Click Create App
-	6.5. Save as 'mode.app'
-7. Artifact is 'mode.app'
+	1.2. Run `brew install platypus sdl2{,_image,_mixer,_ttf,_gfx} yaml-cpp`
+2. Run `mode/contrib/macos/build.sh` outside of the repository
+3. Artifact is 'mode.app'
