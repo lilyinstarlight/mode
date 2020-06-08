@@ -54,5 +54,5 @@ cat >"$IMG_DIR"/"$NAME".bat <<EOF
 EOF
 
 pushd "$IMG_DIR"
-zip -r "$(dirs +1)"/"$NAME".zip ./*
+zip -r "$(dirs -l +1)"/"$NAME".zip ./*
 popd
