@@ -44,7 +44,7 @@ hud:
 
   str: |
     +------------------------+
-    |        .:Mode:.        |
+    |        .:mode:.        |
     |    A game where you    |
     |    write the rules.    |
     |                        |
