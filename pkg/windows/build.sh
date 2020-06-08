@@ -50,7 +50,7 @@ for lib in $(ldd "$IMG_DIR"/bin/"$EXE" | grep -E '=>\s*/' | awk '{ print $3 }' |
 done
 
 cat >"$IMG_DIR"/"$NAME".bat <<EOF
-@start ".:mode:." /D "%~dp0" "%~dp0\\bin\\$EXE.exe"
+@start ".:mode:." /D "%~dp0" "%~dp0\\bin\\$EXE"
 EOF
 
 pushd "$IMG_DIR"
