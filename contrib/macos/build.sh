@@ -25,7 +25,6 @@ find . -type d -name .git -exec rm -rf '{}' ';' -prune
 popd
 
 mkdir -p "$IMG_DIR"/dist
-mkdir -p "$IMG_DIR"/icon
 
 
 cp -r "$TMP_DIR"/"$NAME" "$BLD_DIR"/"$NAME"
@@ -38,12 +37,12 @@ popd
 
 cp -r "$BLD_DIR"/"$NAME"/dist/ "$IMG_DIR"/dist/
 
-mkdir -p "$IMG_DIR"/icon/"$NAME".iconset
+mkdir -p "$BLD_DIR"/icon/"$NAME".iconset
 for size in 16 32 128 256 512; do
-  sips -z "$size" "$size" "$SRC_DIR"/"$ICON" --out "$IMG_DIR"/icon/"$NAME".iconset/icon_"$size"x"$size".png
-  sips -z "$(expr "$size" '*' 2)" "$(expr "$size" '*' 2)" "$SRC_DIR"/"$ICON" --out "$IMG_DIR"/icon/"$NAME".iconset/icon_"$size"x"$size"@2x.png
+  sips -z "$size" "$size" "$SRC_DIR"/"$ICON" --out "$BLD_DIR"/icon/"$NAME".iconset/icon_"$size"x"$size".png
+  sips -z "$(expr "$size" '*' 2)" "$(expr "$size" '*' 2)" "$SRC_DIR"/"$ICON" --out "$BLD_DIR"/icon/"$NAME".iconset/icon_"$size"x"$size"@2x.png
 done
-iconutil --convert icns --output "$IMG_DIR"/icon/icon.icns "$IMG_DIR"/icon/"$NAME".iconset
+iconutil --convert icns --output "$IMG_DIR"/icon.icns "$BLD_DIR"/icon/"$NAME".iconset
 
 cat >"$IMG_DIR"/run.sh <<EOF
 #!/bin/sh
@@ -60,4 +59,4 @@ done
 
 rm -rf "$NAME".app
 
-platypus -a "$PRETTY" -o 'None' -p /bin/sh -i "$IMG_DIR"/icon/icon.icns -u "$CONTACT" -V "$VERSION" -I "$DOMAIN.$NAME" -B -R -f "$IMG_DIR"/dist "$IMG_DIR"/run.sh "$NAME".app
+platypus -a "$PRETTY" -o 'None' -p /bin/sh -i "$IMG_DIR"/icon.icns -u "$CONTACT" -V "$VERSION" -I "$DOMAIN.$NAME" -B -R -f "$IMG_DIR"/dist "$IMG_DIR"/run.sh "$NAME".app
