@@ -43,14 +43,14 @@ for DIST_FILE in "$BLD_DIR"/"$NAME"/dist/*; do
   cp -r "$DIST_FILE" "$IMG_DIR"/
 done
 
-cp "$BLD_DIR"/"$NAME"/dist/"$EXE" "$IMG_DIR"/bin/"$NAME"
+cp "$BLD_DIR"/"$NAME"/dist/"$EXE" "$IMG_DIR"/bin/"$EXE"
 
-for lib in $(ldd "$IMG_DIR"/bin/"$NAME" | grep -E '=>\s*/' | awk '{ print $3 }' | sed -e 's#^/##' | grep '^mingw64/'); do
+for lib in $(ldd "$IMG_DIR"/bin/"$EXE" | grep -E '=>\s*/' | awk '{ print $3 }' | sed -e 's#^/##' | grep '^mingw64/'); do
   cp /"$lib" "$IMG_DIR"/bin/"$(basename "$lib")"
 done
 
 cat >"$IMG_DIR"/"$NAME".bat <<EOF
-@start ".:mode:." /D "%~dp0" "%~dp0\\bin\\$NAME.exe"
+@start ".:mode:." /D "%~dp0" "%~dp0\\bin\\$EXE.exe"
 EOF
 
 pushd "$IMG_DIR"

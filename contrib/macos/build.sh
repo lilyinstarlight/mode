@@ -47,14 +47,14 @@ iconutil --convert icns --output "$IMG_DIR"/icon.icns "$BLD_DIR"/icon/"$NAME".ic
 cat >"$IMG_DIR"/run.sh <<EOF
 #!/bin/sh
 cd "\`dirname "\$0"\`/dist"
-exec ./'$NAME'
+exec ./'$EXE'
 EOF
 chmod +x "$IMG_DIR"/run.sh
 
 mkdir -p "$IMG_DIR"/dist/dylib
-for dylib in $(otool -L "$IMG_DIR"/dist/"$NAME" | grep '^\t/' | awk '{ print $1 }' | sed -e 's#^/##' | grep '^usr/local/'); do
+for dylib in $(otool -L "$IMG_DIR"/dist/"$EXE" | grep '^\t/' | awk '{ print $1 }' | sed -e 's#^/##' | grep '^usr/local/'); do
   cp /"$dylib" "$IMG_DIR"/dist/dylib/"$(basename "$dylib")"
-  install_name_tool -change /"$dylib" @executable_path/dylib/"$(basename "$dylib")" "$IMG_DIR"/dist/"$NAME"
+  install_name_tool -change /"$dylib" @executable_path/dylib/"$(basename "$dylib")" "$IMG_DIR"/dist/"$EXE"
 done
 
 rm -rf "$NAME".app
