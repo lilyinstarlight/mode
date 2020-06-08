@@ -24,7 +24,7 @@ pushd "$TMP_DIR"
 find . -type d -name .git -exec rm -rf '{}' ';' -prune
 popd
 
-mkdir -p "$IMG_DIR"/distrib
+mkdir -p "$IMG_DIR"/dist
 mkdir -p "$IMG_DIR"/icon
 
 
@@ -36,7 +36,7 @@ make dist DEBUG=0
 EXE="$(find dist -mindepth 1 -maxdepth 1 -type f -perm -u+x -printf '%f\n' | head -n1)"
 popd
 
-cp -r "$BLD_DIR"/"$NAME"/dist/* "$IMG_DIR"/distrib/
+cp -r "$BLD_DIR"/"$NAME"/dist/ "$IMG_DIR"/dist/
 
 mkdir -p "$IMG_DIR"/icon/"$NAME".iconset
 for size in 16 32 128 256 512; do
@@ -47,17 +47,17 @@ iconutil --convert icns --output "$IMG_DIR"/icon/icon.icns "$IMG_DIR"/icon/"$NAM
 
 cat >"$IMG_DIR"/run.sh <<EOF
 #!/bin/sh
-cd "\`dirname "\$0"\`"
+cd "\`dirname "\$0"\`/dist"
 exec ./'$NAME'
 EOF
 chmod +x "$IMG_DIR"/run.sh
 
-mkdir -p "$IMG_DIR"/distrib/dylib
-for dylib in $(otool -L "$IMG_DIR"/distrib/"$NAME" | grep '^\t/' | awk '{ print $1 }' | sed -e 's#^/##' | grep '^usr/local/'); do
-  cp /"$dylib" "$IMG_DIR"/distrib/dylib/"$(basename "$dylib")"
-  install_name_tool -change /"$dylib" @executable_path/dylib/"$(basename "$dylib")" "$IMG_DIR"/distrib/"$NAME"
+mkdir -p "$IMG_DIR"/dist/dylib
+for dylib in $(otool -L "$IMG_DIR"/dist/"$NAME" | grep '^\t/' | awk '{ print $1 }' | sed -e 's#^/##' | grep '^usr/local/'); do
+  cp /"$dylib" "$IMG_DIR"/dist/dylib/"$(basename "$dylib")"
+  install_name_tool -change /"$dylib" @executable_path/dylib/"$(basename "$dylib")" "$IMG_DIR"/dist/"$NAME"
 done
 
 rm -rf "$NAME".app
 
-platypus -a "$PRETTY" -o 'None' -p /bin/sh -i "$IMG_DIR"/icon/icon.icns -u "$CONTACT" -V "$VERSION" -I "$DOMAIN.$NAME" -B -R -f "$(find "$IMG_DIR"/distrib -mindepth 1 -maxdepth 1 | tr '\n' '|' | sed -e 's/|$/\n/')" "$IMG_DIR"/run.sh "$NAME".app
+platypus -a "$PRETTY" -o 'None' -p /bin/sh -i "$IMG_DIR"/icon/icon.icns -u "$CONTACT" -V "$VERSION" -I "$DOMAIN.$NAME" -B -R -f "$IMG_DIR"/dist "$IMG_DIR"/run.sh "$NAME".app
