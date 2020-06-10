@@ -67,7 +67,7 @@ std::string Yaml::leaf(const std::string & path) const {
 	if (pos == std::string::npos)
 		return path;
 
-	return path.substr(path.rfind('/') + 1);
+	return path.substr(pos + 1);
 }
 
 YAML::Node Yaml::resolve(const std::string & path) const {
