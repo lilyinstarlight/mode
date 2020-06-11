@@ -10,5 +10,5 @@
 	2.2. Run `pacman -Syu`
 3. Install dependencies
 	3.1. Run `pacman -S base-devel zip mingw-w64-x86_64-{gcc,smpeg2,SDL2_ttf,SDL2_mixer,SDL2_image,SDL2_gfx,SDL2_net,SDL2,yaml-cpp}`
-4. Run `mode/pkg/windows/build.sh` outside of the repository
+4. Run `pkg/windows/build.sh`
 5. Artifact is 'mode.zip'

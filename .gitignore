@@ -6,3 +6,11 @@
 /data
 
 /dist
+
+/pkg/*/bin
+/pkg/*/build
+/pkg/*/image
+
+*.AppImage
+*.app
+*.zip
