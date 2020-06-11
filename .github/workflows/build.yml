@@ -11,6 +11,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
+        with:
+          submodules: recursive
       - run: |
           .ci/linux.sh
       - uses: actions/upload-artifact@v2
@@ -23,6 +25,8 @@ jobs:
     runs-on: macos-latest
     steps:
       - uses: actions/checkout@v2
+        with:
+          submodules: recursive
       - run: |
           .ci/macos.sh
       - uses: actions/upload-artifact@v2
@@ -35,6 +39,8 @@ jobs:
     runs-on: windows-latest
     steps:
       - uses: actions/checkout@v2
+        with:
+          submodules: recursive
       - shell: powershell
         run: |
           .ci/windows.ps1
