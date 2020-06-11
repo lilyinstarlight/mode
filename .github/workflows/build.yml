@@ -1,0 +1,44 @@
+name: Nightly Builds
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  linux:
+    name: Linux
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - run: |
+          .ci/linux.sh
+      - uses: actions/upload-artifact@v2
+        with:
+          name: mode-linux.AppImage
+          path: mode.AppImage
+
+  macos:
+    name: macOS
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v2
+      - run: |
+          .ci/macos.sh
+      - uses: actions/upload-artifact@v2
+        with:
+          name: mode-macos.zip
+          path: mode.zip
+
+  windows:
+    name: Windows
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v2
+      - shell: powershell
+        run: |
+          .ci/windows.ps1
+      - uses: actions/upload-artifact@v2
+        with:
+          name: mode-windows.zip
+          path: mode.zip

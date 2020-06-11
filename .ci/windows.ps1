@@ -1,0 +1,1 @@
+C:\msys64\msys2_shell.cmd -defterm -no-start -mingw64 -c 'pacman -Syu && pacman -Sy base-devel zip mingw-w64-x86_64-{gcc,smpeg2,SDL2_ttf,SDL2_mixer,SDL2_image,SDL2_gfx,SDL2_net,SDL2,yaml-cpp} && exec pkg/windows/build.sh'
