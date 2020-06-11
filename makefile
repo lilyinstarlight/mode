@@ -15,7 +15,7 @@ DISTDIR=dist
 
 DIST=behaviours data fonts libs sounds specs textures $(EXE)
 
-SRC=$(shell find '$(SRCDIR)' -maxdepth 1 -name '*.cpp' -exec sh -c "basename '{}'" ';')
+SRC=$(shell find '$(SRCDIR)' -maxdepth 1 -name '*.cpp' -exec basename '{}' ';')
 DEP=$(shell echo '$(SRC)' | sed -e 's/\([^ ]*\).cpp/$(BUILDDIR)\/\1.d /g')
 OBJ=$(shell echo '$(SRC)' | sed -e 's/\([^ ]*\).cpp/$(BUILDDIR)\/\1.o /g')
 
