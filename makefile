@@ -1,5 +1,6 @@
 EXE=mode
 DEBUG?=1
+RESOURCE?=
 
 CC?=gcc
 CXX?=g++
@@ -14,9 +15,9 @@ DISTDIR=dist
 
 DIST=behaviours data fonts libs sounds specs textures $(EXE)
 
-SRC=$(shell find $(SRCDIR) -maxdepth 1 -name "*.cpp" -printf "%f ")
-DEP=$(shell echo $(SRC) | sed -e "s/\([^ ]*\).cpp/$(BUILDDIR)\/\1.d /g")
-OBJ=$(shell echo $(SRC) | sed -e "s/\([^ ]*\).cpp/$(BUILDDIR)\/\1.o /g")
+SRC=$(shell find $(SRCDIR) -maxdepth 1 -name '*.cpp' -printf '%f ')
+DEP=$(shell echo $(SRC) | sed -e 's/\([^ ]*\).cpp/$(BUILDDIR)\/\1.d /g')
+OBJ=$(shell echo $(SRC) | sed -e 's/\([^ ]*\).cpp/$(BUILDDIR)\/\1.o /g')
 
 all: $(DEP) $(EXE) $(DATADIR)
 
@@ -24,16 +25,16 @@ $(EXE): $(OBJ) $(VENDORDIR)/lua/liblua.a
 	$(CXX) $(LDFLAGS) -o $@ $^ $(LDLIBS)
 
 $(BUILDDIR)/%.d: $(SRCDIR)/%.cpp
-	$(CXX) $(CXXFLAGS) -MQ $(@:.d=.o) -MF $@ -MM $<
+	$(CXX) $(CXXFLAGS) -DRESOURCE='$(RESOURCE)' -MQ $(@:.d=.o) -MF $@ -MM $<
 
 $(BUILDDIR)/%.o: $(SRCDIR)/%.cpp
-	$(CXX) $(CXXFLAGS) -c -o $@ $<
+	$(CXX) $(CXXFLAGS) -DRESOURCE='$(RESOURCE)' -c -o $@ $<
 
 $(VENDORDIR)/lua/liblua.a: $(VENDORDIR)/lua/makefile
-	+make -C $(VENDORDIR)/lua CC=$(CC) MYCFLAGS="$(LUA_CFLAGS)" MYLDFLAGS="$(LUA_LDFLAGS)" MYLIBS="$(LUA_LDLIBS)" a
+	+make -C $(VENDORDIR)/lua CC=$(CC) MYCFLAGS='$(LUA_CFLAGS)' MYLDFLAGS='$(LUA_LDFLAGS)' MYLIBS='$(LUA_LDLIBS)' a
 
 $(VENDORDIR)/lua/lua: $(VENDORDIR)/lua/makefile
-	+make -C $(VENDORDIR)/lua CC=$(CC) MYCFLAGS="$(LUA_CFLAGS)" MYLDFLAGS="$(LUA_LDFLAGS)" MYLIBS="$(LUA_LDLIBS)" lua
+	+make -C $(VENDORDIR)/lua CC=$(CC) MYCFLAGS='$(LUA_CFLAGS)' MYLDFLAGS='$(LUA_LDFLAGS)' MYLIBS='$(LUA_LDLIBS)' lua
 
 $(DEP): | $(BUILDDIR)
 

@@ -31,7 +31,7 @@ cp -r "$TMP_DIR"/"$NAME" "$BUILD_DIR"/"$NAME"
 
 pushd "$BUILD_DIR"/"$NAME"
 make clean
-make dist DEBUG=0
+make dist DEBUG=0 RESOURCE=..
 EXE="$(find dist -mindepth 1 -maxdepth 1 -type f -name '*.exe' -printf '%f\n' | head -n1)"
 popd
 
