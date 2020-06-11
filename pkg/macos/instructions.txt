@@ -1,5 +1,5 @@
 1. Install Homebrew and dependencies
 	1.1. Go to https://brew.sh and run the install command from the page
-	1.2. Run `brew install sdl2{,_image,_mixer,_ttf,_gfx} yaml-cpp`
+	1.2. Run `brew install make pkg-config sdl2{,_image,_mixer,_ttf,_gfx} yaml-cpp`
 2. Run `pkg/macos/build.sh`
 3. Artifact is 'mode.app'

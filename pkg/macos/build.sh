@@ -29,8 +29,8 @@ done
 
 # build dist directory without debug and defined relative resource
 pushd "$BUILD_DIR"/"$NAME"
-make distclean
-make dist DEBUG=0 RESOURCE=../Resources
+gmake distclean
+gmake dist DEBUG=0 RESOURCE=../Resources
 EXE="$(find dist -mindepth 1 -maxdepth 1 -type f -perm -u+x -printf '%f\n' | head -n1)"
 popd
 
