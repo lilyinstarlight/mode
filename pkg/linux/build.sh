@@ -114,16 +114,13 @@ done
 pushd "$BIN_DIR"
 rm -f appimagetool-x86_64.AppImage
 rm -f appimagetool
-wget "https://github.com/AppImage/AppImageKit/releases/download/continuous/appimagetool-x86_64.AppImage"
+wget 'https://github.com/AppImage/AppImageKit/releases/download/continuous/appimagetool-x86_64.AppImage'
 chmod +x appimagetool-x86_64.AppImage
 ln -s appimagetool-x86_64.AppImage appimagetool
 popd
 
 
 # package image
-rm -f "$NAME-x86_64.AppImage"
-rm -f "$NAME.AppImage"
+rm -f "$NAME".AppImage
 
-"$BIN_DIR"/appimagetool "$IMAGE_DIR"
-
-mv "$NAME-x86_64.AppImage" "$NAME.AppImage"
+"$BIN_DIR"/appimagetool "$IMAGE_DIR" "$NAME".AppImage
