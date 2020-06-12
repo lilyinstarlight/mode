@@ -84,23 +84,23 @@ jobs:
               'mode-windows.zip': './mode-windows/mode.zip',
             };
 
+            let ref = null;
+
             try {
-              let ref = github.git.getRef({
+              ref = github.git.getRef({
                 ...context.repo,
-                ref: 'refs/tags/' + tag,
+                ref: 'tags/' + tag,
               });
             }
             catch (err) {
               if (err.status !== 404)
                 throw err;
-
-              let ref = null;
             }
 
             if (ref) {
               github.git.updateRef({
                 ...context.repo,
-                ref: ref.ref,
+                ref: 'tags/' + tag,
                 sha: context.sha,
                 force: true,
               });
@@ -108,13 +108,15 @@ jobs:
             else {
               ref = github.git.createRef({
                 ...context.repo,
-                ref: 'refs/tags/' + tag,
+                ref: 'tags/' + tag,
                 sha: context.sha,
               });
             }
 
+            let rel = null;
+
             try {
-              let rel = github.repos.getReleaseByTag({
+              rel = github.repos.getReleaseByTag({
                 ...context.repo,
                 tag: tag,
               });
@@ -122,8 +124,6 @@ jobs:
             catch (err) {
               if (err.status !== 404)
                 throw err;
-
-              let rel = null;
             }
 
             if (rel) {
