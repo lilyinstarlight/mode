@@ -118,6 +118,7 @@ jobs:
                 ...context.repo,
                 tag: tag,
               });
+            }
             catch (err) {
               if (err.status !== 404)
                 throw err;
