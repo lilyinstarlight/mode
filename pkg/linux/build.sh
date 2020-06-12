@@ -76,7 +76,7 @@ cp "$SRC_DIR"/"$ICON" "$IMAGE_DIR"/usr/share/icons/hicolor/"$(file "$SRC_DIR"/"$
 
 cat >"$IMAGE_DIR"/"$DOMAIN"."$NAME".desktop <<EOF
 [Desktop Entry]
-Name=$NAME
+Name=$PRETTY
 Exec=$NAME
 Icon=$NAME
 Type=Application
