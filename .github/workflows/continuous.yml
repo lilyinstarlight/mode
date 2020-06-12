@@ -50,91 +50,106 @@ jobs:
           path: mode.zip
 
   upload:
-      name: Upload Release
-      needs: [linux, macos, windows]
-      runs-on: ubuntu-20.04
-      steps:
-        - uses: actions/download-artifact@v2
-          with:
-            name: mode-linux
-            path: mode-linux
-        - uses: actions/download-artifact@v2
-          with:
-            name: mode-macos
-            path: mode-macos
-        - uses: actions/download-artifact@v2
-          with:
-            name: mode-windows
-            path: mode-windows
-        - uses: actions/github-script@v2
-          with:
-            github-token: ${{ secrets.GITHUB_TOKEN }}
-            script: |
-              const fs = require('fs');
+    name: Upload Release
+    needs: [linux, macos, windows]
+    runs-on: ubuntu-20.04
+    steps:
+      - uses: actions/download-artifact@v2
+        with:
+          name: mode-linux
+          path: mode-linux
+      - uses: actions/download-artifact@v2
+        with:
+          name: mode-macos
+          path: mode-macos
+      - uses: actions/download-artifact@v2
+        with:
+          name: mode-windows
+          path: mode-windows
+      - uses: actions/github-script@v2
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const fs = require('fs');
 
-              const tag = 'continuous';
+            const tag = 'continuous';
 
-              const name = 'Continuous Builds';
-              const body = 'Continuous builds are freshly baked from the master branch. Unless otherwise specified, all builds are for x86_64.';
-              const prerelease = true;
+            const name = 'Continuous Builds';
+            const body = 'Continuous builds are freshly baked from the master branch. Unless otherwise specified, all builds are for x86_64.';
+            const prerelease = true;
 
-              const assets = {
-                'mode-linux.AppImage': './mode-linux/mode.AppImage',
-                'mode-macos.zip': './mode-macos/mode.zip',
-                'mode-windows.zip': './mode-windows/mode.zip',
-              };
+            const assets = {
+              'mode-linux.AppImage': './mode-linux/mode.AppImage',
+              'mode-macos.zip': './mode-macos/mode.zip',
+              'mode-windows.zip': './mode-windows/mode.zip',
+            };
 
+            try {
               let ref = github.git.getRef({
                 ...context.repo,
                 ref: 'refs/tags/' + tag,
               });
+            }
+            catch (err) {
+              if (err.status !== 404)
+                throw err;
 
-              if (ref) {
-                github.git.updateRef({
-                  ...context.repo,
-                  ref: ref.ref,
-                  sha: context.sha,
-                  force: true,
-                });
-              }
-              else {
-                ref = github.git.createRef({
-                  ...context.repo,
-                  ref: 'refs/tags/' + tag,
-                  sha: context.sha,
-                });
-              }
+              let ref = null;
+            }
 
+            if (ref) {
+              github.git.updateRef({
+                ...context.repo,
+                ref: ref.ref,
+                sha: context.sha,
+                force: true,
+              });
+            }
+            else {
+              ref = github.git.createRef({
+                ...context.repo,
+                ref: 'refs/tags/' + tag,
+                sha: context.sha,
+              });
+            }
+
+            try {
               let rel = github.repos.getReleaseByTag({
                 ...context.repo,
                 tag: tag,
               });
+            catch (err) {
+              if (err.status !== 404)
+                throw err;
 
-              if (rel) {
-                github.repos.updateRelease({
-                  ...context.repo,
-                  release_id: rel.id,
-                  tag_name: tag,
-                  name: name,
-                  body: body,
-                  prelease: prerelease,
-                });
-              }
-              else {
-                rel = github.repos.createRelease({
-                  ...context.repo,
-                  tag_name: tag,
-                  name: name,
-                  body: body,
-                  prelease: prerelease,
-                });
-              }
+              let rel = null;
+            }
 
-              for (let [asset_name, asset_path] of Object.entries(assets)) {
-                github.repos.uploadReleaseAsset({
-                  ...context.repo,
-                  release_id: rel.id,
-                  name: asset_name,
-                  data: fs.readFileSync(asset_path),
-                });
-              }
+            if (rel) {
+              github.repos.updateRelease({
+                ...context.repo,
+                release_id: rel.id,
+                tag_name: tag,
+                name: name,
+                body: body,
+                prelease: prerelease,
+              });
+            }
+            else {
+              rel = github.repos.createRelease({
+                ...context.repo,
+                tag_name: tag,
+                name: name,
+                body: body,
+                prelease: prerelease,
+              });
+            }
+
+            for (let [asset_name, asset_path] of Object.entries(assets)) {
+              github.repos.uploadReleaseAsset({
+                ...context.repo,
+                release_id: rel.id,
+                name: asset_name,
+                data: fs.readFileSync(asset_path),
+              });
+            }
