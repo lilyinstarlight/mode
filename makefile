@@ -1,6 +1,7 @@
 EXE=mode
 DEBUG=1
 RESOURCE=
+MYOBJ=
 
 include platform.mk
 
@@ -18,7 +19,7 @@ OBJ=$(shell echo '$(SRC)' | sed -e 's/\([^ ]*\).cpp/$(BUILDDIR)\/\1.o /g')
 
 all: $(DEP) $(EXE) $(DATADIR)
 
-$(EXE): $(OBJ) $(VENDORDIR)/lua/liblua.a
+$(EXE): $(OBJ) $(VENDORDIR)/lua/liblua.a $(MYOBJ)
 	$(CXX) $(LDFLAGS) -o $@ $^ $(LDLIBS)
 
 $(BUILDDIR)/%.d: $(SRCDIR)/%.cpp

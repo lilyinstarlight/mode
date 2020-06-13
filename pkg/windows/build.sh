@@ -27,10 +27,46 @@ for SRC_FILE in "$SRC_DIR"/*; do
 done
 
 
+# build windows res file
+mkdir -p "$BUILD_DIR"/"$NAME".res
+
+magick convert "$BUILD_DIR"/"$NAME"/"$ICON" -define icon:auto-resize -compress zip "$BUILD_DIR"/"$NAME".res/"$NAME".ico
+
+cat >"$BUILD_DIR"/"$NAME".res/"$NAME".rc <<EOF
+icon ICON "$BUILD_DIR/$NAME.res/$NAME.ico"
+
+1 VERSIONINFO
+FILEVERSION     $(echo "$VERSION.0.0.0" | tr '.' '\n' | head -n4 | tr '\n' ',' | sed 's/,$/\n/')
+PRODUCTVERSION  $(echo "$VERSION.0.0.0" | tr '.' '\n' | head -n4 | tr '\n' ',' | sed 's/,$/\n/')
+BEGIN
+  BLOCK "StringFileInfo"
+  BEGIN
+    BLOCK "040904E4"
+    BEGIN
+      VALUE "CompanyName", "$CONTACT"
+      VALUE "FileDescription", "$SUMMARY"
+      VALUE "FileVersion", "$VERSION"
+      VALUE "InternalName", "$NAME"
+      VALUE "LegalCopyright", "$CONTACT"
+      VALUE "OriginalFilename", "$EXE"
+      VALUE "ProductName", "$PRETTY"
+      VALUE "ProductVersion", "$VERSION"
+    END
+  END
+  BLOCK "VarFileInfo"
+  BEGIN
+    VALUE "Translation", 0x409, 1252
+  END
+END
+EOF
+
+windres "$BUILD_DIR"/"$NAME".res/"$NAME".rc "$BUILD_DIR"/"$NAME".res/"$NAME".res.o
+
+
 # build dist directory without debug and defined relative resource
 pushd "$BUILD_DIR"/"$NAME"
 make distclean
-make dist DEBUG=0 RESOURCE=..
+make dist DEBUG=0 RESOURCE=.. MYOBJ="$BUILD_DIR"/"$NAME".res/"$NAME".res.o
 EXE="$(find dist -mindepth 1 -maxdepth 1 -type f -name '*.exe' -exec basename '{}' ';' | head -n1)"
 popd
 
