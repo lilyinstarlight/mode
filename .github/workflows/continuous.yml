@@ -108,33 +108,30 @@ jobs:
               });
             }
 
-            const rel = await github.repos.getReleaseByTag({
+            await github.repos.getReleaseByTag({
               ...context.repo,
               tag: tag,
+            })
+            .then((rel) => {
+              return github.repos.deleteRelease({
+                ...context.repo,
+                release_id: rel.data.id,
+              });
             })
             .catch((err) => {
               if (err.status !== 404)
                 throw err;
 
-              return github.repos.createRelease({
-                ...context.repo,
-                tag_name: tag,
-                name: name,
-                body: body,
-                prerelease: prerelease,
-              });
+              return null;
             });
 
-            if (rel.status !== 201) {
-              await github.repos.updateRelease({
-                ...context.repo,
-                release_id: rel.data.id,
-                tag_name: tag,
-                name: name,
-                body: body,
-                prerelease: prerelease,
-              });
-            }
+            const rel = await github.repos.createRelease({
+              ...context.repo,
+              tag_name: tag,
+              name: name,
+              body: body,
+              prerelease: prerelease,
+            });
 
             for (let [asset_name, asset_path] of Object.entries(assets)) {
               await github.repos.uploadReleaseAsset({
