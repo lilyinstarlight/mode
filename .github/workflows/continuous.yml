@@ -4,6 +4,8 @@ on:
   push:
     branches:
       - master
+    tags:
+      - 'v*'
 
 jobs:
   linux:
@@ -72,11 +74,14 @@ jobs:
           script: |
             const fs = require('fs');
 
-            const tag = 'continuous';
+            const release = context.ref.startsWith('refs/tags/v');
 
-            const name = 'Continuous Builds';
-            const body = 'Continuous builds are freshly baked from the master branch. Unless otherwise specified, all builds are for x86_64.';
-            const prerelease = true;
+            const tag = release ? context.ref.replace(/^refs\/tags\//i, '') : 'continuous';
+
+            const name = release ? '.:mode:. ' + tag : '.:mode:. Continuous';
+            const body = release ? '' : 'Continuous builds are freshly baked on every push to the master branch. Unless otherwise specified, all builds are for x86_64.';
+            const prerelease = !release;
+            const draft = release;
 
             const assets = {
               'mode-linux.AppImage': './mode-linux/mode.AppImage',
@@ -99,7 +104,7 @@ jobs:
               });
             });
 
-            if (ref.status !== 201) {
+            if (ref.data.object.sha != context.sha) {
               await github.git.updateRef({
                 ...context.repo,
                 ref: 'tags/' + tag,
@@ -131,6 +136,7 @@ jobs:
               name: name,
               body: body,
               prerelease: prerelease,
+              draft: draft,
             });
 
             for (let [asset_name, asset_path] of Object.entries(assets)) {
