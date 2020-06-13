@@ -40,6 +40,7 @@ popd
 
 # prepare image for packaging
 mkdir -p "$IMAGE_DIR"/usr/bin
+mkdir -p "$IMAGE_DIR"/usr/lib
 mkdir -p "$IMAGE_DIR"/usr/share
 mkdir -p "$IMAGE_DIR"/usr/share/applications
 mkdir -p "$IMAGE_DIR"/usr/share/icons/hicolor/"$(file "$SRC_DIR"/"$ICON" | grep -oE '\d+\s+x\s+\d+' | tr -d ' ')"
@@ -56,16 +57,18 @@ done
 
 cp "$BUILD_DIR"/"$NAME"/dist/"$EXE" "$IMAGE_DIR"/usr/bin/"$NAME"
 
+for lib in $(ldd "$IMAGE_DIR"/usr/bin/"$NAME" | grep -E '=>\s*/' | awk '{ print $3 }' | sed -e 's#^/##'); do
+  cp /"$lib" "$IMAGE_DIR"/usr/lib/"$(basename "$lib")"
+done
+
 cat >"$IMAGE_DIR"/AppRun <<EOF
 #!/bin/sh
 SELF="\`readlink -f "\$0"\`"
 IMG="\`dirname "\$SELF"\`"
 
-export PATH="\$IMG"/usr/bin/:"\$IMG"/usr/sbin/:"\$IMG"/usr/games/:"\$IMG"/bin/:"\$IMG"/sbin/:"\$PATH"
-export LD_LIBRARY_PATH="\$IMG"/usr/lib/:"\$IMG"/usr/lib/i386-linux-gnu/:"\$IMG"/usr/lib/x86_64-linux-gnu/:"\$IMG"/usr/lib32/:"\$IMG"/usr/lib64/:"\$IMG"/lib/:"\$IMG"/lib/i386-linux-gnu/:"\$IMG"/lib/x86_64-linux-gnu/:"\$IMG"/lib32/:"\$IMG"/lib64/:"\$LD_LIBRARY_PATH"
-export XDG_DATA_DIRS="\$IMG"/usr/share/:"\$XDG_DATA_DIRS"
-
-cd "\$IMG"/usr/share/'$NAME'
+export PATH="\$IMG"/usr/bin:"\$PATH"
+export LD_LIBRARY_PATH="\$IMG"/usr/lib:"\$LD_LIBRARY_PATH"
+export XDG_DATA_DIRS="\$IMG"/usr/share:"\$XDG_DATA_DIRS"
 
 exec "\$IMG"/usr/bin/'$NAME' "\$@"
 EOF
@@ -103,11 +106,6 @@ cat >"$IMAGE_DIR"/usr/share/metainfo/"$DOMAIN"."$NAME".appdata.xml <<EOF
   <update_contact>$EMAIL</update_contact>
 </component>
 EOF
-
-for lib in $(ldd "$IMAGE_DIR"/usr/bin/"$NAME" | grep -E '=>\s*/' | awk '{ print $3 }' | sed -e 's#^/##'); do
-  mkdir -p "$IMAGE_DIR"/"$(dirname "$lib")"
-  cp /"$lib" "$IMAGE_DIR"/"$lib"
-done
 
 
 # get helper tools
