@@ -33,7 +33,7 @@ mkdir -p "$BUILD_DIR"/"$NAME".res
 magick convert "$BUILD_DIR"/"$NAME"/"$ICON" -define icon:auto-resize -compress zip "$BUILD_DIR"/"$NAME".res/"$NAME".ico
 
 cat >"$BUILD_DIR"/"$NAME".res/"$NAME".rc <<EOF
-icon ICON "$(cygpath -wa "$BUILD_DIR"/"$NAME".res/"$NAME".ico)"
+icon ICON "$(cygpath -ma "$BUILD_DIR"/"$NAME".res/"$NAME".ico)"
 
 1 VERSIONINFO
 FILEVERSION     $(echo "$VERSION.0.0.0" | tr '.' '\n' | head -n4 | tr '\n' ',' | sed 's/,$/\n/')
