@@ -84,72 +84,62 @@ jobs:
               'mode-windows.zip': './mode-windows/mode.zip',
             };
 
-            let ref = null;
-
-            try {
-              ref = github.git.getRef({
-                ...context.repo,
-                ref: 'tags/' + tag,
-              });
-            }
-            catch (err) {
+            const ref = await github.git.getRef({
+              ...context.repo,
+              ref: 'tags/' + tag,
+            })
+            .catch((err) => {
               if (err.status !== 404)
                 throw err;
-            }
 
-            if (ref) {
-              github.git.updateRef({
+              return github.git.createRef({
+                ...context.repo,
+                ref: 'refs/tags/' + tag,
+                sha: context.sha,
+              });
+            });
+
+            if (ref.status !== 201) {
+              await github.git.updateRef({
                 ...context.repo,
                 ref: 'tags/' + tag,
                 sha: context.sha,
                 force: true,
               });
             }
-            else {
-              ref = github.git.createRef({
-                ...context.repo,
-                ref: 'tags/' + tag,
-                sha: context.sha,
-              });
-            }
 
-            let rel = null;
-
-            try {
-              rel = github.repos.getReleaseByTag({
-                ...context.repo,
-                tag: tag,
-              });
-            }
-            catch (err) {
+            const rel = await github.repos.getReleaseByTag({
+              ...context.repo,
+              tag: tag,
+            })
+            .catch((err) => {
               if (err.status !== 404)
                 throw err;
-            }
 
-            if (rel) {
-              github.repos.updateRelease({
+              return github.repos.createRelease({
                 ...context.repo,
-                release_id: rel.id,
                 tag_name: tag,
                 name: name,
                 body: body,
-                prelease: prerelease,
+                prerelease: prerelease,
               });
-            }
-            else {
-              rel = github.repos.createRelease({
+            });
+
+            if (rel.status !== 201) {
+              await github.repos.updateRelease({
                 ...context.repo,
+                release_id: rel.data.id,
                 tag_name: tag,
                 name: name,
                 body: body,
-                prelease: prerelease,
+                prerelease: prerelease,
               });
             }
 
             for (let [asset_name, asset_path] of Object.entries(assets)) {
-              github.repos.uploadReleaseAsset({
+              await github.repos.uploadReleaseAsset({
                 ...context.repo,
-                release_id: rel.id,
+                release_id: rel.data.id,
                 name: asset_name,
                 data: fs.readFileSync(asset_path),
               });
