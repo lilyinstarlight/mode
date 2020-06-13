@@ -99,9 +99,33 @@ cat >"$IMAGE_DIR"/Contents/Info.plist <<EOF
 </plist>
 EOF
 
+DYLIBS_ADDED=0
+
+install_name_tool -add_rpath @executable_path/../Frameworks "$IMAGE_DIR"/Contents/MacOS/"$NAME"
+
 for dylib in $(otool -L "$IMAGE_DIR"/Contents/MacOS/"$NAME" | grep '^\t/' | awk '{ print $1 }' | sed -e 's#^/##' | grep '^usr/local/'); do
   cp /"$dylib" "$IMAGE_DIR"/Contents/Frameworks/"$(basename "$dylib")"
+  DYLIBS_ADDED="$(expr "$DYLIBS_ADDED" + 1)"
   install_name_tool -change /"$dylib" @rpath/"$(basename "$dylib")" "$IMAGE_DIR"/Contents/MacOS/"$NAME"
+done
+
+while [ "$DYLIBS_ADDED" -gt 0 ]; do
+  DYLIBS_ADDED=0
+
+  for dylib in "$IMAGE_DIR"/Contents/Frameworks/*; do
+    chmod 644 "$dylib"
+    for ddylib in $(otool -L "$dylib" | grep '^\t/' | awk '{ print $1 }' | sed -e 's#^/##' | grep '^usr/local/'); do
+      if [ "$(basename "$dylib")" == "$(basename "$ddylib")" ]; then
+	install_name_tool -id @rpath/"$(basename "$ddylib")" "$dylib"
+      else
+	if ! [ -e "$IMAGE_DIR"/Contents/Frameworks/"$(basename "$ddylib")" ]; then
+	  cp /"$ddylib" "$IMAGE_DIR"/Contents/Frameworks/"$(basename "$ddylib")"
+	  DYLIBS_ADDED="$(expr "$DYLIBS_ADDED" + 1)"
+	fi
+	install_name_tool -change /"$ddylib" @rpath/"$(basename "$ddylib")" "$dylib"
+      fi
+    done
+  done
 done
 
 

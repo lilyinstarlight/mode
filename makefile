@@ -1,9 +1,6 @@
 EXE=mode
-DEBUG?=1
-RESOURCE?=
-
-CC?=gcc
-CXX?=g++
+DEBUG=1
+RESOURCE=
 
 include platform.mk
 
@@ -31,10 +28,10 @@ $(BUILDDIR)/%.o: $(SRCDIR)/%.cpp
 	$(CXX) $(CXXFLAGS) -DRESOURCE='$(RESOURCE)' -c -o $@ $<
 
 $(VENDORDIR)/lua/liblua.a: $(VENDORDIR)/lua/makefile
-	+make -C $(VENDORDIR)/lua CC=$(CC) MYCFLAGS='$(LUA_CFLAGS)' MYLDFLAGS='$(LUA_LDFLAGS)' MYLIBS='$(LUA_LDLIBS)' a
+	+make -C $(VENDORDIR)/lua CC=$(CC) CFLAGS='$(LUA_CFLAGS)' MYLDFLAGS='$(LUA_LDFLAGS)' MYLIBS='$(LUA_LDLIBS)' a
 
 $(VENDORDIR)/lua/lua: $(VENDORDIR)/lua/makefile
-	+make -C $(VENDORDIR)/lua CC=$(CC) MYCFLAGS='$(LUA_CFLAGS)' MYLDFLAGS='$(LUA_LDFLAGS)' MYLIBS='$(LUA_LDLIBS)' lua
+	+make -C $(VENDORDIR)/lua CC=$(CC) CFLAGS='$(LUA_CFLAGS)' MYLDFLAGS='$(LUA_LDFLAGS)' MYLIBS='$(LUA_LDLIBS)' lua
 
 $(DEP): | $(BUILDDIR)
 
