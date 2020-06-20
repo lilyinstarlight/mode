@@ -1,8 +1,27 @@
-#!/bin/bash -xe
+#!/bin/bash -e
+start_group() {
+  if [ "$GITHUB_ACTIONS" == "true" ]; then
+    echo "::group::$(echo -e "$*" | sed -e '1h;2,$H;$!d;g' -e 's/%/%25/g' -e 's/\r/%0D/g' -e 's/\n/%0A/g')"
+  fi
+}
+
+end_group() {
+  if [ "$GITHUB_ACTIONS" == "true" ]; then
+    echo "::endgroup"
+  fi
+}
+
+
 SELF="$(readlink -f "$0")"
 SRC_DIR="$(dirname $(dirname "$(dirname "$SELF")"))"
 
-source "$(dirname "$(dirname "$SELF")")"/metadata.sh
+start_group 'Packaging metadata'
+set -x
+
+source "$SRC_DIR"/pkg/metadata.sh
+
+{ set +x; } 2>/dev/null
+end_group
 
 BIN_DIR="$(dirname "$SELF")"/bin
 BUILD_DIR="$(dirname "$SELF")"/build
@@ -10,6 +29,9 @@ IMAGE_DIR="$(dirname "$SELF")"/image
 
 
 # prepare work directories
+start_group 'Make work directories'
+set -x
+
 rm -rf "$BIN_DIR"
 mkdir -p "$BIN_DIR"
 rm -rf "$BUILD_DIR"
@@ -17,28 +39,52 @@ mkdir -p "$BUILD_DIR"
 rm -rf "$IMAGE_DIR"
 mkdir -p "$IMAGE_DIR"
 
+{ set +x; } 2>/dev/null
+end_group
+
 
 # copy source
+start_group 'Copy source'
+set -x
+
 mkdir -p "$BUILD_DIR"/"$NAME"
+
+{ set +x; } 2>/dev/null
 
 for SRC_FILE in "$SRC_DIR"/*; do
   if [ "$(basename "$SRC_FILE")" == pkg ] || [ "$(basename "$SRC_FILE")" == build ] || [ "$(basename "$SRC_FILE")" == data ] || [ "$(basename "$SRC_FILE")" == dist ]; then
     continue
   fi
 
+  set -x
+
   cp -r "$SRC_FILE" "$BUILD_DIR"/"$NAME"/
+
+  { set +x; } 2>/dev/null
 done
+
+end_group
 
 
 # build dist directory without debug and defined relative resource
-pushd "$BUILD_DIR"/"$NAME"
+start_group 'Run make'
+set -x
+
+pushd "$BUILD_DIR"/"$NAME" >/dev/null
+
 make distclean
 make dist DEBUG=0 RESOURCE=../share/"$NAME"
-EXE="$(find dist -mindepth 1 -maxdepth 1 -type f -perm -u+x -exec basename '{}' ';' | head -n1)"
-popd
+
+popd >/dev/null
+
+{ set +x; } 2>/dev/null
+end_group
 
 
 # prepare image for packaging
+start_group 'Create distributable image'
+set -x
+
 mkdir -p "$IMAGE_DIR"/usr/bin
 mkdir -p "$IMAGE_DIR"/usr/share
 mkdir -p "$IMAGE_DIR"/usr/share/applications
@@ -46,19 +92,30 @@ mkdir -p "$IMAGE_DIR"/usr/share/icons/hicolor/"$(file "$SRC_DIR"/"$ICON" | grep 
 mkdir -p "$IMAGE_DIR"/usr/share/metainfo
 mkdir -p "$IMAGE_DIR"/usr/share/"$NAME"
 
+{ set +x; } 2>/dev/null
+
 for DIST_FILE in "$BUILD_DIR"/"$NAME"/dist/*; do
-  if [ "$(basename "$DIST_FILE")" == "$EXE" ]; then
+  if [ "$DIST_FILE" == "$BUILD_DIR"/"$NAME"/dist/"$NAME" ]; then
     continue
   fi
 
+  set -x
+
   cp -r "$DIST_FILE" "$IMAGE_DIR"/usr/share/"$NAME"/
+
+  { set +x; } 2>/dev/null
 done
 
-cp "$BUILD_DIR"/"$NAME"/dist/"$EXE" "$IMAGE_DIR"/usr/bin/"$NAME"
+set -x
+
+cp "$BUILD_DIR"/"$NAME"/dist/"$NAME" "$IMAGE_DIR"/usr/bin/"$NAME"
 
 cp "$SRC_DIR"/"$ICON" "$IMAGE_DIR"/"$NAME".png
 cp "$SRC_DIR"/"$ICON" "$IMAGE_DIR"/usr/share/icons/hicolor/"$(file "$SRC_DIR"/"$ICON" | grep -oE '\d+\s+x\s+\d+' | tr -d ' ')"/"$NAME".png
 
+{ set +x; } 2>/dev/null
+
+echo "+ cat >'$IMAGE_DIR/usr/share/applications/$NAME.desktop'" >&2
 cat >"$IMAGE_DIR"/usr/share/applications/"$NAME".desktop <<EOF
 [Desktop Entry]
 Name=$PRETTY
@@ -68,6 +125,7 @@ Type=Application
 Categories=Game;
 EOF
 
+echo "+ cat >'$IMAGE_DIR/usr/share/metainfo/$DOMAIN.$NAME.appdata.xml'" >&2
 cat >"$IMAGE_DIR"/usr/share/metainfo/"$DOMAIN"."$NAME".appdata.xml <<EOF
 <?xml version="1.0" encoding="UTF-8"?>
 <component type="desktop">
@@ -88,16 +146,14 @@ cat >"$IMAGE_DIR"/usr/share/metainfo/"$DOMAIN"."$NAME".appdata.xml <<EOF
 </component>
 EOF
 
+end_group
+
 
 # get helper tools
-pushd "$BIN_DIR"
+start_group 'Package into AppImage'
+set -x
 
-rm -f appimagetool-x86_64.AppImage
-rm -f appimagetool
-
-wget 'https://github.com/AppImage/AppImageKit/releases/download/continuous/appimagetool-x86_64.AppImage'
-chmod +x appimagetool-x86_64.AppImage
-ln -s appimagetool-x86_64.AppImage appimagetool
+pushd "$BIN_DIR" >/dev/null
 
 rm -f linuxdeploy-x86_64.AppImage
 rm -f linuxdeploy
@@ -106,24 +162,20 @@ wget 'https://github.com/linuxdeploy/linuxdeploy/releases/download/continuous/li
 chmod +x linuxdeploy-x86_64.AppImage
 ln -s linuxdeploy-x86_64.AppImage linuxdeploy
 
-rm -f linuxdeploy-plugin-checkrt-x86_64.AppImage
+rm -f linuxdeploy-plugin-checkrt-x86_64.sh
 rm -f linuxdeploy-plugin-checkrt
 
-wget 'https://github.com/linuxdeploy/linuxdeploy-plugin-checkrt/releases/download/continuous/linuxdeploy-plugin-checkrt-x86_64.AppImage'
-chmod +x linuxdeploy-plugin-checkrt-x86_64.AppImage
-ln -s linuxdeploy-plugin-checkrt-x86_64.AppImage linuxdeploy-plugin-checkrt
+wget 'https://github.com/linuxdeploy/linuxdeploy-plugin-checkrt/releases/download/continuous/linuxdeploy-plugin-checkrt-x86_64.sh'
+chmod +x linuxdeploy-plugin-checkrt-x86_64.sh
+ln -s linuxdeploy-plugin-checkrt-x86_64.sh linuxdeploy-plugin-checkrt
 
-rm -f linuxdeploy-plugin-appimage-x86_64.AppImage
-rm -f linuxdeploy-plugin-appimage
-
-wget 'https://github.com/linuxdeploy/linuxdeploy-plugin-appimage/releases/download/continuous/linuxdeploy-plugin-appimage-x86_64.AppImage'
-chmod +x linuxdeploy-plugin-appimage-x86_64.AppImage
-ln -s linuxdeploy-plugin-appimage-x86_64.AppImage linuxdeploy-plugin-appimage
-
-popd
+popd >/dev/null
 
 
 # package image
 rm -f "$NAME".AppImage
 
-OUPTUT="$NAME".AppImage "$BIN_DIR"/linuxdeploy --appdir "$IMAGE_DIR" --desktop-file "$IMAGE_DIR"/usr/share/applications/"$NAME".desktop --plugin checkrt --output appimage
+env OUPTUT="$NAME".AppImage "$BIN_DIR"/linuxdeploy --appdir "$IMAGE_DIR" --desktop-file "$IMAGE_DIR"/usr/share/applications/"$NAME".desktop --plugin checkrt --output appimage
+
+{ set +x; } 2>/dev/null
+end_group
