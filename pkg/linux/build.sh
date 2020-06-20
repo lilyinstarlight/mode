@@ -40,7 +40,6 @@ popd
 
 # prepare image for packaging
 mkdir -p "$IMAGE_DIR"/usr/bin
-mkdir -p "$IMAGE_DIR"/usr/lib
 mkdir -p "$IMAGE_DIR"/usr/share
 mkdir -p "$IMAGE_DIR"/usr/share/applications
 mkdir -p "$IMAGE_DIR"/usr/share/icons/hicolor/"$(file "$SRC_DIR"/"$ICON" | grep -oE '\d+\s+x\s+\d+' | tr -d ' ')"
@@ -57,27 +56,10 @@ done
 
 cp "$BUILD_DIR"/"$NAME"/dist/"$EXE" "$IMAGE_DIR"/usr/bin/"$NAME"
 
-for lib in $(ldd "$IMAGE_DIR"/usr/bin/"$NAME" | grep -E '=>\s*/' | awk '{ print $3 }' | sed -e 's#^/##'); do
-  cp /"$lib" "$IMAGE_DIR"/usr/lib/"$(basename "$lib")"
-done
-
-cat >"$IMAGE_DIR"/AppRun <<EOF
-#!/bin/sh
-SELF="\`readlink -f "\$0"\`"
-IMG="\`dirname "\$SELF"\`"
-
-export PATH="\$IMG"/usr/bin:"\$PATH"
-export LD_LIBRARY_PATH="\$IMG"/usr/lib:"\$LD_LIBRARY_PATH"
-export XDG_DATA_DIRS="\$IMG"/usr/share:"\$XDG_DATA_DIRS"
-
-exec "\$IMG"/usr/bin/'$NAME' "\$@"
-EOF
-chmod +x "$IMAGE_DIR"/AppRun
-
 cp "$SRC_DIR"/"$ICON" "$IMAGE_DIR"/"$NAME".png
 cp "$SRC_DIR"/"$ICON" "$IMAGE_DIR"/usr/share/icons/hicolor/"$(file "$SRC_DIR"/"$ICON" | grep -oE '\d+\s+x\s+\d+' | tr -d ' ')"/"$NAME".png
 
-cat >"$IMAGE_DIR"/"$DOMAIN"."$NAME".desktop <<EOF
+cat >"$IMAGE_DIR"/usr/share/applications/"$NAME".desktop <<EOF
 [Desktop Entry]
 Name=$PRETTY
 Exec=$NAME
@@ -85,7 +67,6 @@ Icon=$NAME
 Type=Application
 Categories=Game;
 EOF
-cp "$IMAGE_DIR"/"$DOMAIN"."$NAME".desktop "$IMAGE_DIR"/usr/share/applications/"$NAME".desktop
 
 cat >"$IMAGE_DIR"/usr/share/metainfo/"$DOMAIN"."$NAME".appdata.xml <<EOF
 <?xml version="1.0" encoding="UTF-8"?>
@@ -110,15 +91,39 @@ EOF
 
 # get helper tools
 pushd "$BIN_DIR"
+
 rm -f appimagetool-x86_64.AppImage
 rm -f appimagetool
+
 wget 'https://github.com/AppImage/AppImageKit/releases/download/continuous/appimagetool-x86_64.AppImage'
 chmod +x appimagetool-x86_64.AppImage
 ln -s appimagetool-x86_64.AppImage appimagetool
+
+rm -f linuxdeploy-x86_64.AppImage
+rm -f linuxdeploy
+
+wget 'https://github.com/linuxdeploy/linuxdeploy/releases/download/continuous/linuxdeploy-x86_64.AppImage'
+chmod +x linuxdeploy-x86_64.AppImage
+ln -s linuxdeploy-x86_64.AppImage linuxdeploy
+
+rm -f linuxdeploy-plugin-checkrt-x86_64.AppImage
+rm -f linuxdeploy-plugin-checkrt
+
+wget 'https://github.com/linuxdeploy/linuxdeploy-plugin-checkrt/releases/download/continuous/linuxdeploy-plugin-checkrt-x86_64.AppImage'
+chmod +x linuxdeploy-plugin-checkrt-x86_64.AppImage
+ln -s linuxdeploy-plugin-checkrt-x86_64.AppImage linuxdeploy-plugin-checkrt
+
+rm -f linuxdeploy-plugin-appimage-x86_64.AppImage
+rm -f linuxdeploy-plugin-appimage
+
+wget 'https://github.com/linuxdeploy/linuxdeploy-plugin-appimage/releases/download/continuous/linuxdeploy-plugin-appimage-x86_64.AppImage'
+chmod +x linuxdeploy-plugin-appimage-x86_64.AppImage
+ln -s linuxdeploy-plugin-appimage-x86_64.AppImage linuxdeploy-plugin-appimage
+
 popd
 
 
 # package image
 rm -f "$NAME".AppImage
 
-"$BIN_DIR"/appimagetool "$IMAGE_DIR" "$NAME".AppImage
+OUPTUT="$NAME".AppImage "$BIN_DIR"/linuxdeploy --appdir "$IMAGE_DIR" --desktop-file "$IMAGE_DIR"/usr/share/applications/"$NAME".desktop --plugin checkrt --output appimage
