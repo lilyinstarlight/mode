@@ -3,7 +3,7 @@ name: Continuous Builds
 on:
   push:
     branches:
-      - master
+      - main
     tags:
       - 'v*'
 
@@ -79,7 +79,7 @@ jobs:
             const tag = release ? context.ref.replace(/^refs\/tags\//i, '') : 'continuous';
 
             const name = release ? '.:mode:. ' + tag : '.:mode:. Continuous';
-            const body = release ? '' : 'Continuous builds are freshly baked on every push to the master branch. Unless otherwise specified, all builds are for x86_64.';
+            const body = release ? '' : 'Continuous builds are freshly baked on every push to the main branch. Unless otherwise specified, all builds are for x86_64.';
             const prerelease = !release;
             const draft = release;
 
