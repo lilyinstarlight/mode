@@ -7,7 +7,7 @@ function Start-Group {
 
 function End-Group {
   if ($env:GITHUB_ACTIONS -eq "true") {
-    Write-Output -InputObject "::endgroup"
+    Write-Output -InputObject "::endgroup::"
   }
 }
 

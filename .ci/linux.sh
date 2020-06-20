@@ -7,7 +7,7 @@ start_group() {
 
 end_group() {
   if [ "$GITHUB_ACTIONS" == "true" ]; then
-    echo "::endgroup"
+    echo "::endgroup::"
   fi
 }
 
