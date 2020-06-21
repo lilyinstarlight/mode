@@ -13,7 +13,7 @@ end_group() {
 
 
 SELF="$(readlink -f "$0")"
-SRC_DIR="$(dirname $(dirname "$(dirname "$SELF")"))"
+SRC_DIR="$(dirname "$(dirname "$(dirname "$SELF")")")"
 
 start_group 'Packaging metadata'
 set -x

@@ -13,7 +13,7 @@ end_group() {
 
 
 SELF="$(cd "$(dirname "$0")" &>/dev/null && pwd -P && cd - &>/dev/null)"/"$(basename "$0")"
-SRC_DIR="$(dirname $(dirname "$(dirname "$SELF")"))"
+SRC_DIR="$(dirname "$(dirname "$(dirname "$SELF")")")"
 
 start_group 'Packaging metadata'
 set -x
@@ -125,7 +125,7 @@ for dylib in $(otool -L "$IMAGE_DIR"/Contents/MacOS/"$NAME" | grep '^\t/' | awk 
 
   { set +x; } 2>/dev/null
 
-  DYLIBS_ADDED="$(expr "$DYLIBS_ADDED" + 1)"
+  DYLIBS_ADDED="$(("$DYLIBS_ADDED" + 1))"
 done
 
 while [ "$DYLIBS_ADDED" -gt 0 ]; do
@@ -157,7 +157,7 @@ while [ "$DYLIBS_ADDED" -gt 0 ]; do
 
 	  { set +x; } 2>/dev/null
 
-          DYLIBS_ADDED="$(expr "$DYLIBS_ADDED" + 1)"
+	  DYLIBS_ADDED="$(("$DYLIBS_ADDED" + 1))"
         fi
 
 	set -x
@@ -177,7 +177,7 @@ mkdir -p "$BUILD_DIR"/"$NAME".iconset
 { set +x; } 2>/dev/null
 
 for size in 16 32 128 256 512; do
-  size2x="$(expr "$size" '*' 2)"
+  size2x="$(("$size" * 2))"
 
   set -x
 
