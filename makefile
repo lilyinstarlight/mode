@@ -28,29 +28,29 @@ $(BUILDDIR)/%.d: $(SRCDIR)/%.cpp
 $(BUILDDIR)/%.o: $(SRCDIR)/%.cpp
 	$(CXX) $(CXXFLAGS) -DRESOURCE='$(RESOURCE)' -c -o $@ $<
 
-$(VENDORDIR)/yaml-cpp/CMakeLists.txt:
-	git submodule update --init $(VENDORDIR)/yaml-cpp
-
-$(VENDORDIR)/yaml-cpp/build/libyaml-cpp.a: $(VENDORDIR)/yaml-cpp/CMakeLists.txt
+$(VENDORDIR)/yaml-cpp/build/libyaml-cpp.a: $(VENDORDIR)/yaml-cpp/include/yaml-cpp/yaml.h
 	mkdir -p $(VENDORDIR)/yaml-cpp/build
 	cmake -S $(VENDORDIR)/yaml-cpp -B $(VENDORDIR)/yaml-cpp/build -G 'Unix Makefiles' -DCMAKE_CXX_COMPILER='$(CXX)' -DCMAKE_CXX_STANDARD='$(YAML_CPP_CXX_STANDARD)' -DCMAKE_CXX_FLAGS='$(YAML_CPP_CXX_FLAGS)' -DYAML_BUILD_SHARED_LIBS=OFF -DYAML_CPP_BUILD_TOOLS=OFF -DYAML_CPP_BUILD_TESTS=OFF -DYAML_CPP_CLANG_FORMAT_EXE=
 	+make -C $(VENDORDIR)/yaml-cpp/build
 
-$(VENDORDIR)/lua/makefile:
-	git submodule update --init $(VENDORDIR)/lua
-
-$(VENDORDIR)/lua/liblua.a: $(VENDORDIR)/lua/makefile
+$(VENDORDIR)/lua/liblua.a: $(VENDORDIR)/lua/lua.h
 	+make -C $(VENDORDIR)/lua CC='$(CC)' CFLAGS='$(LUA_CFLAGS)' MYLDFLAGS='$(LUA_LDFLAGS)' MYLIBS='$(LUA_LDLIBS)' a
 
-$(VENDORDIR)/lua/lua: $(VENDORDIR)/lua/makefile
+$(VENDORDIR)/lua/lua: $(VENDORDIR)/lua/lua.h
 	+make -C $(VENDORDIR)/lua CC='$(CC)' CFLAGS='$(LUA_CFLAGS)' MYLDFLAGS='$(LUA_LDFLAGS)' MYLIBS='$(LUA_LDLIBS)' lua
 
-$(VENDORDIR)/sol3/single/include/sol/sol.hpp:
+$(VENDORDIR)/yaml-cpp/include/yaml-cpp/yaml.h:
+	git submodule update --init $(VENDORDIR)/yaml-cpp
+
+$(VENDORDIR)/lua/lua.h: | $(VENDORDIR)/yaml-cpp/include/yaml-cpp/yaml.h
+	git submodule update --init $(VENDORDIR)/lua
+
+$(VENDORDIR)/sol3/single/include/sol/sol.hpp: | $(VENDORDIR)/lua/lua.h
 	git submodule update --init $(VENDORDIR)/sol3
 
-$(DEP): | $(BUILDDIR)
+$(DEP): | $(VENDORDIR)/yaml-cpp/include/yaml-cpp/yaml.h $(VENDORDIR)/lua/lua.h $(VENDORDIR)/sol3/single/include/sol/sol.hpp $(BUILDDIR)
 
-$(OBJ): | $(BUILDDIR)
+$(OBJ): | $(DEP) $(BUILDDIR)
 
 $(BUILDDIR):
 	mkdir -p $@
