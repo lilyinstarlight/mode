@@ -41,8 +41,8 @@ Sprite::Sprite(const std::string & name, bool dead) : Drawable(name,
 
 	// load sheets for different states
 	for (const std::string & sheet : Spec::get_instance().get_keys(name + "/sheets")) {
-		for (const std::string & direction : Spec::get_instance().get_keys(name + "/sheets/" + sheet))
-			sheets[sheet + "." + direction] = ImageFactory::get_instance().get_sheet(name + "/sheets/" + sheet + "/" + direction);
+		for (const std::string & sheet_direction : Spec::get_instance().get_keys(name + "/sheets/" + sheet))
+			sheets[sheet + "." + sheet_direction] = ImageFactory::get_instance().get_sheet(name + "/sheets/" + sheet + "/" + sheet_direction);
 	}
 
 	// set collision strategy

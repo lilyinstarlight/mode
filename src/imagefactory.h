@@ -23,6 +23,8 @@ class ImageFactory {
 	private:
 		ImageFactory();
 
+		SDL_Surface * crop(const SDL_Surface * surface, const SDL_Rect & rect);
+
 		std::string path;
 
 		std::unordered_map<std::string, SDL_Surface *> surfaces;

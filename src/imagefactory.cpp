@@ -3,7 +3,6 @@
 #include <SDL_image.h>
 
 #include "context.h"
-#include "spritesheet.h"
 #include "spec.h"
 
 #include "imagefactory.h"
@@ -26,19 +25,29 @@ ImageFactory::~ImageFactory() {
 	for (std::pair<std::string, Image *> image : images)
 		delete image.second;
 
-	for (std::pair<std::string, std::vector<SDL_Surface *>> surfaces : multi_surface) {
-		for (SDL_Surface * surface : surfaces.second)
+	for (std::pair<std::string, std::vector<SDL_Surface *>> multi_surfaces : multi_surface) {
+		for (SDL_Surface * surface : multi_surfaces.second)
 			SDL_FreeSurface(surface);
 	}
 
-	for (std::pair<std::string, std::vector<SDL_Texture *>> textures : multi_texture) {
-		for (SDL_Texture * texture : textures.second)
+	for (std::pair<std::string, std::vector<SDL_Texture *>> multi_textures : multi_texture) {
+		for (SDL_Texture * texture : multi_textures.second)
 			SDL_DestroyTexture(texture);
 	}
 
 	for (std::pair<std::string, Sheet *> sheet : sheets) {
 		delete sheet.second;
 	}
+}
+
+SDL_Surface * ImageFactory::crop(const SDL_Surface * surface, const SDL_Rect & rect) {
+	// create new surface
+	SDL_Surface * sub = SDL_CreateRGBSurfaceWithFormat(0, rect.w, rect.h, surface->format->BitsPerPixel, surface->format->format);
+
+	// copy rect of old surface into new surface
+	SDL_BlitSurface(const_cast<SDL_Surface *>(surface), &rect, sub, nullptr);
+
+	return sub;
 }
 
 Image * ImageFactory::get_image(const std::string & name) {
@@ -102,24 +111,28 @@ Sheet * ImageFactory::get_sheet(const std::string & name) {
 	unsigned int frames = Spec::get_instance().get_int(name + "/frames");
 
 	// create vector for images, surfaces, and textures
-	std::vector<Image *> images;
-	std::vector<SDL_Surface *> surfaces;
-	std::vector<SDL_Texture *> textures;
+	std::vector<Image *> sheet_images;
+	std::vector<SDL_Surface *> sheet_surfaces;
+	std::vector<SDL_Texture *> sheet_textures;
 
-	images.reserve(frames);
-	surfaces.reserve(frames);
-	textures.reserve(frames);
+	sheet_images.reserve(frames);
+	sheet_surfaces.reserve(frames);
+	sheet_textures.reserve(frames);
 
 	// get frame width and height
 	int width = sheet_surface->w/frames;
 	int height = sheet_surface->h;
 
-	// load spritesheet
-	SpriteSheet spritesheet(sheet_surface, width, height);
+	// sliding view to crop from
+	SDL_Rect view{0, 0, width, height};
 
-	for (unsigned int i = 0; i < spritesheet.get_frames(); ++i) {
-		// create surface for each frame
-		SDL_Surface * surface = spritesheet.get(i);
+	for (unsigned int idx = 0; idx < frames; ++idx) {
+		// calculate new view rectangle from the sheet
+		view.x = (idx % frames)*view.w;
+		view.y = (idx / frames)*view.h;
+
+		// create surface for frame from view
+		SDL_Surface * surface = crop(sheet_surface, view);
 
 		// add transparency if necessary
 		if (transparency)
@@ -129,17 +142,17 @@ Sheet * ImageFactory::get_sheet(const std::string & name) {
 		SDL_Texture * texture = SDL_CreateTextureFromSurface(Context::get_instance().get_renderer(), surface);
 
 		// store details
-		surfaces.push_back(surface);
-		textures.push_back(texture);
-		images.push_back(new Image(surface, texture));
+		sheet_surfaces.push_back(surface);
+		sheet_textures.push_back(texture);
+		sheet_images.push_back(new Image(surface, texture));
 	}
 
 	// create new sheet with frames
-	Sheet * sheet = new Sheet(images, Spec::get_instance().get_int(name + "/frames"), Spec::get_instance().get_int(name + "/interval"), Spec::get_instance().get_bool(name + "/loop"));
+	Sheet * sheet = new Sheet(sheet_images, Spec::get_instance().get_int(name + "/frames"), Spec::get_instance().get_int(name + "/interval"), Spec::get_instance().get_bool(name + "/loop"));
 
 	// store surfaces, textures, and sheet
-	multi_surface[name] = surfaces;
-	multi_texture[name] = textures;
+	multi_surface[name] = sheet_surfaces;
+	multi_texture[name] = sheet_textures;
 	sheets[name] = sheet;
 
 	return sheet;

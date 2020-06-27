@@ -17,6 +17,7 @@ class Sheet {
 		unsigned int get_frames() const { return frames; }
 		unsigned int get_interval() const { return interval; }
 		bool get_loop() const { return loop; }
+
 	private:
 		std::vector<Image *> images;
 		unsigned int frames, interval;

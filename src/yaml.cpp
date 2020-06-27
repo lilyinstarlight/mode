@@ -54,26 +54,26 @@ std::string Yaml::get_str(const std::string & key) const {
 	return resolve(key).as<std::string>();
 }
 
-std::string Yaml::parent(const std::string & path) const {
-	std::string::size_type pos = path.rfind('/');
+std::string Yaml::parent(const std::string & yaml_path) const {
+	std::string::size_type pos = yaml_path.rfind('/');
 	if (pos == std::string::npos)
 		return "";
 
-	return path.substr(0, pos);
+	return yaml_path.substr(0, pos);
 }
 
-std::string Yaml::leaf(const std::string & path) const {
-	std::string::size_type pos = path.rfind('/');
+std::string Yaml::leaf(const std::string & yaml_path) const {
+	std::string::size_type pos = yaml_path.rfind('/');
 	if (pos == std::string::npos)
-		return path;
+		return yaml_path;
 
-	return path.substr(pos + 1);
+	return yaml_path.substr(pos + 1);
 }
 
-YAML::Node Yaml::resolve(const std::string & path) const {
+YAML::Node Yaml::resolve(const std::string & yaml_path) const {
 	YAML::Node node = root;
 
-	std::stringstream ss(path);
+	std::stringstream ss(yaml_path);
 	std::string key;
 	while (std::getline(ss, key, '/')) {
 		if (!node.IsMap())

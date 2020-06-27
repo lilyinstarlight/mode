@@ -44,7 +44,7 @@ class Pool {
 		const std::vector<T *> & get_free() const { return free; }
 
 		void increase(unsigned int count) {
-			for (unsigned int i = 0; i < count; ++i) {
+			for (unsigned int idx = 0; idx < count; ++idx) {
 				T * t = new T(name, *this);
 				t->load();
 
@@ -55,7 +55,7 @@ class Pool {
 		void decrease(unsigned int count) {
 			count = Util::min(count, free.size());
 
-			for (unsigned int i = 0; i < count; ++i) {
+			for (unsigned int idx = 0; idx < count; ++idx) {
 				typename std::vector<T *>::iterator it = free.begin();
 				delete *it;
 				free.erase(it);
