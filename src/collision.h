@@ -2,7 +2,7 @@
 #define COLLISION_H
 #include <tuple>
 
-#include <SDL2/SDL.h>
+#include <SDL.h>
 
 #include "drawable.h"
 #include "vector2f.h"

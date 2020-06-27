@@ -2,7 +2,7 @@
 #define DIALOG_H
 #include <string>
 
-#include <SDL2/SDL.h>
+#include <SDL.h>
 
 #include "drawable.h"
 #include "image.h"

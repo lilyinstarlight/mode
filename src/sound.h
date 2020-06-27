@@ -4,7 +4,7 @@
 #include <string>
 #include <unordered_map>
 
-#include <SDL2/SDL_mixer.h>
+#include <SDL_mixer.h>
 
 class Sound {
 	public:

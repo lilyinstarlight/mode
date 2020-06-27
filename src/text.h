@@ -4,8 +4,8 @@
 #include <vector>
 #include <unordered_map>
 
-#include <SDL2/SDL.h>
-#include <SDL2/SDL_ttf.h>
+#include <SDL.h>
+#include <SDL_ttf.h>
 
 class Text {
 	public:

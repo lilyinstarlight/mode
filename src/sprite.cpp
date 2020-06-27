@@ -1,6 +1,6 @@
 #include <stdexcept>
 
-#include <SDL2/SDL2_rotozoom.h>
+#include <SDL2_rotozoom.h>
 
 #include "engine.h"
 #include "imagefactory.h"

@@ -1,6 +1,6 @@
 #include <cmath>
 
-#include <SDL2/SDL2_rotozoom.h>
+#include <SDL2_rotozoom.h>
 
 #include "util.h"
 

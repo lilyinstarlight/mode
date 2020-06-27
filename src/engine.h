@@ -2,7 +2,7 @@
 #define ENGINE_H
 #include <string>
 
-#include <SDL2/SDL.h>
+#include <SDL.h>
 
 #include "console.h"
 #include "context.h"

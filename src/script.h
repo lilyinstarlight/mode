@@ -6,7 +6,7 @@
 #include <unordered_map>
 #include <vector>
 
-#include <SDL2/SDL.h>
+#include <SDL.h>
 
 #include <sol/sol.hpp>
 

@@ -1,6 +1,6 @@
 #ifndef IMAGE_H
 #define IMAGE_H
-#include <SDL2/SDL.h>
+#include <SDL.h>
 
 class Viewport;
 
