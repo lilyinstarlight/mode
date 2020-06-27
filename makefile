@@ -32,7 +32,7 @@ $(VENDORDIR)/yaml-cpp/CMakeLists.txt:
 	git submodule update --init $(VENDORDIR)/yaml-cpp
 
 $(VENDORDIR)/yaml-cpp/build/libyaml-cpp.a: $(VENDORDIR)/yaml-cpp/CMakeLists.txt
-	mkdir $(VENDORDIR)/yaml-cpp/build
+	mkdir -p $(VENDORDIR)/yaml-cpp/build
 	cmake -S $(VENDORDIR)/yaml-cpp -B $(VENDORDIR)/yaml-cpp/build -G 'Unix Makefiles' -DCMAKE_CXX_COMPILER='$(CXX)' -DCMAKE_CXX_STANDARD='$(YAML_CPP_CXX_STANDARD)' -DCMAKE_CXX_FLAGS='$(YAML_CPP_CXX_FLAGS)' -DYAML_BUILD_SHARED_LIBS=OFF -DYAML_CPP_BUILD_TOOLS=OFF -DYAML_CPP_BUILD_TESTS=OFF -DYAML_CPP_CLANG_FORMAT_EXE=
 	+make -C $(VENDORDIR)/yaml-cpp/build
 
