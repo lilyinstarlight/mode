@@ -3,7 +3,7 @@
 #include <string>
 #include <vector>
 
-#include <yaml-cpp/yaml.h>
+#include "yaml-cpp.hpp"
 
 class Yaml {
 	public:

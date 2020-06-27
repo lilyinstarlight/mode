@@ -14,11 +14,7 @@
 #pragma GCC diagnostic ignored "-Weffc++"
 #endif
 
-extern "C" {
-#include <lua.h>
-#include <lauxlib.h>
-#include <lualib.h>
-}
+#include <sol/sol.hpp>
 
 #if defined(__clang__)
 #pragma clang diagnostic pop

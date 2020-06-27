@@ -8,7 +8,7 @@
 
 #include <SDL.h>
 
-#include <sol/sol.hpp>
+#include "sol3.hpp"
 
 class Sprite;
 
