@@ -9,8 +9,8 @@ A 2D game engine based on SDL2, sol3, and Lua in C++ originally written for my C
 
 ## Requirements
 
+* C++17 (GCC 8+ or LLVM/Clang 7+)
 * SDL2{,\_image,\_mixer,\_ttf,\_gfx}
-* yaml-cpp
 
 
 ## Issues
@@ -51,7 +51,7 @@ A 2D game engine based on SDL2, sol3, and Lua in C++ originally written for my C
 .:mode:. is licensed under the terms of the MIT License. Libraries and assets are licensed as follows:
 
 * SDL2{,\_image,\_mixer,\_ttf,\_gfx} (dynamic linking) - Zlib
-* yaml-cpp (dynamic linking) - MIT
+* yaml-cpp (static linking) - MIT
 * Lua (static linking) - MIT
 * sol3 (header-only) - MIT
 * PyLink (asset) - MIT

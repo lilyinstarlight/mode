@@ -24,7 +24,7 @@ end_group
 start_group 'Install dependencies'
 set -x
 
-sudo apt-get install -y make pkg-config gcc g++ libsdl2-dev libsdl2-image-dev libsdl2-mixer-dev libsdl2-ttf-dev libsdl2-gfx-dev libyaml-cpp-dev
+sudo apt-get install -y make pkg-config gcc g++ libsdl2-dev libsdl2-image-dev libsdl2-mixer-dev libsdl2-ttf-dev libsdl2-gfx-dev
 
 { set +x; } 2>/dev/null
 end_group
