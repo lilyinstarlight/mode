@@ -16,7 +16,8 @@ CXXFLAGS=-std=c++17 -fsanitize=address -ggdb -Wall -Wpedantic -Wextra -Weffc++ -
 LDFLAGS=-std=c++17 -fsanitize=address
 LDLIBS=-lm -ldl `sdl2-config --libs` -lSDL2_image -lSDL2_ttf -lSDL2_mixer -lSDL2_gfx
 
-YAML_CPP_CXXFLAGS=-std=c++17 -ggdb -Wall -Wextra -Wshadow -Weffc++ -Wno-long-long -pedantic -pedantic-errors
+YAML_CPP_CXX_STANDARD=17
+YAML_CPP_CXX_FLAGS=-ggdb
 
 LUA_CFLAGS=-std=c11 -ggdb -DLUA_USE_LINUX -Wall
 LUA_LDFLAGS=-std=c11
@@ -28,7 +29,8 @@ CXXFLAGS=-std=c++17 -O2 -DNDEBUG -Wall -Wpedantic -Wextra -Weffc++ -I $(VENDORDI
 LDFLAGS=-std=c++17 -O2
 LDLIBS=-lm -ldl `sdl2-config --libs` -lSDL2_image -lSDL2_ttf -lSDL2_mixer -lSDL2_gfx
 
-YAML_CPP_CXXFLAGS=-std=c++17 -O2 -Wall -Wextra -Wshadow -Weffc++ -Wno-long-long -pedantic -pedantic-errors
+YAML_CPP_CXX_STANDARD=17
+YAML_CPP_CXX_FLAGS=-O2
 
 LUA_CFLAGS=-std=c11 -O2 -DLUA_USE_LINUX -Wall
 LUA_LDFLAGS=-std=c11
@@ -52,7 +54,8 @@ CXXFLAGS=-std=c++17 -fsanitize=address,undefined -ggdb -Wall -Wpedantic -Wextra 
 LDFLAGS=-std=c++17 -fsanitize=address,undefined
 LDLIBS=-lm -ldl `sdl2-config --libs` -lSDL2_image -lSDL2_ttf -lSDL2_mixer -lSDL2_gfx
 
-YAML_CPP_CXXFLAGS=-std=c++17 -ggdb -Wall -Wextra -Wshadow -Weffc++ -Wno-long-long -pedantic -pedantic-errors
+YAML_CPP_CXX_STANDARD=17
+YAML_CPP_CXX_FLAGS=-ggdb
 
 LUA_CFLAGS=-std=c11 -ggdb -DLUA_USE_MACOSX -Wall
 LUA_LDFLAGS=-std=c11
@@ -64,7 +67,8 @@ CXXFLAGS=-std=c++17 -O2 -DNDEBUG -Wall -Wpedantic -Wextra -Weffc++ -I $(VENDORDI
 LDFLAGS=-std=c++17 -O2
 LDLIBS=-lm -ldl `sdl2-config --libs` -lSDL2_image -lSDL2_ttf -lSDL2_mixer -lSDL2_gfx
 
-YAML_CPP_CXXFLAGS=-std=c++17 -O2 -Wall -Wextra -Wshadow -Weffc++ -Wno-long-long -pedantic -pedantic-errors
+YAML_CPP_CXX_STANDARD=17
+YAML_CPP_CXX_FLAGS=-O2
 
 LUA_CFLAGS=-std=c11 -O2 -DLUA_USE_MACOSX -Wall
 LUA_LDFLAGS=-std=c11
@@ -88,7 +92,8 @@ CXXFLAGS=-std=c++17 -mwindows -ggdb -Wall -Wpedantic -Wextra -Weffc++ -Werror -I
 LDFLAGS=-std=c++17 -mwindows
 LDLIBS=-lm `sdl2-config --libs` -lSDL2_image -lSDL2_ttf -lSDL2_mixer -lSDL2_gfx
 
-YAML_CPP_CXXFLAGS=-std=c++17 -ggdb -Wall -Wextra -Wshadow -Weffc++ -Wno-long-long -pedantic -pedantic-errors
+YAML_CPP_CXX_STANDARD=17
+YAML_CPP_CXX_FLAGS=-ggdb
 
 LUA_CFLAGS=-std=c11 -ggdb -DLUA_USE_WINDOWS -Wall
 LUA_LDFLAGS=-std=c11
@@ -100,7 +105,8 @@ CXXFLAGS=-std=c++17 -O2 -mwindows -DNDEBUG -Wall -Wpedantic -Wextra -Weffc++ -I 
 LDFLAGS=-std=c++17 -O2 -mwindows
 LDLIBS=-lm `sdl2-config --libs` -lSDL2_image -lSDL2_ttf -lSDL2_mixer -lSDL2_gfx
 
-YAML_CPP_CXXFLAGS=-std=c++17 -O2 -Wall -Wextra -Wshadow -Weffc++ -Wno-long-long -pedantic -pedantic-errors
+YAML_CPP_CXX_STANDARD=17
+YAML_CPP_CXX_FLAGS=-O2
 
 LUA_CFLAGS=-std=c11 -O2 -DLUA_USE_WINDOWS -Wall
 LUA_LDFLAGS=-std=c11
@@ -124,7 +130,8 @@ CXXFLAGS=-std=c++17 -g -Wall -Wpedantic -Wextra -Weffc++ -Werror -I $(VENDORDIR)
 LDFLAGS=-std=c++17
 LDLIBS=-lm -ldl `sdl2-config --libs` -lSDL2_image -lSDL2_ttf -lSDL2_mixer -lSDL2_gfx
 
-YAML_CPP_CXXFLAGS=-std=c++17 -g -Wall -Wextra -Wshadow -Weffc++ -Wno-long-long -pedantic -pedantic-errors
+YAML_CPP_CXX_STANDARD=17
+YAML_CPP_CXX_FLAGS=-g
 
 LUA_CFLAGS=-std=c11 -Wall
 LUA_LDFLAGS=-std=c11
@@ -136,7 +143,8 @@ CXXFLAGS=-std=c++17 -DNDEBUG -Wall -Wpedantic -Wextra -Weffc++ -I $(VENDORDIR) -
 LDFLAGS=-std=c++17
 LDLIBS=-lm -ldl `sdl2-config --libs` -lSDL2_image -lSDL2_ttf -lSDL2_mixer -lSDL2_gfx
 
-YAML_CPP_CXXFLAGS=-std=c++17 -Wall -Wextra -Wshadow -Weffc++ -Wno-long-long -pedantic -pedantic-errors
+YAML_CPP_CXX_STANDARD=17
+YAML_CPP_CXX_FLAGS=
 
 LUA_CFLAGS=-std=c11 -Wall
 LUA_LDFLAGS=-std=c11
