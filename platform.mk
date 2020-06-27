@@ -12,9 +12,11 @@ CXX=g++
 
 ifeq ($(DEBUG),1)
 
-CXXFLAGS=-std=c++17 -fsanitize=address -ggdb -Wall -Wpedantic -Wextra -Weffc++ -Werror -isystem $(VENDORDIR) -isystem $(VENDORDIR)/lua -isystem $(VENDORDIR)/sol3/single/include `sdl2-config --cflags` -I `sdl2-config --prefix`/include/ `pkg-config --cflags yaml-cpp`
+CXXFLAGS=-std=c++17 -fsanitize=address -ggdb -Wall -Wpedantic -Wextra -Weffc++ -Werror -isystem $(VENDORDIR) -isystem $(VENDORDIR)/yaml-cpp/include -isystem $(VENDORDIR)/lua -isystem $(VENDORDIR)/sol3/single/include `sdl2-config --cflags` -I `sdl2-config --prefix`/include/
 LDFLAGS=-std=c++17 -fsanitize=address
-LDLIBS=-lm -ldl `sdl2-config --libs` -lSDL2_image -lSDL2_ttf -lSDL2_mixer -lSDL2_gfx `pkg-config --libs yaml-cpp`
+LDLIBS=-lm -ldl `sdl2-config --libs` -lSDL2_image -lSDL2_ttf -lSDL2_mixer -lSDL2_gfx
+
+YAML_CPP_CXXFLAGS=-std=c++17 -ggdb -Wall -Wextra -Wshadow -Weffc++ -Wno-long-long -pedantic -pedantic-errors
 
 LUA_CFLAGS=-std=c11 -ggdb -DLUA_USE_LINUX -Wall
 LUA_LDFLAGS=-std=c11
@@ -22,9 +24,11 @@ LUA_LDLIBS=-ldl -lreadline -lhistory -lncurses
 
 else
 
-CXXFLAGS=-std=c++17 -O2 -DNDEBUG -Wall -Wpedantic -Wextra -Weffc++ -isystem $(VENDORDIR) -isystem $(VENDORDIR)/lua -isystem $(VENDORDIR)/sol3/single/include `sdl2-config --cflags` -I `sdl2-config --prefix`/include/ `pkg-config --cflags yaml-cpp`
+CXXFLAGS=-std=c++17 -O2 -DNDEBUG -Wall -Wpedantic -Wextra -Weffc++ -isystem $(VENDORDIR) -isystem $(VENDORDIR)/yaml-cpp/include -isystem $(VENDORDIR)/lua -isystem $(VENDORDIR)/sol3/single/include `sdl2-config --cflags` -I `sdl2-config --prefix`/include/
 LDFLAGS=-std=c++17 -O2
-LDLIBS=-lm -ldl `sdl2-config --libs` -lSDL2_image -lSDL2_ttf -lSDL2_mixer -lSDL2_gfx `pkg-config --libs yaml-cpp`
+LDLIBS=-lm -ldl `sdl2-config --libs` -lSDL2_image -lSDL2_ttf -lSDL2_mixer -lSDL2_gfx
+
+YAML_CPP_CXXFLAGS=-std=c++17 -O2 -Wall -Wextra -Wshadow -Weffc++ -Wno-long-long -pedantic -pedantic-errors
 
 LUA_CFLAGS=-std=c11 -O2 -DLUA_USE_LINUX -Wall
 LUA_LDFLAGS=-std=c11
@@ -44,9 +48,11 @@ CXX=clang++
 
 ifeq ($(DEBUG),1)
 
-CXXFLAGS=-std=c++17 -fsanitize=address,undefined -ggdb -Wall -Wpedantic -Wextra -Weffc++ -Werror -isystem $(VENDORDIR) -isystem $(VENDORDIR)/lua -isystem $(VENDORDIR)/sol3/single/include `sdl2-config --cflags` -I `sdl2-config --prefix`/include/ `pkg-config --cflags yaml-cpp`
+CXXFLAGS=-std=c++17 -fsanitize=address,undefined -ggdb -Wall -Wpedantic -Wextra -Weffc++ -Werror -isystem $(VENDORDIR) -isystem $(VENDORDIR)/yaml-cpp/include -isystem $(VENDORDIR)/lua -isystem $(VENDORDIR)/sol3/single/include `sdl2-config --cflags` -I `sdl2-config --prefix`/include/
 LDFLAGS=-std=c++17 -fsanitize=address,undefined
-LDLIBS=-lm -ldl `sdl2-config --libs` -lSDL2_image -lSDL2_ttf -lSDL2_mixer -lSDL2_gfx `pkg-config --libs yaml-cpp`
+LDLIBS=-lm -ldl `sdl2-config --libs` -lSDL2_image -lSDL2_ttf -lSDL2_mixer -lSDL2_gfx
+
+YAML_CPP_CXXFLAGS=-std=c++17 -ggdb -Wall -Wextra -Wshadow -Weffc++ -Wno-long-long -pedantic -pedantic-errors
 
 LUA_CFLAGS=-std=c11 -ggdb -DLUA_USE_MACOSX -Wall
 LUA_LDFLAGS=-std=c11
@@ -54,9 +60,11 @@ LUA_LDLIBS=-ldl -lreadline -lncurses
 
 else
 
-CXXFLAGS=-std=c++17 -O2 -DNDEBUG -Wall -Wpedantic -Wextra -Weffc++ -isystem $(VENDORDIR) -isystem $(VENDORDIR)/lua -isystem $(VENDORDIR)/sol3/single/include `sdl2-config --cflags` -I `sdl2-config --prefix`/include/ `pkg-config --cflags yaml-cpp`
+CXXFLAGS=-std=c++17 -O2 -DNDEBUG -Wall -Wpedantic -Wextra -Weffc++ -isystem $(VENDORDIR) -isystem $(VENDORDIR)/yaml-cpp/include -isystem $(VENDORDIR)/lua -isystem $(VENDORDIR)/sol3/single/include `sdl2-config --cflags` -I `sdl2-config --prefix`/include/
 LDFLAGS=-std=c++17 -O2
-LDLIBS=-lm -ldl `sdl2-config --libs` -lSDL2_image -lSDL2_ttf -lSDL2_mixer -lSDL2_gfx `pkg-config --libs yaml-cpp`
+LDLIBS=-lm -ldl `sdl2-config --libs` -lSDL2_image -lSDL2_ttf -lSDL2_mixer -lSDL2_gfx
+
+YAML_CPP_CXXFLAGS=-std=c++17 -O2 -Wall -Wextra -Wshadow -Weffc++ -Wno-long-long -pedantic -pedantic-errors
 
 LUA_CFLAGS=-std=c11 -O2 -DLUA_USE_MACOSX -Wall
 LUA_LDFLAGS=-std=c11
@@ -76,9 +84,11 @@ CXX=g++
 
 ifeq ($(DEBUG),1)
 
-CXXFLAGS=-std=c++17 -mwindows -ggdb -Wall -Wpedantic -Wextra -Weffc++ -Werror -isystem $(VENDORDIR) -isystem $(VENDORDIR)/lua -isystem $(VENDORDIR)/sol3/single/include `sdl2-config --cflags` -I `sdl2-config --prefix`/include/ `pkg-config --cflags yaml-cpp`
+CXXFLAGS=-std=c++17 -mwindows -ggdb -Wall -Wpedantic -Wextra -Weffc++ -Werror -isystem $(VENDORDIR) -isystem $(VENDORDIR)/yaml-cpp/include -isystem $(VENDORDIR)/lua -isystem $(VENDORDIR)/sol3/single/include `sdl2-config --cflags` -I `sdl2-config --prefix`/include/
 LDFLAGS=-std=c++17 -mwindows
-LDLIBS=-lm `sdl2-config --libs` -lSDL2_image -lSDL2_ttf -lSDL2_mixer -lSDL2_gfx `pkg-config --libs yaml-cpp`
+LDLIBS=-lm `sdl2-config --libs` -lSDL2_image -lSDL2_ttf -lSDL2_mixer -lSDL2_gfx
+
+YAML_CPP_CXXFLAGS=-std=c++17 -ggdb -Wall -Wextra -Wshadow -Weffc++ -Wno-long-long -pedantic -pedantic-errors
 
 LUA_CFLAGS=-std=c11 -ggdb -DLUA_USE_WINDOWS -Wall
 LUA_LDFLAGS=-std=c11
@@ -86,9 +96,11 @@ LUA_LDLIBS=-lreadline -lhistory -lncurses
 
 else
 
-CXXFLAGS=-std=c++17 -O2 -mwindows -DNDEBUG -Wall -Wpedantic -Wextra -Weffc++ -isystem $(VENDORDIR) -isystem $(VENDORDIR)/lua -isystem $(VENDORDIR)/sol3/single/include `sdl2-config --cflags` -I `sdl2-config --prefix`/include/ `pkg-config --cflags yaml-cpp`
+CXXFLAGS=-std=c++17 -O2 -mwindows -DNDEBUG -Wall -Wpedantic -Wextra -Weffc++ -isystem $(VENDORDIR) -isystem $(VENDORDIR)/yaml-cpp/include -isystem $(VENDORDIR)/lua -isystem $(VENDORDIR)/sol3/single/include `sdl2-config --cflags` -I `sdl2-config --prefix`/include/
 LDFLAGS=-std=c++17 -O2 -mwindows
-LDLIBS=-lm `sdl2-config --libs` -lSDL2_image -lSDL2_ttf -lSDL2_mixer -lSDL2_gfx `pkg-config --libs yaml-cpp`
+LDLIBS=-lm `sdl2-config --libs` -lSDL2_image -lSDL2_ttf -lSDL2_mixer -lSDL2_gfx
+
+YAML_CPP_CXXFLAGS=-std=c++17 -O2 -Wall -Wextra -Wshadow -Weffc++ -Wno-long-long -pedantic -pedantic-errors
 
 LUA_CFLAGS=-std=c11 -O2 -DLUA_USE_WINDOWS -Wall
 LUA_LDFLAGS=-std=c11
@@ -108,9 +120,11 @@ CXX=c++
 
 ifeq ($(DEBUG),1)
 
-CXXFLAGS=-std=c++17 -Wall -Wpedantic -Wextra -Weffc++ -Werror -isystem $(VENDORDIR) -isystem $(VENDORDIR)/lua -isystem $(VENDORDIR)/sol3/single/include `sdl2-config --cflags` -I `sdl2-config --prefix`/include/ `pkg-config --cflags yaml-cpp`
+CXXFLAGS=-std=c++17 -g -Wall -Wpedantic -Wextra -Weffc++ -Werror -isystem $(VENDORDIR) -isystem $(VENDORDIR)/yaml-cpp/include -isystem $(VENDORDIR)/lua -isystem $(VENDORDIR)/sol3/single/include `sdl2-config --cflags` -I `sdl2-config --prefix`/include/
 LDFLAGS=-std=c++17
-LDLIBS=-lm -ldl `sdl2-config --libs` -lSDL2_image -lSDL2_ttf -lSDL2_mixer -lSDL2_gfx `pkg-config --libs yaml-cpp`
+LDLIBS=-lm -ldl `sdl2-config --libs` -lSDL2_image -lSDL2_ttf -lSDL2_mixer -lSDL2_gfx
+
+YAML_CPP_CXXFLAGS=-std=c++17 -g -Wall -Wextra -Wshadow -Weffc++ -Wno-long-long -pedantic -pedantic-errors
 
 LUA_CFLAGS=-std=c11 -Wall
 LUA_LDFLAGS=-std=c11
@@ -118,9 +132,11 @@ LUA_LDLIBS=-ldl -lreadline -lhistory -lncurses
 
 else
 
-CXXFLAGS=-std=c++17 -DNDEBUG -Wall -Wpedantic -Wextra -Weffc++ -isystem $(VENDORDIR) -isystem $(VENDORDIR)/lua -isystem $(VENDORDIR)/sol3/single/include `sdl2-config --cflags` -I `sdl2-config --prefix`/include/ `pkg-config --cflags yaml-cpp`
+CXXFLAGS=-std=c++17 -DNDEBUG -Wall -Wpedantic -Wextra -Weffc++ -isystem $(VENDORDIR) -isystem $(VENDORDIR)/yaml-cpp/include -isystem $(VENDORDIR)/lua -isystem $(VENDORDIR)/sol3/single/include `sdl2-config --cflags` -I `sdl2-config --prefix`/include/
 LDFLAGS=-std=c++17
-LDLIBS=-lm -ldl `sdl2-config --libs` -lSDL2_image -lSDL2_ttf -lSDL2_mixer -lSDL2_gfx `pkg-config --libs yaml-cpp`
+LDLIBS=-lm -ldl `sdl2-config --libs` -lSDL2_image -lSDL2_ttf -lSDL2_mixer -lSDL2_gfx
+
+YAML_CPP_CXXFLAGS=-std=c++17 -Wall -Wextra -Wshadow -Weffc++ -Wno-long-long -pedantic -pedantic-errors
 
 LUA_CFLAGS=-std=c11 -Wall
 LUA_LDFLAGS=-std=c11
