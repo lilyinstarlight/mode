@@ -1,3 +1,4 @@
+#include "input.h"
 #include "sound.h"
 #include "spec.h"
 #include "text.h"
@@ -21,7 +22,7 @@ void Engine::load(const std::string & world) {
 void Engine::start() {
 	_state = State::STARTING;
 
-	for(;;) {
+	for (;;) {
 		run();
 
 		switch (_state) {
@@ -169,6 +170,9 @@ void Engine::dispatch(const SDL_Event & event) {
 		_editor->dispatch(event);
 	if (_console)
 		_console->dispatch(event);
+
+	// update input
+	Input::get_instance().dispatch(event);
 }
 
 void Engine::draw() const {
@@ -201,4 +205,7 @@ void Engine::update(unsigned int ticks) {
 		_editor->update(ticks, *_world);
 	if (_console)
 		_console->update(ticks, *_world);
+
+	// update input
+	Input::get_instance().update(ticks);
 }
