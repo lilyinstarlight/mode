@@ -19,38 +19,38 @@
 
 #include "script.h"
 
-Script::Script() : path("behaviours"), interactive(true), script(""), lua(), sprite(Engine::get_instance().get_world().get_player()) {}
+Script::Script() : _path("behaviours"), _interactive(true), _script(""), _lua(), _sprite(Engine::get_instance().get_world().get_player()) {}
 
-Script::Script(const std::string & name, Sprite & s) : path("behaviours"), interactive(false), script(""), lua(), sprite(s) {
+Script::Script(const std::string & name, Sprite & sprite) : _path("behaviours"), _interactive(false), _script(""), _lua(), _sprite(sprite) {
 	// load file
-	load_file(path + "/" + name + ".lua");
+	load_file(_path + "/" + name + ".lua");
 }
 
-Script::Script(const Script & s) : path(s.path), interactive(s.interactive), script(s.script), lua(), sprite(s.sprite) {}
+Script::Script(const Script & s) : _path(s._path), _interactive(s._interactive), _script(s._script), _lua(), _sprite(s._sprite) {}
 
 void Script::load() {
 	// prepare environment
 	load_api();
 
-	if (interactive)
-		lua.require_file("repl", "libs/repl.lua");
+	if (_interactive)
+		_lua.require_file("repl", "libs/repl.lua");
 	else
-		lua.script(script);
+		_lua.script(_script);
 }
 
-void Script::set_script(const std::string & s) {
+void Script::set_script(const std::string & script) {
 	// refresh state
-	lua = sol::state();
+	_lua = sol::state();
 
 	// set new script
-	script = s;
+	_script = script;
 
 	// reload
 	load();
 }
 
-std::tuple<int, std::string> Script::repl(const std::string & s) {
-	if (!interactive)
+std::tuple<int, std::string> Script::repl(const std::string & script) {
+	if (!_interactive)
 		return std::make_tuple<int, std::string>(-1, "error: non-interactive interpreter");
 
 	try {
@@ -58,7 +58,7 @@ std::tuple<int, std::string> Script::repl(const std::string & s) {
 		sol::object result;
 
 		// repl line
-		sol::tie(status, result) = lua["repl"](s);
+		sol::tie(status, result) = _lua["repl"](script);
 
 		std::string str;
 		if (result.get_type() == sol::type::lua_nil)
@@ -75,13 +75,13 @@ std::tuple<int, std::string> Script::repl(const std::string & s) {
 }
 
 void Script::load_api() {
-	if (interactive)
-		lua.open_libraries(sol::lib::base, sol::lib::package, sol::lib::coroutine, sol::lib::string, sol::lib::math, sol::lib::table, sol::lib::debug);
+	if (_interactive)
+		_lua.open_libraries(sol::lib::base, sol::lib::package, sol::lib::coroutine, sol::lib::string, sol::lib::math, sol::lib::table, sol::lib::debug);
 	else
-		lua.open_libraries(sol::lib::base, sol::lib::package, sol::lib::coroutine, sol::lib::string, sol::lib::math, sol::lib::table);
+		_lua.open_libraries(sol::lib::base, sol::lib::package, sol::lib::coroutine, sol::lib::string, sol::lib::math, sol::lib::table);
 
 	// create Vector data type
-	lua.new_usertype<Vector2f>("Vector",
+	_lua.new_usertype<Vector2f>("Vector",
 			"new", sol::constructors<Vector2f(float, float)>(),
 
 			"x", sol::property(&Vector2f::get_x, &Vector2f::set_x),
@@ -89,11 +89,11 @@ void Script::load_api() {
 	);
 
 	// create Sprite data type
-	lua.new_usertype<Sprite>("Sprite",
+	_lua.new_usertype<Sprite>("Sprite",
 			"new", sol::factories(WrapCreate<World, Sprite, std::string>(Engine::get_instance().get_world())),
 
-			"observe", WrapObserve<Sprite, Sprite>(sprite),
-			"ignore", WrapIgnore<Sprite, Sprite>(sprite),
+			"observe", WrapObserve<Sprite, Sprite>(_sprite),
+			"ignore", WrapIgnore<Sprite, Sprite>(_sprite),
 
 			"signal", &Sprite::signal,
 			"send", &Sprite::send,
@@ -125,10 +125,10 @@ void Script::load_api() {
 	);
 
 	// set sprite as current sprite
-	lua["sprite"] = &sprite;
+	_lua["sprite"] = &_sprite;
 
 	// create Sprite data type
-	lua.new_usertype<Body>("Body",
+	_lua.new_usertype<Body>("Body",
 			"new", sol::factories(WrapCreate<World, Body, std::string, bool>(Engine::get_instance().get_world())),
 
 			"name", sol::property(&Body::get_name),
@@ -139,11 +139,11 @@ void Script::load_api() {
 			"fixed", sol::property(&Body::is_fixed, &Body::set_fixed)
 	);
 
-	// set sprite as current sprite
-	lua["body"] = dynamic_cast<Body *>(&sprite);
+	// set body as current sprite if a body
+	_lua["body"] = dynamic_cast<Body *>(&_sprite);
 
 	// create Sprite data type
-	lua.new_usertype<Platform>("Platform",
+	_lua.new_usertype<Platform>("Platform",
 			"new", sol::factories(WrapCreate<World, Platform, std::string>(Engine::get_instance().get_world())),
 
 			"name", sol::property(&Platform::get_name),
@@ -151,11 +151,11 @@ void Script::load_api() {
 			"tile", sol::property(&Platform::get_tile)
 	);
 
-	// set sprite as current sprite
-	lua["platform"] = dynamic_cast<Platform *>(&sprite);
+	// set platform as current sprite if a platform
+	_lua["platform"] = dynamic_cast<Platform *>(&_sprite);
 
 	// create Projectile data type
-	lua.new_usertype<Projectile>("Projectile",
+	_lua.new_usertype<Projectile>("Projectile",
 			"new", sol::factories(WrapCreate<World, Projectile, std::string>(Engine::get_instance().get_world())),
 
 			"name", sol::property(&Projectile::get_name),
@@ -166,29 +166,29 @@ void Script::load_api() {
 	);
 
 	// set projectile as current sprite if a projectile
-	lua["projectile"] = dynamic_cast<Projectile *>(&sprite);
+	_lua["projectile"] = dynamic_cast<Projectile *>(&_sprite);
 
 	// create Player data type
-	lua.new_usertype<Player>("Player",
+	_lua.new_usertype<Player>("Player",
 			"new", sol::no_constructor,
 
 			"name", sol::property(&Player::get_name),
 
-			"observe", WrapObserve<Player, Sprite>(sprite),
-			"ignore", WrapIgnore<Player, Sprite>(sprite),
+			"observe", WrapObserve<Player, Sprite>(_sprite),
+			"ignore", WrapIgnore<Player, Sprite>(_sprite),
 
 			"shoot", &Player::shoot
 	);
 
 	// set player as current player
-	Player * player = dynamic_cast<Player *>(&sprite);
+	Player * player = dynamic_cast<Player *>(&_sprite);
 	if (!player)
 		player = &Engine::get_instance().get_world().get_player();
 
-	lua["player"] = player;
+	_lua["player"] = player;
 
 	// create Background data type
-	lua.new_usertype<Background>("Background",
+	_lua.new_usertype<Background>("Background",
 			"new", sol::factories(WrapCreate<World, Background, std::string>(Engine::get_instance().get_world())),
 
 			"factor", sol::property(&Background::get_factor, &Background::set_factor),
@@ -208,7 +208,7 @@ void Script::load_api() {
 	);
 
 	// create World data type
-	lua.new_usertype<World>("World",
+	_lua.new_usertype<World>("World",
 			"new", sol::no_constructor,
 
 			"add_sprite", WrapAdd<World, Sprite>(),
@@ -250,14 +250,16 @@ void Script::load_api() {
 			"cast", &World::cast<Sprite>,
 
 			"width", sol::property(&World::get_width),
-			"height", sol::property(&World::get_height)
+			"height", sol::property(&World::get_height),
+
+			"far", sol::property(&World::get_far)
 	);
 
 	// set world as current world
-	lua["world"] = &Engine::get_instance().get_world();
+	_lua["world"] = &Engine::get_instance().get_world();
 
 	// create Input data type
-	lua.new_usertype<Input>("Input",
+	_lua.new_usertype<Input>("Input",
 			"new", sol::no_constructor,
 
 			"grab", &Input::grab,
@@ -267,14 +269,14 @@ void Script::load_api() {
 
 			"get_list", &Input::get_list,
 
-			"get_key", WrapGetKey<Input>(lua)
+			"get_key", WrapGetKey<Input>(_lua)
 	);
 
 	// set input
-	lua["input"] = &Input::get_instance();
+	_lua["input"] = &Input::get_instance();
 
 	// create Spec data type
-	lua.new_usertype<Spec>("Spec",
+	_lua.new_usertype<Spec>("Spec",
 			"new", sol::no_constructor,
 
 			"check", &Spec::check,
@@ -288,10 +290,10 @@ void Script::load_api() {
 	);
 
 	// set spec
-	lua["spec"] = &Spec::get_instance();
+	_lua["spec"] = &Spec::get_instance();
 
 	// create Save data type
-	lua.new_usertype<Save>("Save",
+	_lua.new_usertype<Save>("Save",
 			"new", sol::no_constructor,
 
 			"check", &Save::check,
@@ -314,10 +316,10 @@ void Script::load_api() {
 	);
 
 	// set spec
-	lua["save"] = &Save::get_instance();
+	_lua["save"] = &Save::get_instance();
 
 	// create Engine data type
-	lua.new_usertype<Engine>("Engine",
+	_lua.new_usertype<Engine>("Engine",
 			"new", sol::no_constructor,
 
 			"load", &Engine::load,
@@ -327,10 +329,10 @@ void Script::load_api() {
 	);
 
 	// set engine
-	lua["engine"] = &Engine::get_instance();
+	_lua["engine"] = &Engine::get_instance();
 
 	// create Clock data type
-	lua.new_usertype<Clock>("Clock",
+	_lua.new_usertype<Clock>("Clock",
 			"new", sol::no_constructor,
 
 			"ticks", sol::property(&Clock::get_ticks),
@@ -338,10 +340,10 @@ void Script::load_api() {
 	);
 
 	// set clock
-	lua["clock"] = &Clock::get_instance();
+	_lua["clock"] = &Clock::get_instance();
 
 	// create Sound data type
-	lua.new_usertype<Sound>("Sound",
+	_lua.new_usertype<Sound>("Sound",
 			"new", sol::no_constructor,
 
 			"active", sol::property(&Sound::check),
@@ -350,10 +352,10 @@ void Script::load_api() {
 	);
 
 	// set sound
-	lua["sound"] = &Sound::get_instance();
+	_lua["sound"] = &Sound::get_instance();
 
-	// create Spec data type
-	lua.new_usertype<Dialog>("Dialog",
+	// create Dialog data type
+	_lua.new_usertype<Dialog>("Dialog",
 			"new", sol::factories(WrapCreate<World, Dialog, std::string, std::string>(Engine::get_instance().get_world()), WrapCreate<World, Dialog, std::string, std::string, bool>(Engine::get_instance().get_world()), WrapCreate<World, Dialog, std::string, std::string, bool, bool>(Engine::get_instance().get_world())),
 
 			"name", sol::property(&Dialog::get_name),
@@ -373,8 +375,8 @@ void Script::load_api() {
 			"idx", sol::property(&Dialog::get_index, &Dialog::set_index)
 	);
 
-	// create Spec data type
-	lua.new_usertype<HUD>("HUD",
+	// create HUD data type
+	_lua.new_usertype<HUD>("HUD",
 			"new", sol::no_constructor,
 
 			"open", &HUD::open,
@@ -387,29 +389,29 @@ void Script::load_api() {
 	);
 
 	// set hud
-	lua["hud"] = &Engine::get_instance().get_hud();
+	_lua["hud"] = &Engine::get_instance().get_hud();
 
-	// create Spec data type
-	lua.new_usertype<Viewport>("Viewport",
+	// create Viewport data type
+	_lua.new_usertype<Viewport>("Viewport",
 			"new", sol::no_constructor,
 
 			"width", sol::property(&Viewport::get_width),
 			"height", sol::property(&Viewport::get_height),
 
-			"pos", sol::property(&Viewport::get_position),
+			"pos", sol::property(&Viewport::get_position, &Viewport::set_position),
 
-			"track", &Viewport::track
+			"tracking", sol::property(&Viewport::get_tracking, &Viewport::track)
 	);
 
 	// set viewport
-	lua["view"] = &Engine::get_instance().get_viewport();
+	_lua["view"] = &Engine::get_instance().get_viewport();
 
 	// create Event data type
-	lua.new_usertype<SDL_Event>("Event",
+	_lua.new_usertype<SDL_Event>("Event",
 			"new", sol::no_constructor,
 
-			"ev", sol::property(WrapEventType(lua)),
-			"val", sol::property(WrapEventValue(lua))
+			"ev", sol::property(WrapEventType(_lua)),
+			"val", sol::property(WrapEventValue(_lua))
 	);
 }
 
@@ -419,5 +421,5 @@ void Script::load_file(const std::string & filename) {
 	if (!file)
 		throw std::runtime_error("Failed to load script " + filename);
 
-	script = std::string(std::istreambuf_iterator<char>(file), std::istreambuf_iterator<char>());
+	_script = std::string(std::istreambuf_iterator<char>(file), std::istreambuf_iterator<char>());
 }

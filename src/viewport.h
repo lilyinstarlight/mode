@@ -16,23 +16,24 @@ class Viewport {
 		void draw() const {}
 		void update(unsigned int ticks, World & world);
 
-		int get_height() const { return height; }
-		int get_width() const  { return width; }
+		int get_height() const { return _height; }
+		int get_width() const  { return _width; }
 
-		Vector2f get_position() const { return position; }
+		const Vector2f & get_position() const        { return _position;     }
+		void set_position(const Vector2f & position) { _position = position; }
 
-		float get_x() const  { return position[0]; }
-		void  set_x(float x) { position[0] = x; }
-		float get_y() const  { return position[1]; }
-		void  set_y(float y) { position[1] = y; }
+		float get_x() const  { return _position[0]; }
+		void  set_x(float x) { _position[0] = x; }
+		float get_y() const  { return _position[1]; }
+		void  set_y(float y) { _position[1] = y; }
 
-		void track(const Drawable * obj)      { tracking = obj;  };
-		const Drawable * get_tracking() const { return tracking; }
+		void track(const Drawable * obj)      { _tracking = obj;  };
+		const Drawable * get_tracking() const { return _tracking; }
 
 	private:
-		Vector2f position;
-		int width, height;
+		Vector2f _position;
+		int _width, _height;
 
-		const Drawable * tracking;
+		const Drawable * _tracking;
 };
 #endif

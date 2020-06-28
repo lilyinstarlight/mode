@@ -9,7 +9,7 @@
 class Projectile : public Sprite {
 	public:
 		Projectile(const std::string & name);
-		Projectile(const std::string & name, Pool<Projectile> & p);
+		Projectile(const std::string & name, Pool<Projectile> & pool);
 		Projectile(const Projectile & projectile);
 		virtual ~Projectile() {}
 
@@ -18,15 +18,15 @@ class Projectile : public Sprite {
 		virtual void dispatch(const SDL_Event & event);
 		virtual void update(unsigned int ticks, World & world);
 
-		Vector2f get_origin() const         { return origin;           }
-		void set_origin()                   { origin = get_position(); }
-		void set_origin(const Vector2f & o) { origin = o;              }
+		Vector2f get_origin() const              { return _origin;           }
+		void set_origin()                        { _origin = get_position(); }
+		void set_origin(const Vector2f & origin) { _origin = origin;         }
 
 		virtual void revive();
 
 	private:
-		Pool<Projectile> * pool;
+		Pool<Projectile> * _pool;
 
-		Vector2f origin;
+		Vector2f _origin;
 };
 #endif

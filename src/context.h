@@ -15,15 +15,15 @@ class Context {
 
 		void reload();
 
-		SDL_Window * get_window() const { return window; }
-		SDL_Renderer * get_renderer() const { return renderer; }
+		SDL_Window * get_window() const { return _window; }
+		SDL_Renderer * get_renderer() const { return _renderer; }
 
 	private:
 		Context();
 
-		std::string icon_path;
+		std::string _icon_path;
 
-		SDL_Window * window;
-		SDL_Renderer * renderer;
+		SDL_Window * _window;
+		SDL_Renderer * _renderer;
 };
 #endif

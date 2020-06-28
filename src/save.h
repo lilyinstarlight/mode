@@ -12,7 +12,7 @@ class Save : public ModifiableYaml {
 		virtual ~Save() {}
 
 		Save(const Save &) = delete;
-		Save & operator=(const Save &) = delete;
+		const Save & operator=(const Save &) = delete;
 
 	private:
 		Save() : ModifiableYaml("save") {}

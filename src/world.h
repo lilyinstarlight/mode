@@ -24,7 +24,7 @@ class World {
 		T * create(Args... args) {
 			T * t = new T(args...);
 			t->load();
-			owning.insert(t);
+			_owning.insert(t);
 			return t;
 		}
 
@@ -42,7 +42,7 @@ class World {
 		std::vector<T *> get_all() const {
 			std::vector<T *> all;
 
-			for (Drawable * drawable : drawables) {
+			for (Drawable * drawable : _drawables) {
 				// try to cast the object
 				T * obj = dynamic_cast<T *>(drawable);
 				if (obj)
@@ -56,12 +56,12 @@ class World {
 		std::pair<T *, Vector2f> cast(Vector2f point, float direction, std::string type = "") const {
 			T * close = nullptr;
 			Vector2f hit(point);
-			float mag = far;
+			float mag = _far;
 
 			// calculate the ray to cast
 			Vector2f ray(std::cos(direction), -std::sin(direction));
 
-			for (Drawable * drawable : drawables) {
+			for (Drawable * drawable : _drawables) {
 				// try to cast the object
 				T * obj = dynamic_cast<T *>(drawable);
 				if (obj && (type.empty() || obj->get_type() == type)) {
@@ -103,21 +103,23 @@ class World {
 			return std::make_pair(close, hit);
 		}
 
-		const Player & get_player() const { return *player; }
-		Player & get_player()             { return *player; } // caller can modify player
+		const Player & get_player() const { return *_player; }
+		Player & get_player()             { return *_player; } // caller can modify player
 
-		int get_width() const  { return width;  }
-		int get_height() const { return height; }
+		int get_width() const  { return _width;  }
+		int get_height() const { return _height; }
+
+		float get_far() const { return _far; }
 
 	private:
-		int width, height;
+		int _width, _height;
 
-		float far;
+		float _far;
 
-		Player * player;
-		std::unordered_set<Drawable *> owning;
-		std::set<Drawable *, DrawablePointerCompare> drawables; // compare pointers to keep drawables unique and ordered
-		std::unordered_set<Drawable *> destroyables;
-		std::unordered_set<Drawable *> removables;
+		Player * _player;
+		std::unordered_set<Drawable *> _owning;
+		std::set<Drawable *, DrawablePointerCompare> _drawables; // compare pointers to keep drawables unique and ordered
+		std::unordered_set<Drawable *> _destroyables;
+		std::unordered_set<Drawable *> _removables;
 };
 #endif

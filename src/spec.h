@@ -12,7 +12,7 @@ class Spec : public Yaml {
 		virtual ~Spec() {}
 
 		Spec(const Spec &) = delete;
-		Spec & operator=(const Spec &) = delete;
+		const Spec & operator=(const Spec &) = delete;
 
 	private:
 		Spec() : Yaml("game") {}

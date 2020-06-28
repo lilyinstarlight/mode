@@ -15,7 +15,7 @@ class Sprite;
 class Script {
 	public:
 		Script();
-		Script(const std::string & name, Sprite & s);
+		Script(const std::string & name, Sprite & sprite);
 		Script(const Script & s);
 
 		~Script() {}
@@ -24,31 +24,31 @@ class Script {
 
 		void load();
 
-		const std::string & get_script() const { return script; }
-		void set_script(const std::string & s);
+		const std::string & get_script() const { return _script; }
+		void set_script(const std::string & script);
 
-		std::tuple<int, std::string> repl(const std::string & s);
+		std::tuple<int, std::string> repl(const std::string & script);
 
 		template <typename... Args>
 		void call(const std::string & method, Args... args) {
-			lua[method](args...);
+			_lua[method](args...);
 		}
 
 		template <typename T, typename... Args>
 		T call(const std::string & method, Args... args) {
-			return lua[method](args...);
+			return _lua[method](args...);
 		}
 
 		template <typename... Args>
 		void signal(const std::string & method, Args... args) {
-			sol::optional<sol::function> fun = lua[method];
+			sol::optional<sol::function> fun = _lua[method];
 			if (fun)
 				(*fun)(args...);
 		}
 
 		template <typename T, typename... Args>
 		T call_optional(const std::string & method, const T & fallback, Args... args) {
-			sol::optional<sol::function> fun = lua[method];
+			sol::optional<sol::function> fun = _lua[method];
 			if (fun)
 				return (*fun)(args...);
 			else
@@ -59,40 +59,40 @@ class Script {
 		template <typename T, typename U>
 		class WrapObserve {
 			public:
-				WrapObserve(U & o) : other(o) {}
+				WrapObserve(U & other) : _other(other) {}
 
 				void operator()(T & obj) {
-					obj.observe(other);
+					obj.observe(_other);
 				}
 
 			private:
-				U & other;
+				U & _other;
 		};
 
 		template <typename T, typename U>
 		class WrapIgnore {
 			public:
-				WrapIgnore(U & o) : other(o) {}
+				WrapIgnore(U & other) : _other(other) {}
 
 				void operator()(T & obj) {
-					obj.ignore(other);
+					obj.ignore(_other);
 				}
 
 			private:
-				U & other;
+				U & _other;
 		};
 
 		template <typename T, typename U, typename... Args>
 		class WrapCreate {
 			public:
-				WrapCreate(T & o) : other(o) {}
+				WrapCreate(T & obj) : _obj(obj) {}
 
 				U * operator()(Args... args) {
-					return other.template create<U>(args...);
+					return _obj.template create<U>(args...);
 				}
 
 			private:
-				T & other;
+				T & _obj;
 		};
 
 		template <typename T, typename U>
@@ -138,7 +138,7 @@ class Script {
 		template <typename T>
 		class WrapGetKey {
 			public:
-				WrapGetKey(sol::state & l) : lua(l) {}
+				WrapGetKey(sol::state & l) : _lua(l) {}
 
 				bool operator()(T & input, std::string key) {
 					static std::unordered_map<std::string, SDL_Scancode> codes = {
@@ -256,7 +256,7 @@ class Script {
 				}
 
 			private:
-				sol::state & lua;
+				sol::state & _lua;
 		};
 
 		class WrapEventType {
@@ -288,7 +288,7 @@ class Script {
 
 		class WrapEventValue {
 			public:
-				WrapEventValue(sol::state & l) : lua(l) {}
+				WrapEventValue(sol::state & lua) : _lua(lua) {}
 
 				sol::table operator()(const SDL_Event & event) {
 					static std::unordered_map<SDL_Keycode, std::string> keys = {
@@ -429,13 +429,13 @@ class Script {
 					switch (event.type) {
 						case SDL_KEYDOWN:
 						case SDL_KEYUP:
-							return lua.create_table_with(
+							return _lua.create_table_with(
 								"key", keys[event.key.keysym.sym],
 								"rep", event.key.repeat
 							);
 
 						case SDL_MOUSEMOTION:
-							return lua.create_table_with(
+							return _lua.create_table_with(
 								"rx", event.motion.xrel,
 								"ry", event.motion.yrel,
 								"mx", event.motion.x,
@@ -444,31 +444,31 @@ class Script {
 
 						case SDL_MOUSEBUTTONDOWN:
 						case SDL_MOUSEBUTTONUP:
-							return lua.create_table_with(
+							return _lua.create_table_with(
 								"btn", btns[event.button.button],
 								"mx", event.button.x,
 								"my", event.button.y
 							);
 
 						default:
-							return lua.create_table_with();
+							return _lua.create_table_with();
 					}
 				}
 
 			private:
-				sol::state & lua;
+				sol::state & _lua;
 		};
 
 		void load_api();
 		void load_file(const std::string & filename);
 
-		std::string path;
+		std::string _path;
 
-		bool interactive;
-		std::string script;
+		bool _interactive;
+		std::string _script;
 
-		sol::state lua;
+		sol::state _lua;
 
-		Sprite & sprite;
+		Sprite & _sprite;
 };
 #endif

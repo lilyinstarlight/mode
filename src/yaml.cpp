@@ -3,21 +3,21 @@
 
 #include "yaml.h"
 
-Yaml::Yaml(const std::string & filename, const std::string & path) : path(path), file(), root() {
+Yaml::Yaml(const std::string & filename, const std::string & path) : _file(), _root(), _path(path) {
 	load(filename);
 }
 
-Yaml::Yaml(const Yaml & yaml) : path(yaml.path), file(yaml.file), root(yaml.root) {}
+Yaml::Yaml(const Yaml & yaml) : _file(yaml._file), _root(yaml._root), _path(yaml._path) {}
 
 void Yaml::load(const std::string & filename) {
-	file = path + "/" + filename + ".yaml";
+	_file = _path + "/" + filename + ".yaml";
 
-	std::ifstream fin(file);
+	std::ifstream fin(_file);
 	if (fin)
-		root = YAML::Load(fin);
+		_root = YAML::Load(fin);
 
-	if (!root.IsMap())
-		root = YAML::Node(YAML::NodeType::Map);
+	if (!_root.IsMap())
+		_root = YAML::Node(YAML::NodeType::Map);
 }
 
 std::vector<std::string> Yaml::get_keys(const std::string & key) const {
@@ -71,7 +71,7 @@ std::string Yaml::leaf(const std::string & yaml_path) const {
 }
 
 YAML::Node Yaml::resolve(const std::string & yaml_path) const {
-	YAML::Node node = root;
+	YAML::Node node = _root;
 
 	std::stringstream ss(yaml_path);
 	std::string key;
@@ -110,7 +110,7 @@ void ModifiableYaml::set_str(const std::string & key, const std::string & val) {
 }
 
 void ModifiableYaml::write() const {
-	std::ofstream out(file);
-	if (root.size() > 0)
-		out << root << std::endl;
+	std::ofstream out(_file);
+	if (_root.size() > 0)
+		out << _root << std::endl;
 }

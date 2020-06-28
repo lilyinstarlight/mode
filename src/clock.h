@@ -23,10 +23,10 @@ class Clock {
 	private:
 		Clock();
 
-		bool started, running;
-		unsigned int start_time, cur_time;
-		unsigned int frames, frame_time;
-		int fps;
-		float fps_gain;
+		bool _started, _running;
+		unsigned int _start_time, _cur_time;
+		unsigned int _frames, _frame_time;
+		int _fps;
+		float _fps_gain;
 };
 #endif

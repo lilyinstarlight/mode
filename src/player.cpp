@@ -6,7 +6,7 @@
 
 #include "player.h"
 
-Player::Player() : Body("player"), shooting(Spec::get_instance().check("player/projectile/name")), projectiles(shooting ? Spec::get_instance().get_str("player/projectile/name") : "", 0), hp(Spec::get_instance().check("player/hp") ? Spec::get_instance().get_int("player/hp") : 1), shot(false) {
+Player::Player() : Body("player"), _shooting(Spec::get_instance().check("player/projectile/name")), _projectiles(_shooting ? Spec::get_instance().get_str("player/projectile/name") : "", 0), _hp(Spec::get_instance().check("player/hp") ? Spec::get_instance().get_int("player/hp") : 1), _shot(false), _projectile_speed(Spec::get_instance().get_int("player/projectile/speed")), _projectile_offset(Spec::get_instance().get_int("player/projectile/offset/x"), Spec::get_instance().get_int("player/projectile/offset/y")) {
 	Input::get_instance().grab("player");
 }
 
@@ -17,42 +17,42 @@ Player::~Player() {
 void Player::load() {
 	Body::load();
 
-	if (shooting) {
-		projectiles.clear();
-		projectiles.increase(Spec::get_instance().get_int("player/projectile/initial"));
+	if (_shooting) {
+		_projectiles.clear();
+		_projectiles.increase(Spec::get_instance().get_int("player/projectile/initial"));
 	}
 }
 
 void Player::update(unsigned int ticks, World & world) {
 	Body::update(ticks, world);
 
-	if (shot) {
-		Projectile & projectile = projectiles.create();
+	if (_shot) {
+		Projectile & projectile = _projectiles.create();
 		world.add(projectile);
 
 		for (Sprite * observer : get_observers())
 			projectile.observe(*observer);
 
-		projectile.set_y(get_y() + get_height()/2 + Spec::get_instance().get_int("player/projectile/offset/y"));
+		projectile.set_y(get_y() + get_height()/2 + _projectile_offset[1]);
 
-		int speed = Spec::get_instance().get_int("player/projectile/speed") + std::abs(get_velocity_x());
+		int speed = _projectile_speed + std::abs(get_velocity_x());
 
 		if (get_direction() == "left") {
-			projectile.set_x(get_x() - projectile.get_width() - Spec::get_instance().get_int("player/projectile/offset/x"));
+			projectile.set_x(get_x() - projectile.get_width() - _projectile_offset[0]);
 			projectile.set_velocity_x(-speed);
 		}
 		else {
-			projectile.set_x(get_x() + get_width() + projectile.get_width() + Spec::get_instance().get_int("player/projectile/offset/x"));
+			projectile.set_x(get_x() + get_width() + projectile.get_width() + _projectile_offset[0]);
 			projectile.set_velocity_x(speed);
 		}
 
 		projectile.set_origin();
 
-		shot = false;
+		_shot = false;
 	}
 }
 
 void Player::shoot() {
-	if (shooting)
-		shot = true;
+	if (_shooting)
+		_shot = true;
 }

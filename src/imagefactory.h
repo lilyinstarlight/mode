@@ -25,14 +25,14 @@ class ImageFactory {
 
 		SDL_Surface * crop(const SDL_Surface * surface, const SDL_Rect & rect);
 
-		std::string path;
+		std::string _path;
 
-		std::unordered_map<std::string, SDL_Surface *> surfaces;
-		std::unordered_map<std::string, SDL_Texture *> textures;
-		std::unordered_map<std::string, Image *> images;
+		std::unordered_map<std::string, SDL_Surface *> _surfaces;
+		std::unordered_map<std::string, SDL_Texture *> _textures;
+		std::unordered_map<std::string, Image *> _images;
 
-		std::unordered_map<std::string, std::vector<SDL_Surface *>> multi_surface;
-		std::unordered_map<std::string, std::vector<SDL_Texture *>> multi_texture;
-		std::unordered_map<std::string, Sheet *> sheets;
+		std::unordered_map<std::string, std::vector<SDL_Surface *>> _multi_surface;
+		std::unordered_map<std::string, std::vector<SDL_Texture *>> _multi_texture;
+		std::unordered_map<std::string, Sheet *> _sheets;
 };
 #endif

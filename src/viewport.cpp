@@ -3,40 +3,40 @@
 #include "viewport.h"
 
 Viewport::Viewport() :
-	position(0, 0),
-	width(Spec::get_instance().get_int("view/width")),
-	height(Spec::get_instance().get_int("view/height")),
-	tracking(nullptr) {}
+	_position(0, 0),
+	_width(Spec::get_instance().get_int("view/width")),
+	_height(Spec::get_instance().get_int("view/height")),
+	_tracking(nullptr) {}
 
 void Viewport::update(unsigned int, World & world) {
 	// bail if no object to track
-	if (!tracking)
+	if (!_tracking)
 		return;
 
-	if (!world.check(tracking)) {
-		tracking = nullptr;
+	if (!world.check(_tracking)) {
+		_tracking = nullptr;
 		return;
 	}
 
 	// track object
-	const float x = tracking->get_x();
-	const float y = tracking->get_y();
+	const float x = _tracking->get_x();
+	const float y = _tracking->get_y();
 
 	// set position based on tracked object
-	position[0] = (x + tracking->get_width()/2) - width/2;
-	position[1] = (y + tracking->get_height()/2) - height/2;
+	_position[0] = (x + _tracking->get_width()/2) - _width/2;
+	_position[1] = (y + _tracking->get_height()/2) - _height/2;
 
 	// clamp to world boundaries
-	if (position[0] < 0)
-		position[0] = 0;
-	else if (position[0] > world.get_width() - width) {
-		position[0] = world.get_width() - width;
+	if (_position[0] < 0)
+		_position[0] = 0;
+	else if (_position[0] > world.get_width() - _width) {
+		_position[0] = world.get_width() - _width;
 	}
 
 	// clamp to world boundaries
-	if (position[1] < 0)
-		position[1] = 0;
-	else if (position[1] > world.get_height() - height) {
-		position[1] = (world.get_height() - height);
+	if (_position[1] < 0)
+		_position[1] = 0;
+	else if (_position[1] > world.get_height() - _height) {
+		_position[1] = (world.get_height() - _height);
 	}
 }

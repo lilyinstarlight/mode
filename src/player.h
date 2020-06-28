@@ -4,6 +4,7 @@
 #include "body.h"
 #include "pool.h"
 #include "projectile.h"
+#include "vector2f.h"
 
 class Player : public Body {
 	public:
@@ -18,16 +19,19 @@ class Player : public Body {
 
 		void shoot();
 
-		Pool<Projectile> & get_pool() { return projectiles; }
+		Pool<Projectile> & get_pool() { return _projectiles; }
 
-		void set_hp(int val) { hp = val;  }
-		int get_hp()   const { return hp; }
+		void set_hp(int hp)  { _hp = hp;   }
+		int get_hp() const   { return _hp; }
 
 	private:
-		bool shooting;
-		Pool<Projectile> projectiles;
+		bool _shooting;
+		Pool<Projectile> _projectiles;
 
-		int hp;
-		bool shot;
+		int _hp;
+		bool _shot;
+
+		int _projectile_speed;
+		Vector2f _projectile_offset;
 };
 #endif

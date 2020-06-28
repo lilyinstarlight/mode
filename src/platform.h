@@ -8,7 +8,7 @@
 
 class Platform : public Body {
 	public:
-		enum Tile { NONE, X, Y, BOTH };
+		enum class Tile { NONE, X, Y, BOTH };
 
 		Platform(const std::string & name);
 		Platform(const Platform & p);
@@ -19,16 +19,16 @@ class Platform : public Body {
 
 		virtual void draw(const Viewport & viewport) const;
 
-		void set_width(int width)   { size.w = width; }
-		int get_width() const       { return size.w; }
-		void set_height(int height) { size.h = height; }
-		int get_height() const      { return size.h; }
+		void set_width(int width)   { _size.w = width; }
+		int get_width() const       { return _size.w; }
+		void set_height(int height) { _size.h = height; }
+		int get_height() const      { return _size.h; }
 
-		Tile get_tile() const       { return tile; }
+		Tile get_tile() const       { return _tile; }
 
 	private:
-		Tile tile;
+		Tile _tile;
 
-		SDL_Rect size;
+		SDL_Rect _size;
 };
 #endif

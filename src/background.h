@@ -7,7 +7,7 @@
 
 class Background : public Drawable {
 	public:
-		enum Tile { NONE, X, Y, BOTH };
+		enum class Tile { NONE, X, Y, BOTH };
 
 		Background(const std::string & name);
 
@@ -23,21 +23,21 @@ class Background : public Drawable {
 		virtual void draw(const Viewport & viewport) const;
 		virtual void update(unsigned int, World &) {}
 
-		int get_width() const  { return image->get_width();  }
-		int get_height() const { return image->get_height(); }
+		int get_width() const  { return _image->get_width();  }
+		int get_height() const { return _image->get_height(); }
 
-		int get_factor() const { return factor; }
-		void set_factor(int f) { factor = f;    }
+		int get_factor() const      { return _factor;   }
+		void set_factor(int factor) { _factor = factor; }
 
-		Tile get_tile() const  { return tile; }
+		Tile get_tile() const { return _tile; }
 
-		virtual const SDL_Surface * get_surface() const { return image->get_surface(); };
-		virtual const Image * get_image() const { return image; };
+		virtual const SDL_Surface * get_surface() const { return _image->get_surface(); };
+		virtual const Image * get_image() const { return _image; };
 
 	private:
-		float factor;
-		Tile tile;
+		float _factor;
+		Tile _tile;
 
-		const Image * image;
+		const Image * _image;
 };
 #endif

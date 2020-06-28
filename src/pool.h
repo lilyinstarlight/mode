@@ -10,103 +10,103 @@
 template <typename T>
 class Pool {
 	public:
-		Pool(const std::string & n, unsigned int initial = 0) : name(n), used{}, free{} {
+		Pool(const std::string & n, unsigned int initial = 0) : _name(n), _used{}, _free{} {
 			increase(initial);
 		}
 
-		Pool(const Pool & p) : name(p.name), used{}, free{} {
+		Pool(const Pool & p) : _name(p.name), _used{}, _free{} {
 			for (T * obj : p.used) {
 				T * t = new T(*obj);
 				t->load();
 
-				used.push_back(t);
+				_used.push_back(t);
 			}
 
-			for (T * obj : free) {
+			for (T * obj : _free) {
 				T * t = new T(*obj);
 				t->load();
 
-				free.push_back(t);
+				_free.push_back(t);
 			}
 		}
 
 		~Pool() {
-			for (T * obj : used)
+			for (T * obj : _used)
 				delete obj;
 
-			for (T * obj : free)
+			for (T * obj : _free)
 				delete obj;
 		}
 
 		const Pool & operator=(const Pool &) = delete;
 
-		const std::vector<T *> & get_used() const { return used; }
-		const std::vector<T *> & get_free() const { return free; }
+		const std::vector<T *> & get_used() const { return _used; }
+		const std::vector<T *> & get_free() const { return _free; }
 
 		void increase(unsigned int count) {
 			for (unsigned int idx = 0; idx < count; ++idx) {
-				T * t = new T(name, *this);
+				T * t = new T(_name, *this);
 				t->load();
 
-				free.push_back(t);
+				_free.push_back(t);
 			}
 		}
 
 		void decrease(unsigned int count) {
-			count = Util::min(count, free.size());
+			count = Util::min(count, _free.size());
 
 			for (unsigned int idx = 0; idx < count; ++idx) {
-				typename std::vector<T *>::iterator it = free.begin();
+				typename std::vector<T *>::iterator it = _free.begin();
 				delete *it;
-				free.erase(it);
+				_free.erase(it);
 			}
 		}
 
 		void clear() {
-			for (T * obj : free)
+			for (T * obj : _free)
 				delete obj;
 
-			free.clear();
+			_free.clear();
 		}
 
 		T & create() {
-			if (free.empty()) {
-				T * t = new T(name, *this);
+			if (_free.empty()) {
+				T * t = new T(_name, *this);
 				t->load();
 
-				used.push_back(t);
+				_used.push_back(t);
 			}
 			else {
-				used.push_back(free.back());
-				free.pop_back();
+				_used.push_back(_free.back());
+				_free.pop_back();
 			}
 
-			used.back()->revive();
+			_used.back()->revive();
 
-			return *used.back();
+			return *_used.back();
 		}
 
 		void destroy(const T & obj) {
 			// find object
 			typename std::vector<T *>::iterator it;
-			for (it = used.begin(); it != used.end(); ++it) {
+			for (it = _used.begin(); it != _used.end(); ++it) {
 				if (*it == &obj) {
-					free.push_back(*it);
-					it = used.erase(it);
+					_free.push_back(*it);
+					it = _used.erase(it);
 
-					free.back()->kill();
+					_free.back()->kill();
 
 					return;
 				}
 			}
 
-			throw std::runtime_error("Tried to destroy non-existent pool object in " + name);
+			throw std::runtime_error("Tried to destroy non-existent pool object in " + _name);
 		}
 
 	private:
-		std::string name;
+		std::string _name;
 
-		std::vector<T *> used;
-		std::vector<T *> free;
+		std::vector<T *> _used;
+		std::vector<T *> _free;
 };
 #endif

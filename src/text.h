@@ -27,7 +27,7 @@ class Text {
 
 		std::vector<std::string> split(const std::string & string, char delimiter) const;
 
-		std::string path;
-		std::unordered_map<std::string, TTF_Font *> fonts;
+		std::string _path;
+		std::unordered_map<std::string, TTF_Font *> _fonts;
 };
 #endif

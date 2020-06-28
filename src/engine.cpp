@@ -9,27 +9,27 @@ Engine & Engine::get_instance() {
 	return engine;
 }
 
-Engine::Engine() : loaded("game"), world(nullptr), viewport(nullptr), hud(nullptr), console(nullptr), editor(nullptr), state(STOPPED) {}
+Engine::Engine() : _loaded("game"), _world(nullptr), _viewport(nullptr), _hud(nullptr), _console(nullptr), _editor(nullptr), _state(State::STOPPED) {}
 
-void Engine::load(const std::string & w) {
-	loaded = w;
+void Engine::load(const std::string & world) {
+	_loaded = world;
 
-	if (state == RUNNING)
-		state = RESTARTING;
+	if (_state == State::RUNNING)
+		_state = State::RESTARTING;
 }
 
 void Engine::start() {
-	state = STARTING;
+	_state = State::STARTING;
 
 	for(;;) {
 		run();
 
-		switch (state) {
-			case RESTARTING:
+		switch (_state) {
+			case State::RESTARTING:
 				continue;
 
-			case STOPPING:
-				state = STOPPED;
+			case State::STOPPING:
+				_state = State::STOPPED;
 				return;
 
 			default:
@@ -39,23 +39,23 @@ void Engine::start() {
 }
 
 void Engine::run() {
-	Spec::get_instance().load(loaded);
+	Spec::get_instance().load(_loaded);
 	Context::get_instance().reload();
 	Sound::get_instance().reload();
 
 	if (Spec::get_instance().check("editor/box/r"))
-		editor = new Editor();
+		_editor = new Editor();
 	if (Spec::get_instance().check("console/box/r"))
-		console = new Console();
+		_console = new Console();
 
 	if (Spec::get_instance().check("hud/type"))
-		hud = new HUD();
+		_hud = new HUD();
 
-	world = new World();
-	viewport = new Viewport();
+	_world = new World();
+	_viewport = new Viewport();
 
-	world->init();
-	viewport->track(&world->get_player());
+	_world->init();
+	_viewport->track(&_world->get_player());
 
 	Clock::get_instance().start();
 
@@ -64,28 +64,28 @@ void Engine::run() {
 	Uint32 last = Clock::get_instance().get_ticks();
 	Uint32 ticks = 0;
 
-	state = RUNNING;
-	while (state == RUNNING) {
+	_state = State::RUNNING;
+	while (_state == State::RUNNING) {
 		while (SDL_PollEvent(&event)) {
 			if (event.type == SDL_QUIT) {
 				// handle closing window
-				state = STOPPING;
+				_state = State::STOPPING;
 				break;
 			}
 			else if (event.type == SDL_KEYDOWN && event.key.repeat == 0) {
-				if (editor && editor->is_open()) {
+				if (_editor && _editor->is_open()) {
 					if (event.key.keysym.sym == SDLK_ESCAPE) {
-						editor->close();
+						_editor->close();
 					}
 				}
 				else {
 					if (event.key.keysym.sym == SDLK_ESCAPE) {
-						if (console && console->is_open()) {
-							console->close();
+						if (_console && _console->is_open()) {
+							_console->close();
 						}
 						else {
 							// handle pressing escape
-							state = STOPPING;
+							_state = State::STOPPING;
 							break;
 						}
 					}
@@ -93,27 +93,27 @@ void Engine::run() {
 						// (un)pause clock
 						if (Clock::get_instance().is_running()) {
 							Clock::get_instance().pause();
-							if (hud)
-								hud->open();
+							if (_hud)
+								_hud->open();
 						}
 						else {
 							Clock::get_instance().start();
-							if (hud)
-								hud->close();
+							if (_hud)
+								_hud->close();
 						}
 					}
 					else if (event.key.keysym.sym == SDLK_F1) {
 						// toggle hud
-						if (hud)
-							hud->toggle();
+						if (_hud)
+							_hud->toggle();
 					}
 					else if (event.key.keysym.sym == SDLK_BACKQUOTE) {
 						// toggle console
-						if (console)
-							console->toggle();
+						if (_console)
+							_console->toggle();
 					}
 					else if (event.key.keysym.sym == SDLK_BACKSPACE) {
-						if (!(console && console->is_open())) {
+						if (!(_console && _console->is_open())) {
 							// restart level
 							restart();
 						}
@@ -135,54 +135,54 @@ void Engine::run() {
 
 	Clock::get_instance().stop();
 
-	delete viewport;
-	viewport = nullptr;
-	delete world;
-	world = nullptr;
+	delete _viewport;
+	_viewport = nullptr;
+	delete _world;
+	_world = nullptr;
 
-	if (hud) {
-		delete hud;
-		hud = nullptr;
+	if (_hud) {
+		delete _hud;
+		_hud = nullptr;
 	}
 
-	if (console) {
-		delete console;
-		console = nullptr;
+	if (_console) {
+		delete _console;
+		_console = nullptr;
 	}
 
-	if (editor) {
-		delete editor;
-		editor = nullptr;
+	if (_editor) {
+		delete _editor;
+		_editor = nullptr;
 	}
 }
 
 void Engine::dispatch(const SDL_Event & event) {
 	// update world
 	if (Clock::get_instance().is_running())
-		world->dispatch(event);
+		_world->dispatch(event);
 
 	// update hud and stuff
-	if (hud)
-		hud->dispatch(event);
-	viewport->dispatch(event);
-	if (editor)
-		editor->dispatch(event);
-	if (console)
-		console->dispatch(event);
+	if (_hud)
+		_hud->dispatch(event);
+	_viewport->dispatch(event);
+	if (_editor)
+		_editor->dispatch(event);
+	if (_console)
+		_console->dispatch(event);
 }
 
 void Engine::draw() const {
 	// draw world
-	world->draw(*viewport);
+	_world->draw(*_viewport);
 
 	// draw hud and stuff
-	if (hud)
-		hud->draw(*viewport);
-	viewport->draw();
-	if (editor)
-		editor->draw(*viewport);
-	if (console)
-		console->draw(*viewport);
+	if (_hud)
+		_hud->draw(*_viewport);
+	_viewport->draw();
+	if (_editor)
+		_editor->draw(*_viewport);
+	if (_console)
+		_console->draw(*_viewport);
 
 	// swap renderer buffers
 	SDL_RenderPresent(Context::get_instance().get_renderer());
@@ -191,14 +191,14 @@ void Engine::draw() const {
 void Engine::update(unsigned int ticks) {
 	// update world
 	if (Clock::get_instance().is_running())
-		world->update(ticks);
+		_world->update(ticks);
 
 	// update hud and viewport
-	if (hud)
-		hud->update(ticks, *world);
-	viewport->update(ticks, *world);
-	if (editor)
-		editor->update(ticks, *world);
-	if (console)
-		console->update(ticks, *world);
+	if (_hud)
+		_hud->update(ticks, *_world);
+	_viewport->update(ticks, *_world);
+	if (_editor)
+		_editor->update(ticks, *_world);
+	if (_console)
+		_console->update(ticks, *_world);
 }

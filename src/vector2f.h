@@ -6,7 +6,7 @@ class Vector2f {
 	public:
 		static constexpr float EPSILON = 0.001;
 
-		Vector2f(float vx = 0, float vy = 0);
+		Vector2f(float x = 0, float y = 0);
 		Vector2f(const Vector2f & v);
 
 		Vector2f & operator=(const Vector2f & v);
@@ -30,10 +30,10 @@ class Vector2f {
 		const Vector2f & operator+=(const Vector2f & other);
 		const Vector2f & operator-=(const Vector2f & other);
 
-		float get_x() const  { return x; }
-		void set_x(float vx) { x = vx;   }
-		float get_y() const  { return y; }
-		void set_y(float vy) { y = vy;   }
+		float get_x() const { return _x; }
+		void set_x(float x) { _x = x;    }
+		float get_y() const { return _y; }
+		void set_y(float y) { _y = y;    }
 
 		float magnitude() const;
 		float square_magnitude() const;
@@ -43,7 +43,7 @@ class Vector2f {
 		Vector2f clamp(const Vector2f & min, const Vector2f & max) const;
 
 	private:
-		float x, y;
+		float _x, _y;
 };
 
 Vector2f operator*(float scale, const Vector2f & v);

@@ -20,7 +20,7 @@ class Sprite : public Drawable {
 		virtual ~Sprite();
 
 		Sprite() = delete;
-		Sprite & operator=(const Sprite &) = delete;
+		const Sprite & operator=(const Sprite &) = delete;
 
 		virtual void load();
 
@@ -28,7 +28,7 @@ class Sprite : public Drawable {
 		virtual void draw(const Viewport & viewport) const;
 		virtual void update(unsigned int ticks, World & world);
 
-		virtual bool is_alive() const { return alive;  }
+		virtual bool is_alive() const { return _alive;  }
 		virtual void revive();
 		virtual void kill();
 
@@ -39,51 +39,51 @@ class Sprite : public Drawable {
 
 		virtual const SDL_Surface * get_surface() const;
 
-		std::string get_direction() const         { return direction; }
-		void set_direction(const std::string & d) { direction = d;    }
+		std::string get_direction() const                 { return _direction;      }
+		void set_direction(const std::string & direction) { _direction = direction; }
 
 		std::string get_state() const;
-		void set_state(const std::string & s);
+		void set_state(const std::string & state);
 
 		std::string peek_state() const;
 		std::string pop_state();
 		void clear_state();
-		void push_state(const std::string & s);
+		void push_state(const std::string & state);
 
 		std::vector<std::string> get_full_state() const;
 
 		void observe(Sprite & observer);
 		void ignore(Sprite & observer);
 
-		const std::list<Sprite *> & get_observers() const { return observers; }
+		const CollisionStrategy & get_collision_strategy() const { return *_collision_strategy; }
+		const std::list<Sprite *> & get_observers() const { return _observers; }
 
 		void signal(const std::string & sig);
 		void send(const std::string & sig, Sprite & sprite);
 
 		void inject();
 
-	protected:
-		Script * script;
-
-		NoneCollisionStrategy none_strategy;
-		RectangularCollisionStrategy rectangular_strategy;
-		CircularCollisionStrategy circular_strategy;
-		PixelCollisionStrategy pixel_strategy;
-
-		CollisionStrategy * collision_strategy;
-		std::list<Sprite *> observers;
-
 	private:
-		std::unordered_map<std::string, Sheet *> sheets;
+		Script * _script;
 
-		std::string direction;
-		std::deque<std::pair<std::string, unsigned int>> state;
+		NoneCollisionStrategy _none_strategy;
+		RectangularCollisionStrategy _rectangular_strategy;
+		CircularCollisionStrategy _circular_strategy;
+		PixelCollisionStrategy _pixel_strategy;
 
-		bool alive;
+		CollisionStrategy * _collision_strategy;
+		std::list<Sprite *> _observers;
 
-		unsigned int observer_interval;
+		std::unordered_map<std::string, Sheet *> _sheets;
 
-		float frame_timer;
-		float observer_timer;
+		std::string _direction;
+		std::deque<std::pair<std::string, unsigned int>> _state;
+
+		bool _alive;
+
+		unsigned int _observer_interval;
+
+		float _frame_timer;
+		float _observer_timer;
 };
 #endif

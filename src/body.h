@@ -8,25 +8,25 @@ class World;
 
 class Body : public Sprite {
 	public:
-		Body(const std::string & name, bool f = false);
+		Body(const std::string & name, bool fixed = false);
 		Body(const Body & b);
 
 		const Body & operator=(const Body &) = delete;
 
 		virtual void update(unsigned int ticks, World & world);
 
-		float get_hardness() const   { return hardness; }
-		void set_hardness(float h)   { hardness = h; }
-		float get_elasticity() const { return elasticity; }
-		void set_elasticity(float e) { elasticity = e; }
+		float get_hardness() const        { return _hardness;     }
+		void set_hardness(float hardness) { _hardness = hardness; }
+		float get_elasticity() const          { return _elasticity;       }
+		void set_elasticity(float elasticity) { _elasticity = elasticity; }
 
-		bool is_fixed() const    { return fixed; }
-		void set_fixed(bool fix) { fixed = fix; }
+		bool is_fixed() const      { return _fixed;  }
+		void set_fixed(bool fixed) { _fixed = fixed; }
 
 	private:
-		float hardness;
-		float elasticity;
+		float _hardness;
+		float _elasticity;
 
-		bool fixed;
+		bool _fixed;
 };
 #endif

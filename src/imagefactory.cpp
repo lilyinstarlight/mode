@@ -12,30 +12,30 @@ ImageFactory & ImageFactory::get_instance() {
 	return image_factory;
 }
 
-ImageFactory::ImageFactory() : path("textures"), surfaces{}, textures{}, images{}, multi_surface{}, multi_texture{}, sheets{} {}
+ImageFactory::ImageFactory() : _path("textures"), _surfaces{}, _textures{}, _images{}, _multi_surface{}, _multi_texture{}, _sheets{} {}
 
 ImageFactory::~ImageFactory() {
 	// clean up after ourselves
-	for (std::pair<std::string, SDL_Surface *> surface : surfaces)
+	for (std::pair<std::string, SDL_Surface *> surface : _surfaces)
 		SDL_FreeSurface(surface.second);
 
-	for (std::pair<std::string, SDL_Texture *> texture : textures)
+	for (std::pair<std::string, SDL_Texture *> texture : _textures)
 		SDL_DestroyTexture(texture.second);
 
-	for (std::pair<std::string, Image *> image : images)
+	for (std::pair<std::string, Image *> image : _images)
 		delete image.second;
 
-	for (std::pair<std::string, std::vector<SDL_Surface *>> multi_surfaces : multi_surface) {
+	for (std::pair<std::string, std::vector<SDL_Surface *>> multi_surfaces : _multi_surface) {
 		for (SDL_Surface * surface : multi_surfaces.second)
 			SDL_FreeSurface(surface);
 	}
 
-	for (std::pair<std::string, std::vector<SDL_Texture *>> multi_textures : multi_texture) {
+	for (std::pair<std::string, std::vector<SDL_Texture *>> multi_textures : _multi_texture) {
 		for (SDL_Texture * texture : multi_textures.second)
 			SDL_DestroyTexture(texture);
 	}
 
-	for (std::pair<std::string, Sheet *> sheet : sheets) {
+	for (std::pair<std::string, Sheet *> sheet : _sheets) {
 		delete sheet.second;
 	}
 }
@@ -51,18 +51,18 @@ SDL_Surface * ImageFactory::crop(const SDL_Surface * surface, const SDL_Rect & r
 }
 
 Image * ImageFactory::get_image(const std::string & name) {
-	std::string filename = path + "/" + Spec::get_instance().get_str(name + "/file");
-
 	// get image if already made
-	std::unordered_map<std::string, Image *>::const_iterator pos = images.find(name);
-	if (pos != images.end())
+	std::unordered_map<std::string, Image *>::const_iterator pos = _images.find(name);
+	if (pos != _images.end())
 		return pos->second;
+
+	std::string filename = _path + "/" + Spec::get_instance().get_str(name + "/file");
 
 	// load image from file
 	SDL_Surface * surface = IMG_Load(filename.c_str());
 	if (!surface)
 		throw std::runtime_error("Failed to load image file " + filename);
-	surfaces[name] = surface;
+	_surfaces[name] = surface;
 
 	// load transparency color
 	bool transparency = Spec::get_instance().check(name + "/transparency/r");
@@ -75,28 +75,31 @@ Image * ImageFactory::get_image(const std::string & name) {
 
 	// create texture
 	SDL_Texture * texture = SDL_CreateTextureFromSurface(Context::get_instance().get_renderer(), surface);
+	if (!texture)
+		throw std::runtime_error("Failed to create texture for image file " + filename);
+	_textures[name] = texture;
 
 	// create and store image
 	Image * image = new Image(surface, texture);
-	images[name] = image;
+	_images[name] = image;
 
 	return image;
 }
 
 
 Sheet * ImageFactory::get_sheet(const std::string & name) {
-	std::string filename = path + "/" + Spec::get_instance().get_str(name + "/file");
-
 	// get sheet if already made
-	std::unordered_map<std::string, Sheet *>::const_iterator pos = sheets.find(name);
-	if (pos != sheets.end())
+	std::unordered_map<std::string, Sheet *>::const_iterator pos = _sheets.find(name);
+	if (pos != _sheets.end())
 		return pos->second;
+
+	std::string filename = _path + "/" + Spec::get_instance().get_str(name + "/file");
 
 	// load sheet from file
 	SDL_Surface * sheet_surface = IMG_Load(filename.c_str());
 	if (!sheet_surface)
 		throw std::runtime_error("Failed to load image file " + filename);
-	surfaces[name] = sheet_surface;
+	_surfaces[name] = sheet_surface;
 
 	// load transparency color
 	bool transparency = Spec::get_instance().check(name + "/transparency/r");
@@ -151,9 +154,9 @@ Sheet * ImageFactory::get_sheet(const std::string & name) {
 	Sheet * sheet = new Sheet(sheet_images, Spec::get_instance().get_int(name + "/frames"), Spec::get_instance().get_int(name + "/interval"), Spec::get_instance().get_bool(name + "/loop"));
 
 	// store surfaces, textures, and sheet
-	multi_surface[name] = sheet_surfaces;
-	multi_texture[name] = sheet_textures;
-	sheets[name] = sheet;
+	_multi_surface[name] = sheet_surfaces;
+	_multi_texture[name] = sheet_textures;
+	_sheets[name] = sheet;
 
 	return sheet;
 }

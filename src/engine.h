@@ -15,34 +15,34 @@
 
 class Engine {
 	public:
-		enum State {STOPPED, STOPPING, STARTING, RESTARTING, RUNNING};
+		enum class State { STOPPED, STOPPING, STARTING, RESTARTING, RUNNING };
 
 		static Engine & get_instance();
 
 		~Engine() {}
 
 		Engine(const Engine &) = delete;
-		Engine& operator=(const Engine &) = delete;
+		const Engine & operator=(const Engine &) = delete;
 
-		void load(const std::string & w);
+		void load(const std::string & world);
 
-		const World & get_world()       const { return *world;    }
-		World & get_world()                   { return *world;    } // caller can modify world
-		const Viewport & get_viewport() const { return *viewport; }
-		Viewport & get_viewport()             { return *viewport; } // caller can modify viewport
-		const HUD & get_hud()           const { return *hud;      }
-		HUD & get_hud()                       { return *hud;      } // caller can modify hud
-		const Console & get_console()   const { return *console;  }
-		Console & get_console()               { return *console;  } // caller can modify console
-		const Editor & get_editor()     const { return *editor;   }
-		Editor & get_editor()                 { return *editor;   } // caller can modify editor
+		const World & get_world() const       { return *_world;    }
+		World & get_world()                   { return *_world;    } // caller can modify world
+		const Viewport & get_viewport() const { return *_viewport; }
+		Viewport & get_viewport()             { return *_viewport; } // caller can modify viewport
+		const HUD & get_hud() const           { return *_hud;      }
+		HUD & get_hud()                       { return *_hud;      } // caller can modify hud
+		const Console & get_console() const   { return *_console;  }
+		Console & get_console()               { return *_console;  } // caller can modify console
+		const Editor & get_editor() const     { return *_editor;   }
+		Editor & get_editor()                 { return *_editor;   } // caller can modify editor
 
-		State get_state() const { return state; }
+		State get_state() const { return _state; }
 
 		void start();
-		void restart() { state = RESTARTING; }
-		void stop() { state = STOPPING; }
-		bool is_running() { return state == RUNNING; }
+		void restart() { _state = State::RESTARTING; }
+		void stop() { _state = State::STOPPING; }
+		bool is_running() { return _state == State::RUNNING; }
 
 	private:
 		Engine();
@@ -53,14 +53,14 @@ class Engine {
 		void draw() const;
 		void update(unsigned int ticks);
 
-		std::string loaded;
+		std::string _loaded;
 
-		World * world;
-		Viewport * viewport;
-		HUD * hud;
-		Console * console;
-		Editor * editor;
+		World * _world;
+		Viewport * _viewport;
+		HUD * _hud;
+		Console * _console;
+		Editor * _editor;
 
-		State state;
+		State _state;
 };
 #endif

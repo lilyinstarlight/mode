@@ -25,7 +25,7 @@ class Editor : public Drawable {
 		virtual void draw(const Viewport & viewport) const;
 		virtual void update(unsigned int, World &) {}
 
-		virtual int get_width() const { return 0; }
+		virtual int get_width() const  { return 0; }
 		virtual int get_height() const { return 0; }
 
 		virtual const SDL_Surface * get_surface() const { return nullptr; };
@@ -34,26 +34,30 @@ class Editor : public Drawable {
 		void open(Script & s);
 		void close();
 
-		bool is_open() const { return script; }
+		bool is_open() const { return _script; }
 
 	private:
 		void refresh();
 
-		Script * script;
-		std::string result;
+		Script * _script;
+		std::string _result;
 
-		std::string view;
-		std::deque<std::deque<char>> buffers;
-		std::deque<std::deque<char>>::iterator buffer;
-		std::deque<char>::iterator pos;
+		std::string _view;
+		std::deque<std::deque<char>> _buffers;
+		std::deque<std::deque<char>>::iterator _buffer;
+		std::deque<char>::iterator _pos;
 
-		int columns;
-		int rows;
+		int _columns;
+		int _rows;
 
-		int top;
+		int _top;
 
-		int padding_top;
-		int padding_left;
-		int padding_font;
+		std::string _font;
+		SDL_Color _color;
+		SDL_Color _box;
+
+		int _padding_top;
+		int _padding_left;
+		int _padding_font;
 };
 #endif

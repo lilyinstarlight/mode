@@ -15,14 +15,14 @@ class HUD : public Dialog {
 
 		virtual void update(unsigned int ticks, World & world);
 
-		const std::string & get_string() const { return str; }
-		void set_string(const std::string & s) { str = s;    }
+		const std::string & get_string() const   { return _str; }
+		void set_string(const std::string & str) { _str = str;  }
 
 	private:
 		std::string replace(const std::string & text, const std::string & find, const std::string & replace);
 
-		int initial;
+		int _initial;
 
-		std::string str;
+		std::string _str;
 };
 #endif

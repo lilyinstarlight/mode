@@ -11,7 +11,7 @@ class Yaml {
 		Yaml(const Yaml & yaml);
 		virtual ~Yaml() {}
 
-		Yaml & operator=(const Yaml &) = delete;
+		const Yaml & operator=(const Yaml &) = delete;
 
 		void load(const std::string & filename);
 
@@ -24,9 +24,6 @@ class Yaml {
 		float get_float(const std::string & key) const;
 		std::string get_str(const std::string & key) const;
 
-	private:
-		std::string path;
-
 	protected:
 		std::string parent(const std::string & yaml_path) const;
 		std::string leaf(const std::string & yaml_path) const;
@@ -36,9 +33,12 @@ class Yaml {
 		//       This is not a huge concern given this is an internal API.
 		YAML::Node resolve(const std::string & yaml_path) const;
 
-		std::string file;
+		std::string _file;
 
-		YAML::Node root;
+		YAML::Node _root;
+
+	private:
+		std::string _path;
 };
 
 class ModifiableYaml : public Yaml {
@@ -47,7 +47,7 @@ class ModifiableYaml : public Yaml {
 		ModifiableYaml(const ModifiableYaml & yaml);
 		virtual ~ModifiableYaml() {}
 
-		ModifiableYaml & operator=(const ModifiableYaml &) = delete;
+		const ModifiableYaml & operator=(const ModifiableYaml &) = delete;
 
 		void remove(const std::string & key);
 

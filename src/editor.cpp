@@ -10,12 +10,25 @@
 
 #include "editor.h"
 
-Editor::Editor() : Drawable("editor", "editor", Vector2f(0, 0), 0, Vector2f(0, 0), 1, 9002), script(nullptr), result(""), view(""), buffers{std::deque<char>{}}, buffer(buffers.begin()), pos(buffer->begin()), columns(Spec::get_instance().get_int("editor/columns")), rows(Spec::get_instance().get_int("editor/rows")), top(0), padding_top(4), padding_left(5), padding_font(2) {}
+Editor::Editor() : Drawable("editor", "editor", Vector2f(0, 0), 0, Vector2f(0, 0), 1, 9002),
+		_script(nullptr),
+		_result(""),
+		_view(""),
+		_buffers{std::deque<char>{}},
+		_buffer(_buffers.begin()),
+		_pos(_buffer->begin()),
+		_columns(Spec::get_instance().get_int("editor/columns")),
+		_rows(Spec::get_instance().get_int("editor/rows")),
+		_top(0),
+		_font(Spec::get_instance().check("editor/font") ? "editor/font" : "font/default"),
+		_color{static_cast<Uint8>(Spec::get_instance().get_int("editor/text/r")), static_cast<Uint8>(Spec::get_instance().get_int("editor/text/g")), static_cast<Uint8>(Spec::get_instance().get_int("editor/text/b")), static_cast<Uint8>(Spec::get_instance().get_int("editor/text/a"))},
+		_box{static_cast<Uint8>(Spec::get_instance().get_int("editor/box/r")), static_cast<Uint8>(Spec::get_instance().get_int("editor/box/g")), static_cast<Uint8>(Spec::get_instance().get_int("editor/box/b")), static_cast<Uint8>(Spec::get_instance().get_int("editor/box/a"))},
+		_padding_top(4), _padding_left(5), _padding_font(2) {}
 
-Editor::Editor(const Editor & editor) : Drawable(editor), script(editor.script), result(editor.result), view(editor.view), buffers(editor.buffers), buffer(editor.buffer), pos(editor.pos), columns(editor.columns), rows(editor.rows), top(editor.top), padding_top(4), padding_left(5), padding_font(2) {}
+Editor::Editor(const Editor & editor) : Drawable(editor), _script(editor._script), _result(editor._result), _view(editor._view), _buffers(editor._buffers), _buffer(editor._buffer), _pos(editor._pos), _columns(editor._columns), _rows(editor._rows), _top(editor._top), _font(editor._font), _color(editor._color), _box(editor._box), _padding_top(editor._padding_top), _padding_left(editor._padding_left), _padding_font(editor._padding_font) {}
 
 void Editor::dispatch(const SDL_Event & event) {
-	if (script) {
+	if (_script) {
 		// grab keyboard focus
 		if (!Input::get_instance().check("editor")) {
 			Input::get_instance().grab("editor");
@@ -24,46 +37,46 @@ void Editor::dispatch(const SDL_Event & event) {
 
 		if (event.type == SDL_KEYDOWN) {
 			if (event.key.keysym.sym == SDLK_BACKSPACE) {
-				if (pos == buffer->begin()) {
-					if (buffer != buffers.begin()) {
-						pos = (buffer - 1)->insert((buffer - 1)->end(), buffer->begin(), buffer->end());
-						buffer = buffers.erase(buffer) - 1;
+				if (_pos == _buffer->begin()) {
+					if (_buffer != _buffers.begin()) {
+						_pos = (_buffer - 1)->insert((_buffer - 1)->end(), _buffer->begin(), _buffer->end());
+						_buffer = _buffers.erase(_buffer) - 1;
 					}
 				}
 				else {
-					pos = buffer->erase(pos - 1);
+					_pos = _buffer->erase(_pos - 1);
 				}
 			}
 			else if (event.key.keysym.sym == SDLK_RETURN) {
-				std::deque<char> line(pos, buffer->end());
-				buffer->erase(pos, buffer->end());
+				std::deque<char> line(_pos, _buffer->end());
+				_buffer->erase(_pos, _buffer->end());
 
-				buffer = buffers.insert(buffer + 1, line);
-				pos = buffer->begin();
+				_buffer = _buffers.insert(_buffer + 1, line);
+				_pos = _buffer->begin();
 			}
 			else if (event.key.keysym.sym == SDLK_TAB) {
-				pos = buffer->insert(pos, '\t') + 1;
+				_pos = _buffer->insert(_pos, '\t') + 1;
 			}
 			else if (event.key.keysym.sym == SDLK_LEFT) {
-				if (pos != buffer->begin())
-					--pos;
+				if (_pos != _buffer->begin())
+					--_pos;
 			}
 			else if (event.key.keysym.sym == SDLK_UP) {
-				if (buffer != buffers.begin()) {
-					unsigned int p = pos - buffer->begin();
-					--buffer;
-					pos = buffer->begin() + Util::min(p, buffer->size());
+				if (_buffer != _buffers.begin()) {
+					unsigned int p = _pos - _buffer->begin();
+					--_buffer;
+					_pos = _buffer->begin() + Util::min(p, _buffer->size());
 				}
 			}
 			else if (event.key.keysym.sym == SDLK_RIGHT) {
-				if (pos != buffer->end())
-					++pos;
+				if (_pos != _buffer->end())
+					++_pos;
 			}
 			else if (event.key.keysym.sym == SDLK_DOWN) {
-				if (buffer != buffers.end() - 1) {
-					unsigned int p = pos - buffer->begin();
-					++buffer;
-					pos = buffer->begin() + Util::min(p, buffer->size());
+				if (_buffer != _buffers.end() - 1) {
+					unsigned int p = _pos - _buffer->begin();
+					++_buffer;
+					_pos = _buffer->begin() + Util::min(p, _buffer->size());
 				}
 			}
 
@@ -72,7 +85,7 @@ void Editor::dispatch(const SDL_Event & event) {
 		else if (event.type == SDL_TEXTINPUT) {
 			// record text
 			std::string text(event.text.text);
-			pos = buffer->insert(pos, text.begin(), text.end()) + text.length();
+			_pos = _buffer->insert(_pos, text.begin(), text.end()) + text.length();
 
 			refresh();
 		}
@@ -87,46 +100,45 @@ void Editor::dispatch(const SDL_Event & event) {
 }
 
 void Editor::draw(const Viewport & viewport) const {
-	if (script) {
+	if (_script) {
 		// drawing rectable
-		SDL_Rect rect = {padding_left, padding_top, viewport.get_width() - padding_left*2, viewport.get_height() - padding_top*2};
+		SDL_Rect rect = {_padding_left, _padding_top, viewport.get_width() - _padding_left*2, viewport.get_height() - _padding_top*2};
 
 		// draw box
-		SDL_SetRenderDrawColor(Context::get_instance().get_renderer(), Spec::get_instance().get_int("editor/box/r"), Spec::get_instance().get_int("editor/box/g"), Spec::get_instance().get_int("editor/box/b"), Spec::get_instance().get_int("editor/box/a"));
+		SDL_SetRenderDrawColor(Context::get_instance().get_renderer(), _box.r, _box.g, _box.b, _box.a);
 		SDL_RenderFillRect(Context::get_instance().get_renderer(), &rect);
 
 		// draw text
-		SDL_Color color = {static_cast<Uint8>(Spec::get_instance().get_int("editor/text/r")), static_cast<Uint8>(Spec::get_instance().get_int("editor/text/g")), static_cast<Uint8>(Spec::get_instance().get_int("editor/text/b")), 255};
-		Text::get_instance().write(Context::get_instance().get_renderer(), Spec::get_instance().check("editor/font") ? "editor/font" : "font/default", view, rect.x + padding_font, rect.y + padding_font, 0, color);
+		Text::get_instance().write(Context::get_instance().get_renderer(), _font, _view, rect.x + _padding_font, rect.y + _padding_font, 0, _color);
 	}
 }
 
 void Editor::open(Script & s) {
 	Clock::get_instance().pause();
 
-	script = &s;
+	_script = &s;
 
-	const std::string & text = script->get_script();
+	const std::string & text = _script->get_script();
 	std::string::const_iterator chr = text.begin();
 
-	buffers.clear();
+	_buffers.clear();
 
-	buffers.emplace_back();
-	buffer = buffers.end() - 1;
+	_buffers.emplace_back();
+	_buffer = _buffers.end() - 1;
 	while(chr != text.end()) {
 		if (*chr == '\n') {
-			buffers.emplace_back();
-			buffer = buffers.end() - 1;
+			_buffers.emplace_back();
+			_buffer = _buffers.end() - 1;
 		}
 		else {
-			buffer->push_back(*chr);
+			_buffer->push_back(*chr);
 		}
 
 		++chr;
 	}
 
-	buffer = buffers.begin();
-	pos = buffer->begin();
+	_buffer = _buffers.begin();
+	_pos = _buffer->begin();
 
 	refresh();
 }
@@ -134,10 +146,10 @@ void Editor::open(Script & s) {
 void Editor::close() {
 	std::stringstream ss;
 
-	std::deque<std::deque<char>>::iterator buf = buffers.begin();
+	std::deque<std::deque<char>>::iterator buf = _buffers.begin();
 	std::deque<char>::iterator iter = buf->begin();
 
-	while (buf != buffers.end()) {
+	while (buf != _buffers.end()) {
 		if (iter == buf->end()) {
 			ss << "\n";
 
@@ -152,17 +164,17 @@ void Editor::close() {
 	}
 
 	try {
-		script->set_script(ss.str());
+		_script->set_script(ss.str());
 	}
 	catch (std::runtime_error & err) {
 		//TODO: actually put this error in the interface
 		//TODO: what about errors caught later? - should editor automatically be shown, enemy automatically killed, or enemy basically paused until edited again (any way showing error hopefully)?
-		result = err.what();
+		_result = err.what();
 
 		return;
 	}
 
-	script = nullptr;
+	_script = nullptr;
 
 	Clock::get_instance().start();
 }
@@ -170,20 +182,20 @@ void Editor::close() {
 void Editor::refresh() {
 	std::stringstream ss;
 
-	top = Util::min(Util::max(buffer - buffers.begin() - rows/2, 0), Util::max(buffers.size() - rows, 0));
+	_top = Util::min(Util::max(_buffer - _buffers.begin() - _rows/2, 0), Util::max(_buffers.size() - _rows, 0));
 
-	std::deque<std::deque<char>>::iterator buf = buffers.begin() + top;
+	std::deque<std::deque<char>>::iterator buf = _buffers.begin() + _top;
 	std::deque<char>::iterator iter = buf->begin();
 
 	int col = 0;
 	int row = 0;
 
-	while (buf != buffers.end()) {
-		if (row > rows)
+	while (buf != _buffers.end()) {
+		if (row > _rows)
 			break;
 
 		if (iter == buf->end()) {
-			if (buf == buffer && iter == pos)
+			if (buf == _buffer && iter == _pos)
 				ss << "_\n";
 			else
 				ss << " \n";
@@ -199,20 +211,20 @@ void Editor::refresh() {
 			++col;
 		}
 
-		if (col > columns) {
+		if (col > _columns) {
 			ss << "\n▶";
 			col = 0;
 			++row;
 		}
 
 		if (*iter == '\t') {
-			if (buf == buffer && iter == pos)
+			if (buf == _buffer && iter == _pos)
 				ss << "_ ";
 			else
 				ss << "  ";
 		}
 		else {
-			if (buf == buffer && iter == pos)
+			if (buf == _buffer && iter == _pos)
 				ss << "_";
 			else
 				ss << *iter;
@@ -221,5 +233,5 @@ void Editor::refresh() {
 		++iter;
 	}
 
-	view = ss.str();
+	_view = ss.str();
 }

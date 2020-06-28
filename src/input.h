@@ -20,25 +20,25 @@ class Input {
 
 		void grab(const std::string & name) {
 			// add to front of list
-			list.push_front(name);
+			_list.push_front(name);
 		}
 
 		void release(const std::string & name) {
 			// remove all entries from list
-			list.remove(name);
+			_list.remove(name);
 		}
 
 		bool check(const std::string & name) const {
 			// check if at front of list
-			return list.front() == name;
+			return _list.front() == name;
 		}
 
 		const std::string & get() const {
-			return list.front();
+			return _list.front();
 		}
 
 		std::vector<std::string> get_list() const {
-			return std::vector<std::string>(list.begin(), list.end());
+			return std::vector<std::string>(_list.begin(), _list.end());
 		}
 
 		bool get_key(const SDL_Scancode & key) const {
@@ -46,8 +46,8 @@ class Input {
 		}
 
 	private:
-		Input() : list{} {}
+		Input() : _list{} {}
 
-		std::list<std::string> list;
+		std::list<std::string> _list;
 };
 #endif

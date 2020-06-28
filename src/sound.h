@@ -18,17 +18,17 @@ class Sound {
 		void reload();
 
 		void play(const std::string & name, int loops = 0);
-		std::string check() const { return active; }
+		std::string check() const { return _active; }
 
 	private:
 		Sound();
 
-		std::string path;
+		std::string _path;
 
-		std::string active;
-		int active_channel;
-		std::unordered_map<std::string, Mix_Chunk *> chunks;
+		std::string _active;
+		int _active_channel;
+		std::unordered_map<std::string, Mix_Chunk *> _chunks;
 
-		int fade;
+		int _fade;
 };
 #endif

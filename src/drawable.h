@@ -11,10 +11,10 @@ class World;
 
 class Drawable {
 	public:
-		Drawable(const std::string & name, const std::string & type, const Vector2f & position, float rotation, const Vector2f & velocity, float scale, int index) : name(name), type(type), position(position), rotation(rotation), velocity(velocity), scale(scale), index(index) {};
-		Drawable(const Drawable & d) : name(d.name), type(d.type), position(d.position), rotation(d.rotation), velocity(d.velocity), scale(d.scale), index(d.index) {};
+		Drawable(const std::string & name, const std::string & type, const Vector2f & position, float rotation, const Vector2f & velocity, float scale, int index) : _name(name), _type(type), _position(position), _rotation(rotation), _velocity(velocity), _scale(scale), _index(index) {};
+		Drawable(const Drawable & d) : _name(d._name), _type(d._type), _position(d._position), _rotation(d._rotation), _velocity(d._velocity), _scale(d._scale), _index(d._index) {};
 
-		Drawable & operator=(const Drawable &) = delete;
+		const Drawable & operator=(const Drawable &) = delete;
 
 		virtual ~Drawable() {}
 
@@ -30,47 +30,47 @@ class Drawable {
 		virtual const SDL_Surface * get_surface() const = 0;
 		virtual const Image * get_image() const = 0;
 
-		const std::string & get_name() const { return name; }
-		void set_name(const std::string & n) { name = n;    }
+		const std::string & get_name() const    { return _name; }
+		void set_name(const std::string & name) { _name = name; }
 
-		const std::string & get_type() const { return type; }
-		void set_type(const std::string & t) { type = t;    }
+		const std::string & get_type() const    { return _type; }
+		void set_type(const std::string & type) { _type = type; }
 
-		const Vector2f & get_position() const    { return position; }
-		void  set_position(const Vector2f & pos) { position = pos;  }
+		const Vector2f & get_position() const        { return _position;     }
+		void set_position(const Vector2f & position) { _position = position; }
 
-		float get_x() const  { return position[0]; }
-		void  set_x(float x) { position[0] = x;    }
+		float get_x() const  { return _position[0]; }
+		void  set_x(float x) { _position[0] = x;    }
 
-		float get_y() const  { return position[1]; }
-		void  set_y(float y) { position[1] = y;    }
+		float get_y() const  { return _position[1]; }
+		void  set_y(float y) { _position[1] = y;    }
 
-		float get_rotation() const    { return rotation; }
-		void  set_rotation(float rot) { rotation = rot;  }
+		float get_rotation() const         { return _rotation;     }
+		void  set_rotation(float rotation) { _rotation = rotation; }
 
-		const Vector2f & get_velocity() const    { return velocity; }
-		void  set_velocity(const Vector2f & vel) { velocity = vel;  }
+		const Vector2f & get_velocity() const         { return _velocity;     }
+		void  set_velocity(const Vector2f & velocity) { _velocity = velocity; }
 
-		float get_velocity_x() const      { return velocity[0];  }
-		void  set_velocity_x(float vel_x) { velocity[0] = vel_x; }
+		float get_velocity_x() const   { return _velocity[0]; }
+		void  set_velocity_x(float vx) { _velocity[0] = vx;   }
 
-		float get_velocity_y() const      { return velocity[1];  }
-		void  set_velocity_y(float vel_y) { velocity[1] = vel_y; }
+		float get_velocity_y() const   { return _velocity[1]; }
+		void  set_velocity_y(float vy) { _velocity[1] = vy;   }
 
-		float get_scale() const  { return scale; }
-		void  set_scale(float s) { scale = s;    }
+		float get_scale() const      { return _scale;  }
+		void  set_scale(float scale) { _scale = scale; }
 
-		int   get_index() const  { return index; }
-		void  set_index(float i) { index = i;    }
+		int   get_index() const      { return _index;  }
+		void  set_index(float index) { _index = index; }
 
 	private:
-		std::string name;
-		std::string type;
-		Vector2f position;
-		float rotation;
-		Vector2f velocity;
-		float scale;
-		int index;
+		std::string _name;
+		std::string _type;
+		Vector2f _position;
+		float _rotation;
+		Vector2f _velocity;
+		float _scale;
+		int _index;
 };
 
 class DrawablePointerCompare {

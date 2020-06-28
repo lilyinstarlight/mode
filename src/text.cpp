@@ -12,13 +12,13 @@ Text & Text::get_instance() {
 
 Text::~Text() {
 	// clean up after ourselves
-	for (std::pair<std::string, TTF_Font *> font : fonts)
+	for (std::pair<std::string, TTF_Font *> font : _fonts)
 		TTF_CloseFont(font.second);
 
 	TTF_Quit();
 }
 
-Text::Text() : path("fonts"), fonts{} {
+Text::Text() : _path("fonts"), _fonts{} {
 	// init TTF
 	if (TTF_Init() < 0)
 		throw std::runtime_error("Failed to initialize TTF");
@@ -31,14 +31,14 @@ void Text::write(SDL_Renderer * renderer, const std::string & name, const std::s
 }
 
 SDL_Surface * Text::write(const std::string & name, const std::string & text, SDL_Color color) {
-	std::string filename = path + "/" + Spec::get_instance().get_str(name + "/file");
+	std::unordered_map<std::string, TTF_Font *>::const_iterator pos = _fonts.find(name);
+	if (pos == _fonts.end()) {
+		std::string filename = _path + "/" + Spec::get_instance().get_str(name + "/file");
 
-	std::unordered_map<std::string, TTF_Font *>::const_iterator pos = fonts.find(name);
-	if (pos == fonts.end()) {
 		TTF_Font * font = TTF_OpenFont(filename.c_str(), Spec::get_instance().get_int(name + "/size"));
 		if (!font)
 			throw std::runtime_error("Failed to load font file " + filename);
-		fonts[name] = font;
+		_fonts[name] = font;
 	}
 
 	std::vector<SDL_Surface *> surfaces;
@@ -46,7 +46,7 @@ SDL_Surface * Text::write(const std::string & name, const std::string & text, SD
 	int height = 0;
 
 	for (std::string & line : split(text, '\n')) {
-		surfaces.push_back(TTF_RenderUTF8_Blended(fonts[name], line.c_str(), color));
+		surfaces.push_back(TTF_RenderUTF8_Blended(_fonts[name], line.c_str(), color));
 
 		SDL_SetSurfaceAlphaMod(surfaces.back(), color.a);
 

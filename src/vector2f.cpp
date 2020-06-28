@@ -5,35 +5,35 @@
 
 #include "vector2f.h"
 
-Vector2f::Vector2f(float vx, float vy) : x(vx), y(vy) {}
+Vector2f::Vector2f(float x, float y) : _x(x), _y(y) {}
 
-Vector2f::Vector2f(const Vector2f & v) : x(v.x), y(v.y) {}
+Vector2f::Vector2f(const Vector2f & v) : _x(v._x), _y(v._y) {}
 
 Vector2f & Vector2f::operator=(const Vector2f & v) {
 	if (&v == this)
 		return *this;
 
-	x = v.x;
-	y = v.y;
+	_x = v._x;
+	_y = v._y;
 
 	return *this;
 }
 
 bool Vector2f::operator==(const Vector2f & other) const {
-	return x == other.x && y == other.y;
+	return _x == other._x && _y == other._y;
 }
 
 bool Vector2f::operator!=(const Vector2f & other) const {
-	return x != other.x || y != other.y;
+	return _x != other._x || _y != other._y;
 }
 
 float & Vector2f::operator[](int index) {
 	switch(index) {
 		case 0:
-			return x;
+			return _x;
 
 		case 1:
-			return y;
+			return _y;
 
 		default:
 			throw std::out_of_range("Index " + std::to_string(index) + " out of range");
@@ -43,10 +43,10 @@ float & Vector2f::operator[](int index) {
 float Vector2f::operator[](int index) const {
 	switch(index) {
 		case 0:
-			return x;
+			return _x;
 
 		case 1:
-			return y;
+			return _y;
 
 		default:
 			throw std::out_of_range("Index " + std::to_string(index) + " out of range");
@@ -54,31 +54,31 @@ float Vector2f::operator[](int index) const {
 }
 
 Vector2f Vector2f::operator*(float scale) const {
-	return Vector2f(x*scale, y*scale);
+	return Vector2f(_x*scale, _y*scale);
 }
 
 Vector2f Vector2f::operator/(float scale) const {
 	if (scale < Vector2f::EPSILON && scale > -Vector2f::EPSILON)
 		throw std::runtime_error("Division by near zero");
 
-	return Vector2f(x/scale, y/scale);
+	return Vector2f(_x/scale, _y/scale);
 }
 
 Vector2f Vector2f::operator+(const Vector2f & other) const {
-	return Vector2f(x + other.x, y + other.y);
+	return Vector2f(_x + other._x, _y + other._y);
 }
 
 Vector2f Vector2f::operator-(const Vector2f & other) const {
-	return Vector2f(x - other.x, y - other.y);
+	return Vector2f(_x - other._x, _y - other._y);
 }
 
 Vector2f Vector2f::operator-() const {
-	return Vector2f(-x, -y);
+	return Vector2f(-_x, -_y);
 }
 
 const Vector2f & Vector2f::operator*=(float scale) {
-	x *= scale;
-	y *= scale;
+	_x *= scale;
+	_y *= scale;
 
 	return *this;
 }
@@ -87,63 +87,63 @@ const Vector2f & Vector2f::operator/=(float scale) {
 	if (scale < Vector2f::EPSILON && scale > -Vector2f::EPSILON)
 		throw std::runtime_error("Division by near zero");
 
-	x /= scale;
-	y /= scale;
+	_x /= scale;
+	_y /= scale;
 
 	return *this;
 }
 
 const Vector2f & Vector2f::operator+=(const Vector2f & other) {
-	x += other.x;
-	y += other.y;
+	_x += other._x;
+	_y += other._y;
 
 	return *this;
 }
 
 const Vector2f & Vector2f::operator-=(const Vector2f & other) {
-	x -= other.x;
-	y -= other.y;
+	_x -= other._x;
+	_y -= other._y;
 
 	return *this;
 }
 
 float Vector2f::magnitude() const {
-	return sqrt(x*x + y*y);
+	return sqrt(_x*_x + _y*_y);
 }
 
 float Vector2f::square_magnitude() const {
-	return x*x + y*y;
+	return _x*_x + _y*_y;
 }
 
 Vector2f Vector2f::normalize() const {
-	float m = std::sqrt(x*x + y*y);
+	float m = std::sqrt(_x*_x + _y*_y);
 
 	if (m < Vector2f::EPSILON && m > -Vector2f::EPSILON)
 		throw std::runtime_error("Point too close in Vector2f::normalize");
 
-	return Vector2f(x/m, y/m);
+	return Vector2f(_x/m, _y/m);
 }
 
 float Vector2f::dot(const Vector2f &other) const {
-	return x*other.x + y*other.y ;
+	return _x*other._x + _y*other._y ;
 }
 
 Vector2f Vector2f::clamp(const Vector2f & min, const Vector2f & max) const {
 	Vector2f clamped;
 
-	if (x < min.x)
-		clamped.x = min.x;
-	else if (x > max.x)
-		clamped.x = max.x;
+	if (_x < min._x)
+		clamped._x = min._x;
+	else if (_x > max._x)
+		clamped._x = max._x;
 	else
-		clamped.x = x;
+		clamped._x = _x;
 
-	if (y < min.y)
-		clamped.y = min.y;
-	else if (y > max.y)
-		clamped.y = max.y;
+	if (_y < min._y)
+		clamped._y = min._y;
+	else if (_y > max._y)
+		clamped._y = max._y;
 	else
-		clamped.y = y;
+		clamped._y = _y;
 
 	return clamped;
 }

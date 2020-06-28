@@ -26,33 +26,33 @@ class Console : public Drawable {
 		virtual int get_width() const { return 0; }
 		virtual int get_height() const { return 0; }
 
-		virtual const SDL_Surface * get_surface() const { return text; };
+		virtual const SDL_Surface * get_surface() const { return _text; };
 		virtual const Image * get_image() const { return nullptr; };
 
-		void open()  { opened = true;  }
-		void close() { opened = false; }
-		void toggle() { opened = !opened; }
+		void open()   { _opened = true;     }
+		void close()  { _opened = false;    }
+		void toggle() { _opened = !_opened; }
 
-		bool is_open() const { return opened; }
+		bool is_open() const { return _opened; }
 
 	private:
-		Script * script;
+		Script * _script;
 
-		bool opened;
-		std::string command;
-		int status;
-		std::string result;
-		std::string prompt;
+		bool _opened;
+		std::string _command;
+		int _status;
+		std::string _result;
+		std::string _prompt;
 
-		std::string font;
-		SDL_Color color;
-		SDL_Color box;
+		std::string _font;
+		SDL_Color _color;
+		SDL_Color _box;
 
-		SDL_Surface * text;
-		SDL_Rect size;
+		SDL_Surface * _text;
+		SDL_Rect _size;
 
-		int padding_bottom;
-		int padding_left;
-		int padding_text;
+		int _padding_bottom;
+		int _padding_left;
+		int _padding_text;
 };
 #endif
