@@ -34,7 +34,7 @@ class Editor : public Drawable {
 		void open(Script & s);
 		void close();
 
-		bool is_open() const { return _script; }
+		bool is_open() const { return static_cast<bool>(_script); }
 
 	private:
 		void refresh();

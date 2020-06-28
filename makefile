@@ -72,6 +72,6 @@ distclean: clean
 
 .PHONY: all clean dist distclean
 
-ifneq ($(filter-out clean distclean,$(MAKECMDGOALS)),)
+ifeq ($(filter clean distclean,$(MAKECMDGOALS)),)
 -include $(DEP)
 endif

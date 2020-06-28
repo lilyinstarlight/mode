@@ -30,7 +30,7 @@ Context::Context() : _icon_path("textures"), _window(nullptr), _renderer(nullptr
 		throw std::runtime_error("Failed to make renderer");
 
 	// add alpha blending
-	if(SDL_SetRenderDrawBlendMode(_renderer, SDL_BLENDMODE_BLEND) < 0)
+	if (SDL_SetRenderDrawBlendMode(_renderer, SDL_BLENDMODE_BLEND) < 0)
 		throw std::runtime_error("Failed to enable alpha blending: " + std::string(SDL_GetError()));
 }
 

@@ -125,7 +125,7 @@ void Editor::open(Script & s) {
 
 	_buffers.emplace_back();
 	_buffer = _buffers.end() - 1;
-	while(chr != text.end()) {
+	while (chr != text.end()) {
 		if (*chr == '\n') {
 			_buffers.emplace_back();
 			_buffer = _buffers.end() - 1;
