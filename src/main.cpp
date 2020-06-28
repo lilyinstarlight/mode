@@ -39,7 +39,7 @@ int main(int argc, char * argv[]) {
 	try {
 #endif
 		// load level 1 world
-		Engine::get_instance().load("lvl1");
+		Engine::get_instance().load("game");
 
 		// run engine
 		Engine::get_instance().start();

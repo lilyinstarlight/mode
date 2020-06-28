@@ -4,3 +4,444 @@ icon: mode.png
 view:
   width: 800
   height: 600
+
+world:
+  width: 1600
+  height: 600
+
+  far: 300
+
+font:
+  default:
+    file: PressStart2P.ttf
+    size: 16
+
+#sound:
+#  initial:
+#    file: theme.wav
+
+console:
+  box: {r: 20, g: 20, b: 20, a: 200}
+  text: {r: 0, g: 255, b: 0, a: 255}
+
+editor:
+  columns: 48
+  rows: 33
+
+  box: {r: 20, g: 20, b: 20, a: 200}
+  text: {r: 0, g: 255, b: 0, a: 255}
+
+hud:
+  type: hud
+  initial: 5000
+
+  position: {x: 20, y: 20}
+  rotation: 0
+  border: {r: 20, g: 20, b: 20, a: 0, width: 0}
+
+  box: {r: 20, g: 20, b: 20, a: 200}
+  text: {r: 0, g: 255, b: 0, a: 255}
+
+  str: |
+    +------------------------+
+    |        .:mode:.        |
+    |    A game where you    |
+    |    write the rules.    |
+    |                        |
+    |    WASD to move        |
+    |    SPACE to shoot      |
+    |    H to toggle HUD     |
+    |    R to restart        |
+    |    Q to quit           |
+    |                        |
+    |    ESC to exit         |
+    |    TAB to pause        |
+    |    ` to open console   |
+    |                        |
+    |        FPS: {fps}      |
+    |        HP:  {hp}       |
+    +------------------------+
+
+win:
+  type: dialog
+
+  position: {x: 20, y: 550}
+  rotation: 0
+
+  border: {r: 20, g: 20, b: 20, a: 200, width: 0}
+
+  box: {r: 20, g: 20, b: 20, a: 200}
+  text: {r: 0, g: 255, b: 0, a: 255}
+
+  str: |
+    +----------+
+    | You Win! |
+    +----------+
+
+sky:
+  type: background
+  index: 0
+
+  factor: 0
+  tile: both
+
+  position: {x: 0, y: 0}
+
+  file: sky.png
+
+clouds:
+  type: background
+  index: 10
+
+  factor: 0.1
+  tile: x
+
+  position: {x: 0, y: 0}
+
+  file: clouds.png
+
+city:
+  type: background
+  index: 20
+
+  factor: 0.5
+  tile: x
+
+  position: {x: 0, y: 0}
+
+  file: city.png
+
+ground:
+  type: platform
+  index: 30
+
+  hardness: 10
+  elasticity: 10
+
+  width: 1600
+  height: 50
+
+  direction: up
+
+  state: still
+
+  position: {x: 0, y: 550}
+  rotation: 0
+  velocity: {x: 0, y: 0}
+
+  scale: 1
+
+  tile: x
+
+  sheets:
+    still:
+      up:
+        file: ground.png
+
+        frames: 1
+        interval: 100
+
+        loop: true
+
+  collision: rectangular
+
+platform:
+  type: platform
+  index: 30
+
+  hardness: 10
+  elasticity: 10
+
+  width: 600
+  height: 50
+
+  direction: up
+
+  state: still
+
+  position: {x: 400, y: 400}
+  rotation: 0
+  velocity: {x: 0, y: 0}
+
+  scale: 1
+
+  tile: x
+
+  sheets:
+    still:
+      up:
+        file: ground.png
+
+        frames: 1
+        interval: 100
+
+        loop: true
+
+  collision: rectangular
+
+feature:
+  type: body
+  index: 50
+
+  hardness: 1
+  elasticity: 10
+
+  fixed: false
+
+  direction: left
+
+  state: fly
+
+  position: {x: 600, y: 250}
+  rotation: 0
+  velocity: {x: 0, y: 0}
+
+  scale: 5
+
+  sheets:
+    fly:
+      left:
+        file: feature.fly.left.png
+
+        frames: 4
+        interval: 100
+
+        loop: true
+
+      right:
+        file: feature.fly.right.png
+
+        frames: 4
+        interval: 100
+
+        loop: true
+
+  collision: none
+
+slime:
+  type: body
+  index: 51
+
+  hardness: 1
+  elasticity: 10
+
+  fixed: false
+
+  direction: left
+
+  state: idle
+
+  position: {x: 600, y: 300}
+  rotation: 0
+  velocity: {x: 0, y: 0}
+
+  scale: 5
+
+  sheets:
+    idle:
+      left:
+        file: slime.idle.left.png
+
+        frames: 28
+        interval: 100
+
+        loop: true
+
+      right:
+        file: slime.idle.right.png
+
+        frames: 28
+        interval: 100
+
+        loop: true
+
+  collision: none
+
+glider:
+  type: projectile
+  index: 101
+
+  direction: left
+  state: shoot
+
+  max: 300
+
+  position: {x: 600, y: 400}
+  rotation: 0
+  velocity: {x: 0, y: 0}
+
+  scale: 5
+
+  sheets:
+    revive:
+      left:
+        file: glider.shoot.left.png
+
+        frames: 4
+        interval: 100
+
+        loop: true
+
+      right:
+        file: glider.shoot.right.png
+
+        frames: 4
+        interval: 100
+
+        loop: true
+
+    kill:
+      left:
+        file: glider.shoot.left.png
+
+        frames: 4
+        interval: 100
+
+        loop: true
+
+      right:
+        file: glider.shoot.right.png
+
+        frames: 4
+        interval: 100
+
+        loop: true
+
+    shoot:
+      left:
+        file: glider.shoot.left.png
+
+        frames: 4
+        interval: 100
+
+        loop: true
+
+      right:
+        file: glider.shoot.right.png
+
+        frames: 4
+        interval: 100
+
+        loop: true
+
+  collision: pixel
+
+  sound:
+    revive:
+      file: shoot.wav
+
+player:
+  type: player
+  index: 100
+
+  hardness: 1
+  elasticity: 10
+
+  direction: right
+  state: idle
+
+  hp: 1
+
+  speed: {left: 140, right: 140, up: 580, down: 80}
+
+  projectile:
+    name: glider
+    initial: 5
+
+    offset: {x: -20, y: 0}
+
+    speed: 200
+
+  position: {x: 100, y: 250}
+  rotation: 0
+  velocity: {x: 0, y: 0}
+
+  scale: 5
+
+  sheets:
+    idle:
+      left:
+        file: hero.idle.left.png
+
+        frames: 52
+        interval: 100
+
+        loop: true
+
+      right:
+        file: hero.idle.right.png
+
+        frames: 52
+        interval: 100
+
+        loop: true
+
+    kill:
+      left:
+        file: hero.kill.left.png
+
+        frames: 4
+        interval: 100
+
+        loop: true
+
+      right:
+        file: hero.kill.right.png
+
+        frames: 4
+        interval: 100
+
+        loop: true
+
+    run:
+      left:
+        file: hero.run.left.png
+
+        frames: 4
+        interval: 100
+
+        loop: true
+
+      right:
+        file: hero.run.right.png
+
+        frames: 4
+        interval: 100
+
+        loop: true
+
+    land:
+      left:
+        file: hero.land.left.png
+
+        frames: 7
+        interval: 100
+
+        loop: false
+
+      right:
+        file: hero.land.right.png
+
+        frames: 7
+        interval: 100
+
+        loop: false
+
+    jump:
+      left:
+        file: hero.jump.left.png
+
+        frames: 5
+        interval: 100
+
+        loop: false
+
+      right:
+        file: hero.jump.right.png
+
+        frames: 5
+        interval: 100
+
+        loop: false
+
+  collision: pixel
