@@ -146,8 +146,7 @@ case "$1" in
       --disable-nas
       --disable-sndio
       --disable-fusionsound
-      --enable-libsamplerate
-      --disable-libsamplerate-shared
+      --disable-libsamplerate
       --enable-video-cocoa
       --enable-video-metal
       --enable-render-metal
@@ -221,8 +220,7 @@ case "$1" in
       --disable-nas
       --disable-sndio
       --disable-fusionsound
-      --enable-libsamplerate
-      --disable-libsamplerate-shared
+      --disable-libsamplerate
       --enable-directx
       --enable-wasapi
       --enable-render-d3d

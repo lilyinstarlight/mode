@@ -23,7 +23,7 @@ end_group
 start_group 'Install dependencies'
 set -x
 
-brew install autoconf automake make libsamplerate libogg libvorbis mpg123 freetype
+brew install autoconf automake make libogg libvorbis mpg123 freetype
 
 .ci/sdl.sh macos
 
