@@ -151,7 +151,7 @@ cp "$BUILD_DIR"/"$NAME"/dist/"$NAME".exe "$IMAGE_DIR"/bin/"$NAME".exe
 
 { set +x; } 2>/dev/null
 
-for lib in $(ldd "$IMAGE_DIR"/bin/"$NAME".exe | grep -E '=>\s*/' | awk '{ print $3 }' | sed -e 's#^/##' | grep '^mingw64/'); do
+for lib in $(ldd "$IMAGE_DIR"/bin/"$NAME".exe | grep -E '=>\s*/' | awk '{ print $3 }' | sed -e 's#^/##' | grep '^mingw64'); do
   libbase="$(basename "$lib")"
 
   set -x

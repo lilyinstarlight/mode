@@ -44,6 +44,7 @@ SELF="$(cd "$(dirname "$0")" &>/dev/null && pwd -P && cd - &>/dev/null)"/"$(base
 SRC_DIR="$(dirname "$(dirname "$SELF")")"
 
 TARGET="$1"
+PREFIX="$2"
 
 if [ -z "$TARGET" ]; then
   case "$(uname -s)" in
@@ -61,9 +62,14 @@ if [ -z "$TARGET" ]; then
   esac
 fi
 
+if [ -n "$PREFIX" ]; then
+  PREFIX="--prefix='$PREFIX'"
+fi
+
 case "$TARGET" in
   linux)
-    SDL2_CONF_FLAGS="$(tr -d ' ' <<'      EOF' | tr '\n' ' ' | xargs
+    SDL2_CONF_FLAGS="$(tr -d ' ' <<EOF | tr '\n' ' ' | xargs
+      $PREFIX
       --enable-shared
       --disable-static
       --enable-alsa
@@ -99,9 +105,10 @@ case "$TARGET" in
       --enable-ime
       --enable-ibus
       --enable-fcitx
-      EOF
+EOF
     )"
-    SDL2_IMAGE_CONF_FLAGS="$(tr -d ' ' <<'      EOF' | tr '\n' ' ' | xargs
+    SDL2_IMAGE_CONF_FLAGS="$(tr -d ' ' <<EOF | tr '\n' ' ' | xargs
+      $PREFIX
       --enable-shared
       --disable-static
       --enable-bmp
@@ -120,9 +127,10 @@ case "$TARGET" in
       --enable-xpm
       --enable-xv
       --disable-webp
-      EOF
+EOF
     )"
-    SDL2_MIXER_CONF_FLAGS="$(tr -d ' ' <<'      EOF' | tr '\n' ' ' | xargs
+    SDL2_MIXER_CONF_FLAGS="$(tr -d ' ' <<EOF | tr '\n' ' ' | xargs
+      $PREFIX
       --enable-shared
       --disable-static
       --disable-sdltest
@@ -139,25 +147,28 @@ case "$TARGET" in
       --enable-music-mp3-mpg123
       --disable-music-mp3-mpg123-shared
       --disable-music-opus
-      EOF
+EOF
     )"
-    SDL2_TTF_CONF_FLAGS="$(tr -d ' ' <<'      EOF' | tr '\n' ' ' | xargs
+    SDL2_TTF_CONF_FLAGS="$(tr -d ' ' <<EOF | tr '\n' ' ' | xargs
+      $PREFIX
       --enable-shared
       --disable-static
       --disable-freetypetest
       --disable-sdltest
-      EOF
+EOF
     )"
-    SDL2_GFX_CONF_FLAGS="$(tr -d ' ' <<'      EOF' | tr '\n' ' ' | xargs
+    SDL2_GFX_CONF_FLAGS="$(tr -d ' ' <<EOF | tr '\n' ' ' | xargs
+      $PREFIX
       --enable-shared
       --disable-static
       --disable-sdltest
-      EOF
+EOF
     )"
     ;;
 
   macos)
-    SDL2_CONF_FLAGS="$(tr -d ' ' <<'      EOF' | tr '\n' ' ' | xargs
+    SDL2_CONF_FLAGS="$(tr -d ' ' <<EOF | tr '\n' ' ' | xargs
+      $PREFIX
       --enable-shared
       --disable-static
       --disable-jack
@@ -170,9 +181,10 @@ case "$TARGET" in
       --enable-video-metal
       --enable-render-metal
       --without-x
-      EOF
+EOF
     )"
-    SDL2_IMAGE_CONF_FLAGS="$(tr -d ' ' <<'      EOF' | tr '\n' ' ' | xargs
+    SDL2_IMAGE_CONF_FLAGS="$(tr -d ' ' <<EOF | tr '\n' ' ' | xargs
+      $PREFIX
       --enable-shared
       --disable-static
       --enable-imageio
@@ -192,9 +204,10 @@ case "$TARGET" in
       --enable-xpm
       --enable-xv
       --disable-webp
-      EOF
+EOF
     )"
-    SDL2_MIXER_CONF_FLAGS="$(tr -d ' ' <<'      EOF' | tr '\n' ' ' | xargs
+    SDL2_MIXER_CONF_FLAGS="$(tr -d ' ' <<EOF | tr '\n' ' ' | xargs
+      $PREFIX
       --enable-shared
       --disable-static
       --disable-sdltest
@@ -211,27 +224,30 @@ case "$TARGET" in
       --enable-music-mp3-mpg123
       --disable-music-mp3-mpg123-shared
       --disable-music-opus
-      EOF
+EOF
     )"
-    SDL2_TTF_CONF_FLAGS="$(tr -d ' ' <<'      EOF' | tr '\n' ' ' | xargs
+    SDL2_TTF_CONF_FLAGS="$(tr -d ' ' <<EOF | tr '\n' ' ' | xargs
+      $PREFIX
       --enable-shared
       --disable-static
       --disable-freetypetest
       --disable-sdltest
       --without-x
-      EOF
+EOF
     )"
-    SDL2_GFX_CONF_FLAGS="$(tr -d ' ' <<'      EOF' | tr '\n' ' ' | xargs
+    SDL2_GFX_CONF_FLAGS="$(tr -d ' ' <<EOF | tr '\n' ' ' | xargs
+      $PREFIX
       --enable-shared
       --disable-static
       --disable-sdltest
       --enable-imageio
-      EOF
+EOF
     )"
     ;;
 
   windows)
-    SDL2_CONF_FLAGS="$(tr -d ' ' <<'      EOF' | tr '\n' ' ' | xargs
+    SDL2_CONF_FLAGS="$(tr -d ' ' <<EOF | tr '\n' ' ' | xargs
+      $PREFIX
       --enable-shared
       --disable-static
       --disable-jack
@@ -243,10 +259,10 @@ case "$TARGET" in
       --enable-directx
       --enable-wasapi
       --enable-render-d3d
-      --prefix=/mingw64
-      EOF
+EOF
     )"
-    SDL2_IMAGE_CONF_FLAGS="$(tr -d ' ' <<'      EOF' | tr '\n' ' ' | xargs
+    SDL2_IMAGE_CONF_FLAGS="$(tr -d ' ' <<EOF | tr '\n' ' ' | xargs
+      $PREFIX
       --enable-shared
       --disable-static
       --enable-bmp
@@ -265,10 +281,10 @@ case "$TARGET" in
       --enable-xpm
       --enable-xv
       --disable-webp
-      --prefix=/mingw64
-      EOF
+EOF
     )"
-    SDL2_MIXER_CONF_FLAGS="$(tr -d ' ' <<'      EOF' | tr '\n' ' ' | xargs
+    SDL2_MIXER_CONF_FLAGS="$(tr -d ' ' <<EOF | tr '\n' ' ' | xargs
+      $PREFIX
       --enable-shared
       --disable-static
       --disable-sdltest
@@ -285,28 +301,28 @@ case "$TARGET" in
       --enable-music-mp3-mpg123
       --disable-music-mp3-mpg123-shared
       --disable-music-opus
-      --prefix=/mingw64
-      EOF
+EOF
     )"
-    SDL2_TTF_CONF_FLAGS="$(tr -d ' ' <<'      EOF' | tr '\n' ' ' | xargs
+    SDL2_TTF_CONF_FLAGS="$(tr -d ' ' <<EOF | tr '\n' ' ' | xargs
+      $PREFIX
       --enable-shared
       --disable-static
       --disable-freetypetest
       --disable-sdltest
-      --prefix=/mingw64
-      EOF
+EOF
     )"
-    SDL2_GFX_CONF_FLAGS="$(tr -d ' ' <<'      EOF' | tr '\n' ' ' | xargs
+    SDL2_GFX_CONF_FLAGS="$(tr -d ' ' <<EOF | tr '\n' ' ' | xargs
+      $PREFIX
       --enable-shared
       --disable-static
       --disable-sdltest
-      --prefix=/mingw64
-      EOF
+EOF
     )"
     ;;
 
   *)
-    SDL2_CONF_FLAGS="$(tr -d ' ' <<'      EOF' | tr '\n' ' ' | xargs
+    SDL2_CONF_FLAGS="$(tr -d ' ' <<EOF | tr '\n' ' ' | xargs
+      $PREFIX
       --enable-shared
       --disable-static
       --disable-jack
@@ -317,9 +333,10 @@ case "$TARGET" in
       --disable-fusionsound
       --enable-libsamplerate
       --disable-libsamplerate-shared
-      EOF
+EOF
     )"
-    SDL2_IMAGE_CONF_FLAGS="$(tr -d ' ' <<'      EOF' | tr '\n' ' ' | xargs
+    SDL2_IMAGE_CONF_FLAGS="$(tr -d ' ' <<EOF | tr '\n' ' ' | xargs
+      $PREFIX
       --enable-shared
       --disable-static
       --enable-bmp
@@ -338,9 +355,10 @@ case "$TARGET" in
       --enable-xpm
       --enable-xv
       --disable-webp
-      EOF
+EOF
     )"
-    SDL2_MIXER_CONF_FLAGS="$(tr -d ' ' <<'      EOF' | tr '\n' ' ' | xargs
+    SDL2_MIXER_CONF_FLAGS="$(tr -d ' ' <<EOF | tr '\n' ' ' | xargs
+      $PREFIX
       --enable-shared
       --disable-static
       --disable-sdltest
@@ -357,20 +375,22 @@ case "$TARGET" in
       --enable-music-mp3-mpg123
       --disable-music-mp3-mpg123-shared
       --disable-music-opus
-      EOF
+EOF
     )"
-    SDL2_TTF_CONF_FLAGS="$(tr -d ' ' <<'      EOF' | tr '\n' ' ' | xargs
+    SDL2_TTF_CONF_FLAGS="$(tr -d ' ' <<EOF | tr '\n' ' ' | xargs
+      $PREFIX
       --enable-shared
       --disable-static
       --disable-freetypetest
       --disable-sdltest
-      EOF
+EOF
     )"
-    SDL2_GFX_CONF_FLAGS="$(tr -d ' ' <<'      EOF' | tr '\n' ' ' | xargs
+    SDL2_GFX_CONF_FLAGS="$(tr -d ' ' <<EOF | tr '\n' ' ' | xargs
+      $PREFIX
       --enable-shared
       --disable-static
       --disable-sdltest
-      EOF
+EOF
     )"
     ;;
 esac
