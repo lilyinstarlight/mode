@@ -11,6 +11,7 @@ function End-Group {
   }
 }
 
+$env:MSYSTEM = "MINGW64"
 $env:PATH = "C:\msys64\mingw64\bin;C:\msys64\usr\bin;$env:PATH"
 $env:PKG_CONFIG_PATH = "C:\msys64\mingw64\lib\pkgconfig"
 
