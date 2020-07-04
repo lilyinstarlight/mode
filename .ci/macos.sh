@@ -23,7 +23,9 @@ end_group
 start_group 'Install dependencies'
 set -x
 
-brew install make pkg-config sdl2 sdl2_image sdl2_mixer sdl2_ttf sdl2_gfx
+brew install autoconf automake make libsamplerate libogg libvorbis mpg123 freetype
+
+.ci/sdl.sh macos
 
 { set +x; } 2>/dev/null
 end_group

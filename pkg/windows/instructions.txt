@@ -9,6 +9,6 @@
 	2.1. Open MSYS2 MINGW64
 	2.2. Run `pacman -Syu`
 3. Install dependencies
-	3.1. Run `pacman -S base-devel zip mingw-w64-x86_64-{gcc,imagemagick,smpeg2,SDL2_ttf,SDL2_mixer,SDL2_image,SDL2_gfx,SDL2_net,SDL2}`
+	3.1. Run `pacman -S base-devel zip mingw-w64-x86_64-{gcc,imagemagick,smpeg2,SDL2,SDL2_image,SDL2_mixer,SDL2_ttf,SDL2_gfx}`
 4. Run `pkg/windows/build.sh`
 5. Artifact is 'mode.zip'

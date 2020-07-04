@@ -24,7 +24,9 @@ end_group
 start_group 'Install dependencies'
 set -x
 
-sudo apt-get install -y make pkg-config gcc g++ libsdl2-dev libsdl2-image-dev libsdl2-mixer-dev libsdl2-ttf-dev libsdl2-gfx-dev
+sudo apt-get install -y autoconf automake make gcc g++ fcitx-libs-dev libasound2-dev libdbus-1-dev libegl1-mesa-dev libgl1-mesa-dev libgles2-mesa-dev libglu1-mesa-dev libibus-1.0-dev libpulse-dev libsamplerate0-dev libudev-dev libvulkan-dev libwayland-dev libx11-dev libxcursor-dev libxext-dev libxi-dev libxinerama-dev libxkbcommon-dev libxrandr-dev libxss-dev libxt-dev libxv-dev libxxf86vm-dev libjpeg-turbo8-dev libpng16-dev libogg-dev libvorbis-dev libmpg123-dev libfreetype-dev
+
+sudo .ci/sdl.sh linux
 
 { set +x; } 2>/dev/null
 end_group
