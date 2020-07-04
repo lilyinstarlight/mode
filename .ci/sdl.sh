@@ -27,8 +27,6 @@ get_release() {
       ;;
   esac
 
-  rm -rf "$project-$version"
-
   echo "Downloading $project-$version" >&2
 
   set -x
@@ -42,7 +40,28 @@ get_release() {
   set -x
 }
 
-case "$1" in
+SELF="$(cd "$(dirname "$0")" &>/dev/null && pwd -P && cd - &>/dev/null)"/"$(basename "$0")"
+SRC_DIR="$(dirname "$(dirname "$SELF")")"
+
+TARGET="$1"
+
+if [ -z "$TARGET" ]; then
+  case "$(uname -s)" in
+    Linux)
+      TARGET=linux
+      ;;
+
+    Darwin)
+      TARGET=macos
+      ;;
+
+    MINGW64*)
+      TARGET=windows
+      ;;
+  esac
+fi
+
+case "$TARGET" in
   linux)
     SDL2_CONF_FLAGS="$(tr -d ' ' <<'      EOF' | tr '\n' ' ' | xargs
       --enable-shared
@@ -107,7 +126,7 @@ case "$1" in
       --enable-shared
       --disable-static
       --disable-sdltest
-      --enable-music-cmd
+      --disable-music-cmd
       --enable-music-wave
       --disable-music-mod
       --disable-music-midi
@@ -179,7 +198,7 @@ case "$1" in
       --enable-shared
       --disable-static
       --disable-sdltest
-      --enable-music-cmd
+      --disable-music-cmd
       --enable-music-wave
       --disable-music-mod
       --disable-music-midi
@@ -253,7 +272,7 @@ case "$1" in
       --enable-shared
       --disable-static
       --disable-sdltest
-      --enable-music-cmd
+      --disable-music-cmd
       --enable-music-wave
       --disable-music-mod
       --disable-music-midi
@@ -325,7 +344,7 @@ case "$1" in
       --enable-shared
       --disable-static
       --disable-sdltest
-      --enable-music-cmd
+      --disable-music-cmd
       --enable-music-wave
       --disable-music-mod
       --disable-music-midi
@@ -356,7 +375,14 @@ case "$1" in
     ;;
 esac
 
+BUILD_DIR="$(dirname "$SELF")"/build
+
 set -x
+
+rm -rf "$BUILD_DIR"
+mkdir -p "$BUILD_DIR"
+
+pushd "$BUILD_DIR" >/dev/null
 
 pushd "$(get_release SDL2 'https://libsdl.org/download-2.0.php')" >/dev/null
 ./autogen.sh
@@ -391,6 +417,8 @@ pushd "$(get_release SDL2_gfx 'https://www.ferzkopp.net/wordpress/2016/01/02/sdl
 ./configure $SDL2_GFX_CONF_FLAGS
 make
 make install
+popd >/dev/null
+
 popd >/dev/null
 
 { set +x; } 2>/dev/null
