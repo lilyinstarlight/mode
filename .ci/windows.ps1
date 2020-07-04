@@ -35,4 +35,4 @@ bash.exe -c 'exec .ci/sdl.sh windows /mingw64-sdl2 2>&1'
 
 End-Group
 
-bash.exe -c 'exec PATH="/mingw64-sdl2/bin:$PATH" pkg/windows/build.sh 2>&1'
+bash.exe -c 'PATH="/mingw64-sdl2/bin:$PATH" exec pkg/windows/build.sh 2>&1'
