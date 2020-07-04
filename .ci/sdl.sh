@@ -5,7 +5,7 @@ get_release() {
   local project="$1"
   local url="$2"
 
-  echo "++ curl -sL "'"'"$url"'"'
+  echo "++ curl -sL "'"'"$url"'"' >&2
   local details="$(curl -sL "$url" | env LC_ALL=C tr -d '[:blank:]\r\n' | perl -pe 's#^.*?<ahref="([^"]*)">'"$project"'-(\d+\.\d+\.\d+)\.tar\.gz</a>.*$#\2\t\1#i')"
   local version="$(echo "$details" | cut -f1)"
   local release="$(echo "$details" | cut -f2)"
