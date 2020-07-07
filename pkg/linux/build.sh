@@ -15,7 +15,8 @@ end_group() {
 SELF="$(readlink -f "$0")"
 SRC_DIR="$(dirname "$(dirname "$(dirname "$SELF")")")"
 
-which magick &>/dev/null || alias magick='convert'
+which magick &>/dev/null || magick() { convert "$@"; }
+
 
 start_group 'Packaging metadata'
 set -x
