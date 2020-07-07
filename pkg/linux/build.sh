@@ -15,6 +15,8 @@ end_group() {
 SELF="$(readlink -f "$0")"
 SRC_DIR="$(dirname "$(dirname "$(dirname "$SELF")")")"
 
+which magick &>/dev/null || alias magick='convert'
+
 start_group 'Packaging metadata'
 set -x
 
@@ -155,10 +157,10 @@ EOF
 end_group
 
 
-# get helper tools
 start_group 'Package into AppImage'
 set -x
 
+# get helper tools
 pushd "$BIN_DIR" >/dev/null
 
 rm -f linuxdeploy-x86_64.AppImage
