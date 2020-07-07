@@ -48,14 +48,14 @@ mkdir -p "$BUILD_DIR"/"$NAME"
 
 { set +x; } 2>/dev/null
 
-for SRC_FILE in "$SRC_DIR"/*; do
-  if [ "$(basename "$SRC_FILE")" == pkg ] || [ "$(basename "$SRC_FILE")" == build ] || [ "$(basename "$SRC_FILE")" == data ] || [ "$(basename "$SRC_FILE")" == dist ]; then
+for src_file in "$SRC_DIR"/*; do
+  if [ "$(basename "$src_file")" == pkg ] || [ "$(basename "$src_file")" == build ] || [ "$(basename "$src_file")" == data ] || [ "$(basename "$src_file")" == dist ]; then
     continue
   fi
 
   set -x
 
-  cp -r "$SRC_FILE" "$BUILD_DIR"/"$NAME"/
+  cp -r "$src_file" "$BUILD_DIR"/"$NAME"/
 
   { set +x; } 2>/dev/null
 done
@@ -69,7 +69,7 @@ set -x
 
 mkdir -p "$BUILD_DIR"/"$NAME".res
 
-magick convert "$BUILD_DIR"/"$NAME"/"$ICON" -define icon:auto-resize -compress zip "$BUILD_DIR"/"$NAME".res/"$NAME".ico
+magick "$BUILD_DIR"/"$NAME"/"$ICON" -define icon:auto-resize -compress zip "$BUILD_DIR"/"$NAME".res/"$NAME".ico
 
 { set +x; } 2>/dev/null
 

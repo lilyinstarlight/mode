@@ -51,14 +51,14 @@ mkdir -p "$BUILD_DIR"/"$NAME"
 
 { set +x; } 2>/dev/null
 
-for SRC_FILE in "$SRC_DIR"/*; do
-  if [ "$(basename "$SRC_FILE")" == pkg ] || [ "$(basename "$SRC_FILE")" == build ] || [ "$(basename "$SRC_FILE")" == data ] || [ "$(basename "$SRC_FILE")" == dist ]; then
+for src_file in "$SRC_DIR"/*; do
+  if [ "$(basename "$src_file")" == pkg ] || [ "$(basename "$src_file")" == build ] || [ "$(basename "$src_file")" == data ] || [ "$(basename "$src_file")" == dist ]; then
     continue
   fi
 
   set -x
 
-  cp -r "$SRC_FILE" "$BUILD_DIR"/"$NAME"/
+  cp -r "$src_file" "$BUILD_DIR"/"$NAME"/
 
   { set +x; } 2>/dev/null
 done
@@ -88,7 +88,7 @@ set -x
 mkdir -p "$IMAGE_DIR"/usr/bin
 mkdir -p "$IMAGE_DIR"/usr/share
 mkdir -p "$IMAGE_DIR"/usr/share/applications
-mkdir -p "$IMAGE_DIR"/usr/share/icons/hicolor/"$(file "$SRC_DIR"/"$ICON" | grep -oE '\d+\s+x\s+\d+' | tr -d ' ')"
+mkdir -p "$IMAGE_DIR"/usr/share/icons/hicolor
 mkdir -p "$IMAGE_DIR"/usr/share/metainfo
 mkdir -p "$IMAGE_DIR"/usr/share/"$NAME"
 
@@ -110,10 +110,16 @@ set -x
 
 cp "$BUILD_DIR"/"$NAME"/dist/"$NAME" "$IMAGE_DIR"/usr/bin/"$NAME"
 
-cp "$SRC_DIR"/"$ICON" "$IMAGE_DIR"/"$NAME".png
-cp "$SRC_DIR"/"$ICON" "$IMAGE_DIR"/usr/share/icons/hicolor/"$(file "$SRC_DIR"/"$ICON" | grep -oE '\d+\s+x\s+\d+' | tr -d ' ')"/"$NAME".png
-
 { set +x; } 2>/dev/null
+
+for size in 16 32 64 128 256; do
+  set -x
+
+  mkdir -p "$IMAGE_DIR"/usr/share/icons/hicolor/"$size"x"$size"
+  magick "$BUILD_DIR"/"$NAME"/"$ICON" -thumbnail "$size"x"$size" "$IMAGE_DIR"/usr/share/icons/hicolor/"$size"x"$size"/"$NAME".png
+
+  { set +x; } 2>/dev/null
+done
 
 echo "+ cat >'$IMAGE_DIR/usr/share/applications/$NAME.desktop'" >&2
 cat >"$IMAGE_DIR"/usr/share/applications/"$NAME".desktop <<EOF
