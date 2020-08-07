@@ -184,7 +184,7 @@ popd >/dev/null
 # package image
 rm -f "$NAME".AppImage
 
-env OUTPUT="$NAME".AppImage "$BIN_DIR"/linuxdeploy --appdir "$IMAGE_DIR" --desktop-file "$IMAGE_DIR"/usr/share/applications/"$NAME".desktop --plugin checkrt --output appimage
+env OUTPUT="$NAME".AppImage "$BIN_DIR"/linuxdeploy --appdir "$IMAGE_DIR" --desktop-file "$IMAGE_DIR"/usr/share/applications/"$NAME".desktop --icon-file "$IMAGE_DIR"/usr/share/icons/hicolor/256x256/"$NAME".png --plugin checkrt --output appimage
 
 { set +x; } 2>/dev/null
 end_group
