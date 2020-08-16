@@ -13,8 +13,8 @@ VERSION='0.0'
 
 LICENSE='MIT'
 
-HOMEPAGE='https://github.com/fkmclane/mode'
-CONTACT='Foster McLane'
-EMAIL='fkmclane@gmail.com'
+HOMEPAGE='https://github.com/lilyinstarlight/mode'
+CONTACT='Lily Foster'
+EMAIL='lily@lily.flowers'
 
-DOMAIN='io.fooster'
+DOMAIN='flowers.lily'
