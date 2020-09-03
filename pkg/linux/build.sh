@@ -118,14 +118,14 @@ cp "$BUILD_DIR"/"$NAME"/dist/"$NAME" "$IMAGE_DIR"/usr/bin/"$NAME"
 for size in 16 32 64 128 256; do
   set -x
 
-  mkdir -p "$IMAGE_DIR"/usr/share/icons/hicolor/"$size"x"$size"
-  magick "$BUILD_DIR"/"$NAME"/"$ICON" -thumbnail "$size"x"$size" "$IMAGE_DIR"/usr/share/icons/hicolor/"$size"x"$size"/"$NAME".png
+  mkdir -p "$IMAGE_DIR"/usr/share/icons/hicolor/"$size"x"$size"/apps
+  magick "$BUILD_DIR"/"$NAME"/"$ICON" -thumbnail "$size"x"$size" "$IMAGE_DIR"/usr/share/icons/hicolor/"$size"x"$size"/apps/"$NAME".png
 
   { set +x; } 2>/dev/null
 done
 
-echo "+ cat >'$IMAGE_DIR/usr/share/applications/$NAME.desktop'" >&2
-cat >"$IMAGE_DIR"/usr/share/applications/"$NAME".desktop <<EOF
+echo "+ cat >'$IMAGE_DIR/usr/share/applications/$DOMAIN.$NAME.desktop'" >&2
+cat >"$IMAGE_DIR"/usr/share/applications/"$DOMAIN"."$NAME".desktop <<EOF
 [Desktop Entry]
 Name=$PRETTY
 Exec=$NAME
@@ -139,7 +139,7 @@ cat >"$IMAGE_DIR"/usr/share/metainfo/"$DOMAIN"."$NAME".appdata.xml <<EOF
 <?xml version="1.0" encoding="UTF-8"?>
 <component type="desktop">
   <id>$DOMAIN.$NAME.desktop</id>
-  <name>$NAME</name>
+  <name>$PRETTY</name>
   <developer_name>$CONTACT</developer_name>
   <summary>$SUMMARY</summary>
   <description>
@@ -184,7 +184,7 @@ popd >/dev/null
 # package image
 rm -f "$NAME".AppImage
 
-env OUTPUT="$NAME".AppImage "$BIN_DIR"/linuxdeploy --appdir "$IMAGE_DIR" --desktop-file "$IMAGE_DIR"/usr/share/applications/"$NAME".desktop --icon-file "$IMAGE_DIR"/usr/share/icons/hicolor/256x256/"$NAME".png --plugin checkrt --output appimage
+env OUTPUT="$NAME".AppImage "$BIN_DIR"/linuxdeploy --appdir "$IMAGE_DIR" --desktop-file "$IMAGE_DIR"/usr/share/applications/"$DOMAIN"."$NAME".desktop --plugin checkrt --output appimage
 
 { set +x; } 2>/dev/null
 end_group
