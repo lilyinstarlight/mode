@@ -18,11 +18,11 @@ jobs:
       - run: |
           case "$GITHUB_REF" in
             refs/tags/v*)
-              export UPDATE_INFORMATION='gh-releases-zsync|lilyinstarlight|mode|latest|mode-*-linux.AppImage'
+              export UPDATE_INFORMATION='gh-releases-zsync|lilyinstarlight|mode|latest|mode-*-linux.AppImage.zsync'
               ;;
 
             *)
-              export UPDATE_INFORMATION='gh-releases-zsync|lilyinstarlight|mode|continuous|mode-*-linux.AppImage'
+              export UPDATE_INFORMATION='gh-releases-zsync|lilyinstarlight|mode|continuous|mode-*-linux.AppImage.zsync'
               ;;
           esac
 
@@ -30,7 +30,9 @@ jobs:
       - uses: actions/upload-artifact@v2
         with:
           name: mode-linux
-          path: mode.AppImage
+          path: |
+            mode.AppImage
+            mode.AppImage.zsync
 
   macos:
     name: macOS Build
@@ -96,6 +98,7 @@ jobs:
 
             const assets = {
               `mode-${tag}-linux.AppImage`: './mode-linux/mode.AppImage',
+              `mode-${tag}-linux.AppImage.zsync`: './mode-linux/mode.AppImage.zsync',
               `mode-${tag}-macos.zip`: './mode-macos/mode.zip',
               `mode-${tag}-windows.zip`: './mode-windows/mode.zip',
             };

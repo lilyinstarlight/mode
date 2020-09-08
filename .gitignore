@@ -12,6 +12,7 @@
 /pkg/*/image
 
 *.AppImage
+*.zsync
 *.app
 *.zip
 
