@@ -6,9 +6,10 @@ get_release() {
   local url="$2"
 
   echo "++ curl -sL "'"'"$url"'"' >&2
-  local details="$(curl -sL "$url" | env LC_ALL=C tr -d '[:blank:]\r\n' | perl -pe 's#^.*?<ahref="([^"]*)">'"$project"'-(\d+\.\d+\.\d+)\.tar\.gz</a>.*$#\2\t\1#i')"
-  local version="$(echo "$details" | cut -f1)"
-  local release="$(echo "$details" | cut -f2)"
+  local details version release
+  details="$(curl -sL "$url" | env LC_ALL=C tr -d '[:blank:]\r\n' | perl -pe 's#^.*?<ahref="([^"]*)">'"$project"'-(\d+\.\d+\.\d+)\.tar\.gz</a>.*$#\2\t\1#i')"
+  version="$(echo "$details" | cut -f1)"
+  release="$(echo "$details" | cut -f2)"
 
   case "$release" in
     *://*)
@@ -41,7 +42,6 @@ get_release() {
 }
 
 SELF="$(cd "$(dirname "$0")" &>/dev/null && pwd -P && cd - &>/dev/null)"/"$(basename "$0")"
-SRC_DIR="$(dirname "$(dirname "$SELF")")"
 
 TARGET="$1"
 PREFIX="$2"
@@ -406,6 +406,7 @@ pushd "$BUILD_DIR" >/dev/null
 
 pushd "$(get_release SDL2 'https://libsdl.org/download-2.0.php')" >/dev/null
 ./autogen.sh
+# shellcheck disable=SC2086
 ./configure $SDL2_CONF_FLAGS
 make
 make install
@@ -413,6 +414,7 @@ popd >/dev/null
 
 pushd "$(get_release SDL2_image 'https://libsdl.org/projects/SDL_image/')" >/dev/null
 ./autogen.sh
+# shellcheck disable=SC2086
 ./configure $SDL2_IMAGE_CONF_FLAGS
 make
 make install
@@ -420,6 +422,7 @@ popd >/dev/null
 
 pushd "$(get_release SDL2_mixer 'https://libsdl.org/projects/SDL_mixer/')" >/dev/null
 ./autogen.sh
+# shellcheck disable=SC2086
 ./configure $SDL2_MIXER_CONF_FLAGS
 make
 make install
@@ -427,6 +430,7 @@ popd >/dev/null
 
 pushd "$(get_release SDL2_ttf 'https://libsdl.org/projects/SDL_ttf/')" >/dev/null
 ./autogen.sh
+# shellcheck disable=SC2086
 ./configure $SDL2_TTF_CONF_FLAGS
 make
 make install
@@ -434,6 +438,7 @@ popd >/dev/null
 
 pushd "$(get_release SDL2_gfx 'https://www.ferzkopp.net/wordpress/2016/01/02/sdl_gfx-sdl2_gfx/')" >/dev/null
 ./autogen.sh
+# shellcheck disable=SC2086
 ./configure $SDL2_GFX_CONF_FLAGS
 make
 make install

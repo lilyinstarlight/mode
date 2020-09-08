@@ -1,6 +1,7 @@
 #!/bin/bash -e
 start_group() {
   if [ "$GITHUB_ACTIONS" == "true" ]; then
+    # shellcheck disable=SC2016
     echo "::group::$(echo -e "$*" | sed -e '1h;2,$H;$!d;g' -e 's/%/%25/g' -e 's/\r/%0D/g' -e 's/\n/%0A/g')" >&2
   fi
 }
