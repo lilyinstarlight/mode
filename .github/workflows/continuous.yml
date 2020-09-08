@@ -16,6 +16,16 @@ jobs:
         with:
           submodules: recursive
       - run: |
+          case "$GITHUB_REF" in
+            refs/tags/v*)
+              export UPDATE_INFORMATION='gh-releases-zsync|lilyinstarlight|mode|latest|mode-*-linux.AppImage'
+              ;;
+
+            *)
+              export UPDATE_INFORMATION='gh-releases-zsync|lilyinstarlight|mode|continuous|mode-*-linux.AppImage'
+              ;;
+          esac
+
           .ci/linux.sh
       - uses: actions/upload-artifact@v2
         with:
@@ -79,15 +89,15 @@ jobs:
 
             const tag = release ? context.ref.replace(/^refs\/tags\//i, '') : 'continuous';
 
-            const name = release ? '.:mode:. ' + tag : '.:mode:. Continuous';
+            const name = release ? `.:mode:. ${tag}` : '.:mode:. Continuous';
             const body = release ? '' : 'Continuous builds are freshly baked on every push to the main branch. Unless otherwise specified, all builds are for x86_64.';
             const prerelease = !release;
             const draft = release;
 
             const assets = {
-              'mode-linux.AppImage': './mode-linux/mode.AppImage',
-              'mode-macos.zip': './mode-macos/mode.zip',
-              'mode-windows.zip': './mode-windows/mode.zip',
+              `mode-${tag}-linux.AppImage`: './mode-linux/mode.AppImage',
+              `mode-${tag}-macos.zip`: './mode-macos/mode.zip',
+              `mode-${tag}-windows.zip`: './mode-windows/mode.zip',
             };
 
             core.startGroup('Release information');
@@ -106,7 +116,7 @@ jobs:
 
             const ref = await github.git.getRef({
               ...context.repo,
-              ref: 'tags/' + tag,
+              ref: `tags/${tag}`,
             })
             .catch((err) => {
               if (err.status !== 404)
@@ -117,7 +127,7 @@ jobs:
 
               return github.git.createRef({
                 ...context.repo,
-                ref: 'refs/tags/' + tag,
+                ref: `refs/tags/${tag}`,
                 sha: context.sha,
               });
             });
@@ -128,7 +138,7 @@ jobs:
 
               await github.git.updateRef({
                 ...context.repo,
-                ref: 'tags/' + tag,
+                ref: `tags/${tag}`,
                 sha: context.sha,
                 force: true,
               });
