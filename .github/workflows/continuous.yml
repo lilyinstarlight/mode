@@ -100,10 +100,10 @@ jobs:
             const draft = release;
 
             const assets = {
-              `mode-${tag}-linux.AppImage`: './mode-linux/mode.AppImage',
-              `mode-${tag}-linux.AppImage.zsync`: './mode-linux/mode.AppImage.zsync',
-              `mode-${tag}-macos.zip`: './mode-macos/mode.zip',
-              `mode-${tag}-windows.zip`: './mode-windows/mode.zip',
+              [`mode-${tag}-linux.AppImage`]: './mode-linux/mode.AppImage',
+              [`mode-${tag}-linux.AppImage.zsync`]: './mode-linux/mode.AppImage.zsync',
+              [`mode-${tag}-macos.zip`]: './mode-macos/mode.zip',
+              [`mode-${tag}-windows.zip`]: './mode-windows/mode.zip',
             };
 
             core.startGroup('Release information');
