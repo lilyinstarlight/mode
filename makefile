@@ -45,10 +45,10 @@ $(VENDORDIR)/yaml-cpp/include/yaml-cpp/yaml.h:
 $(VENDORDIR)/lua/lua.h: | $(VENDORDIR)/yaml-cpp/include/yaml-cpp/yaml.h
 	git submodule update --init $(VENDORDIR)/lua
 
-$(VENDORDIR)/sol/single/include/sol/sol.hpp: | $(VENDORDIR)/lua/lua.h
+$(VENDORDIR)/sol/include/sol/sol.hpp: | $(VENDORDIR)/lua/lua.h
 	git submodule update --init $(VENDORDIR)/sol
 
-$(DEP): | $(VENDORDIR)/yaml-cpp/include/yaml-cpp/yaml.h $(VENDORDIR)/lua/lua.h $(VENDORDIR)/sol/single/include/sol/sol.hpp $(BUILDDIR)
+$(DEP): | $(VENDORDIR)/yaml-cpp/include/yaml-cpp/yaml.h $(VENDORDIR)/lua/lua.h $(VENDORDIR)/sol/include/sol/sol.hpp $(BUILDDIR)
 
 $(OBJ): | $(DEP) $(BUILDDIR)
 
