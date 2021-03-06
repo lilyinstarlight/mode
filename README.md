@@ -1,6 +1,6 @@
 # .:mode:.
 
-A 2D game engine based on SDL2, sol3, and Lua in C++
+A 2D game engine based on SDL2, sol, and Lua in C++
 
 > I hope you enjoy an early preview of .:mode:., a side-scrolling puzzle platformer where you write the rules!
 > 
@@ -26,7 +26,7 @@ A 2D game engine based on SDL2, sol3, and Lua in C++
 ## Thanks
 
 * The creators of Lua - https://www.lua.org/authors.html
-* The creators of sol3 - https://github.com/ThePhD/sol2/graphs/contributors
+* The creators of sol - https://github.com/ThePhD/sol2/graphs/contributors
 * Ben Golden for the sprites which were taken from our game PyLink - https://github.com/ProjectPyLink/PyLink
 * The fabulous Dr. Brian Malloy
 
@@ -38,7 +38,7 @@ A 2D game engine based on SDL2, sol3, and Lua in C++
 * SDL2, SDL2\_image, SDL2\_mixer, SDL2\_ttf, SDL2\_gfx (dynamic linking) - Zlib
 * yaml-cpp (static linking) - MIT
 * Lua (static linking) - MIT
-* sol3 (header-only) - MIT
+* sol (header-only) - MIT
 * PyLink (asset) - MIT
 * Shoot\_01.wav (LittleRobotSoundFactory) (asset) - CC-BY-3.0
 * PressStart2P.ttf (asset) - OFL-1.1

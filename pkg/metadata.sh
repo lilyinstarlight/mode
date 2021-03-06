@@ -2,10 +2,10 @@ NAME='mode'
 PRETTY='.:mode:.'
 ICON='textures/mode.png'
 
-SUMMARY='A 2D game engine based on SDL2, sol3, and Lua in C++'
+SUMMARY='A 2D game engine based on SDL2, sol, and Lua in C++'
 DESCRIPTION='
 <p>
-  A 2D game engine based on SDL2, sol3, and Lua in C++ originally written for my CPSC 4160 class at Clemson University.
+  A 2D game engine based on SDL2, sol, and Lua in C++ originally written for my CPSC 4160 class at Clemson University.
 </p>
 '
 

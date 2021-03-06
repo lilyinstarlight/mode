@@ -1,8 +1,8 @@
 [submodule "vendor/lua"]
 	path = vendor/lua
 	url = https://github.com/lua/lua.git
-[submodule "vendor/sol3"]
-	path = vendor/sol3
+[submodule "vendor/sol"]
+	path = vendor/sol
 	url = https://github.com/ThePhD/sol2.git
 [submodule "vendor/yaml-cpp"]
 	path = vendor/yaml-cpp
