@@ -20,6 +20,7 @@ class Viewport {
 		int get_width() const  { return _width; }
 
 		const Vector2f & get_position() const        { return _position;     }
+		Vector2f & get_mutable_position()            { return _position;     }
 		void set_position(const Vector2f & position) { _position = position; }
 
 		float get_x() const  { return _position[0]; }

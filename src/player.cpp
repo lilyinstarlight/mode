@@ -46,7 +46,7 @@ void Player::update(unsigned int ticks, World & world) {
 			projectile.set_velocity_x(speed);
 		}
 
-		projectile.set_origin();
+		projectile.reset_origin();
 
 		_shot = false;
 	}

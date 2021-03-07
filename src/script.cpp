@@ -117,9 +117,9 @@ void Script::load_api() {
 			"width", sol::property(&Sprite::get_width),
 			"height", sol::property(&Sprite::get_height),
 
-			"pos", sol::property(&Sprite::get_position, &Sprite::set_position),
+			"pos", sol::property(&Sprite::get_mutable_position, &Sprite::set_position),
 			"rot", sol::property(&Sprite::get_rotation, &Sprite::set_rotation),
-			"vel", sol::property(&Sprite::get_velocity, &Sprite::set_velocity),
+			"vel", sol::property(&Sprite::get_mutable_velocity, &Sprite::set_velocity),
 			"scale", sol::property(&Sprite::get_scale, &Sprite::set_scale),
 			"idx", sol::property(&Sprite::get_index, &Sprite::set_index)
 	);
@@ -162,7 +162,7 @@ void Script::load_api() {
 
 			"alive", sol::property(&Projectile::is_alive),
 			"kill", &Projectile::kill,
-			"origin", sol::property(&Projectile::get_origin)
+			"origin", sol::property(&Projectile::get_mutable_origin, &Projectile::set_origin)
 	);
 
 	// set projectile as current sprite if a projectile
@@ -198,9 +198,9 @@ void Script::load_api() {
 			"width", sol::property(&Background::get_width),
 			"height", sol::property(&Background::get_height),
 
-			"pos", sol::property(&Background::get_position, &Background::set_position),
+			"pos", sol::property(&Background::get_mutable_position, &Background::set_position),
 			"rot", sol::property(&Background::get_rotation, &Background::set_rotation),
-			"vel", sol::property(&Background::get_velocity, &Background::set_velocity),
+			"vel", sol::property(&Background::get_mutable_velocity, &Background::set_velocity),
 			"scale", sol::property(&Background::get_scale, &Background::set_scale),
 			"idx", sol::property(&Background::get_index, &Background::set_index),
 
@@ -370,9 +370,9 @@ void Script::load_api() {
 
 			"string", sol::property(&Dialog::get_string, &Dialog::set_string),
 
-			"pos", sol::property(&Dialog::get_position, &Dialog::set_position),
+			"pos", sol::property(&Dialog::get_mutable_position, &Dialog::set_position),
 			"rot", sol::property(&Dialog::get_rotation, &Dialog::set_rotation),
-			"vel", sol::property(&Dialog::get_velocity, &Dialog::set_velocity),
+			"vel", sol::property(&Dialog::get_mutable_velocity, &Dialog::set_velocity),
 			"scale", sol::property(&Dialog::get_scale, &Dialog::set_scale),
 			"idx", sol::property(&Dialog::get_index, &Dialog::set_index)
 	);
@@ -400,7 +400,7 @@ void Script::load_api() {
 			"width", sol::property(&Viewport::get_width),
 			"height", sol::property(&Viewport::get_height),
 
-			"pos", sol::property(&Viewport::get_position, &Viewport::set_position),
+			"pos", sol::property(&Viewport::get_mutable_position, &Viewport::set_position),
 
 			"tracking", sol::property(&Viewport::get_tracking, &Viewport::track)
 	);

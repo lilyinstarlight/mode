@@ -37,6 +37,7 @@ class Drawable {
 		void set_type(const std::string & type) { _type = type; }
 
 		const Vector2f & get_position() const        { return _position;     }
+		Vector2f & get_mutable_position()            { return _position;     }
 		void set_position(const Vector2f & position) { _position = position; }
 
 		float get_x() const  { return _position[0]; }
@@ -49,6 +50,7 @@ class Drawable {
 		void  set_rotation(float rotation) { _rotation = rotation; }
 
 		const Vector2f & get_velocity() const         { return _velocity;     }
+		Vector2f & get_mutable_velocity()             { return _velocity;     }
 		void  set_velocity(const Vector2f & velocity) { _velocity = velocity; }
 
 		float get_velocity_x() const   { return _velocity[0]; }
