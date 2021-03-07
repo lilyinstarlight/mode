@@ -12,7 +12,7 @@ CXX=g++
 
 ifeq ($(DEBUG),1)
 
-CXXFLAGS=-std=c++17 -fvisibility=hidden -fsanitize=address -ggdb -Wall -Wpedantic -Wextra -Wshadow -Weffc++ -Werror -I $(VENDORDIR) -I $(VENDORDIR)/yaml-cpp/include -I $(VENDORDIR)/lua -I $(VENDORDIR)/sol/include `sdl2-config --cflags`
+CXXFLAGS=-std=c++17 -fvisibility=hidden -fsanitize=address -ggdb -Wall -Wpedantic -Wextra -Wshadow -Weffc++ -Werror -I $(VENDORDIR) -I $(VENDORDIR)/yaml-cpp/include -I $(VENDORDIR)/lua -I $(VENDORDIR)/sol/include `sdl2-config --cflags` -DSOL_ALL_SAFETIES_ON
 LDFLAGS=-std=c++17 -fvisibility=hidden -fsanitize=address -ggdb
 LDLIBS=-lm -ldl `sdl2-config --libs` -lSDL2_image -lSDL2_ttf -lSDL2_mixer -lSDL2_gfx
 
@@ -50,7 +50,7 @@ CXX=clang++
 
 ifeq ($(DEBUG),1)
 
-CXXFLAGS=-std=c++17 -fvisibility=hidden -fsanitize=address,undefined -ggdb -Wall -Wpedantic -Wextra -Wshadow -Weffc++ -Werror -I $(VENDORDIR) -I $(VENDORDIR)/yaml-cpp/include -I $(VENDORDIR)/lua -I $(VENDORDIR)/sol/include `sdl2-config --cflags`
+CXXFLAGS=-std=c++17 -fvisibility=hidden -fsanitize=address,undefined -ggdb -Wall -Wpedantic -Wextra -Wshadow -Weffc++ -Werror -I $(VENDORDIR) -I $(VENDORDIR)/yaml-cpp/include -I $(VENDORDIR)/lua -I $(VENDORDIR)/sol/include `sdl2-config --cflags` -DSOL_ALL_SAFETIES_ON
 LDFLAGS=-std=c++17 -fvisibility=hidden -fsanitize=address,undefined -ggdb
 LDLIBS=-lm -ldl `sdl2-config --libs` -lSDL2_image -lSDL2_ttf -lSDL2_mixer -lSDL2_gfx
 
@@ -88,7 +88,7 @@ CXX=g++
 
 ifeq ($(DEBUG),1)
 
-CXXFLAGS=-std=c++17 -fvisibility=hidden -ggdb -mwindows -Wall -Wpedantic -Wextra -Wshadow -Weffc++ -Werror -I $(VENDORDIR) -I $(VENDORDIR)/yaml-cpp/include -I $(VENDORDIR)/lua -I $(VENDORDIR)/sol/include `sdl2-config --cflags`
+CXXFLAGS=-std=c++17 -fvisibility=hidden -ggdb -mwindows -Wall -Wpedantic -Wextra -Wshadow -Weffc++ -Werror -I $(VENDORDIR) -I $(VENDORDIR)/yaml-cpp/include -I $(VENDORDIR)/lua -I $(VENDORDIR)/sol/include `sdl2-config --cflags` -DSOL_ALL_SAFETIES_ON
 LDFLAGS=-std=c++17 -fvisibility=hidden -ggdb -mwindows
 LDLIBS=-lm `sdl2-config --libs` -lSDL2_image -lSDL2_ttf -lSDL2_mixer -lSDL2_gfx
 
@@ -126,7 +126,7 @@ CXX=c++
 
 ifeq ($(DEBUG),1)
 
-CXXFLAGS=-std=c++17 -fvisibility=hidden -g -Wall -Wpedantic -Wextra -Wshadow -Weffc++ -Werror -I $(VENDORDIR) -I $(VENDORDIR)/yaml-cpp/include -I $(VENDORDIR)/lua -I $(VENDORDIR)/sol/include `sdl2-config --cflags`
+CXXFLAGS=-std=c++17 -fvisibility=hidden -g -Wall -Wpedantic -Wextra -Wshadow -Weffc++ -Werror -I $(VENDORDIR) -I $(VENDORDIR)/yaml-cpp/include -I $(VENDORDIR)/lua -I $(VENDORDIR)/sol/include `sdl2-config --cflags` -DSOL_ALL_SAFETIES_ON
 LDFLAGS=-std=c++17 -fvisibility=hidden -g
 LDLIBS=-lm -ldl `sdl2-config --libs` -lSDL2_image -lSDL2_ttf -lSDL2_mixer -lSDL2_gfx
 
