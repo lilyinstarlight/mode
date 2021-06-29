@@ -31,9 +31,15 @@ Start-Group -GroupMessage 'Install dependencies'
 
 Write-Output -InputObject "+ bash.exe -c 'exec pacman.exe -S --needed --noconfirm --noprogressbar base-devel zip mingw-w64-x86_64-gcc mingw-w64-x86_64-imagemagick mingw-w64-x86_64-libjpeg-turbo mingw-w64-x86_64-libpng mingw-w64-x86_64-libogg mingw-w64-x86_64-libvorbis mingw-w64-x86_64-mpg123 mingw-w64-x86_64-freetype 2>&1'"
 bash.exe -c 'exec pacman.exe -S --needed --noconfirm --noprogressbar base-devel zip mingw-w64-x86_64-gcc mingw-w64-x86_64-imagemagick mingw-w64-x86_64-libjpeg-turbo mingw-w64-x86_64-libpng mingw-w64-x86_64-libogg mingw-w64-x86_64-libvorbis mingw-w64-x86_64-mpg123 mingw-w64-x86_64-freetype 2>&1'
+if (-not $?) {
+  throw 'MSYS2 dependency error'
+}
 
 Write-Output -InputObject "+ bash.exe -c 'exec .ci/sdl.sh windows /mingw64-sdl2 2>&1'"
 bash.exe -c 'exec .ci/sdl.sh windows /mingw64-sdl2 2>&1'
+if (-not $?) {
+  throw 'SDL2 installation failure'
+}
 
 End-Group
 
