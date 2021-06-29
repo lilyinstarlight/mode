@@ -27,7 +27,7 @@ A 2D game engine based on SDL2, sol, and Lua in C++
 
 * The creators of Lua - https://www.lua.org/authors.html
 * The creators of sol - https://github.com/ThePhD/sol2/graphs/contributors
-* Ben Golden for the sprites which were taken from our game PyLink - https://github.com/ProjectPyLink/PyLink
+* Izzy Golden for the sprites which were taken from our game PyLink - https://github.com/ProjectPyLink/PyLink
 * The fabulous Dr. Brian Malloy
 
 
