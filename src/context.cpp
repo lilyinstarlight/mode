@@ -24,10 +24,10 @@ Context::Context() : _icon_path("textures"), _window(nullptr), _renderer(nullptr
 		throw std::runtime_error("Failed to make window: " + std::string(SDL_GetError()));
 
 	// create renderer
-	_renderer = SDL_CreateRenderer(_window, -1, SDL_RENDERER_PRESENTVSYNC);
+	_renderer = SDL_CreateRenderer(_window, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
 
 	if (!_renderer)
-		throw std::runtime_error("Failed to make renderer");
+		throw std::runtime_error("Failed to make renderer: " + std::string(SDL_GetError()));
 
 	// add alpha blending
 	if (SDL_SetRenderDrawBlendMode(_renderer, SDL_BLENDMODE_BLEND) < 0)
