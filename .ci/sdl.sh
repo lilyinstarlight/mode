@@ -246,8 +246,10 @@ EOF
     ;;
 
   windows)
+    # TODO: remove the --host flag for all of these after SDL 2.0.16 is released (fix: https://github.com/libsdl-org/SDL/commit/a29fe29)
     SDL2_CONF_FLAGS="$(tr -d ' ' <<EOF | tr '\n' ' ' | xargs
       $PREFIX
+      --host=x86_64-w64-mingw32
       --enable-shared
       --disable-static
       --disable-jack
@@ -263,6 +265,7 @@ EOF
     )"
     SDL2_IMAGE_CONF_FLAGS="$(tr -d ' ' <<EOF | tr '\n' ' ' | xargs
       $PREFIX
+      --host=x86_64-w64-mingw32
       --enable-shared
       --disable-static
       --enable-bmp
@@ -285,6 +288,7 @@ EOF
     )"
     SDL2_MIXER_CONF_FLAGS="$(tr -d ' ' <<EOF | tr '\n' ' ' | xargs
       $PREFIX
+      --host=x86_64-w64-mingw32
       --enable-shared
       --disable-static
       --disable-sdltest
@@ -305,6 +309,7 @@ EOF
     )"
     SDL2_TTF_CONF_FLAGS="$(tr -d ' ' <<EOF | tr '\n' ' ' | xargs
       $PREFIX
+      --host=x86_64-w64-mingw32
       --enable-shared
       --disable-static
       --disable-freetypetest
@@ -313,6 +318,7 @@ EOF
     )"
     SDL2_GFX_CONF_FLAGS="$(tr -d ' ' <<EOF | tr '\n' ' ' | xargs
       $PREFIX
+      --host=x86_64-w64-mingw32
       --enable-shared
       --disable-static
       --disable-sdltest
